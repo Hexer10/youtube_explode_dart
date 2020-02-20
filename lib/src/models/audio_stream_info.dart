@@ -4,6 +4,7 @@ import 'models.dart';
 class AudioStreamInfo extends MediaStreamInfo {
   /// Bitrate (bits/s) of the associated stream.
   final int bitrate;
+
   /// Audio encoding of the associated stream.
   final AudioEncoding audioEncoding;
 

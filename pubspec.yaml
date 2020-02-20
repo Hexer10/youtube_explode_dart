@@ -1,5 +1,5 @@
 name: youtube_explode_dart
-description: A port in dart of the youtube explode library.
+description: A port in dart of the youtube explode library. Support serveral API functions.
 version: 0.0.1
 homepage: https://github.com/Hexer10/youtube_explode_dart
 

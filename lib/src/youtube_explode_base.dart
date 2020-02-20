@@ -32,8 +32,7 @@ class YoutubeExplode {
   /// Use this to extract the muxed, audio and video streams from a video.
   Future<MediaStreamInfoSet> getVideoMediaStream(String videoId) async {
     if (!validateVideoId(videoId)) {
-      throw ArgumentError.value(
-          videoId, 'videoId', 'Invalid video id');
+      throw ArgumentError.value(videoId, 'videoId', 'Invalid video id');
     }
 
     var playerConfiguration = await getPlayerConfiguration(videoId);
