@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:html/dom.dart';
-import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
+import 'package:http/http.dart' as http;
+
 import 'cipher/cipher.dart';
-import 'extensions.dart';
+import 'extensions/extensions.dart';
 import 'models/models.dart';
 import 'parser.dart' as parser;
-import 'playlist_extension.dart';
 
 /// YoutubeExplode entry class.
 class YoutubeExplode {
@@ -389,13 +389,33 @@ class YoutubeExplode {
     return null;
   }
 
+  /// Closes the youtube explode's http client.
+  void close() {
+    client.close();
+  }
+
+  /* Export the extension static members. */
+
   /// Parses a playlist [url] returning its id.
   /// If the [url] is a valid it is returned itself.
   static String parsePlaylistId(String url) =>
       PlaylistExtension.parsePlaylistId(url);
 
-  /// Closes the youtube explode's http client.
-  void close() {
-    client.close();
-  }
+  /// Returns true if [username] is a valid Youtube username.
+  static bool validateUsername(String username) =>
+      ChannelExtension.validateUsername(username);
+
+  /// Parses a username from an url.
+  /// Returns null if the username is not found.
+  static String parseUsername(String url) =>
+      ChannelExtension.parseUsername(url);
+
+  /// Returns true if [channelId] is a valid Youtube channel id.
+  static bool validateChannelId(String channelId) =>
+      ChannelExtension.validateChannelId(channelId);
+
+  /// Parses a channel id from an url.
+  /// Returns null if the username is not found.
+  static String parseChannelId(String url) =>
+      ChannelExtension.parseChannelId(url);
 }

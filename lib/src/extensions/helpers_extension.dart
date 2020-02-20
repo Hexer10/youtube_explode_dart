@@ -1,4 +1,4 @@
-import 'cipher/cipher_operations.dart';
+import '../cipher/cipher_operations.dart';
 
 /// Utility for Strings.
 extension StringUtility on String {

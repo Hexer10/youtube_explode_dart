@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'extensions.dart';
-import 'models/models.dart';
-import 'parser.dart' as parser;
-import 'youtube_explode_base.dart';
+import '../models/models.dart';
+import '../parser.dart' as parser;
+import '../youtube_explode_base.dart';
+import 'helpers_extension.dart';
 
 /// Playlist extension for YoutubeExplode
 extension PlaylistExtension on YoutubeExplode {
@@ -29,8 +29,7 @@ extension PlaylistExtension on YoutubeExplode {
   /// If the id is not valid an [ArgumentError] is thrown.
   Future<Playlist> getPlaylist(String playlistId, [int maxPages = 500]) async {
     if (!validatePlaylistId(playlistId)) {
-      throw ArgumentError.value(
-          playlistId, 'videoId', 'Invalid video id');
+      throw ArgumentError.value(playlistId, 'videoId', 'Invalid video id');
     }
 
     Map<String, dynamic> playlistJson;
