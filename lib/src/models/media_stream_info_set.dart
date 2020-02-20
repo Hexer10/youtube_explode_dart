@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'models.dart';
 
 /// Set of all available media stream infos.

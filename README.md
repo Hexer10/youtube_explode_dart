@@ -1,4 +1,7 @@
-A sample command-line application.
+# YoutubeExplodeDart
+This is a port of the [YoutubeExplode] library from C#.
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+Not all the features are yet supported or stable, check the issues for the current development of all the features. 
+
+
+[YoutubeExplode]: https://github.com/Tyrrrz/YoutubeExplode/
