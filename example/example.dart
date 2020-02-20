@@ -1,4 +1,4 @@
-import 'package:youtube_explode_dart/src/youtube_explode_base.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 Future<void> main() async {
   // Parse the video id from the url.
