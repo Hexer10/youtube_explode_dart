@@ -231,7 +231,7 @@ class YoutubeExplode {
           videoInfo['shortDescription'],
           ThumbnailSet(videoId),
           Duration(seconds: int.parse(videoInfo['lengthSeconds'])),
-          videoInfo['keywords']?.cast<String>(),
+          videoInfo['keywords']?.cast<String>() ?? const <String>[],
           Statistics(int.parse(videoInfo['viewCount']), 0, 0));
 
       var streamingData = playerResponseJson['streamingData'];
@@ -297,7 +297,7 @@ class YoutubeExplode {
     var author = details['author'];
     var description = details['shortDescription'];
     var duration = Duration(seconds: int.parse(details['lengthSeconds']));
-    var keyWords = details['keywords']?.cast<String>();
+    var keyWords = details['keywords']?.cast<String>() ?? const <String>[];
     var viewCount = int.tryParse(details['viewCount'] ?? '0') ?? 0;
 
     var videoPageHtml = await _getVideoWatchPageHtml(videoId);
@@ -345,11 +345,13 @@ class YoutubeExplode {
   Future<int> _requestContentLength(String url) async {
     var resp;
     try {
-      resp = await http.head(url);
-    } on Exception catch (e) {
+      resp = await client.head(url);
+    } on Exception {
       return -1;
     }
-    if (!resp.headers.containsKey('content-length')) return -1;
+    if (!resp.headers.containsKey('content-length')) {
+      return -1;
+    }
     String contentLengthString = resp.headers['content-length'];
     return int.tryParse(contentLengthString ?? '') ?? -1;
   }
