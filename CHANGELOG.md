@@ -10,7 +10,7 @@
 
 - Remove `dart:io` dependency.
 
-## 0.04
+## 0.0.4
 
 - Fix #3 : Head request to ge the content length
 - Fix error when getting videos without any keyword.
