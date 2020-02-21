@@ -40,4 +40,7 @@ class Video {
       this.duration,
       this.keyWords,
       this.statistics);
+
+  @override
+  String toString() => 'Video($id): $title';
 }

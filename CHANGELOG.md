@@ -14,3 +14,7 @@
 
 - Fix #3 : Head request to ge the content length
 - Fix error when getting videos without any keyword.
+
+## 0.0.5
+
+- Implement Search Api (`SearchExtension`)
