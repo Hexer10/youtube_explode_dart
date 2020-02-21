@@ -63,8 +63,10 @@ class YoutubeExplode {
         }
         url ??= Uri.parse(urlString);
 
-        var contentLength =
-            _parseContentLength(streamInfoJson['contentLength'], urlString);
+        var contentLength = await _parseContentLength(
+          streamInfoJson['contentLength'],
+          urlString,
+        );
 
         // Extract container
         var mimeType = ContentType.parse(streamInfoJson['mimeType'] as String);
@@ -125,8 +127,10 @@ class YoutubeExplode {
         }
         url ??= Uri.parse(urlString);
 
-        var contentLength =
-            _parseContentLength(streamInfoJson['contentLength'], urlString);
+        var contentLength = await _parseContentLength(
+          streamInfoJson['contentLength'],
+          urlString,
+        );
 
         // Extract container
         var mimeType = ContentType.parse(streamInfoJson['mimeType'] as String);
@@ -323,18 +327,31 @@ class YoutubeExplode {
         duration, keyWords, statistics);
   }
 
-  int _parseContentLength(String contentLengthString, String url) {
-    var contentLength = int.tryParse(contentLengthString) ?? -1;
+  Future<int> _parseContentLength(
+      String contentLengthString, String url) async {
+    var contentLength = int.tryParse(contentLengthString ?? '') ?? -1;
+
     if (contentLength <= 0) {
       contentLength = _contentLenRegexp?.firstMatch(url)?.group(1) ?? -1;
     }
 
     if (contentLength <= 0) {
-      // TODO: Implement get request to get length.
-//      print('Not implemented');
+      contentLength = await _requestContentLength(url);
+    }
+
+    return contentLength;
+  }
+
+  Future<int> _requestContentLength(String url) async {
+    var resp;
+    try {
+      resp = await http.head(url);
+    } on Exception catch (e) {
       return -1;
     }
-    return contentLength;
+    if (!resp.headers.containsKey('content-length')) return -1;
+    String contentLengthString = resp.headers['content-length'];
+    return int.tryParse(contentLengthString ?? '') ?? -1;
   }
 
   Future<Document> _getVideoWatchPageHtml(String videoId) async {
