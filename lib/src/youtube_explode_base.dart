@@ -227,7 +227,7 @@ class YoutubeExplode {
           videoInfo['shortDescription'],
           ThumbnailSet(videoId),
           Duration(seconds: int.parse(videoInfo['lengthSeconds'])),
-          videoInfo['keywords'].cast<String>(),
+          videoInfo['keywords']?.cast<String>(),
           Statistics(int.parse(videoInfo['viewCount']), 0, 0));
 
       var streamingData = playerResponseJson['streamingData'];
@@ -293,7 +293,7 @@ class YoutubeExplode {
     var author = details['author'];
     var description = details['shortDescription'];
     var duration = Duration(seconds: int.parse(details['lengthSeconds']));
-    var keyWords = details['keywords'].cast<String>();
+    var keyWords = details['keywords']?.cast<String>();
     var viewCount = int.tryParse(details['viewCount'] ?? '0') ?? 0;
 
     var videoPageHtml = await _getVideoWatchPageHtml(videoId);
