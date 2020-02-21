@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as html;
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart' show MediaType;
 
 import 'cipher/cipher.dart';
 import 'extensions/extensions.dart';
@@ -67,9 +67,9 @@ class YoutubeExplode {
             _parseContentLength(streamInfoJson['contentLength'], urlString);
 
         // Extract container
-        var mimeType = ContentType.parse(streamInfoJson['mimeType'] as String);
+        var mimeType = MediaType.parse(streamInfoJson['mimeType'] as String);
 
-        var container = parser.stringToContainer(mimeType.subType);
+        var container = parser.stringToContainer(mimeType.subtype);
         var codecs = mimeType.parameters['codecs'].split(',');
 
         // Extract audio encoding
@@ -129,9 +129,9 @@ class YoutubeExplode {
             _parseContentLength(streamInfoJson['contentLength'], urlString);
 
         // Extract container
-        var mimeType = ContentType.parse(streamInfoJson['mimeType'] as String);
+        var mimeType = MediaType.parse(streamInfoJson['mimeType'] as String);
 
-        var container = parser.stringToContainer(mimeType.subType);
+        var container = parser.stringToContainer(mimeType.subtype);
         var codecs = mimeType.parameters['codecs'].toLowerCase();
 
         // Audio only

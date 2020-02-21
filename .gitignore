@@ -13,4 +13,4 @@ doc/api/
 .idea/
 .vscode/
 *.iml
-bin/
+/tool/
