@@ -267,7 +267,7 @@ class YoutubeExplode {
 
   /// Returns the video info dictionary for a given vide.
   Future<Map<String, String>> getVideoInfoDictionary(String videoId) async {
-    var eurl = Uri.encodeFull('https://youtube.googleapis.com/v/$videoId');
+    var eurl = Uri.encodeComponent('https://youtube.googleapis.com/v/$videoId');
     var url = 'https://youtube.com/get_video_info?video_id=$videoId'
         '&el=embedded&eurl=$eurl&hl=en';
     var raw = (await client.get(url)).body;

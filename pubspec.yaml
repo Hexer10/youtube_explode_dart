@@ -4,12 +4,13 @@ version: 0.0.5
 homepage: https://github.com/Hexer10/youtube_explode_dart
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: '>=2.6.0 <3.0.0'
 
 dependencies:
   html: ^0.14.0+3
   http: ^0.12.0+4
   http_parser: ^3.1.3
+  xml: ^3.7.0
 
 dev_dependencies:
   effective_dart: ^1.2.1

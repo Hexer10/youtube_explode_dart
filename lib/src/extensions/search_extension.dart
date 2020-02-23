@@ -4,7 +4,7 @@ import '../models/models.dart';
 import '../youtube_explode_base.dart';
 import 'helpers_extension.dart';
 
-/// Search extension for YoutubeExplode
+/// Search extension for [YoutubeExplode]
 extension SearchExtension on YoutubeExplode {
   Future<Map<String, dynamic>> _getSearchResults(String query, int page) async {
     var url =

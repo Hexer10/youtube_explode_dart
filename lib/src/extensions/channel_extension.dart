@@ -6,7 +6,7 @@ import '../youtube_explode_base.dart';
 import 'helpers_extension.dart';
 import 'playlist_extension.dart';
 
-/// Channel extension for YoutubeExplode
+/// Channel extension for [YoutubeExplode]
 extension ChannelExtension on YoutubeExplode {
   static final _usernameRegMatchExp =
       RegExp(r'youtube\..+?/user/(.*?)(?:\?|&|/|$)');

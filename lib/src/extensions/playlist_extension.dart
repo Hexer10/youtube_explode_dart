@@ -5,7 +5,7 @@ import '../parser.dart' as parser;
 import '../youtube_explode_base.dart';
 import 'helpers_extension.dart';
 
-/// Playlist extension for YoutubeExplode
+/// Playlist extension for [YoutubeExplode]
 extension PlaylistExtension on YoutubeExplode {
   static final _regMatchExp =
       RegExp(r'youtube\..+?/playlist.*?list=(.*?)(?:&|/|$)');
