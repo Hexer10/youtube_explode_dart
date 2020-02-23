@@ -18,3 +18,8 @@
 ## 0.0.5
 
 - Implement Search Api (`SearchExtension`)
+
+## 0.0.6
+
+- Implement Caption Api ('CaptionExtension`)
+- Add Custom Exceptions

@@ -1,6 +1,8 @@
 library youtube_explode.cipher;
 
 import 'package:http/http.dart' as http;
+
+import '../exceptions/exceptions.dart';
 import '../extensions/helpers_extension.dart';
 import 'cipher_operations.dart';
 
@@ -27,7 +29,9 @@ Future<List<CipherOperation>> getCipherOperations(
   var deciphererFuncName = _deciphererFuncNameExp.firstMatch(raw)?.group(1);
 
   if (deciphererFuncName.isNullOrWhiteSpace) {
-    throw Exception('Could not find decipherer name.');
+    throw UnrecognizedStructureException(
+        'Could not find decipherer name. Please report this issue on GitHub.',
+        raw);
   }
 
   var exp = RegExp(r'(?!h\.)'
@@ -35,7 +39,9 @@ Future<List<CipherOperation>> getCipherOperations(
       r'=function\(\w+\)\{(.*?)\}');
   var decipherFuncBody = exp.firstMatch(raw)?.group(1);
   if (decipherFuncBody.isNullOrWhiteSpace) {
-    throw Exception('Could not find decipherer body.');
+    throw UnrecognizedStructureException(
+        'Could not find decipherer body. Please report this issue on GitHub.',
+        raw);
   }
 
   var deciphererFuncBodyStatements = decipherFuncBody.split(';');

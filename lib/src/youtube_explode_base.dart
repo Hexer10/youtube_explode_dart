@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart' show MediaType;
 
 import 'cipher/cipher.dart';
+import 'exceptions/exceptions.dart';
 import 'extensions/extensions.dart';
 import 'models/models.dart';
 import 'parser.dart' as parser;
@@ -212,7 +213,7 @@ class YoutubeExplode {
     var playAbility = playerResponseJson['playabilityStatus'];
 
     if (playAbility['status'].toString().toLowerCase() == 'error') {
-      throw Exception('Video [$videoId] is unavailable');
+      throw VideoUnavailableException(videoId);
     }
 
     var errorReason = playAbility['reason'] as String;
@@ -288,7 +289,7 @@ class YoutubeExplode {
         ?.toLowerCase() as String;
 
     if (status.isNullOrWhiteSpace || status == 'error') {
-      throw Exception('Video [$videoId] is unavailable');
+      throw VideoUnavailableException(videoId);
     }
 
     var details = playerResponseJson['videoDetails'];
