@@ -1,12 +1,16 @@
+import 'exceptions.dart';
+
 /// Thrown when a video is not playable because it requires purchase.
-class VideoRequiresPurchaseException implements Exception {
+class VideoRequiresPurchaseException implements VideoUnplayableException {
+  /// ID of the video.
+  final String videoId;
+
   /// ID of the preview video.
   final String previewVideoId;
 
   /// Initializes an instance of [VideoRequiresPurchaseException]
-  const VideoRequiresPurchaseException(this.previewVideoId);
+  const VideoRequiresPurchaseException(this.videoId, this.previewVideoId);
 
   @override
-  String toString() => 'VideoRequiresPurchaseException: The video '
-      '$previewVideoId requires a purchase';
+  String get reason => 'Requires purchase';
 }

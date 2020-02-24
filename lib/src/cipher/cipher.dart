@@ -86,7 +86,7 @@ Future<List<CipherOperation>> getCipherOperations(
     // Reverse
     exp = RegExp('$funcNameEsc' r':\bfunction\b\(\w+\)');
     if (exp.hasMatch(deciphererDefBody)) {
-      operations.add(ReverseCipherOperation());
+      operations.add(const ReverseCipherOperation());
     }
   }
 

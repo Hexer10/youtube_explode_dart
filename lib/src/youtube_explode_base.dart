@@ -16,11 +16,11 @@ class YoutubeExplode {
   static final _regMatchExp = RegExp(r'youtube\..+?/watch.*?v=(.*?)(?:&|/|$)');
   static final _shortMatchExp = RegExp(r'youtu\.be/(.*?)(?:\?|&|/|$)');
   static final _embedMatchExp = RegExp(r'youtube\..+?/embed/(.*?)(?:\?|&|/|$)');
-  static final _playerConfigRegexp = RegExp(
+  static final _playerConfigExp = RegExp(
       r"yt\.setConfig\({'PLAYER_CONFIG':(.*)}\);",
       multiLine: true,
       caseSensitive: false);
-  static final _contentLenRegexp = RegExp(r'clen=(\d+)');
+  static final _contentLenExp = RegExp(r'clen=(\d+)');
 
   /// HTTP Client.
   // Visible only for extensions.
@@ -191,6 +191,16 @@ class YoutubeExplode {
 
   /// Returns the player configuration for a given video.
   Future<PlayerConfiguration> getPlayerConfiguration(String videoId) async {
+    var playerConfiguration = await _getPlayerConfigEmbed(videoId);
+
+    // If still null try from the watch page.
+    playerConfiguration ??= await _getPlayerConfigWatchPage(videoId);
+
+    assert(playerConfiguration != null);
+    return playerConfiguration;
+  }
+
+  Future<PlayerConfiguration> _getPlayerConfigEmbed(String videoId) async {
     var body = (await client.get(
             'https://www.youtube.com/embed/$videoId?disable_polymer=true&hl=en'))
         .body;
@@ -198,7 +208,7 @@ class YoutubeExplode {
     var playerConfigRaw = document
         .getElementsByTagName('script')
         .map((e) => e.innerHtml)
-        .map((e) => _playerConfigRegexp?.firstMatch(e)?.group(1))
+        .map((e) => _playerConfigExp?.firstMatch(e)?.group(1))
         .firstWhere((s) => s?.trim()?.isNotEmpty ?? false);
     var playerConfigJson = json.decode(playerConfigRaw);
 
@@ -221,7 +231,6 @@ class YoutubeExplode {
     // Valid configuration
     if (errorReason.isNullOrWhiteSpace) {
       // Extract if it is a live stream.
-      var isLiveStream = playerResponseJson['videoDetails']['isLive'] == true;
 
       var videoInfo = playerResponseJson['videoDetails'];
       var video = Video(
@@ -234,6 +243,8 @@ class YoutubeExplode {
           Duration(seconds: int.parse(videoInfo['lengthSeconds'])),
           videoInfo['keywords']?.cast<String>() ?? const <String>[],
           Statistics(int.parse(videoInfo['viewCount']), 0, 0));
+
+      var isLiveStream = playerResponseJson['videoDetails']['isLive'] == true;
 
       var streamingData = playerResponseJson['streamingData'];
       var validUntil = DateTime.now()
@@ -262,11 +273,92 @@ class YoutubeExplode {
           validUntil);
     }
 
-    throw UnimplementedError(
-        'Get from video watch page or purchase video not implemented yet');
+    var previewVideoId = playAbility['errorScreen']
+        ['playerLegacyDesktopYpcTrailerRenderer']['trailerVideoId'] as String;
+    if (!previewVideoId.isNullOrWhiteSpace) {
+      throw VideoRequiresPurchaseException(videoId, previewVideoId);
+    }
+
+    // If the video requires purchase - throw (approach two)
+    var previewVideoInfoRaw = playAbility['errorScreen']['ypcTrailerRenderer']
+        ['playerVars'] as String;
+
+    if (!previewVideoInfoRaw.isNullOrWhiteSpace) {
+      var previewVideoInfoDic = Uri.splitQueryString(previewVideoInfoRaw);
+      var previewVideoId = previewVideoInfoDic['video_id'];
+
+      throw VideoRequiresPurchaseException(videoId, previewVideoId);
+    }
+    return null;
   }
 
-  /// Returns the video info dictionary for a given vide.
+  Future<PlayerConfiguration> _getPlayerConfigWatchPage(String videoId) async {
+    var videoWatchPageHtml = await _getVideoWatchPageHtml(videoId);
+    var playerConfigScript = videoWatchPageHtml
+        .querySelectorAll('script')
+        .map((e) => e.text)
+        .firstWhere((e) => e.contains('ytplayer.config ='));
+    if (playerConfigScript == null) {
+      var errorReason =
+          videoWatchPageHtml.querySelector('#unavailable-message').text.trim();
+      throw VideoUnplayableException(videoId, errorReason);
+    }
+
+    // Workaround: Couldn't get RegExp to work.
+    var startIndex = playerConfigScript.indexOf('ytplayer.config =');
+    var endIndex = playerConfigScript.indexOf(';ytplayer.load =');
+
+    var playerConfigRaw =
+        playerConfigScript.substring(startIndex + 17, endIndex);
+    var playerConfigJson = json.decode(playerConfigRaw);
+
+    var playerResponseJson =
+        json.decode(playerConfigJson['args']['player_response']);
+    var playerSourceUrl =
+        'https://youtube.com${playerConfigJson['assets']['js']}';
+
+    var videoInfo = playerResponseJson['videoDetails'];
+    var video = Video(
+        videoId,
+        videoInfo['author'],
+        null,
+        videoInfo['title'],
+        videoInfo['shortDescription'],
+        ThumbnailSet(videoId),
+        Duration(seconds: int.parse(videoInfo['lengthSeconds'])),
+        videoInfo['keywords']?.cast<String>() ?? const <String>[],
+        Statistics(int.parse(videoInfo['viewCount']), 0, 0));
+
+    var isLiveStream = playerResponseJson['videoDetails']['isLive'] == true;
+
+    var streamingData = playerResponseJson['streamingData'];
+    var validUntil = DateTime.now()
+        .add(Duration(seconds: int.parse(streamingData['expiresInSeconds'])));
+    var hlsManifestUrl = isLiveStream ? streamingData['hlsManifestUrl'] : null;
+    var dashManifestUrl =
+        isLiveStream ? null : streamingData['dashManifestUrl'];
+    var muxedStreamInfosUrlEncoded = isLiveStream
+        ? null
+        : playerConfigJson['args']['url_encoded_fmt_stream_map'];
+    var adaptiveStreamInfosUrlEncoded =
+        isLiveStream ? null : playerConfigJson['args']['adaptive_fmts'];
+    var muxedStreamInfosJson = isLiveStream ? null : streamingData['formats'];
+    var adaptiveStreamInfosJson =
+        isLiveStream ? null : streamingData['adaptiveFormats'];
+
+    return PlayerConfiguration(
+        playerSourceUrl,
+        dashManifestUrl,
+        hlsManifestUrl,
+        muxedStreamInfosUrlEncoded,
+        adaptiveStreamInfosUrlEncoded,
+        muxedStreamInfosJson,
+        adaptiveStreamInfosJson,
+        video,
+        validUntil);
+  }
+
+  /// Returns the video info dictionary for a given video.
   Future<Map<String, String>> getVideoInfoDictionary(String videoId) async {
     var eurl = Uri.encodeComponent('https://youtube.googleapis.com/v/$videoId');
     var url = 'https://youtube.com/get_video_info?video_id=$videoId'
@@ -333,7 +425,7 @@ class YoutubeExplode {
     var contentLength = int.tryParse(contentLengthString ?? '') ?? -1;
 
     if (contentLength <= 0) {
-      contentLength = _contentLenRegexp?.firstMatch(url)?.group(1) ?? -1;
+      contentLength = _contentLenExp?.firstMatch(url)?.group(1) ?? -1;
     }
 
     if (contentLength <= 0) {

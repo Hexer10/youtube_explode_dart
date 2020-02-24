@@ -5,9 +5,13 @@ class VideoUnplayableException {
   /// ID of the video.
   final String videoId;
 
+  /// Reason why the video can't be played.
+  final String reason;
+
   /// Initializes an instance of [VideoUnplayableException]
-  const VideoUnplayableException(this.videoId);
+  const VideoUnplayableException(this.videoId, [this.reason]);
 
   String toString() =>
-      'VideoUnplayableException: Video $videoId couldn\'t be played';
+      'VideoUnplayableException: Video $videoId couldn\'t be played.'
+      '${reason == null ? '' : 'Reason: $reason'}';
 }
