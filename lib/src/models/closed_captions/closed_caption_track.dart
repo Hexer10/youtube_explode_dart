@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'models.dart';
+import '../models.dart';
 
 /// Set of captions that get displayed during video playback.
 class ClosedCaptionTrack extends Equatable {

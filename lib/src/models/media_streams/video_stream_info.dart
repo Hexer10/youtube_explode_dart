@@ -1,4 +1,4 @@
-import 'models.dart';
+import '../models.dart';
 
 /// Metadata associated with a certain [MediaStream]that contains only video.
 class VideoStreamInfo extends MediaStreamInfo {

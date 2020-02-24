@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'models.dart';
+import '../models.dart';
 
 /// Metadata associated with a certain [MediaStream]
 class MediaStreamInfo extends Equatable {

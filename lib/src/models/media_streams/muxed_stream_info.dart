@@ -1,4 +1,4 @@
-import 'models.dart';
+import '../models.dart';
 
 /// Metadata associated with a certain [MediaStream]
 /// that contains both audio and video.

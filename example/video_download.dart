@@ -11,8 +11,6 @@ final yt = YoutubeExplode();
 final console = Console();
 
 Future<void> main() async {
-  await Future.delayed(Duration(seconds: 10));
-
   console.writeLine('Type the video id or url: ');
   
   var url = stdin.readLineSync().trim();

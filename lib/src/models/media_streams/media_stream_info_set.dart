@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'models.dart';
+import '../models.dart';
 
 /// Set of all available media stream infos.
 class MediaStreamInfoSet extends Equatable {
