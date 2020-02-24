@@ -23,3 +23,8 @@
 
 - Implement Caption Api ('CaptionExtension`)
 - Add Custom Exceptions
+
+## 0.0.7
+
+- Implement Video Purchase error
+- Implement Equatable for models
