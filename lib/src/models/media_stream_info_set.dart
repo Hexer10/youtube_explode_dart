@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'models.dart';
 
 /// Set of all available media stream infos.
-class MediaStreamInfoSet {
+class MediaStreamInfoSet extends Equatable {
   /// Muxed streams.
   final List<MuxedStreamInfo> muxed;
 
@@ -25,4 +27,8 @@ class MediaStreamInfoSet {
   /// Initializes an instance of [MediaStreamInfoSet].
   const MediaStreamInfoSet(this.muxed, this.audio, this.video,
       this.hlsLiveStreamUrl, this.videoDetails, this.validUntil);
+
+  @override
+  List<Object> get props =>
+      [muxed, audio, video, hlsLiveStreamUrl, videoDetails, validUntil];
 }

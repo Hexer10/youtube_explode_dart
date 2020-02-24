@@ -1,5 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 /// User activity statistics.
-class Statistics {
+class Statistics extends Equatable {
   /// View count.
   final int viewCount;
 
@@ -9,7 +11,7 @@ class Statistics {
   /// Dislike count.
   final int dislikeCount;
 
-  /// Initializes an instance of <see cref="Statistics"/>.
+  /// Initializes an instance of [Statistics]
   const Statistics(this.viewCount, this.likeCount, this.dislikeCount);
 
   /// Average user rating in stars (1 star to 5 stars).
@@ -19,4 +21,7 @@ class Statistics {
     }
     return 1 + 4.0 * likeCount / (likeCount + dislikeCount);
   }
+
+  @override
+  List<Object> get props => [viewCount, likeCount, dislikeCount];
 }

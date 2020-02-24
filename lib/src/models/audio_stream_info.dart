@@ -9,7 +9,10 @@ class AudioStreamInfo extends MediaStreamInfo {
   final AudioEncoding audioEncoding;
 
   /// Initializes an instance of [AudioStreamInfo]
-  const AudioStreamInfo(int tag, Uri url, Container container, int size,
-      this.bitrate, this.audioEncoding)
+  AudioStreamInfo(int tag, Uri url, Container container, int size, this.bitrate,
+      this.audioEncoding)
       : super(tag, url, container, size);
+
+  @override
+  List<Object> get props => super.props..addAll([bitrate, audioEncoding]);
 }

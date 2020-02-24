@@ -1,5 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 /// Width and height of a video.
-class VideoResolution {
+class VideoResolution extends Equatable{
   /// Viewport width.
   final int width;
 
@@ -11,4 +13,7 @@ class VideoResolution {
 
   @override
   String toString() => '${width}x$height';
+
+  @override
+  List<Object> get props => [width, height];
 }

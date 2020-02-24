@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'models.dart';
 
 /// Player configuration.
-class PlayerConfiguration {
+class PlayerConfiguration extends Equatable {
   /// Player source url.
   final String playerSourceUrl;
 
@@ -40,4 +42,17 @@ class PlayerConfiguration {
       this.adaptiveStreamInfosJson,
       this.video,
       this.validUntil);
+
+  @override
+  List<Object> get props => [
+        playerSourceUrl,
+        dashManifestUrl,
+        hlsManifestUrl,
+        muxedStreamInfosUrlEncoded,
+        adaptiveStreamInfosUrlEncoded,
+        muxedStreamInfoJson,
+        adaptiveStreamInfosJson,
+        video,
+        validUntil
+      ];
 }

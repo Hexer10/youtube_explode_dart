@@ -1,5 +1,8 @@
-/// Text that gets displayed at specific time during video playback, as part of a <see cref="ClosedCaptionTrack"/>.
-class ClosedCaption {
+import 'package:equatable/equatable.dart';
+
+/// Text that gets displayed at specific time during video playback,
+/// as part of a [ClosedCaptionTrack]
+class ClosedCaption extends Equatable {
   /// Text displayed by this caption.
   final String text;
 
@@ -21,4 +24,7 @@ class ClosedCaption {
 
   @override
   String toString() => 'Caption: $text ($offset - $end)';
+
+  @override
+  List<Object> get props => [text, offset, duration];
 }

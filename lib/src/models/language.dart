@@ -1,5 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 /// Language information.
-class Language {
+class Language extends Equatable {
   /// ISO 639-1 code of this language.
   final String code;
 
@@ -8,4 +10,7 @@ class Language {
 
   /// Initializes an instance of [Language]
   const Language(this.code, this.name);
+
+  @override
+  List<Object> get props => [code, name];
 }

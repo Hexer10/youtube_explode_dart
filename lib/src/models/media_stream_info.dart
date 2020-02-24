@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'models.dart';
 
 /// Metadata associated with a certain [MediaStream]
-class MediaStreamInfo {
+class MediaStreamInfo extends Equatable {
   /// Unique tag that identifies the properties of the associated stream.
   final int itag;
 
@@ -19,4 +21,7 @@ class MediaStreamInfo {
 
   @override
   String toString() => '$itag ($container)';
+
+  @override
+  List<Object> get props => [itag, url, container, size];
 }

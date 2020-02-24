@@ -22,7 +22,7 @@ class VideoStreamInfo extends MediaStreamInfo {
 
   /// Initializes an instance of [VideoStreamInfo]
   const VideoStreamInfo(
-      int tag,
+      int itag,
       Uri url,
       Container container,
       int size,
@@ -32,5 +32,16 @@ class VideoStreamInfo extends MediaStreamInfo {
       this.videoQuality,
       this.videoResolution,
       this.framerate)
-      : super(tag, url, container, size);
+      : super(itag, url, container, size);
+
+  @override
+  List<Object> get props => super.props
+    ..addAll([
+      bitrate,
+      videoEncoding,
+      videoQualityLabel,
+      videoQuality,
+      videoResolution,
+      framerate
+    ]);
 }

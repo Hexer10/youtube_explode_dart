@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'models.dart';
 
 /// Information about a YouTube video.
-class Video {
+class Video extends Equatable {
   /// ID of this video.
   final String id;
 
@@ -43,4 +45,17 @@ class Video {
 
   @override
   String toString() => 'Video($id): $title';
+
+  @override
+  List<Object> get props => [
+        id,
+        author,
+        uploadDate,
+        title,
+        description,
+        thumbnailSet,
+        duration,
+        keyWords,
+        statistics
+      ];
 }

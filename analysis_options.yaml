@@ -5,9 +5,14 @@ include: package:effective_dart/analysis_options.yaml
 
 # For lint rules and documentation, see http://dart-lang.github.io/linter/lints.
 # Uncomment to specify additional rules.
-# linter:
-#   rules:
-#     - camel_case_types
+linter:
+   rules:
+     - valid_regexps
+     - prefer_const_constructors
+     - prefer_const_declarations
+     - prefer_const_literals_to_create_immutables
+     - prefer_constructors_over_static_methods
+     - prefer_contains
 
 analyzer:
 #   exclude:

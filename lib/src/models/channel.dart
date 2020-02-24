@@ -1,5 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 /// Information about a YouTube channel.
-class Channel {
+class Channel extends Equatable {
   /// ID of this channel.
   final String id;
 
@@ -10,5 +12,8 @@ class Channel {
   final Uri logoUrl;
 
   /// Initializes an instance of [Channel]
-  Channel(this.id, this.title, this.logoUrl);
+  const Channel(this.id, this.title, this.logoUrl);
+
+  @override
+  List<Object> get props => [id, title, logoUrl];
 }

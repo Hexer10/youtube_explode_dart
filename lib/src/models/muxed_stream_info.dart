@@ -20,7 +20,7 @@ class MuxedStreamInfo extends MediaStreamInfo {
 
   /// Initializes an instance of [MuxedStreamInfo]
   const MuxedStreamInfo(
-      int tag,
+      int itag,
       Uri url,
       Container container,
       int size,
@@ -29,5 +29,15 @@ class MuxedStreamInfo extends MediaStreamInfo {
       this.videoQualityLabel,
       this.videoQuality,
       this.videoResolution)
-      : super(tag, url, container, size);
+      : super(itag, url, container, size);
+
+  @override
+  List<Object> get props => super.props
+    ..addAll([
+      audioEncoding,
+      videoEncoding,
+      videoQualityLabel,
+      videoQuality,
+      videoResolution
+    ]);
 }

@@ -1,5 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 /// Set of thumbnails for a video.
-class ThumbnailSet {
+class ThumbnailSet extends Equatable {
   /// Video id.
   final String videoId;
 
@@ -25,4 +27,7 @@ class ThumbnailSet {
   /// Not always available.
   String get maxResUrl =>
       'https://img.youtube.com/vi/$videoId/maxresdefault.jpg';
+
+  @override
+  List<Object> get props => [videoId];
 }
