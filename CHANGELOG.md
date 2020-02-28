@@ -28,3 +28,7 @@
 
 - Implement Video Purchase error
 - Implement Equatable for models
+
+## 0.0.8
+
+- Downgrade xml to `^3.5.0`
