@@ -230,7 +230,6 @@ class YoutubeExplode {
 
     // Valid configuration
     if (errorReason.isNullOrWhiteSpace) {
-
       var videoInfo = playerResponseJson['videoDetails'];
       var video = Video(
           videoId,
