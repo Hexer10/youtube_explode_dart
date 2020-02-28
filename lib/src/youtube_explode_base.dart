@@ -66,7 +66,7 @@ class YoutubeExplode {
 
         var contentLength = await _parseContentLength(
           streamInfoJson['contentLength'],
-          urlString,
+          url?.toString(),
         );
 
         // Extract container
@@ -130,7 +130,7 @@ class YoutubeExplode {
 
         var contentLength = await _parseContentLength(
           streamInfoJson['contentLength'],
-          urlString,
+          url?.toString(),
         );
 
         // Extract container
@@ -424,11 +424,11 @@ class YoutubeExplode {
       String contentLengthString, String url) async {
     var contentLength = int.tryParse(contentLengthString ?? '') ?? -1;
 
-    if (contentLength <= 0) {
+    if (contentLength <= 0 && !url.isNullOrWhiteSpace) {
       contentLength = _contentLenExp?.firstMatch(url)?.group(1) ?? -1;
     }
 
-    if (contentLength <= 0) {
+    if (contentLength <= 0 && !url.isNullOrWhiteSpace) {
       contentLength = await _requestContentLength(url);
     }
 
