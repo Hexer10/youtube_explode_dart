@@ -230,7 +230,6 @@ class YoutubeExplode {
 
     // Valid configuration
     if (errorReason.isNullOrWhiteSpace) {
-      // Extract if it is a live stream.
 
       var videoInfo = playerResponseJson['videoDetails'];
       var video = Video(
@@ -244,6 +243,7 @@ class YoutubeExplode {
           videoInfo['keywords']?.cast<String>() ?? const <String>[],
           Statistics(int.parse(videoInfo['viewCount']), 0, 0));
 
+      // Extract if it is a live stream.
       var isLiveStream = playerResponseJson['videoDetails']['isLive'] == true;
 
       var streamingData = playerResponseJson['streamingData'];

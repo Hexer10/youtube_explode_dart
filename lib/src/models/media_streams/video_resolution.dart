@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 /// Width and height of a video.
-class VideoResolution extends Equatable{
+class VideoResolution extends Equatable {
   /// Viewport width.
   final int width;
 
