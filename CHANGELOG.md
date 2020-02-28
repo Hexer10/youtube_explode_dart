@@ -32,3 +32,9 @@
 ## 0.0.8
 
 - Downgrade xml to `^3.5.0`
+
+## 0.0.9
+
+- Bug Fix(PR [11][11]): Use url when retrieving the video's content length.
+
+[11]: https://github.com/Hexer10/youtube_explode_dart/pull/11
