@@ -38,3 +38,8 @@
 - Bug Fix(PR [11][11]): Use url when retrieving the video's content length.
 
 [11]: https://github.com/Hexer10/youtube_explode_dart/pull/11
+
+## 0.0.10
+
+- Bug fix: Don't throw when captions are not present.
+- New extension: CaptionListExtension adding `getByTime` function.
