@@ -13,4 +13,7 @@ class Language extends Equatable {
 
   @override
   List<Object> get props => [code, name];
+
+  @override
+  String toString() => 'Language: $name';
 }

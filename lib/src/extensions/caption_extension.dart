@@ -10,6 +10,7 @@ import 'helpers_extension.dart';
 /// Caption extension for [YoutubeExplode]
 extension CaptionExtension on YoutubeExplode {
   /// Gets all available closed caption track infos for given video.
+  /// Returns an empty list of no caption is available.
   Future<List<ClosedCaptionTrackInfo>> getVideoClosedCaptionTrackInfos(
       String videoId) async {
     if (!YoutubeExplode.validateVideoId(videoId)) {
@@ -26,9 +27,15 @@ extension CaptionExtension on YoutubeExplode {
       throw VideoUnavailableException(videoId);
     }
 
+    var captionTracks = playerResponseJson['captions'];
+
+    if (captionTracks == null) {
+      return const [];
+    }
+
     var trackInfos = <ClosedCaptionTrackInfo>[];
-    for (var trackJson in playerResponseJson['captions']
-        ['playerCaptionsTracklistRenderer']['captionTracks']) {
+    for (var trackJson in captionTracks['playerCaptionsTracklistRenderer']
+        ['captionTracks']) {
       var url = Uri.parse(trackJson['baseUrl']);
 
       var query = Map<String, String>.from(url.queryParameters);
