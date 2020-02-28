@@ -84,3 +84,19 @@ extension CaptionExtension on YoutubeExplode {
     return ClosedCaptionTrack(info, captions);
   }
 }
+
+/// Extension for List of [ClosedCaptions]
+extension CaptionListExtension on List<ClosedCaption> {
+  /// Get the [ClosedCaption] displayed at [time].
+  /// [time] can be an [int] (time in seconds) or a [Duration].
+  ClosedCaption getByTime(dynamic time) {
+    Duration duration;
+    if (time is int) {
+      duration = Duration(seconds: time);
+    } else {
+      duration = time;
+    }
+
+    return firstWhere((e) => e.start <= duration && duration <= e.end);
+  }
+}
