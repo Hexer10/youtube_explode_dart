@@ -303,7 +303,7 @@ class YoutubeExplode {
       throw VideoUnplayableException(videoId, errorReason);
     }
 
-    // Workaround: Couldn't get RegExp to work.
+    // Workaround: Couldn't get RegExp to work. TODO: Find working regexp
     var startIndex = playerConfigScript.indexOf('ytplayer.config =');
     var endIndex = playerConfigScript.indexOf(';ytplayer.load =');
 

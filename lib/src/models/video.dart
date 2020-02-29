@@ -11,6 +11,7 @@ class Video extends Equatable {
   final String author;
 
   /// Upload date of this video.
+  /// null for [MediaStreamInfoSet.videoDetails]
   final DateTime uploadDate;
 
   /// Title of this video.
