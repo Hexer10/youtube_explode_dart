@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:dart_console/dart_console.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
-import 'package:http/http.dart' as http;
 
 // Initialize the YoutubeExplode instance.
 final yt = YoutubeExplode();
@@ -12,7 +11,7 @@ final console = Console();
 
 Future<void> main() async {
   console.writeLine('Type the video id or url: ');
-  
+
   var url = stdin.readLineSync().trim();
 
   // Get the video url.
@@ -56,14 +55,12 @@ Future<void> download(String id) async {
   var file = File('downloads/$fileName');
 
   // Create the StreamedRequest to track the download status.
-  var req = http.Request('get', audio.url);
-  var resp = await req.send();
 
   // Open the file in appendMode.
   var output = file.openWrite(mode: FileMode.writeOnlyAppend);
 
   // Track the file download status.
-  var len = resp.contentLength;
+  var len = audio.size;
   var count = 0;
   var oldProgress = -1;
 
@@ -75,7 +72,7 @@ Future<void> download(String id) async {
   console.write(msg);
 
   // Listen for data received.
-  return resp.stream.listen((data) {
+  await for (var data in audio.downloadStream()) {
     count += data.length;
     var progress = ((count / len) * 100).round();
     if (progress != oldProgress) {
@@ -84,7 +81,7 @@ Future<void> download(String id) async {
       oldProgress = progress;
     }
     output.add(data);
-  }, onDone: () async {
-    await output.close();
-  }).asFuture();
+  }
+  console.writeLine();
+  await output.close();
 }

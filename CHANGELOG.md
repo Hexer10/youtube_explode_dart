@@ -43,3 +43,7 @@
 
 - Bug fix: Don't throw when captions are not present.
 - New extension: CaptionListExtension adding `getByTime` function.
+
+## 0.0.11
+
+- New extension: DownloadExtension adding `downloadStream` function.
