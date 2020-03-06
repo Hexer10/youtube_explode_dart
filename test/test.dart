@@ -32,14 +32,15 @@ void main() {
 
   test('Get video media stream with invalid id', () async {
     var yt = YoutubeExplode();
-    var stream = yt.getVideoMediaStream('aaa').asStream();
-    stream.listen(neverCalled)
-      ..onError(expectAsync1((error) {
-        expect(error, isArgumentError);
-      }))
-      ..onDone(() {
-        yt.close();
-      });
+    try {
+      await yt.getVideoMediaStream('aaa');
+      neverCalled();
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      expect(e, isArgumentError);
+    } finally {
+      yt.close();
+    }
   });
 
   // TODO: Implement more tests
