@@ -47,3 +47,7 @@
 ## 0.0.11
 
 - New extension: DownloadExtension adding `downloadStream` function.
+
+## 0.0.12
+
+- Bug fix(#15): Fix invalid upload date.

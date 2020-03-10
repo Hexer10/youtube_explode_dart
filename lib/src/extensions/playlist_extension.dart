@@ -44,7 +44,7 @@ extension PlaylistExtension on YoutubeExplode {
         var videoId = videoJson['encrypted_id'];
         var author = videoJson['author'];
         var uploadDate = DateTime.fromMillisecondsSinceEpoch(
-            videoJson['time_created'] * 100);
+            videoJson['time_created'] * 1000);
         var title = videoJson['title'];
         var description = videoJson['description'];
         var duration = Duration(seconds: videoJson['length_seconds']);
