@@ -121,7 +121,7 @@ extension ChannelExtension on YoutubeExplode {
       return false;
     }
 
-    return !RegExp(r'[^0-9a-zA-Z]').hasMatch(channelId);
+    return !RegExp(r'[^0-9a-zA-Z_\-]').hasMatch(channelId);
   }
 
   /// Parses a channel id from an url.

@@ -51,3 +51,7 @@
 ## 0.0.12
 
 - Bug fix(#15): Fix invalid upload date.
+
+## 0.0.13
+
+- Bug fix(#15): Fix valid channel expression 
