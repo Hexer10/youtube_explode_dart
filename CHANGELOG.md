@@ -54,4 +54,9 @@
 
 ## 0.0.13
 
-- Bug fix(#15): Fix valid channel expression 
+- Bug fix(#15): Fix valid channel expression
+
+## 0.0.14
+
+- getChannelWatchPage and getVideoWatchPage methods are now public
+- New method: getChannelIdFromVideo
