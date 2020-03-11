@@ -202,7 +202,7 @@ class YoutubeExplode {
 
   Future<PlayerConfiguration> _getPlayerConfigEmbed(String videoId) async {
     var body = (await client.get(
-            'https://www.youtube.com/embed/$videoId?disable_polymer=true&hl=en'))
+            'https://www.youtube.com/embed/$videoId?&hl=en'))
         .body;
     var document = html.parse(body);
     var playerConfigRaw = document
@@ -451,7 +451,7 @@ class YoutubeExplode {
   /// Returns the video watch page document.
   Future<Document> getVideoWatchPage(String videoId) async {
     var url =
-        'https://youtube.com/watch?v=$videoId&disable_polymer=true&bpctr=9999999999&hl=en';
+        'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en';
     var raw = (await client.get(url)).body;
 
     return html.parse(raw);
