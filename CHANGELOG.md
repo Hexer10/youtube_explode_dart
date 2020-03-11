@@ -60,3 +60,8 @@
 
 - getChannelWatchPage and getVideoWatchPage methods are now public
 - New method: getChannelIdFromVideo
+
+## 0.0.15
+
+- Workaround (#15): Now when a video is not available a `VideoUnavailable` exception is thrown
+- Removed disable_polymer parameter when requests ( https://github.com/Tyrrrz/YoutubeExplode/issues/341 )
