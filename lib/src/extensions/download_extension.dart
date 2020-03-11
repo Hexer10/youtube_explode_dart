@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
@@ -18,7 +17,7 @@ extension DownloadExtension on MediaStreamInfo {
 
     for (var i = 1; total < size; i++) {
       var req = http.Request('get', url);
-      req.headers[HttpHeaders.rangeHeader] = 'bytes=$total-${total + maxSize}';
+      req.headers['range'] = 'bytes=$total-${total + maxSize}';
       var resp = await req.send();
       yield* resp.stream;
       total += maxSize + 1;
