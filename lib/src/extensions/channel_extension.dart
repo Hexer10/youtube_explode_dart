@@ -19,10 +19,10 @@ extension ChannelExtension on YoutubeExplode {
   Future<Channel> getChannel(String channelId) async {
     if (!validateChannelId(channelId)) {
       throw ArgumentError.value(
-          channelId, 'channelId', 'Invalid YouTube channel id.');
+          channelId, 'channelId', 'Invalid YouTube channel id');
     }
 
-    var channelPageHtml = await _getChannelPageHtml(channelId);
+    var channelPageHtml = await getChannelPage(channelId);
     var channelTitle = channelPageHtml
         .querySelector('meta[property="og:title"]')
         .attributes['content'];
@@ -38,7 +38,7 @@ extension ChannelExtension on YoutubeExplode {
   Future<String> getChannelId(String username) async {
     if (!validateUsername(username)) {
       throw ArgumentError.value(
-          username, 'username', 'Invalid YouTube username.');
+          username, 'username', 'Invalid YouTube username');
     }
 
     var userPageHtml = await _getUserPageHtml(username);
@@ -55,7 +55,7 @@ extension ChannelExtension on YoutubeExplode {
       [int maxPages = 5]) async {
     if (!validateChannelId(channelId)) {
       throw ArgumentError.value(
-          channelId, 'channelId', 'Invalid YouTube channel id.');
+          channelId, 'channelId', 'Invalid YouTube channel id');
     }
 
     var playlistId = 'UU${channelId.replaceFirst('UC', '')}';
@@ -64,7 +64,8 @@ extension ChannelExtension on YoutubeExplode {
     return playlist.videos;
   }
 
-  Future<Document> _getChannelPageHtml(String channelId) async {
+  /// Returns the channel page document.
+  Future<Document> getChannelPage(String channelId) async {
     var url = 'https://www.youtube.com/channel/$channelId?hl=en';
     var raw = (await client.get(url)).body;
 

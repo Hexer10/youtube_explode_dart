@@ -292,7 +292,7 @@ class YoutubeExplode {
   }
 
   Future<PlayerConfiguration> _getPlayerConfigWatchPage(String videoId) async {
-    var videoWatchPageHtml = await _getVideoWatchPageHtml(videoId);
+    var videoWatchPageHtml = await getVideoWatchPage(videoId);
     var playerConfigScript = videoWatchPageHtml
         .querySelectorAll('script')
         .map((e) => e.text)
@@ -392,7 +392,7 @@ class YoutubeExplode {
     var keyWords = details['keywords']?.cast<String>() ?? const <String>[];
     var viewCount = int.tryParse(details['viewCount'] ?? '0') ?? 0;
 
-    var videoPageHtml = await _getVideoWatchPageHtml(videoId);
+    var videoPageHtml = await getVideoWatchPage(videoId);
     var uploadDate = DateTime.parse(videoPageHtml
         .querySelector('meta[itemprop="datePublished"]')
         .attributes['content']);
@@ -448,7 +448,8 @@ class YoutubeExplode {
     return int.tryParse(contentLengthString ?? '') ?? -1;
   }
 
-  Future<Document> _getVideoWatchPageHtml(String videoId) async {
+  /// Returns the video watch page document.
+  Future<Document> getVideoWatchPage(String videoId) async {
     var url =
         'https://youtube.com/watch?v=$videoId&disable_polymer=true&bpctr=9999999999&hl=en';
     var raw = (await client.get(url)).body;
