@@ -196,14 +196,19 @@ class YoutubeExplode {
     // If still null try from the watch page.
     playerConfiguration ??= await _getPlayerConfigWatchPage(videoId);
 
-    assert(playerConfiguration != null);
+    if (playerConfiguration == null) {
+      throw VideoUnavailableException(videoId);
+    }
     return playerConfiguration;
   }
 
   Future<PlayerConfiguration> _getPlayerConfigEmbed(String videoId) async {
-    var body = (await client.get(
-            'https://www.youtube.com/embed/$videoId?&hl=en'))
-        .body;
+    var req = await client.get(
+            'https://www.youtube.com/embed/$videoId?&hl=en');
+    if (req.statusCode != 200) {
+      return null;
+    }
+    var body = req.body;
     var document = html.parse(body);
     var playerConfigRaw = document
         .getElementsByTagName('script')
@@ -293,6 +298,9 @@ class YoutubeExplode {
 
   Future<PlayerConfiguration> _getPlayerConfigWatchPage(String videoId) async {
     var videoWatchPageHtml = await getVideoWatchPage(videoId);
+    if (videoWatchPageHtml == null) {
+      return null;
+    }
     var playerConfigScript = videoWatchPageHtml
         .querySelectorAll('script')
         .map((e) => e.text)
@@ -452,9 +460,11 @@ class YoutubeExplode {
   Future<Document> getVideoWatchPage(String videoId) async {
     var url =
         'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en';
-    var raw = (await client.get(url)).body;
-
-    return html.parse(raw);
+    var req = await client.get(url);
+    if (req.statusCode != 200) {
+      return null;
+    }
+    return html.parse(req.body);
   }
 
   /// Returns true if the given [videoId] is valid.
