@@ -64,6 +64,19 @@ extension ChannelExtension on YoutubeExplode {
     return playlist.videos;
   }
 
+  /// Returns the channel id for a given video.
+  Future<String> getChannelIdFromVideo(String videoId) async {
+    if (!YoutubeExplode.validateVideoId(videoId)) {
+      throw ArgumentError.value(videoId, 'videoId', 'Invalid YouTube video id');
+    }
+    var watchPage = await getVideoWatchPage(videoId);
+    var href = watchPage
+        .querySelector('.yt-user-info')
+        .querySelector('a')
+        .attributes['href'];
+    return href.replaceFirst('/channel/', '');
+  }
+
   /// Returns the channel page document.
   Future<Document> getChannelPage(String channelId) async {
     var url = 'https://www.youtube.com/channel/$channelId?hl=en';
