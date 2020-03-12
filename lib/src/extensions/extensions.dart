@@ -1,3 +1,5 @@
+library youtube_explode.extensions;
+
 export 'caption_extension.dart';
 export 'channel_extension.dart';
 export 'download_extension.dart';
