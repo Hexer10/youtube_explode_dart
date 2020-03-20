@@ -22,11 +22,11 @@ extension ChannelExtension on YoutubeExplode {
           channelId, 'channelId', 'Invalid YouTube channel id');
     }
 
-    var channelPageHtml = await getChannelPage(channelId);
-    var channelTitle = channelPageHtml
+    var channelPage = await getChannelPage(channelId);
+    var channelTitle = channelPage
         .querySelector('meta[property="og:title"]')
         .attributes['content'];
-    var channelImage = channelPageHtml
+    var channelImage = channelPage
         .querySelector('meta[property="og:image"]')
         .attributes['content'];
 
@@ -34,18 +34,20 @@ extension ChannelExtension on YoutubeExplode {
   }
 
   /// Get a channel id from a username.
-  /// Might not work properly.
+  /// Returns null if the username is not found.
   Future<String> getChannelId(String username) async {
     if (!validateUsername(username)) {
       throw ArgumentError.value(
           username, 'username', 'Invalid YouTube username');
     }
 
-    var userPageHtml = await _getUserPageHtml(username);
+    var userPage = await _getUserPage(username);
+    if (userPage == null) {
+      return null;
+    }
 
-    var channelUrl = userPageHtml
-        .querySelector('meta[property="og:url"]')
-        .attributes['content'];
+    var channelUrl =
+        userPage.querySelector('meta[property="og:url"]').attributes['content'];
 
     return channelUrl.replaceFirst('/channel/', '');
   }
@@ -85,11 +87,14 @@ extension ChannelExtension on YoutubeExplode {
     return html.parse(raw);
   }
 
-  Future<Document> _getUserPageHtml(String username) async {
+  Future<Document> _getUserPage(String username) async {
     var url = 'https://www.youtube.com/user/$username?hl=en';
-    var raw = (await client.get(url)).body;
+    var req = await client.get(url);
+    if (req.statusCode != 200) {
+      return null;
+    }
 
-    return html.parse(raw);
+    return html.parse(req);
   }
 
   /// Returns true if [username] is a valid Youtube username.

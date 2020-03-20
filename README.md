@@ -119,4 +119,4 @@ More features are provided through extensions.
 [MediaStreamsInfoSet]: https://pub.dev/documentation/youtube_explode_dart/latest/youtube_explode/MediaStreamInfoSet-class.html
 [VidExample]: https://github.com/Hexer10/youtube_explode_dart/blob/master/example/video_download.dart
 [API]: https://pub.dev/documentation/youtube_explode_dart/latest/youtube_explode/youtube_explode-library.html
-[Examples][https://github.com/Hexer10/youtube_explode_dart/tree/master/example]
+[Examples]: [https://github.com/Hexer10/youtube_explode_dart/tree/master/example]

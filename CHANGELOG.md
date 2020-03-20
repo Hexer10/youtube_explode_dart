@@ -66,3 +66,7 @@
 - Workaround (#15): Now when a video is not available a `VideoUnavailable` exception is thrown
 - Removed disable_polymer parameter when requests ( https://github.com/Tyrrrz/YoutubeExplode/issues/341 )
 - Removed `dart:io` dependency
+
+## 0.0.16
+
+- When a video is not available(403) a `VideoStreamUnavailableException` 

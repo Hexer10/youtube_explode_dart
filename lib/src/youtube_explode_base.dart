@@ -203,8 +203,7 @@ class YoutubeExplode {
   }
 
   Future<PlayerConfiguration> _getPlayerConfigEmbed(String videoId) async {
-    var req = await client.get(
-            'https://www.youtube.com/embed/$videoId?&hl=en');
+    var req = await client.get('https://www.youtube.com/embed/$videoId?&hl=en');
     if (req.statusCode != 200) {
       return null;
     }
@@ -297,17 +296,17 @@ class YoutubeExplode {
   }
 
   Future<PlayerConfiguration> _getPlayerConfigWatchPage(String videoId) async {
-    var videoWatchPageHtml = await getVideoWatchPage(videoId);
-    if (videoWatchPageHtml == null) {
+    var videoWatchPage = await getVideoWatchPage(videoId);
+    if (videoWatchPage == null) {
       return null;
     }
-    var playerConfigScript = videoWatchPageHtml
+    var playerConfigScript = videoWatchPage
         .querySelectorAll('script')
         .map((e) => e.text)
         .firstWhere((e) => e.contains('ytplayer.config ='));
     if (playerConfigScript == null) {
       var errorReason =
-          videoWatchPageHtml.querySelector('#unavailable-message').text.trim();
+          videoWatchPage.querySelector('#unavailable-message').text.trim();
       throw VideoUnplayableException(videoId, errorReason);
     }
 
@@ -458,8 +457,7 @@ class YoutubeExplode {
 
   /// Returns the video watch page document.
   Future<Document> getVideoWatchPage(String videoId) async {
-    var url =
-        'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en';
+    var url = 'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en';
     var req = await client.get(url);
     if (req.statusCode != 200) {
       return null;

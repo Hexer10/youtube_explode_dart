@@ -21,7 +21,7 @@ extension StringUtility on String {
 
 /// List decipher utility.
 extension ListDecipher on List<CipherOperation> {
-  /// Apply the every CipherOperation on the [signature]
+  /// Apply every CipherOperation on the [signature]
   String decipher(String signature) {
     for (var operation in this) {
       signature = operation.decipher(signature);

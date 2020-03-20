@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:http/http.dart' as http;
 
+import '../exceptions/exceptions.dart';
 import '../models/models.dart';
 
 /// Download extension for [MediaStreamInfo]
@@ -12,6 +13,11 @@ extension DownloadExtension on MediaStreamInfo {
   /// The download is split in multiple requests using the `range` parameter.
   ///
   Stream<List<int>> downloadStream() async* {
+    var req = await http.head(url);
+    if (req.statusCode != 200) {
+      throw VideoStreamUnavailableException(req.statusCode, url);
+    }
+
     var maxSize = _rateBypassExp.hasMatch(url.toString()) ? 9898989 : size + 1;
     var total = 0;
 
