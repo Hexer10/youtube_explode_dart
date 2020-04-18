@@ -2,8 +2,8 @@ library youtube_explode.cipher;
 
 import 'package:http/http.dart' as http;
 
-import '../exceptions/exceptions.dart';
-import '../extensions/helpers_extension.dart';
+import '../../exceptions/exceptions.dart';
+import '../../extensions/helpers_extension.dart';
 import 'cipher_operations.dart';
 
 final _deciphererFuncNameExp = RegExp(

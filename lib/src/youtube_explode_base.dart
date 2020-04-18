@@ -11,6 +11,8 @@ import 'extensions/extensions.dart';
 import 'models/models.dart';
 import 'parser.dart' as parser;
 
+import 'channel/channel_client.dart';
+
 /// YoutubeExplode entry class.
 class YoutubeExplode {
   static final _regMatchExp = RegExp(r'youtube\..+?/watch.*?v=(.*?)(?:&|/|$)');
@@ -24,7 +26,7 @@ class YoutubeExplode {
 
   /// HTTP Client.
   // Visible only for extensions.
-  http.Client client;
+  final http.Client client;
 
   /// Initialize [YoutubeExplode] class and http client.
   YoutubeExplode() : client = http.Client();

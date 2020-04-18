@@ -15,5 +15,5 @@ linter:
      - prefer_contains
 
 analyzer:
-#   exclude:
-#     - path/to/excluded/files/**
+   exclude:
+     - example\**

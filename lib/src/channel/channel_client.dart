@@ -1,0 +1,3 @@
+class ChannelClient {
+  ChannelClient._();
+}
