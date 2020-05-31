@@ -4,12 +4,14 @@ import 'youtube_explode_exception.dart';
 
 /// Exception thrown when a fatal failure occurs.
 class RequestLimitExceeded implements YoutubeExplodeException {
+
+  /// Description message
   final String message;
 
-  /// Initializes an instance of [FatalFailureException]
+  /// Initializes an instance of [RequestLimitExceeded]
   RequestLimitExceeded(this.message);
 
-  /// Initializes an instance of [FatalFailureException] with an [HttpRequest]
+  /// Initializes an instance of [RequestLimitExceeded] with a [Response]
   RequestLimitExceeded.httpRequest(Response response)
       : message = '''
 Failed to perform an HTTP request to YouTube because of rate limiting.
@@ -21,5 +23,5 @@ Response: $response
 ''';
 
   @override
-  String toString() => 'FatalFailureException: $message';
+  String toString() => 'RequestLimitExceeded: $message';
 }

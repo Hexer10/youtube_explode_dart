@@ -67,7 +67,7 @@ extension CaptionExtension on YoutubeExplode {
     var trackXml = await _getClosedCaptionTrackXml(info.url);
 
     var captions = <ClosedCaption>[];
-    for (var captionXml in trackXml.findAllElements('p')) {
+    for (var captionXml in trackXml.findElements('p')) {
       var text = captionXml.text;
       if (text.isNullOrWhiteSpace) {
         continue;

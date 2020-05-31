@@ -13,6 +13,7 @@ linter:
      - prefer_const_literals_to_create_immutables
      - prefer_constructors_over_static_methods
      - prefer_contains
+     - annotate_overrides
 
 analyzer:
    exclude:

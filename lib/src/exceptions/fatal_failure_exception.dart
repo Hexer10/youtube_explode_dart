@@ -1,17 +1,17 @@
-import 'dart:io';
-
 import 'package:http/http.dart';
 
 import 'youtube_explode_exception.dart';
 
 /// Exception thrown when a fatal failure occurs.
 class FatalFailureException implements YoutubeExplodeException {
+
+  /// Description message
   final String message;
 
   /// Initializes an instance of [FatalFailureException]
   FatalFailureException(this.message);
 
-  /// Initializes an instance of [FatalFailureException] with an [HttpRequest]
+  /// Initializes an instance of [FatalFailureException] with a [Response]
   FatalFailureException.httpRequest(Response response)
       : message = '''
 Failed to perform an HTTP request to YouTube due to a fatal failure.

@@ -21,3 +21,4 @@ export 'playlist_type.dart';
 export 'statistics.dart';
 export 'thumbnail_set.dart';
 export 'video.dart';
+export 'video_id.dart';

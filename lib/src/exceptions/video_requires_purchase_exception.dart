@@ -1,16 +1,24 @@
-import 'exceptions.dart';
+import '../models/models.dart';
 
-/// Thrown when a video is not playable because it requires purchase.
+import 'video_unplayable_exception.dart';
+
+/// Exception thrown when the requested video requires purchase.
 class VideoRequiresPurchaseException implements VideoUnplayableException {
-  /// ID of the video.
-  final String videoId;
+  /// Description message
+  final String message;
 
-  /// ID of the preview video.
-  final String previewVideoId;
+  /// VideoId instance
+  final VideoId previewVideoId;
 
   /// Initializes an instance of [VideoRequiresPurchaseException]
-  const VideoRequiresPurchaseException(this.videoId, this.previewVideoId);
+  VideoRequiresPurchaseException(this.message, this.previewVideoId);
 
-  @override
-  String get reason => 'Requires purchase';
+  /// Initializes an instance of [VideoUnplayableException] with a [VideoId]
+  VideoRequiresPurchaseException.unavailable(this.previewVideoId)
+      : message = 'Video \'$previewVideoId\' is unavailable.\n'
+            'In most cases, this error indicates that the video doesn\'t exist, ' // ignore: lines_longer_than_80_chars
+            'is private, or has been taken down.\n'
+            'If you can however open this video in your browser in incognito mode, ' // ignore: lines_longer_than_80_chars
+            'it most likely means that YouTube changed something, which broke this library.\n' // ignore: lines_longer_than_80_chars
+            'Please report this issue on GitHub in that case.';
 }
