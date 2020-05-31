@@ -58,7 +58,7 @@ class YoutubeExplode {
 
         if (urlString.isNullOrWhiteSpace &&
             !playerConfiguration.playerSourceUrl.isNullOrWhiteSpace) {
-          var cipher = streamInfoJson['cipher'] as String;
+          var cipher = streamInfoJson['signatureCipher'] as String;
           url = await decipherUrl(
               playerConfiguration.playerSourceUrl, cipher, client);
         }
@@ -122,7 +122,7 @@ class YoutubeExplode {
 
         if (urlString.isNullOrWhiteSpace &&
             !playerConfiguration.playerSourceUrl.isNullOrWhiteSpace) {
-          var cipher = streamInfoJson['cipher'] as String;
+          var cipher = streamInfoJson['signatureCipher'] as String;
           url = await decipherUrl(
               playerConfiguration.playerSourceUrl, cipher, client);
         }
