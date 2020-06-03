@@ -11,10 +11,6 @@ class PlayerResponse {
 
   String get playabilityStatus => _root['playabilityStatus']['status'];
 
-  // Can be null
-  String get getVideoPlayabilityError =>
-      _root.get('playabilityStatus')?.get('reason');
-
   bool get isVideoAvailable => playabilityStatus != 'error';
 
   bool get isVideoPlayable => playabilityStatus == 'ok';
@@ -58,6 +54,10 @@ class PlayerResponse {
   bool get isLive => _root['videoDetails'].get('isLive') ?? false;
 
   // Can be null
+  String get hlsManifestUrl =>
+      _root.get('streamingData')?.get('hlsManifestUrl');
+
+  // Can be null
   String get dashManifestUrl =>
       _root.get('streamingData')?.get('dashManifestUrl');
 
@@ -82,6 +82,9 @@ class PlayerResponse {
           ?.get('captionTracks')
           ?.map((e) => ClosedCaptionTrack(e)) ??
       const [];
+
+  String getVideoPlayabilityError() =>
+      _root.get('playabilityStatus')?.get('reason');
 
   PlayerResponse.parse(String raw) : _root = json.decode(raw);
 }

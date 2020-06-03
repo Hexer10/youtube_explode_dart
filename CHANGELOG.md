@@ -70,3 +70,7 @@
 ## 0.0.16
 
 - When a video is not available(403) a `VideoStreamUnavailableException` 
+
+## 0.0.17
+
+- Fixed bug in #23

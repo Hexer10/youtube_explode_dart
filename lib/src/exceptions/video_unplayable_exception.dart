@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import '../videos/video_id.dart';
 import 'youtube_explode_exception.dart';
 
 /// Exception thrown when the requested video is unplayable.

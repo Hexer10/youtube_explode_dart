@@ -12,13 +12,13 @@ class VideoId extends Equatable {
   final String value;
 
   /// Initializes an instance of [VideoId] with a url or video id.
-  VideoId(String url)
-      : value = parseVideoId(url) ??
-            ArgumentError('Invalid YouTube video ID or URL: $url.');
+  VideoId(String urlOrUrl)
+      : value = parseVideoId(urlOrUrl) ??
+            ArgumentError.value(
+                urlOrUrl, 'urlOrUrl', 'Invalid YouTube video ID or URL.');
 
   @override
   String toString() => value;
-
 
   @override
   List<Object> get props => [value];
@@ -66,5 +66,4 @@ class VideoId extends Equatable {
     }
     return null;
   }
-
 }

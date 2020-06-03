@@ -1,8 +1,8 @@
-import 'package:http_parser/http_parser.dart';
 import 'package:xml/xml.dart' as xml;
-import 'package:youtube_explode_dart/src/retry.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/stream_info_provider.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/reverse_engineering.dart';
+
+import '../../retry.dart';
+import '../reverse_engineering.dart';
+import 'stream_info_provider.dart';
 
 class DashManifest {
   static final _urlSignatureExp = RegExp(r'/s/(.*?)(?:/|$)');
@@ -22,15 +22,15 @@ class DashManifest {
 
   DashManifest.parse(String raw) : _root = xml.parse(raw);
 
-  Future<DashManifest> get(YoutubeHttpClient httpClient, String url) {
+  static Future<DashManifest> get(YoutubeHttpClient httpClient, dynamic url) {
     retry(() async {
       var raw = await httpClient.getString(url);
       return DashManifest.parse(raw);
     });
   }
 
-  String getSignatureFromUrl(String url) =>
-      _urlSignatureExp.firstMatch(url).group(1);
+  static String getSignatureFromUrl(String url) =>
+      _urlSignatureExp.firstMatch(url)?.group(1);
 }
 
 class _StreamInfo extends StreamInfoProvider {

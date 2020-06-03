@@ -4,6 +4,7 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:youtube_explode_dart/src/retry.dart';
 import 'package:youtube_explode_dart/src/reverse_engineering/reverse_engineering.dart';
+
 import '../../extensions/extensions.dart';
 
 class EmbedPage {
@@ -14,17 +15,23 @@ class EmbedPage {
 
   EmbedPage(this._root);
 
-  _PlayerConfig get playerconfig => _PlayerConfig(json.decode(_playerConfigJson));
+  _PlayerConfig get playerconfig {
+    var playerConfigJson = _playerConfigJson;
+    if (playerConfigJson == null) {
+      return null;
+    }
+    return _PlayerConfig(json.decode(playerConfigJson));
+  }
 
   String get _playerConfigJson => _root
       .getElementsByTagName('script')
       .map((e) => e.text)
       .map((e) => _playerConfigExp.firstMatch(e).group(1))
-      .firstWhere((e) => !e.isNullOrWhiteSpace);
+      .firstWhere((e) => !e.isNullOrWhiteSpace, orElse: () => null);
 
   EmbedPage.parse(String raw) : _root = parser.parse(raw);
 
-  Future<EmbedPage> get(YoutubeHttpClient httpClient, String videoId) {
+  static Future<EmbedPage> get(YoutubeHttpClient httpClient, String videoId) {
     var url = 'https://youtube.com/embed/$videoId?hl=en';
     return retry(() async {
       var raw = await httpClient.getString(url);

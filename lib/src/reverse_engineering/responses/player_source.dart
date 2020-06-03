@@ -93,7 +93,7 @@ class PlayerSource {
   // Same as default constructor
   PlayerSource.parse(this._root);
 
-  Future<PlayerSource> get(YoutubeHttpClient httpClient, String url) {
+  static Future<PlayerSource> get(YoutubeHttpClient httpClient, String url) {
     return retry(() async {
         var raw = await httpClient.getString(url);
         return PlayerSource.parse(raw);

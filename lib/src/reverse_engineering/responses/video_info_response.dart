@@ -1,6 +1,9 @@
 import 'package:http_parser/http_parser.dart';
+import 'package:youtube_explode_dart/src/exceptions/exceptions.dart';
+import 'package:youtube_explode_dart/src/retry.dart';
 import 'package:youtube_explode_dart/src/reverse_engineering/responses/player_response.dart';
 import 'package:youtube_explode_dart/src/reverse_engineering/responses/stream_info_provider.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/reverse_engineering.dart';
 
 class VideoInfoResponse {
   final Map<String, String> _root;
@@ -29,6 +32,25 @@ class VideoInfoResponse {
       const [];
 
   Iterable<_StreamInfo> get streams => [...muxedStreams, ...adaptiveStreams];
+
+  VideoInfoResponse.parse(String raw) : _root = Uri.splitQueryString(raw);
+
+  static Future<VideoInfoResponse> get(
+      YoutubeHttpClient httpClient, String videoId,
+      [String sts]) {
+    var eurl = Uri.encodeFull('https://youtube.googleapis.com/v/$videoId');
+    var url =
+        'https://youtube.com/get_video_info?video_id=$videoId&el=embedded&eurl=$eurl&hl=en&sts=$sts';
+    return retry(() async {
+      var raw = await httpClient.getString(url);
+      var result = VideoInfoResponse.parse(raw);
+
+      if (!result.isVideoAvailable || !result.playerResponse.isVideoAvailable) {
+        throw VideoUnplayableException(videoId);
+      }
+      return result;
+    });
+  }
 }
 
 class _StreamInfo extends StreamInfoProvider {
@@ -72,7 +94,6 @@ class _StreamInfo extends StreamInfoProvider {
   bool get isAudioOnly => mimeType.type == 'audio';
 
   @override
-  // TODO: implement videoQualityLabel
   String get videoQualityLabel => _root['quality_label'];
 
   List<int> get _size =>
