@@ -7,8 +7,10 @@ import 'package:http_parser/http_parser.dart';
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
-import '../reverse_engineering.dart';
+import '../../videos/video_id.dart';
+import '../youtube_http_client.dart';
 import 'player_response.dart';
+import 'stream_info_provider.dart';
 
 class WatchPage {
   final RegExp _videoLikeExp = RegExp(r'label""\s*:\s*""([\d,\.]+) likes');
@@ -24,17 +26,19 @@ class WatchPage {
   bool get isVideoAvailable =>
       _root.querySelector('meta[property="og:url"]') != null;
 
+  //TODO: This does not work.
   int get videoLikeCount => int.tryParse(_videoLikeExp
-          .firstMatch(_root.text)
-          .group(1)
-          .nullIfWhitespace
+          .firstMatch(_root.outerHtml)
+          ?.group(1)
+          ?.nullIfWhitespace
           ?.stripNonDigits() ??
       '');
 
+  //TODO: This does not work.
   int get videoDislikeCount => int.tryParse(_videoDislikeExp
-          .firstMatch(_root.text)
-          .group(1)
-          .nullIfWhitespace
+          .firstMatch(_root.outerHtml)
+          ?.group(1)
+          ?.nullIfWhitespace
           ?.stripNonDigits() ??
       '');
 

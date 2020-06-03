@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
-import 'package:youtube_explode_dart/src/retry.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/reverse_engineering.dart';
+import '../../retry.dart';
 
-import '../../extensions/extensions.dart';
+import '../../extensions/helpers_extension.dart';
+import '../youtube_http_client.dart';
 
 class EmbedPage {
   static final _playerConfigExp =

@@ -1,7 +1,8 @@
 library youtube_explode;
 
+export 'src/channels/channels.dart';
+export 'src/common/common.dart';
 export 'src/exceptions/exceptions.dart';
-export 'src/extensions/extensions.dart'
-    hide StringUtility, ListDecipher, ListFirst; // Hide helper extensions.
-export 'src/models/models.dart';
+export 'src/playlists/playlists.dart';
+export 'src/videos/videos.dart';
 export 'src/youtube_explode_base.dart';

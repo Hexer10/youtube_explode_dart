@@ -26,7 +26,7 @@ int getExceptionCost(Exception e) {
   if (e is TransientFailureException) {
     return 1;
   }
-  if (e is RequestLimitExceeded) {
+  if (e is RequestLimitExceededException) {
     return 2;
   }
   if (e is FatalFailureException) {

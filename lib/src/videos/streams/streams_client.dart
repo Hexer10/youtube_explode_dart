@@ -1,11 +1,9 @@
-import 'package:youtube_explode_dart/src/videos/streams/audio_only_stream_info.dart';
-import 'package:youtube_explode_dart/src/videos/streams/muxed_stream_info.dart';
-import 'package:youtube_explode_dart/src/videos/streams/video_only_stream_info.dart';
-import 'package:youtube_explode_dart/src/videos/streams/video_resolution.dart';
-
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
-import '../../reverse_engineering/reverse_engineering.dart';
+import '../../reverse_engineering/cipher/cipher_operations.dart';
+import '../../reverse_engineering/heuristics.dart';
+import '../../reverse_engineering/responses/responses.dart';
+import '../../reverse_engineering/youtube_http_client.dart';
 import '../video_id.dart';
 import 'bitrate.dart';
 import 'container.dart';
@@ -14,13 +12,14 @@ import 'framerate.dart';
 import 'stream_context.dart';
 import 'stream_info.dart';
 import 'stream_manifest.dart';
+import 'streams.dart';
 
 /// Queries related to media streams of YouTube videos.
-class StreamClient {
+class StreamsClient {
   final YoutubeHttpClient _httpClient;
 
   /// Initializes an instance of [StreamsClient]
-  StreamClient._(this._httpClient);
+  StreamsClient(this._httpClient);
 
   Future<DashManifest> _getDashManifest(
       Uri dashManifestUrl, Iterable<CipherOperation> cipherOperations) {
@@ -241,14 +240,13 @@ class StreamClient {
     return hlsManifest;
   }
 
-
   //TODO: Test this
   /// Gets the actual stream which is identified by the specified metadata.
   Stream<List<int>> get(StreamInfo streamInfo) {
     return _httpClient.getStream(streamInfo.url);
   }
 
-  //TODO: Implement CopyToAsync
+//TODO: Implement CopyToAsync
 
-  //TODO: Implement DownloadAsync
+//TODO: Implement DownloadAsync
 }

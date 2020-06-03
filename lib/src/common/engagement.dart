@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 /// User activity statistics.
-class Statistics extends Equatable {
+class Engagement extends Equatable {
   /// View count.
   final int viewCount;
 
@@ -12,7 +12,7 @@ class Statistics extends Equatable {
   final int dislikeCount;
 
   /// Initializes an instance of [Statistics]
-  const Statistics(this.viewCount, this.likeCount, this.dislikeCount);
+  const Engagement(this.viewCount, this.likeCount, this.dislikeCount);
 
   /// Average user rating in stars (1 star to 5 stars).
   num get avgRating {

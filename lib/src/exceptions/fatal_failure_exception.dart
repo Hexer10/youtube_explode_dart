@@ -12,7 +12,7 @@ class FatalFailureException implements YoutubeExplodeException {
   FatalFailureException(this.message);
 
   /// Initializes an instance of [FatalFailureException] with a [Response]
-  FatalFailureException.httpRequest(Response response)
+  FatalFailureException.httpRequest(BaseResponse response)
       : message = '''
 Failed to perform an HTTP request to YouTube due to a fatal failure.
 In most cases, this error indicates that YouTube most likely changed something, which broke the library.

@@ -182,7 +182,7 @@ extension VideoQualityUtil on VideoQuality {
 
   static String getLabelFromTagWithFramerate(int itag, double framerate) {
     var videoQuality = fromTag(itag);
-    return getLabelWithFramerate(framerate);
+    return videoQuality.getLabelWithFramerate(framerate);
   }
 
   /// Returns a [VideoResolution] from its [VideoQuality]

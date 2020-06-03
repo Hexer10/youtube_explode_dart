@@ -10,7 +10,7 @@ class TransientFailureException implements YoutubeExplodeException {
   TransientFailureException(this.message);
 
   /// Initializes an instance of [TransientFailureException] with a [Response]
-  TransientFailureException.httpRequest(Response response)
+  TransientFailureException.httpRequest(BaseResponse response)
       : message = '''
 Failed to perform an HTTP request to YouTube due to a transient failure.
 In most cases, this error indicates that the problem is on YouTube's side and this is not a bug in the library.

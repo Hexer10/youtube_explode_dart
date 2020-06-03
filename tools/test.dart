@@ -1,7 +1,13 @@
-import 'dart:convert';
-
-import 'package:youtube_explode_dart/src/videos/video_id.dart';
+import 'dart:collection';
 
 void main() {
-  var x = VideoId('asd');
+  var c = MyClass(UnmodifiableListView([1, 2, 3]));
+  c.list[1] =1;
+}
+
+
+class MyClass {
+  final UnmodifiableListView<int> list;
+
+  MyClass(this.list);
 }

@@ -1,3 +1,5 @@
+library _youtube_explode.extensions;
+
 import '../reverse_engineering/cipher/cipher_operations.dart';
 
 /// Utility for Strings.

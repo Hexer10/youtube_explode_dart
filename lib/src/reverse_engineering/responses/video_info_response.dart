@@ -1,9 +1,10 @@
 import 'package:http_parser/http_parser.dart';
-import 'package:youtube_explode_dart/src/exceptions/exceptions.dart';
-import 'package:youtube_explode_dart/src/retry.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/player_response.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/stream_info_provider.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/reverse_engineering.dart';
+
+import '../../exceptions/exceptions.dart';
+import '../../retry.dart';
+import '../youtube_http_client.dart';
+import 'player_response.dart';
+import 'stream_info_provider.dart';
 
 class VideoInfoResponse {
   final Map<String, String> _root;
@@ -12,7 +13,7 @@ class VideoInfoResponse {
 
   String get status => _root['status'];
 
-  bool get isVideoAvailable => status.toLowerCase() == 'fail';
+  bool get isVideoAvailable => status.toLowerCase() != 'fail';
 
   PlayerResponse get playerResponse =>
       PlayerResponse.parse(_root['player_response']);
@@ -40,7 +41,7 @@ class VideoInfoResponse {
       [String sts]) {
     var eurl = Uri.encodeFull('https://youtube.googleapis.com/v/$videoId');
     var url =
-        'https://youtube.com/get_video_info?video_id=$videoId&el=embedded&eurl=$eurl&hl=en&sts=$sts';
+        'https://youtube.com/get_video_info?video_id=$videoId&el=embedded&eurl=$eurl&hl=en${sts != null ? '&sts=$sts' : ''}';
     return retry(() async {
       var raw = await httpClient.getString(url);
       var result = VideoInfoResponse.parse(raw);

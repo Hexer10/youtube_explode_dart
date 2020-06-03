@@ -1,3 +1,5 @@
+library _youtube_explode.responses;
+
 export 'channel_page.dart';
 export 'closed_caption_track_response.dart';
 export 'dash_manifest.dart';

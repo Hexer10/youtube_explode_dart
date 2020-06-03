@@ -1,9 +1,10 @@
-import '../reverse_engineering/reverse_engineering.dart';
+import '../extensions/helpers_extension.dart';
+import '../reverse_engineering/responses/responses.dart';
+import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video_id.dart';
 import 'channel.dart';
 import 'channel_id.dart';
 import 'username.dart';
-import '../extensions/helpers_extension.dart';
 
 /// Queries related to YouTube channels.
 class ChannelClient {

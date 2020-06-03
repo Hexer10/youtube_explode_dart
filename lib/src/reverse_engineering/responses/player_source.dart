@@ -1,7 +1,7 @@
-import 'package:youtube_explode_dart/src/exceptions/exceptions.dart';
-import 'package:youtube_explode_dart/src/retry.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/cipher/cipher_operations.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/reverse_engineering.dart';
+import '../../exceptions/exceptions.dart';
+import '../../retry.dart';
+import '../cipher/cipher_operations.dart';
+import '../youtube_http_client.dart';
 
 class PlayerSource {
   final RegExp _statIndexExp = RegExp(r'\(\w+,(\d+)\)');
@@ -95,9 +95,9 @@ class PlayerSource {
 
   static Future<PlayerSource> get(YoutubeHttpClient httpClient, String url) {
     return retry(() async {
-        var raw = await httpClient.getString(url);
-        return PlayerSource.parse(raw);
-      });
+      var raw = await httpClient.getString(url);
+      return PlayerSource.parse(raw);
+    });
   }
 }
 

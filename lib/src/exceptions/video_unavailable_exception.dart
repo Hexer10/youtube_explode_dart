@@ -1,5 +1,5 @@
+import '../videos/video_id.dart';
 import 'exceptions.dart';
-import '../models/models.dart';
 
 /// Thrown when a video is not available and cannot be processed.
 /// This can happen because the video does not exist, is deleted,

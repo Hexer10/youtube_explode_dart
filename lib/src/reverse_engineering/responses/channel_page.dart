@@ -1,8 +1,9 @@
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
-import 'package:youtube_explode_dart/src/exceptions/exceptions.dart';
-import 'package:youtube_explode_dart/src/retry.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/reverse_engineering.dart';
+
+import '../../exceptions/exceptions.dart';
+import '../../retry.dart';
+import '../youtube_http_client.dart';
 
 class ChannelPage {
   final Document _root;
@@ -38,7 +39,8 @@ class ChannelPage {
     });
   }
 
-  static Future<ChannelPage> getByUsername(YoutubeHttpClient httpClient, String username) {
+  static Future<ChannelPage> getByUsername(
+      YoutubeHttpClient httpClient, String username) {
     var url = 'https://www.youtube.com/user/$username?hl=en';
 
     return retry(() async {

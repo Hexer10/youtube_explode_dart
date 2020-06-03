@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../extensions/extensions.dart';
+import '../extensions/helpers_extension.dart';
 
 /// Encapsulates a valid YouTube video ID.
 class VideoId extends Equatable {

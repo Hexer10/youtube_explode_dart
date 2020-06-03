@@ -3,16 +3,17 @@ import 'package:http/http.dart';
 import 'youtube_explode_exception.dart';
 
 /// Exception thrown when a fatal failure occurs.
-class RequestLimitExceeded implements YoutubeExplodeException {
+class RequestLimitExceededException implements YoutubeExplodeException {
 
   /// Description message
+  @override
   final String message;
 
-  /// Initializes an instance of [RequestLimitExceeded]
-  RequestLimitExceeded(this.message);
+  /// Initializes an instance of [RequestLimitExceededException]
+  RequestLimitExceededException(this.message);
 
   /// Initializes an instance of [RequestLimitExceeded] with a [Response]
-  RequestLimitExceeded.httpRequest(Response response)
+  RequestLimitExceededException.httpRequest(BaseResponse response)
       : message = '''
 Failed to perform an HTTP request to YouTube because of rate limiting.
 This error indicates that YouTube thinks there were too many requests made from this IP and considers it suspicious.

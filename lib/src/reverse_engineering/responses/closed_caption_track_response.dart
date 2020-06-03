@@ -1,6 +1,7 @@
 import 'package:xml/xml.dart' as xml;
-import 'package:youtube_explode_dart/src/retry.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/reverse_engineering.dart';
+
+import '../../retry.dart';
+import '../youtube_http_client.dart';
 
 class ClosedCaptionTrackResponse {
   final xml.XmlDocument _root;
@@ -46,9 +47,8 @@ class ClosedCaption {
 
   Duration get end => offset + duration;
 
-  void getParts() {
-    _root.findElements('s').map((e) => ClosedCaptionPart._(e));
-  }
+  Iterable<ClosedCaptionPart> getParts() =>
+      _root.findElements('s').map((e) => ClosedCaptionPart._(e));
 }
 
 class ClosedCaptionPart {

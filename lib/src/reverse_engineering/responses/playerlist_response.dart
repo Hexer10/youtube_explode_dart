@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:youtube_explode_dart/src/exceptions/exceptions.dart';
-import 'package:youtube_explode_dart/src/retry.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/reverse_engineering.dart';
+import '../../exceptions/exceptions.dart';
+import '../../retry.dart';
+import '../youtube_http_client.dart';
 
 class PlaylistResponse {
   // Json parsed map
@@ -22,8 +22,8 @@ class PlaylistResponse {
 
   int get dislikeCount => int.tryParse(_root['dislikes']);
 
-  Iterable<Video> get videos =>
-      _root['video']?.map((e) => Video(e)) ?? const [];
+  Iterable<_Video> get videos =>
+      _root['video']?.map((e) => _Video(e)) ?? const [];
 
   PlaylistResponse.parse(String raw) : _root = json.tryDecode(raw) {
     if (_root == null) {
@@ -53,11 +53,11 @@ class PlaylistResponse {
   }
 }
 
-class Video {
+class _Video {
   // Json parsed map
   final Map<String, dynamic> _root;
 
-  Video(this._root);
+  _Video(this._root);
 
   String get id => _root['encrypted_id'];
 
