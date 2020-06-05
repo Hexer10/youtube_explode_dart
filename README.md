@@ -18,21 +18,16 @@ This doesn't require an API key and has no usage quotas.
 - All model extend `Equatable` to easily perform equality checks 
 - Download Stream
 
-## Features not implemented
-
-- Adaptive streams
 
 ## Differences from YoutubeExplode
 
 - The entry point is `YoutubeExplode`, not `YoutubeClient`.
-- The `MediaStreamInfoSet` class has a `videoDetails` class which contains info about the video metadata (to avoid making several api calls).
-- The `ClosedCaption` has a `end` getter to get when a closed captions ends being displayed.
 
 ## Install
 
 Add the dependency to the pubspec.yaml (Check for the latest version)
 ```yaml
-youtube_explode_dart: ^0.0.9
+youtube_explode_dart: ^1.0.0-beta
 ```
 
 Import the library
@@ -44,8 +39,6 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 To start using the API you need to initialize the `YoutubeExplode` class (which will create a new http client), and get (for example) the video id of the video you'd want to retrieve information, which usually is the `v` parameter.
 ```dart
-var id = YoutubeExplode.parseVideoId('https://www.youtube.com/watch?v=OpQFFLBMEPI'); // Returns `OpQFFLBMEPI`
-
 var yt = YoutubeExplode();
 ```
 
@@ -53,7 +46,7 @@ var yt = YoutubeExplode();
 The [Video][Video] class contains info about the video such as the video title, the duration or the search keywords.
  
 ```dart
-var video = yt.getVideo(id); // Returns a Video instance.
+var video = yt.video.get(id); // Returns a Video instance.
 ```
 
 ## Get video mediaStream
