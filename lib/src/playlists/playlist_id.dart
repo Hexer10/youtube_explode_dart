@@ -1,5 +1,7 @@
 import '../extensions/helpers_extension.dart';
 
+
+/// Encapsulates a valid YouTube playlist ID.
 class PlaylistId {
   static final _regMatchExp =
       RegExp(r'youtube\..+?/playlist.*?list=(.*?)(?:&|/|$)');
@@ -10,6 +12,7 @@ class PlaylistId {
   static final _embedCompositeMatchExp =
       RegExp(r'youtube\..+?/embed/.*?/.*?list=(.*?)(?:&|/|$)');
 
+  /// The playlist id as string.
   final String value;
 
   /// Initializes an instance of [PlaylistId]
@@ -93,4 +96,13 @@ class PlaylistId {
 
   @override
   String toString() => value;
+
+  ///  Converts [obj] to a [PlaylistId] by calling .toString on that object.
+  /// If it is already a [PlaylistId], [obj] is returned
+  factory PlaylistId.fromString(dynamic obj) {
+    if (obj is PlaylistId) {
+      return obj;
+    }
+    return PlaylistId(obj.toString());
+  }
 }

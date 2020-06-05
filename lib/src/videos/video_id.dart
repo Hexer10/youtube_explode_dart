@@ -68,4 +68,13 @@ class VideoId extends Equatable {
     }
     return null;
   }
+
+  ///  Converts [obj] to a [VideoId] by calling .toString on that object.
+  /// If it is already a [VideoId], [obj] is returned
+  factory VideoId.fromString(dynamic obj) {
+    if (obj is VideoId) {
+      return obj;
+    }
+    return VideoId(obj.toString());
+  }
 }

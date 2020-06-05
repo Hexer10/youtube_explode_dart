@@ -1,3 +1,5 @@
+library _youtube_explode.retry;
+
 import 'dart:async';
 
 import 'exceptions/exceptions.dart';

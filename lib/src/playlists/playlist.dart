@@ -1,6 +1,7 @@
 import '../common/common.dart';
 import 'playlist_id.dart';
 
+/// YouTube playlist metadata.
 class Playlist {
   /// Playlist ID.
   final PlaylistId id;

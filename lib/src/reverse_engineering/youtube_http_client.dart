@@ -1,8 +1,8 @@
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
-import 'package:youtube_explode_dart/src/videos/streams/streams.dart';
 
 import '../exceptions/exceptions.dart';
+import '../videos/streams/streams.dart';
 
 class YoutubeHttpClient {
   final Client _httpClient = Client();

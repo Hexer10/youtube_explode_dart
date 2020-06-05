@@ -12,7 +12,7 @@ class PlayerSource {
   final RegExp _funcNameExp = RegExp(r'(\w+).\w+\(\w+,\d+\);');
 
   final RegExp _calledFuncNameExp =
-      RegExp(r'\w+(?:.|\[)(\""?\w+(?:\"")?)\]?\("');
+      RegExp(r'\w+(?:.|\[)(\"?\w+(?:\")?)\]?\(');
 
   final String _root;
 
@@ -51,9 +51,9 @@ class PlayerSource {
       var escapedFuncName = RegExp.escape(calledFuncName);
       // Slice
       var exp = RegExp('$escapedFuncName'
-          r':\bfunction\b\(\w+\,\w\).\bvar\b.\bc=a\b');
+          r':\bfunction\b\([a],b\).(\breturn\b)?.?\w+\.');
 
-      if (exp.hasMatch(calledFuncName)) {
+      if (exp.hasMatch(definitionBody)) {
         var index = int.parse(_statIndexExp.firstMatch(statement).group(1));
         yield SliceCipherOperation(index);
       }
@@ -61,14 +61,14 @@ class PlayerSource {
       // Swap
       exp = RegExp(
           '$escapedFuncName' r':\bfunction\b\(\w+\,\w\).\bvar\b.\bc=a\b');
-      if (exp.hasMatch(calledFuncName)) {
+      if (exp.hasMatch(definitionBody)) {
         var index = int.parse(_statIndexExp.firstMatch(statement).group(1));
         yield SwapCipherOperation(index);
       }
 
       // Reverse
       exp = RegExp('$escapedFuncName' r':\bfunction\b\(\w+\)');
-      if (exp.hasMatch(calledFuncName)) {
+      if (exp.hasMatch(definitionBody)) {
         yield const ReverseCipherOperation();
       }
     }

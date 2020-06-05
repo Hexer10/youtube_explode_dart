@@ -68,6 +68,7 @@ extension UriUtility on Uri {
 
 ///
 extension GetOrNull<K, V> on Map<K, V> {
+  /// Get a value from a map
   V getValue(K key) {
     var v = this[key];
     if (v == null) {
@@ -79,6 +80,7 @@ extension GetOrNull<K, V> on Map<K, V> {
 
 ///
 extension GetOrNullMap on Map {
+  /// Get a map inside a map
   Map<String, dynamic> get(String key) {
     var v = this[key];
     if (v == null) {

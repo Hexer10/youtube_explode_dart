@@ -14,6 +14,7 @@ class ChannelId extends Equatable {
     }
   }
 
+  /// Returns true if the given id is a valid channel id.
   static bool validateChannelId(String id) {
     if (id.isNullOrWhiteSpace) {
       return false;
@@ -48,6 +49,15 @@ class ChannelId extends Equatable {
       return regMatch;
     }
     return null;
+  }
+
+  ///  Converts [obj] to a [ChannelId] by calling .toString on that object.
+  /// If it is already a [ChannelId], [obj] is returned
+  factory ChannelId.fromString(dynamic obj) {
+    if (obj is ChannelId) {
+      return obj;
+    }
+    return ChannelId(obj.toString());
   }
 
   @override

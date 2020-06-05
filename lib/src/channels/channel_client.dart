@@ -16,14 +16,21 @@ class ChannelClient {
   ChannelClient(this._httpClient);
 
   /// Gets the metadata associated with the specified channel.
-  Future<Channel> get(ChannelId id) async {
+  /// [id] must be either a [ChannelId] or a string
+  /// which is parsed to a [ChannelId]
+  Future<Channel> get(dynamic id) async {
+
     var channelPage = await ChannelPage.get(_httpClient, id.value);
 
     return Channel(id, channelPage.channelTitle, channelPage.channelLogoUrl);
   }
 
   /// Gets the metadata associated with the channel of the specified user.
-  Future<Channel> getByUsername(Username username) async {
+  /// [username] must be either a [Username] or a string
+  /// which is parsed to a [Username]
+  Future<Channel> getByUsername(dynamic username) async {
+    username = Username.fromString(username);
+
     var channelPage =
         await ChannelPage.getByUsername(_httpClient, username.value);
     return Channel(ChannelId(channelPage.channelId), channelPage.channelTitle,
@@ -32,7 +39,8 @@ class ChannelClient {
 
   /// Gets the metadata associated with the channel
   /// that uploaded the specified video.
-  Future<Channel> getByVideo(VideoId videoId) async {
+  Future<Channel> getByVideo(dynamic videoId) async {
+    videoId = VideoId.fromString(videoId);
     var videoInfoResponse =
         await VideoInfoResponse.get(_httpClient, videoId.value);
     var playerReponse = videoInfoResponse.playerResponse;

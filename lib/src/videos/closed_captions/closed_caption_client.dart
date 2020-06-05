@@ -20,7 +20,8 @@ class ClosedCaptionClient {
 
   /// Gets the manifest that contains information
   /// about available closed caption tracks in the specified video.
-  Future<ClosedCaptionManifest> getManifest(VideoId videoId) async {
+  Future<ClosedCaptionManifest> getManifest(dynamic videoId) async {
+    videoId = VideoId.fromString(videoId);
     var videoInfoResponse =
         await VideoInfoResponse.get(_httpClient, videoId.value);
     var playerResponse = videoInfoResponse.playerResponse;

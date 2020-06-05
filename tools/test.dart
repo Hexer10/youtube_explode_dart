@@ -20,8 +20,9 @@ var sep = 'ytplayer.config = ';
 
 Future<void> main() async {
   var yt = YoutubeExplode();
-  var m = await yt.videos.streamsClient.getManifest(VideoId('382BTxLNrow'));
-  await yt.videos.streamsClient.get(m.streams.first);
+  var m = await yt.videos.streamsClient.getManifest(VideoId('9bZkp7q19f0'));
+  var s = await yt.videos.streamsClient.get(m.streams.first).toList();
+  print(s);
   yt.close();
   print('Done!');
 }

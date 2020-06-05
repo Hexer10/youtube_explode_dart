@@ -20,7 +20,7 @@ abstract class StreamInfo {
   /// Stream bitrate.
   final Bitrate bitrate;
 
-  ///
+  /// Initialize an instance of [StreamInfo].
   StreamInfo(this.tag, this.url, this.container, this.size, this.bitrate);
 }
 
@@ -28,6 +28,7 @@ abstract class StreamInfo {
 extension StreamInfoExt on StreamInfo {
   static final _exp = RegExp('ratebypass[=/]yes');
 
+  /// Returns true if this video is rate limited.
   bool isRateLimited() => _exp.hasMatch(url.toString());
 
   /// Gets the stream with highest bitrate.

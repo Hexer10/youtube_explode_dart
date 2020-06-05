@@ -13,6 +13,7 @@ class Username {
     }
   }
 
+  /// Returns true if the given username is a valid username.
   static bool validateUsername(String name) {
     if (name.isNullOrWhiteSpace) {
       return false;
@@ -25,6 +26,7 @@ class Username {
     return !RegExp('[^0-9a-zA-Z]').hasMatch(name);
   }
 
+  /// Parses a username from a url.
   static String parseUsername(String nameOrUrl) {
     if (nameOrUrl.isNullOrWhiteSpace) {
       return null;
@@ -41,5 +43,14 @@ class Username {
       return regMatch;
     }
     return null;
+  }
+
+  ///  Converts [obj] to a [Username] by calling .toString on that object.
+  /// If it is already a [Username], [obj] is returned
+  factory Username.fromString(dynamic obj) {
+    if (obj is Username) {
+      return obj;
+    }
+    return Username(obj.toString());
   }
 }

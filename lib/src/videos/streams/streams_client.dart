@@ -128,11 +128,11 @@ class StreamsClient {
 
       // Signature
       var signature = streamInfo.signature;
-      var signatureParameters = streamInfo.signatureParameter;
+      var signatureParameter = streamInfo.signatureParameter ?? "signature";
 
       if (!signature.isNullOrWhiteSpace) {
         signature = streamContext.cipherOperations.decipher(signature);
-        url = url.setQueryParam(signatureParameters, signature);
+        url = url.setQueryParam(signatureParameter, signature);
       }
 
       // Content length
@@ -199,7 +199,7 @@ class StreamsClient {
         continue;
       }
       // Audio-only
-      if (audioCodec.isNullOrWhiteSpace) {
+      if (!audioCodec.isNullOrWhiteSpace) {
         streams[tag] = AudioOnlyStreamInfo(
             tag, url, container, fileSize, bitrate, audioCodec);
       }
@@ -213,7 +213,8 @@ class StreamsClient {
 
   /// Gets the manifest that contains information
   /// about available streams in the specified video.
-  Future<StreamManifest> getManifest(VideoId videoId) async {
+  Future<StreamManifest> getManifest(dynamic videoId) async {
+    videoId = VideoId.fromString(videoId);
     // We can try to extract the manifest from two sources:
     //    get_video_info and the video watch page.
     // In some cases one works, in some cases another does.

@@ -20,19 +20,21 @@ class VideoClient {
         closedCaptions = ClosedCaptionClient(_httpClient);
 
   /// Gets the metadata associated with the specified video.
-  Future<Video> get(VideoId id) async {
-    var videoInfoResponse = await VideoInfoResponse.get(_httpClient, id.value);
+  Future<Video> get(dynamic videoId) async {
+    videoId = VideoId.fromString(videoId);
+    var videoInfoResponse =
+        await VideoInfoResponse.get(_httpClient, videoId.value);
     var playerResponse = videoInfoResponse.playerResponse;
 
-    var watchPage = await WatchPage.get(_httpClient, id.value);
+    var watchPage = await WatchPage.get(_httpClient, videoId.value);
     return Video(
-        id,
+        videoId,
         playerResponse.videoTitle,
         playerResponse.videoAuthor,
         playerResponse.videoUploadDate,
         playerResponse.videoDescription,
         playerResponse.videoDuration,
-        ThumbnailSet(id.value),
+        ThumbnailSet(videoId.value),
         playerResponse.videoKeywords,
         Engagement(playerResponse.videoViewCount ?? 0, watchPage.videoLikeCount,
             watchPage.videoDislikeCount));

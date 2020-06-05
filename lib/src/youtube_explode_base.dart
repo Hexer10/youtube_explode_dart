@@ -1,3 +1,5 @@
+library youtube_explode.base;
+
 import 'channels/channels.dart';
 import 'playlists/playlist_client.dart';
 import 'reverse_engineering/youtube_http_client.dart';

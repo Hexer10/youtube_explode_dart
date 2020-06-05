@@ -14,7 +14,9 @@ class PlaylistClient {
   PlaylistClient(this._httpClient);
 
   /// Gets the metadata associated with the specified playlist.
-  Future<Playlist> get(PlaylistId id) async {
+  Future<Playlist> get(dynamic id) async {
+    id = PlaylistId.fromString(id);
+
     var response = await PlaylistResponse.get(_httpClient, id.value);
     return Playlist(
         id,
@@ -26,7 +28,8 @@ class PlaylistClient {
   }
 
   /// Enumerates videos included in the specified playlist.
-  Stream<Video> getVideos(PlaylistId id) async* {
+  Stream<Video> getVideos(dynamic id) async* {
+    id = PlaylistId.fromString(id);
     var encounteredVideoIds = <String>{};
     var index = 0;
     while (true) {

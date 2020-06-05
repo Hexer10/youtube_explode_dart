@@ -174,5 +174,12 @@ class _StreamInfo extends StreamInfoProvider {
 
   @override
   String get audioCodec =>
-      isAudioOnly ? codecs : codecs.split(',').last.trim().nullIfWhitespace;
+      isAudioOnly ? codecs : _getAudioCodec(codecs.split(','))?.trim();
+
+  String _getAudioCodec(List<String> codecs) {
+    if (codecs.length == 1) {
+      return null;
+    }
+    return codecs.last;
+  }
 }
