@@ -50,20 +50,19 @@ var video = yt.video.get(id); // Returns a Video instance.
 ```
 
 ## Get video mediaStream
-The [MediaStreamsInfoSet][MediaStreamsInfoSet] contains the audio, video and muxed streams of the video. Each of the streams provides an url which can be used to download a video with a get request (See [example][VidExample]).
+The Manifest contains the audio, video and muxed streams of the video. Each of the streams provides an url which can be used to download a video with a get request (See [example][VidExample]).
 ```dart
-var mediaStreams = yt.getVideoMediaStream();
+var manifest = yt.videos.streamsClient.getManifest(videoId);
 
-var muxed = mediaStreams.muxed; // List of `MuxedStreamInfo` sorted by video quality.
-var audio = mediaStreams.audio; // List of `AudioStreamInfo` sorted by bitrate.
-var video = mediaStreams.video; // List of `VideoSteamInfo` sorted by video quality.
-
-var videoDetails = mediaStreams.videoDetails; //Returns a `Video` instance. Used to avoid calling `yt.getVideo`.
+var muxed = manifest.muxed; // List of `MuxedStreamInfo` sorted by video quality.
+var audio = manifest.audio; // List of `AudioStreamInfo` sorted by bitrate.
+var video = manifest.video; // List of `VideoSteamInfo` sorted by video quality.
+// There are available manifest.audioOnly and manifest.videoOnly as well.
 ```
 
 Be aware, the muxed streams don't hold the best quality, to achieve so, you'd need to merge the audio and video streams. 
 
-## Closed Captions
+## Closed Captions - Not yet implemented
 To get the video closed caption it is need to query before the caption track infos, which can be used to retrieve the closed caption.
 
 ```dart
