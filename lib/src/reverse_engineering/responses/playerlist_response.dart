@@ -64,7 +64,6 @@ class _Video {
 
   String get author => _root['author'];
 
-  //TODO: Check if date is correctS
   DateTime get uploadDate =>
       DateTime.fromMillisecondsSinceEpoch(_root['time_created'] * 1000);
 

@@ -42,5 +42,4 @@ class ClosedCaptionClient {
             e.getParts().map((f) => ClosedCaptionPart(f.text, f.offset))));
     return ClosedCaptionTrack(captions);
   }
-  //TODO: Implement WriteToAsync and DownloadAsync
 }
