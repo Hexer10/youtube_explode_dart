@@ -66,7 +66,7 @@ class WatchPage {
         }
       }
     }
-    return str.substring(0, lastI+1);
+    return str.substring(0, lastI + 1);
   }
 
   WatchPage.parse(String raw) : _root = parser.parse(raw);

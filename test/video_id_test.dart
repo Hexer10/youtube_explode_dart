@@ -32,8 +32,8 @@ void main() {
       expect(() => VideoId('pI2I2z zeKg'), throwsArgumentError);
     });
     test('InvalidVideoUrl', () {
-      expect(() => VideoId('youtube.com/xxx?v=pI2I2zqzeKg'),
-          throwsArgumentError);
+      expect(
+          () => VideoId('youtube.com/xxx?v=pI2I2zqzeKg'), throwsArgumentError);
       expect(() => VideoId('youtu.be/watch?v=xxx'), throwsArgumentError);
       expect(() => VideoId('youtube.com/embed/'), throwsArgumentError);
     });

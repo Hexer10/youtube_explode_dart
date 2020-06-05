@@ -1,4 +1,3 @@
-
 /// Video quality.
 enum VideoQuality {
   /// Low quality (144p).

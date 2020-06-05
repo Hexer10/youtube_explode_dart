@@ -11,8 +11,7 @@ class PlayerSource {
 
   final RegExp _funcNameExp = RegExp(r'(\w+).\w+\(\w+,\d+\);');
 
-  final RegExp _calledFuncNameExp =
-      RegExp(r'\w+(?:.|\[)(\"?\w+(?:\")?)\]?\(');
+  final RegExp _calledFuncNameExp = RegExp(r'\w+(?:.|\[)(\"?\w+(?:\")?)\]?\(');
 
   final String _root;
 

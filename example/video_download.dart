@@ -71,7 +71,6 @@ Future<void> download(String id) async {
 //  console.cursorPosition = Coordinate(row, 0);
 //  console.write(msg);
 
-
   // Listen for data received.
   await for (var data in audioStream) {
     count += data.length;

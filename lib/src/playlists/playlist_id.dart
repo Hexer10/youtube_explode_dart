@@ -1,6 +1,5 @@
 import '../extensions/helpers_extension.dart';
 
-
 /// Encapsulates a valid YouTube playlist ID.
 class PlaylistId {
   static final _regMatchExp =

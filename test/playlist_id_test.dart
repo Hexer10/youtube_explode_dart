@@ -48,12 +48,13 @@ void main() {
           throwsArgumentError);
     });
     test('InvalidPlaylistUrl', () {
-      expect(() => PlaylistId('youtube.com/playlist?lisp=PLOU2XLYxmsIJGErt5rrCqaSGTMyyqNt2H'),
+      expect(
+          () => PlaylistId(
+              'youtube.com/playlist?lisp=PLOU2XLYxmsIJGErt5rrCqaSGTMyyqNt2H'),
           throwsArgumentError);
       expect(() => PlaylistId('youtube.com/playlist?list=asd'),
           throwsArgumentError);
-      expect(() => PlaylistId('youtube.com/'),
-          throwsArgumentError);
+      expect(() => PlaylistId('youtube.com/'), throwsArgumentError);
     });
   });
 }
