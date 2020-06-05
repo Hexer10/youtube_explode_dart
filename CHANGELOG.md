@@ -1,3 +1,9 @@
+## 1.0.0-beta
+
+- Updated to v5 of YouTube Explode for C#
+
+<hr>
+
 ## 0.0.1
 
 - Initial version, created by Stagehand
@@ -74,3 +80,4 @@
 ## 0.0.17
 
 - Fixed bug in #23
+
