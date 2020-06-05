@@ -1,5 +1,4 @@
 import 'package:http/http.dart';
-import 'package:meta/meta.dart';
 
 import '../exceptions/exceptions.dart';
 import '../videos/streams/streams.dart';
@@ -53,10 +52,9 @@ class YoutubeHttpClient {
     return response.body;
   }
 
-  Stream<List<int>> getStream(dynamic url,
-      {Map<String, String> headers,
-      @required StreamInfo streamInfo,
-      bool validate = true}) async* {
+  Stream<List<int>> getStream(StreamInfo streamInfo,
+      {Map<String, String> headers, bool validate = true}) async* {
+    var url = streamInfo.url;
     if (!streamInfo.isRateLimited()) {
       var request = Request('get', url);
       request.headers.addAll(_userAgent);

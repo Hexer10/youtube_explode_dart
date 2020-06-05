@@ -245,13 +245,7 @@ class StreamsClient {
     return hlsManifest;
   }
 
-  //TODO: Test this
   /// Gets the actual stream which is identified by the specified metadata.
-  Stream<List<int>> get(StreamInfo streamInfo) {
-    return _httpClient.getStream(streamInfo.url, streamInfo: streamInfo);
-  }
-
-//TODO: Implement CopyToAsync
-
-//TODO: Implement DownloadAsync
+  Stream<List<int>> get(StreamInfo streamInfo) =>
+      _httpClient.getStream(streamInfo);
 }
