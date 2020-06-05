@@ -9,6 +9,7 @@ import 'video_stream_info.dart';
 
 /// YouTube media stream that contains both audio and video.
 class MuxedStreamInfo implements AudioStreamInfo, VideoStreamInfo {
+  @override
   final int tag;
 
   @override

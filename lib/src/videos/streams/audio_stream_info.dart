@@ -1,8 +1,4 @@
-import 'package:youtube_explode_dart/src/videos/streams/bitrate.dart';
-import 'package:youtube_explode_dart/src/videos/streams/container.dart';
-import 'package:youtube_explode_dart/src/videos/streams/filesize.dart';
-
-import 'stream_info.dart';
+import 'streams.dart';
 
 /// YouTube media stream that contains audio.
 abstract class AudioStreamInfo extends StreamInfo {

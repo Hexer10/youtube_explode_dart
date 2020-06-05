@@ -14,10 +14,6 @@ dependencies:
   equatable: ^1.1.0
 
 dev_dependencies:
-  quick_log: ^0.4.1
-
-  dart_benchmark:
-    path: ../repos/dart_benchmark
   effective_dart: ^1.2.1
   dart_console: ^0.5.0
   test: ^1.12.0

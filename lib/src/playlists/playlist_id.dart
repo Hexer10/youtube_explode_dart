@@ -13,13 +13,15 @@ class PlaylistId {
   final String value;
 
   /// Initializes an instance of [PlaylistId]
-  PlaylistId(String idOrUrl)
-      : value = parsePlaylistId(idOrUrl) ??
-            ArgumentError.value(idOrUrl, 'idOrUrl', 'Invalid url.');
+  PlaylistId(String idOrUrl) : value = parsePlaylistId(idOrUrl) {
+    if (value == null) {
+      throw ArgumentError.value(idOrUrl, 'idOrUrl', 'Invalid url');
+    }
+  }
 
   /// Returns true if the given [playlistId] is valid.
   static bool validatePlaylistId(String playlistId) {
-    playlistId = playlistId.toLowerCase();
+    playlistId = playlistId.toUpperCase();
 
     if (playlistId.isNullOrWhiteSpace) {
       return false;
@@ -60,6 +62,10 @@ class PlaylistId {
       return null;
     }
 
+    if (validatePlaylistId(url)) {
+      return url;
+    }
+
     var regMatch = _regMatchExp.firstMatch(url)?.group(1);
     if (!regMatch.isNullOrWhiteSpace && validatePlaylistId(regMatch)) {
       return regMatch;
@@ -84,4 +90,7 @@ class PlaylistId {
     }
     return null;
   }
+
+  @override
+  String toString() => value;
 }

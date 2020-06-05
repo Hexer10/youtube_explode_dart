@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
-import '../../retry.dart';
 
 import '../../extensions/helpers_extension.dart';
+import '../../retry.dart';
 import '../youtube_http_client.dart';
 
 class EmbedPage {
@@ -26,7 +26,7 @@ class EmbedPage {
   String get _playerConfigJson => _root
       .getElementsByTagName('script')
       .map((e) => e.text)
-      .map((e) => _playerConfigExp.firstMatch(e).group(1))
+      .map((e) => _playerConfigExp.firstMatch(e)?.group(1))
       .firstWhere((e) => !e.isNullOrWhiteSpace, orElse: () => null);
 
   EmbedPage.parse(String raw) : _root = parser.parse(raw);
@@ -46,5 +46,5 @@ class _PlayerConfig {
 
   _PlayerConfig(this._root);
 
-  String get sourceUrl => 'https://youtube.com ${_root['assets']['js']}';
+  String get sourceUrl => 'https://youtube.com${_root['assets']['js']}';
 }

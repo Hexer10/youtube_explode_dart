@@ -19,12 +19,13 @@ class PlayerSource {
   PlayerSource(this._root);
 
   String get sts {
-    var val = RegExp(r'(?<=invalid namespace.*?;var \w\s*=)\d+')
+    var val = RegExp(r'(?<=invalid namespace.*?;\w+\s*=)\d+')
         .stringMatch(_root)
-        .nullIfWhitespace;
+        ?.nullIfWhitespace;
     if (val == null) {
       throw FatalFailureException('Could not find sts in player source.');
     }
+    return val;
   }
 
   Iterable<CipherOperation> getCiperOperations() sync* {
@@ -42,7 +43,7 @@ class PlayerSource {
     }
 
     for (var statement in funcBody.split(';')) {
-      var calledFuncName = _calledFuncNameExp.firstMatch(statement).group(1);
+      var calledFuncName = _calledFuncNameExp.firstMatch(statement)?.group(1);
       if (calledFuncName.isNullOrWhiteSpace) {
         continue;
       }
@@ -77,16 +78,18 @@ class PlayerSource {
     var funcName = _funcBodyExp.firstMatch(_root).group(1);
 
     var exp = RegExp(
-        r'(?!h\.)' '${RegExp.escape(funcName)}' r'=function\(\w+\)\{{(.*?)\}}');
+        r'(?!h\.)' '${RegExp.escape(funcName)}' r'=function\(\w+\)\{(.*?)\}');
     return exp.firstMatch(_root).group(1).nullIfWhitespace;
   }
 
   String _getDeciphererDefinitionBody(String deciphererFuncBody) {
     var funcName = _funcNameExp.firstMatch(deciphererFuncBody).group(1);
 
-    var exp = RegExp(r'var\s+'
+    var exp = RegExp(
+        r'var\s+'
         '${RegExp.escape(funcName)}'
-        r'=\{{(\w+:function\(\w+(,\w+)?\)\{{(.*?)\}}),?\}};');
+        r'=\{(\w+:function\(\w+(,\w+)?\)\{(.*?)\}),?\};',
+        dotAll: true);
     return exp.firstMatch(_root).group(0).nullIfWhitespace;
   }
 

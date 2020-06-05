@@ -8,9 +8,11 @@ class ChannelId extends Equatable {
   final String value;
 
   /// Initializes an instance of [ChannelId]
-  ChannelId(String value)
-      : value = parseChannelId(value) ??
-            ArgumentError.value(value, 'value', 'Invalid channel id.');
+  ChannelId(String value) : value = parseChannelId(value) {
+    if (this.value == null) {
+      throw ArgumentError.value(value, 'value', 'Invalid channel id');
+    }
+  }
 
   static bool validateChannelId(String id) {
     if (id.isNullOrWhiteSpace) {
@@ -47,6 +49,9 @@ class ChannelId extends Equatable {
     }
     return null;
   }
+
+  @override
+  String toString() => '$value';
 
   @override
   List<Object> get props => [value];

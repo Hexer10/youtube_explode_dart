@@ -28,7 +28,7 @@ abstract class StreamInfo {
 extension StreamInfoExt on StreamInfo {
   static final _exp = RegExp('ratebypass[=/]yes');
 
-  bool _isRateLimited() => _exp.hasMatch(url.toString());
+  bool isRateLimited() => _exp.hasMatch(url.toString());
 
   /// Gets the stream with highest bitrate.
   static StreamInfo getHighestBitrate(List<StreamInfo> streams) =>

@@ -1,11 +1,4 @@
-import 'package:youtube_explode_dart/src/videos/streams/bitrate.dart';
-import 'package:youtube_explode_dart/src/videos/streams/container.dart';
-import 'package:youtube_explode_dart/src/videos/streams/filesize.dart';
-
-import 'framerate.dart';
-import 'stream_info.dart';
-import 'video_quality.dart';
-import 'video_resolution.dart';
+import 'streams.dart';
 
 /// YouTube media stream that contains video.
 abstract class VideoStreamInfo extends StreamInfo {

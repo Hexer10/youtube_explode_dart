@@ -37,7 +37,7 @@ class PlaylistClient {
         var videoId = video.id;
 
         // Already added
-        if (encounteredVideoIds.add(videoId)) {
+        if (!encounteredVideoIds.add(videoId)) {
           continue;
         }
 

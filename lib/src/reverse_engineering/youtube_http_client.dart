@@ -1,4 +1,6 @@
 import 'package:http/http.dart';
+import 'package:meta/meta.dart';
+import 'package:youtube_explode_dart/src/videos/streams/streams.dart';
 
 import '../exceptions/exceptions.dart';
 
@@ -53,17 +55,29 @@ class YoutubeHttpClient {
 
   Stream<List<int>> getStream(dynamic url,
       {Map<String, String> headers,
-      int from,
-      int to,
+      @required StreamInfo streamInfo,
       bool validate = true}) async* {
-    var request = Request('get', url);
-    request.headers['range'] = 'bytes=$from-$to';
-    request.headers.addAll(_userAgent);
-    var response = await request.send();
-    if (validate) {
-      _validateResponse(response, response.statusCode);
+    if (!streamInfo.isRateLimited()) {
+      var request = Request('get', url);
+      request.headers.addAll(_userAgent);
+      var response = await request.send();
+      if (validate) {
+        _validateResponse(response, response.statusCode);
+      }
+      yield* response.stream;
+      return;
+    } else {
+      for (var i = 0; i < streamInfo.size.totalBytes; i += 9898989) {
+        var request = Request('get', url);
+        request.headers['range'] = 'bytes=$i-${i + 9898989}';
+        request.headers.addAll(_userAgent);
+        var response = await request.send();
+        if (validate) {
+          _validateResponse(response, response.statusCode);
+        }
+        yield* response.stream;
+      }
     }
-    yield* response.stream;
   }
 
   Future<int> getContentLength(dynamic url,
@@ -74,7 +88,7 @@ class YoutubeHttpClient {
       _validateResponse(response, response.statusCode);
     }
 
-    return int.parse(response.headers['content-length']);
+    return int.tryParse(response.headers['content-length'] ?? '');
   }
 
   /// Closes the [Client] assigned to this [YoutubeHttpClient].

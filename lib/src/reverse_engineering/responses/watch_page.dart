@@ -13,9 +13,8 @@ import 'player_response.dart';
 import 'stream_info_provider.dart';
 
 class WatchPage {
-  final RegExp _videoLikeExp = RegExp(r'label""\s*:\s*""([\d,\.]+) likes');
-  final RegExp _videoDislikeExp =
-      RegExp(r'label""\s*:\s*""([\d,\.]+) dislikes');
+  final RegExp _videoLikeExp = RegExp(r'"label"\s*:\s*"([\d,\.]+) likes"');
+  final RegExp _videoDislikeExp = RegExp(r'"label"\s*:\s*"([\d,\.]+) dislikes');
 
   final Document _root;
 
@@ -26,27 +25,49 @@ class WatchPage {
   bool get isVideoAvailable =>
       _root.querySelector('meta[property="og:url"]') != null;
 
-  //TODO: This does not work.
-  int get videoLikeCount => int.tryParse(_videoLikeExp
-          .firstMatch(_root.outerHtml)
-          ?.group(1)
-          ?.nullIfWhitespace
-          ?.stripNonDigits() ??
-      '');
+  //TODO: Update this to the new "parsing method" w/ regex "label"\s*:\s*"([\d,\.]+) likes"
+  int get videoLikeCount => int.parse(_root
+          .querySelector('.like-button-renderer-like-button')
+          ?.text
+          ?.stripNonDigits()
+          ?.nullIfWhitespace ??
+      '0');
 
-  //TODO: This does not work.
-  int get videoDislikeCount => int.tryParse(_videoDislikeExp
-          .firstMatch(_root.outerHtml)
-          ?.group(1)
-          ?.nullIfWhitespace
-          ?.stripNonDigits() ??
-      '');
+  //TODO: Update this to the new "parsing method" w/ regex "label"\s*:\s*"([\d,\.]+) dislikes"
+  int get videoDislikeCount => int.parse(_root
+          .querySelector('.like-button-renderer-dislike-button')
+          ?.text
+          ?.stripNonDigits()
+          ?.nullIfWhitespace ??
+      '0');
 
-  _PlayerConfig get playerConfig => _PlayerConfig(json.decode(_root
-      .getElementsByTagName('script')
-      .map((e) => e.text)
-      .map(_extractJson)
-      .firstWhere((e) => e != null)));
+  _PlayerConfig get playerConfig => _PlayerConfig(json.decode(
+      _matchJson(_extractJson(_root.getElementsByTagName('html').first.text))));
+
+  final String configSep = 'ytplayer.config = ';
+
+  String _extractJson(String html) {
+    return _matchJson(
+        html.substring(html.indexOf(configSep) + configSep.length));
+  }
+
+  String _matchJson(String str) {
+    var bracketCount = 0;
+    int lastI;
+    for (var i = 0; i < str.length; i++) {
+      lastI = i;
+      if (str[i] == '{') {
+        bracketCount++;
+      } else if (str[i] == '}') {
+        bracketCount--;
+      } else if (str[i] == ';') {
+        if (bracketCount == 0) {
+          return str.substring(0, i);
+        }
+      }
+    }
+    return str.substring(0, lastI+1);
+  }
 
   WatchPage.parse(String raw) : _root = parser.parse(raw);
 
@@ -66,14 +87,6 @@ class WatchPage {
       }
       return result;
     });
-  }
-
-  String _extractJson(String str) {
-    var startIndex = str.indexOf('ytplayer.config =');
-    var endIndex = str.indexOf(';ytplayer.load =');
-    if (startIndex == -1 || endIndex == -1) return null;
-
-    return str.substring(startIndex + 17, endIndex);
   }
 }
 
@@ -149,28 +162,20 @@ class _PlayerConfig {
       PlayerResponse.parse(_root['args']['player_response']);
 
   List<_StreamInfo> get muxedStreams =>
-      _root['args']
-          .get('url_encoded_fmt_stream_map')
+      _root
+          .get('args')
+          ?.getValue('url_encoded_fmt_stream_map')
           ?.split(',')
           ?.map((e) => _StreamInfo(Uri.splitQueryString(e))) ??
       const [];
 
   List<_StreamInfo> get adaptiveStreams =>
-      _root['args']
-          .get('adaptive_fmts')
+      _root
+          .get('args')
+          ?.getValue('adaptive_fmts')
           ?.split(',')
           ?.map((e) => _StreamInfo(Uri.splitQueryString(e))) ??
       const [];
 
   List<_StreamInfo> get streams => [...muxedStreams, ...adaptiveStreams];
-}
-
-extension _GetOrNull<K, V> on Map<K, V> {
-  V get(K key) {
-    var v = this[key];
-    if (v == null) {
-      return null;
-    }
-    return v;
-  }
 }

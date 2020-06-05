@@ -7,8 +7,10 @@ class Bitrate extends Comparable<Bitrate> with EquatableMixin {
 
   /// Kilobits per second.
   double get kiloBitsPerSecond => bitsPerSecond / 1024;
+
   /// Megabits per second.
   double get megaBitsPerSecond => kiloBitsPerSecond / 1024;
+
   /// Gigabits per second.
   double get gigaBitsPerSecond => megaBitsPerSecond / 1024;
 
@@ -16,7 +18,7 @@ class Bitrate extends Comparable<Bitrate> with EquatableMixin {
   Bitrate(this.bitsPerSecond);
 
   @override
-  int compareTo(Bitrate other) => null;
+  int compareTo(Bitrate other) => bitsPerSecond.compareTo(other.bitsPerSecond);
 
   @override
   List<Object> get props => [bitsPerSecond];

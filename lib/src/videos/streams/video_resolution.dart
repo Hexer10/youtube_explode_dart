@@ -1,7 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 /// Width and height of a video.
-class VideoResolution  {
+class VideoResolution {
   /// Viewport width.
   final int width;
 

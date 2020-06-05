@@ -1,6 +1,8 @@
 import '../extensions/helpers_extension.dart';
+import '../playlists/playlists.dart';
 import '../reverse_engineering/responses/responses.dart';
 import '../reverse_engineering/youtube_http_client.dart';
+import '../videos/video.dart';
 import '../videos/video_id.dart';
 import 'channel.dart';
 import 'channel_id.dart';
@@ -40,8 +42,8 @@ class ChannelClient {
   }
 
   /// Enumerates videos uploaded by the specified channel.
-  void getUploads(ChannelId id) async {
-    var playlist = 'UU${id.value.substringAfter('UC')}';
-    //TODO: Finish this after playlist
+  Stream<Video> getUploads(ChannelId id) {
+    var playlistId = 'UU${id.value.substringAfter('UC')}';
+    return PlaylistClient(_httpClient).getVideos(PlaylistId(playlistId));
   }
 }

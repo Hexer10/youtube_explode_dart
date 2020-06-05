@@ -6,13 +6,15 @@ class Username {
   final String value;
 
   /// Initializes an instance of [Username].
-  Username(String urlOrUsername)
-      : value = parseUsername(urlOrUsername) ??
-            ArgumentError.value(
-                urlOrUsername, 'urlOrUsername', 'Invalid username');
+  Username(String urlOrUsername) : value = parseUsername(urlOrUsername) {
+    if (value == null) {
+      throw ArgumentError.value(
+          urlOrUsername, 'urlOrUsername', 'Invalid username');
+    }
+  }
 
   static bool validateUsername(String name) {
-    if (!name.isNullOrWhiteSpace) {
+    if (name.isNullOrWhiteSpace) {
       return false;
     }
 
@@ -20,7 +22,7 @@ class Username {
       return false;
     }
 
-    return RegExp('[^0-9a-zA-Z]').hasMatch(name);
+    return !RegExp('[^0-9a-zA-Z]').hasMatch(name);
   }
 
   static String parseUsername(String nameOrUrl) {
@@ -35,7 +37,7 @@ class Username {
     var regMatch = RegExp(r'youtube\..+?/user/(.*?)(?:\?|&|/|$)')
         .firstMatch(nameOrUrl)
         ?.group(1);
-    if (regMatch.isNullOrWhiteSpace && validateUsername(regMatch)) {
+    if (!regMatch.isNullOrWhiteSpace && validateUsername(regMatch)) {
       return regMatch;
     }
     return null;

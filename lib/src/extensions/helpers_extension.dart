@@ -23,7 +23,7 @@ extension StringUtility on String {
 
   ///
   String substringAfter(String separator) =>
-      substring(indexOf(separator) + length);
+      substring(indexOf(separator) + separator.length);
 
   static final _exp = RegExp(r'\D');
 
@@ -63,5 +63,27 @@ extension UriUtility on Uri {
     query[key] = value;
 
     return replace(queryParameters: query);
+  }
+}
+
+///
+extension GetOrNull<K, V> on Map<K, V> {
+  V getValue(K key) {
+    var v = this[key];
+    if (v == null) {
+      return null;
+    }
+    return v;
+  }
+}
+
+///
+extension GetOrNullMap on Map {
+  Map<String, dynamic> get(String key) {
+    var v = this[key];
+    if (v == null) {
+      return null;
+    }
+    return v;
   }
 }

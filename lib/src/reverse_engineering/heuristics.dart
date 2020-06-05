@@ -177,7 +177,7 @@ extension VideoQualityUtil on VideoQuality {
     }
 
     var framerateRounded = (framerate / 10).ceil() * 10;
-    return '${getLabel}$framerateRounded';
+    return '${getLabel()}$framerateRounded';
   }
 
   static String getLabelFromTagWithFramerate(int itag, double framerate) {

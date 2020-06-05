@@ -14,6 +14,7 @@ linter:
      - prefer_constructors_over_static_methods
      - prefer_contains
      - annotate_overrides
+     - await_futures
 
 analyzer:
    exclude:

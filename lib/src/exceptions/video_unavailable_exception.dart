@@ -6,6 +6,7 @@ import 'exceptions.dart';
 /// is private, or due to other reasons.
 class VideoUnavailableException implements VideoUnplayableException {
   /// Description message
+  @override
   final String message;
 
   /// Initializes an instance of [VideoUnavailableException]

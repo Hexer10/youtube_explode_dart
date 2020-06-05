@@ -58,13 +58,17 @@ class StreamsClient {
           reason: playerResponse.getVideoPlayabilityError());
     }
 
+    if (playerResponse.isLive) {
+      throw VideoUnplayableException.liveStream(videoId);
+    }
+
     var streamInfoProviders = <StreamInfoProvider>[
       ...videoInfoReponse.streams,
       ...playerResponse.streams
     ];
 
     var dashManifestUrl = playerResponse.dashManifestUrl;
-    if (dashManifestUrl.isNullOrWhiteSpace) {
+    if (!dashManifestUrl.isNullOrWhiteSpace) {
       var dashManifest =
           await _getDashManifest(Uri.parse(dashManifestUrl), cipherOperations);
       streamInfoProviders.addAll(dashManifest.streams);
@@ -106,7 +110,7 @@ class StreamsClient {
     ];
 
     var dashManifestUrl = playerResponse.dashManifestUrl;
-    if (dashManifestUrl.isNullOrWhiteSpace) {
+    if (!dashManifestUrl.isNullOrWhiteSpace) {
       var dashManifest =
           await _getDashManifest(Uri.parse(dashManifestUrl), cipherOperations);
       streamInfoProviders.addAll(dashManifest.streams);
@@ -243,7 +247,7 @@ class StreamsClient {
   //TODO: Test this
   /// Gets the actual stream which is identified by the specified metadata.
   Stream<List<int>> get(StreamInfo streamInfo) {
-    return _httpClient.getStream(streamInfo.url);
+    return _httpClient.getStream(streamInfo.url, streamInfo: streamInfo);
   }
 
 //TODO: Implement CopyToAsync

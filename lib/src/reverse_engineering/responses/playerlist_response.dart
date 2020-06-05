@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../../exceptions/exceptions.dart';
+import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
 
@@ -16,14 +17,14 @@ class PlaylistResponse {
 
   String get description => _root['description'];
 
-  int get viewCount => int.tryParse(_root['views'] ?? '');
+  int get viewCount => _root['views'];
 
-  int get likeCount => int.tryParse(_root['likes']);
+  int get likeCount => _root['likes'];
 
-  int get dislikeCount => int.tryParse(_root['dislikes']);
+  int get dislikeCount => _root['dislikes'];
 
   Iterable<_Video> get videos =>
-      _root['video']?.map((e) => _Video(e)) ?? const [];
+      _root['video']?.map((e) => _Video(e))?.cast<_Video>() ?? const <_Video>[];
 
   PlaylistResponse.parse(String raw) : _root = json.tryDecode(raw) {
     if (_root == null) {
@@ -73,23 +74,16 @@ class _Video {
 
   Duration get duration => Duration(seconds: _root['length_seconds']);
 
-  int get viewCount => int.parse(_root['views'].stripNonDigits());
+  int get viewCount => int.parse((_root['views'] as String).stripNonDigits());
 
-  int get likes => int.parse(_root['likes']);
+  int get likes => _root['likes'];
 
-  int get dislikes => int.parse(_root['dislikes']);
+  int get dislikes => _root['dislikes'];
 
   Iterable<String> get keywords => RegExp(r'"[^\"]+"|\S+')
       .allMatches(_root['keywords'])
       .map((e) => e.group(0))
       .toList(growable: false);
-}
-
-extension on String {
-  static final _exp = RegExp(r'\D');
-
-  /// Strips out all non digit characters.
-  String stripNonDigits() => replaceAll(_exp, '');
 }
 
 extension on JsonCodec {

@@ -1,12 +1,8 @@
 import 'dart:collection';
 
-import 'package:youtube_explode_dart/src/videos/streams/audio_only_stream_info.dart';
-import 'package:youtube_explode_dart/src/videos/streams/muxed_stream_info.dart';
-import 'package:youtube_explode_dart/src/videos/streams/video_only_stream_info.dart';
-import 'package:youtube_explode_dart/src/videos/streams/video_stream_info.dart';
-
 import 'audio_stream_info.dart';
 import 'stream_info.dart';
+import 'streams.dart';
 
 /// Manifest that contains information about available media streams
 /// in a specific video.

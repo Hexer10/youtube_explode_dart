@@ -2,6 +2,7 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
 import '../../exceptions/exceptions.dart';
+import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
 
@@ -13,7 +14,7 @@ class ChannelPage {
   String get channelUrl =>
       _root.querySelector('meta[property="og:url"]')?.attributes['content'];
 
-  String get channelId => channelId.substringAfter('channel/');
+  String get channelId => channelUrl.substringAfter('channel/');
 
   String get channelTitle =>
       _root.querySelector('meta[property="og:title"]')?.attributes['content'];
@@ -53,9 +54,4 @@ class ChannelPage {
       return result;
     });
   }
-}
-
-extension on String {
-  String substringAfter(String separator) =>
-      substring(indexOf(separator) + length);
 }

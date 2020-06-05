@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:youtube_explode_dart/src/videos/closed_captions/closed_caption_track_info.dart';
+import 'closed_caption_track_info.dart';
 
 /// Manifest that contains information about available closed caption tracks
 /// in a specific video.

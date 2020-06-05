@@ -1,7 +1,5 @@
-import 'package:http_parser/http_parser.dart';
-
 abstract class StreamInfoProvider {
-  static final contentLenExp = RegExp(r'clen=(\d+)');
+  static final RegExp contentLenExp = RegExp(r'clen=(\d+)');
 
   int get tag;
 

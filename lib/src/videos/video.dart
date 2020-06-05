@@ -1,7 +1,6 @@
 import 'dart:collection';
 
-import 'package:youtube_explode_dart/src/common/common.dart';
-
+import '../common/common.dart';
 import 'video_id.dart';
 
 /// YouTube video metadata.

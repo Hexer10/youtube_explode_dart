@@ -4,6 +4,7 @@ import 'youtube_explode_exception.dart';
 /// Exception thrown when the requested video is unplayable.
 class VideoUnplayableException implements YoutubeExplodeException {
   /// Description message
+  @override
   final String message;
 
   /// Initializes an instance of [VideoUnplayableException]

@@ -50,6 +50,5 @@ class FileSize extends Comparable<FileSize> with EquatableMixin {
   String toString() => '${_getLargestValue()} ${_getLargestSymbol()}';
 
   @override
-  // TODO: implement props
   List<Object> get props => [totalBytes];
 }
