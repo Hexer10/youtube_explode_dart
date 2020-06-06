@@ -42,9 +42,9 @@ class ChannelClient {
     videoId = VideoId.fromString(videoId);
     var videoInfoResponse =
         await VideoInfoResponse.get(_httpClient, videoId.value);
-    var playerReponse = videoInfoResponse.playerResponse;
+    var playerResponse = videoInfoResponse.playerResponse;
 
-    var channelId = playerReponse.videoChannelId;
+    var channelId = playerResponse.videoChannelId;
     return await get(ChannelId(channelId));
   }
 

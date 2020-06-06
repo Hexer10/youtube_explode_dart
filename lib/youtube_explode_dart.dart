@@ -4,5 +4,6 @@ export 'src/channels/channels.dart';
 export 'src/common/common.dart';
 export 'src/exceptions/exceptions.dart';
 export 'src/playlists/playlists.dart';
+export 'src/search/search_client.dart';
 export 'src/videos/videos.dart';
 export 'src/youtube_explode_base.dart';
