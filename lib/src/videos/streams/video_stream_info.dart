@@ -32,10 +32,21 @@ abstract class VideoStreamInfo extends StreamInfo {
       : super(tag, url, container, size, bitrate);
 }
 
-// TODO: Implement VideoStreamExtension
-// https://github.com/Tyrrrz/YoutubeExplode/blob/136b72bf8ca00fea7d6a686694dd91a485ca2c83/YoutubeExplode/Videos/Streams/IVideoStreamInfo.cs#L37-L60
-/*
-/// Extensions for [VideoStreamInfo[
-extension VideoStreamInfoExtension on VideoStreamInfo {
+/// Extensions for Iterables of [VideoStreamInfo]
+extension VideoStreamInfoExtension on Iterable<VideoStreamInfo> {
+  /// Gets all video qualities available in a collection of video streams.
+  Set<VideoQuality> getAllVideoQualities() =>
+      map((e) => e.videoQuality).toSet();
 
-}*/
+  /// Gets video quality labels of all streams available in
+  /// a collection of video streams.
+  /// This could be longer than [getAllVideoQualities] since this gives also all
+  /// the different fps.
+  Set<String> getAllVideoQualitiesLabel() =>
+      map((e) => e.videoQualityLabel).toSet();
+
+  /// Gets the video stream with highest video quality.
+  List<VideoStreamInfo> sortByVideoQuality() => toList()
+    ..sort((a, b) => b.framerate.compareTo(a.framerate))
+    ..sort((a, b) => b.videoQuality.index.compareTo(a.videoQuality.index));
+}
