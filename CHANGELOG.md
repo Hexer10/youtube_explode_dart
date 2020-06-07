@@ -2,6 +2,13 @@
 
 - Updated to v5 of YouTube Explode for C#
 
+## 1.0.1-beta
+
+- Implement `SearchClient`.
+- Implement `VideoStreamInfoExtension` for Iterables.
+- Update `xml` dependency.
+- Fixed closed caption api.
+
 <hr>
 
 ## 0.0.1
