@@ -29,7 +29,7 @@ void main() {
             await yt.videos.streamsClient.getManifest(VideoId(videoId));
         expect(manifest.streams, isNotEmpty);
       }
-    }, skip: 'Working on it.');
+    });
 
     test('GetStreamOfUnplayableVideo', () async {
       expect(yt.videos.streamsClient.getManifest(VideoId('5qap5aO4i9A')),
@@ -58,7 +58,6 @@ void main() {
         'rsAAeyAr-9Y',
       };
       for (var videoId in data) {
-        print('Matchin $videoId');
         var manifest =
             await yt.videos.streamsClient.getManifest(VideoId(videoId));
         for (var streamInfo in manifest.streams) {
@@ -66,8 +65,6 @@ void main() {
           expect(stream, isNotEmpty);
         }
       }
-    },
-        timeout: const Timeout(Duration(minutes: 10)),
-        skip: 'Currently now working.');
+    }, timeout: const Timeout(Duration(minutes: 10)), skip: 'Takes too long.');
   });
 }

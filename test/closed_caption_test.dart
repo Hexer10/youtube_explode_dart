@@ -21,7 +21,7 @@ void main() {
       var trackInfo = manifest.tracks.first;
       var track = await yt.videos.closedCaptions.get(trackInfo);
 
-      expect(track, isNotEmpty);
+      expect(track.captions, isNotEmpty);
     });
     test('GetClosedCaptionTrackAtSpecificTime', () async {
       var manifest = await yt.videos.closedCaptions
