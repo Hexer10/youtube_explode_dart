@@ -9,6 +9,9 @@
 - Update `xml` dependency.
 - Fixed closed caption api.
 
+## 1.0.2-beta
+
+- Fix video likes and dislikes count. #30
 <hr>
 
 ## 0.0.1

@@ -14,7 +14,8 @@ import 'stream_info_provider.dart';
 
 class WatchPage {
   final RegExp _videoLikeExp = RegExp(r'"label"\s*:\s*"([\d,\.]+) likes"');
-  final RegExp _videoDislikeExp = RegExp(r'"label"\s*:\s*"([\d,\.]+) dislikes');
+  final RegExp _videoDislikeExp =
+      RegExp(r'"label"\s*:\s*"([\d,\.]+) dislikes"');
 
   final Document _root;
 
@@ -26,7 +27,12 @@ class WatchPage {
       _root.querySelector('meta[property="og:url"]') != null;
 
   //TODO: Update this to the new "parsing method" w/ regex "label"\s*:\s*"([\d,\.]+) likes"
-  int get videoLikeCount => int.parse(_root
+  int get videoLikeCount => int.parse(_videoLikeExp
+          .firstMatch(_root.outerHtml)
+          ?.group(1)
+          ?.stripNonDigits()
+          ?.nullIfWhitespace ??
+      _root
           .querySelector('.like-button-renderer-like-button')
           ?.text
           ?.stripNonDigits()
@@ -34,7 +40,12 @@ class WatchPage {
       '0');
 
   //TODO: Update this to the new "parsing method" w/ regex "label"\s*:\s*"([\d,\.]+) dislikes"
-  int get videoDislikeCount => int.parse(_root
+  int get videoDislikeCount => int.parse(_videoDislikeExp
+          .firstMatch(_root.outerHtml)
+          ?.group(1)
+          ?.stripNonDigits()
+          ?.nullIfWhitespace ??
+      _root
           .querySelector('.like-button-renderer-dislike-button')
           ?.text
           ?.stripNonDigits()

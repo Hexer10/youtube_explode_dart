@@ -23,5 +23,9 @@ class Engagement extends Equatable {
   }
 
   @override
+  String toString() =>
+      '$viewCount views, $likeCount likes, $dislikeCount dislikes';
+
+  @override
   List<Object> get props => [viewCount, likeCount, dislikeCount];
 }
