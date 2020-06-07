@@ -63,7 +63,6 @@ class YoutubeHttpClient {
         _validateResponse(response, response.statusCode);
       }
       yield* response.stream;
-      return;
     } else {
       for (var i = 0; i < streamInfo.size.totalBytes; i += 9898989) {
         var request = Request('get', url);
