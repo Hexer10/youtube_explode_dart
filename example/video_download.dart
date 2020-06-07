@@ -1,3 +1,5 @@
+//TODO: Fixing the console printing.
+
 import 'dart:async';
 import 'dart:io';
 
@@ -14,19 +16,12 @@ Future<void> main() async {
 
   var url = stdin.readLineSync().trim();
 
-  // Get the video url.
-  var id = YoutubeExplode.parseVideoId(url);
-  if (id == null) {
-    console.writeLine('Invalid video id or url.');
-    exit(1);
-  }
-
   // Save the video to the download directory.
   Directory('downloads').createSync();
   console.hideCursor();
 
   // Download the video.
-  await download(id);
+  await download(url);
 
   yt.close();
   console.showCursor();
@@ -34,24 +29,28 @@ Future<void> main() async {
 }
 
 Future<void> download(String id) async {
-  // Get the video media stream.
-  var mediaStream = await yt.getVideoMediaStream(id);
+  // Get video metadata.
+  var video = await yt.videos.get(id);
+
+  // Get the video manifest.
+  var manifest = await yt.videos.streamsClient.getManifest(id);
+  var streams = manifest.audioOnly;
 
   // Get the last audio track (the one with the highest bitrate).
-  var audio = mediaStream.audio.last;
+  var audio = streams.last;
+  var audioStream = yt.videos.streamsClient.get(audio);
 
   // Compose the file name removing the unallowed characters in windows.
-  var fileName =
-      '${mediaStream.videoDetails.title}.${audio.container.toString()}'
-          .replaceAll('Container.', '')
-          .replaceAll(r'\', '')
-          .replaceAll('/', '')
-          .replaceAll('*', '')
-          .replaceAll('?', '')
-          .replaceAll('"', '')
-          .replaceAll('<', '')
-          .replaceAll('>', '')
-          .replaceAll('|', '');
+  var fileName = '${video.title}.${audio.container.name.toString()}'
+      .replaceAll('Container.', '')
+      .replaceAll(r'\', '')
+      .replaceAll('/', '')
+      .replaceAll('*', '')
+      .replaceAll('?', '')
+      .replaceAll('"', '')
+      .replaceAll('<', '')
+      .replaceAll('>', '')
+      .replaceAll('|', '');
   var file = File('downloads/$fileName');
 
   // Create the StreamedRequest to track the download status.
@@ -60,24 +59,25 @@ Future<void> download(String id) async {
   var output = file.openWrite(mode: FileMode.writeOnlyAppend);
 
   // Track the file download status.
-  var len = audio.size;
+  var len = audio.size.totalBytes;
   var count = 0;
   var oldProgress = -1;
 
   // Create the message and set the cursor position.
-  var msg = 'Downloading `${mediaStream.videoDetails.title}`:  \n';
-  var row = console.cursorPosition.row;
-  var col = msg.length - 2;
-  console.cursorPosition = Coordinate(row, 0);
-  console.write(msg);
+  var msg = 'Downloading `${video.title}`(.${audio.container.name}):  \n';
+  print(msg);
+  //  var row = console.cursorPosition.row;
+//  var col = msg.length - 2;
+//  console.cursorPosition = Coordinate(row, 0);
+//  console.write(msg);
 
   // Listen for data received.
-  await for (var data in audio.downloadStream()) {
+  await for (var data in audioStream) {
     count += data.length;
     var progress = ((count / len) * 100).round();
     if (progress != oldProgress) {
-      console.cursorPosition = Coordinate(row, col);
-      console.write('$progress%');
+//      console.cursorPosition = Coordinate(row, col);
+      print('$progress%');
       oldProgress = progress;
     }
     output.add(data);

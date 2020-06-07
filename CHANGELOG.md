@@ -1,3 +1,19 @@
+## 1.0.0-beta
+
+- Updated to v5 of YouTube Explode for C#
+
+## 1.0.1-beta
+
+- Implement `SearchClient`.
+- Implement `VideoStreamInfoExtension` for Iterables.
+- Update `xml` dependency.
+- Fixed closed caption api.
+
+## 1.0.2-beta
+
+- Fix video likes and dislikes count. #30
+<hr>
+
 ## 0.0.1
 
 - Initial version, created by Stagehand
@@ -70,3 +86,8 @@
 ## 0.0.16
 
 - When a video is not available(403) a `VideoStreamUnavailableException` 
+
+## 0.0.17
+
+- Fixed bug in #23
+
