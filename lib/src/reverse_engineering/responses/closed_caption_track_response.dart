@@ -9,7 +9,7 @@ class ClosedCaptionTrackResponse {
   ClosedCaptionTrackResponse(this._root);
 
   Iterable<ClosedCaption> get closedCaptions =>
-      _root.findElements('p').map((e) => ClosedCaption._(e));
+      _root.findAllElements('p').map((e) => ClosedCaption._(e));
 
   ClosedCaptionTrackResponse.parse(String raw) : _root = xml.parse(raw);
 
@@ -37,7 +37,7 @@ class ClosedCaption {
 
   ClosedCaption._(this._root);
 
-  String get text => _root.toXmlString();
+  String get text => _root.text;
 
   Duration get offset =>
       Duration(milliseconds: int.parse(_root.getAttribute('t') ?? 0));
@@ -48,7 +48,7 @@ class ClosedCaption {
   Duration get end => offset + duration;
 
   Iterable<ClosedCaptionPart> getParts() =>
-      _root.findElements('s').map((e) => ClosedCaptionPart._(e));
+      _root.findAllElements('s').map((e) => ClosedCaptionPart._(e));
 }
 
 class ClosedCaptionPart {
@@ -56,8 +56,8 @@ class ClosedCaptionPart {
 
   ClosedCaptionPart._(this._root);
 
-  String get text => _root.toXmlString();
+  String get text => _root.text;
 
   Duration get offset =>
-      Duration(milliseconds: int.parse(_root.getAttribute('t') ?? 0));
+      Duration(milliseconds: int.parse(_root.getAttribute('t') ?? '0'));
 }

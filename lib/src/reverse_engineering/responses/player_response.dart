@@ -85,7 +85,8 @@ class PlayerResponse {
           .get('captions')
           ?.get('playerCaptionsTracklistRenderer')
           ?.getValue('captionTracks')
-          ?.map((e) => ClosedCaptionTrack(e)) ??
+          ?.map((e) => ClosedCaptionTrack(e))
+          ?.cast<ClosedCaptionTrack>() ??
       const [];
 
   String getVideoPlayabilityError() =>

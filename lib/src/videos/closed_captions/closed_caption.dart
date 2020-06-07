@@ -14,6 +14,9 @@ class ClosedCaption {
   /// Duration this caption is displayed.
   final Duration duration;
 
+  /// Time at which this caption ends being displayed.
+  Duration get end => offset + duration;
+
   /// Caption parts (usually individual words).
   /// May be empty because not all captions contain parts.
   final UnmodifiableListView<ClosedCaptionPart> parts;
