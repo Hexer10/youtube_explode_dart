@@ -9,6 +9,7 @@ import 'exceptions/exceptions.dart';
 Future<T> retry<T>(FutureOr<T> function()) async {
   var retryCount = 5;
 
+  // ignore: literal_only_boolean_expressions
   while (true) {
     try {
       return await function();

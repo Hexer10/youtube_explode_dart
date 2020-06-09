@@ -28,7 +28,7 @@ class ChannelId extends Equatable {
       return false;
     }
 
-    return !RegExp('[^0-9a-zA-Z_\-]').hasMatch(id);
+    return !RegExp(r'[^0-9a-zA-Z_\-]').hasMatch(id);
   }
 
   /// Parses a channel id from an url.
@@ -61,7 +61,7 @@ class ChannelId extends Equatable {
   }
 
   @override
-  String toString() => '$value';
+  String toString() => value;
 
   @override
   List<Object> get props => [value];

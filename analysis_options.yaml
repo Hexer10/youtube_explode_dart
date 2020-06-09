@@ -6,17 +6,60 @@ include: package:effective_dart/analysis_options.yaml
 # For lint rules and documentation, see http://dart-lang.github.io/linter/lints.
 # Uncomment to specify additional rules.
 linter:
-   rules:
-     - valid_regexps
-     - prefer_const_constructors
-     - prefer_const_declarations
-     - prefer_const_literals_to_create_immutables
-     - prefer_constructors_over_static_methods
-     - prefer_contains
-     - annotate_overrides
-     - await_only_futures
-     - unawaited_futures
+  rules:
+    - valid_regexps
+    - prefer_const_constructors
+    - prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
+    - prefer_constructors_over_static_methods
+    - prefer_contains
+    - annotate_overrides
+    - await_only_futures
+    - unawaited_futures
+    - avoid_empty_else
+    - avoid_returning_null_for_future
+    - avoid_types_as_parameter_names
+    - control_flow_in_finally
+    - empty_statements
+    - invariant_booleans
+    - iterable_contains_unrelated_type
+    - list_remove_unrelated_type
+    - literal_only_boolean_expressions
+    - no_adjacent_strings_in_list
+    - no_duplicate_case_values
+    - prefer_void_to_null
+    - test_types_in_equals
+    - throw_in_finally
+    - unnecessary_statements
+    - unrelated_type_equality_checks
+    - always_declare_return_types
+    - always_put_control_body_on_new_line
+    - avoid_returning_null_for_void
+    - avoid_setters_without_getters
+    - avoid_shadowing_type_parameters
+    - avoid_unnecessary_containers
+    - avoid_void_async
+    - empty_catches
+    - null_closures
+    - prefer_conditional_assignment
+    - prefer_if_null_operators
+    - prefer_is_empty
+    - prefer_is_not_empty
+    - prefer_is_not_operator
+    - prefer_null_aware_operators
+    - recursive_getters
+    - unnecessary_await_in_return
+    - unnecessary_null_aware_assignments
+    - unnecessary_null_in_if_null_operators
+    - unnecessary_overrides
+    - unnecessary_parenthesis
+    - unnecessary_raw_strings
+    - unnecessary_string_escapes
+    - unnecessary_string_interpolations
+    - use_string_buffers
+    - void_checks
+    - package_names
 
 analyzer:
-   exclude:
-     - example\**
+  exclude:
+    - example\**

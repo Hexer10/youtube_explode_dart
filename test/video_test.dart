@@ -48,9 +48,9 @@ void main() {
     });
 
     test('GetMetadataOfInvalidVideo', () async {
-      expect(() async => await yt.videos.get(VideoId('qld9w0b-1ao')),
+      expect(() async => yt.videos.get(VideoId('qld9w0b-1ao')),
           throwsA(const TypeMatcher<VideoUnplayableException>()));
-      expect(() async => await yt.videos.get(VideoId('pb_hHv3fByo')),
+      expect(() async => yt.videos.get(VideoId('pb_hHv3fByo')),
           throwsA(const TypeMatcher<VideoUnplayableException>()));
     });
   });
