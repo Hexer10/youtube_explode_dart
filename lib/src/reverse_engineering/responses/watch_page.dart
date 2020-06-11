@@ -26,7 +26,6 @@ class WatchPage {
   bool get isVideoAvailable =>
       _root.querySelector('meta[property="og:url"]') != null;
 
-  //TODO: Update this to the new "parsing method" w/ regex "label"\s*:\s*"([\d,\.]+) likes"
   int get videoLikeCount => int.parse(_videoLikeExp
           .firstMatch(_root.outerHtml)
           ?.group(1)
@@ -39,7 +38,6 @@ class WatchPage {
           ?.nullIfWhitespace ??
       '0');
 
-  //TODO: Update this to the new "parsing method" w/ regex "label"\s*:\s*"([\d,\.]+) dislikes"
   int get videoDislikeCount => int.parse(_videoDislikeExp
           .firstMatch(_root.outerHtml)
           ?.group(1)
@@ -52,14 +50,14 @@ class WatchPage {
           ?.nullIfWhitespace ??
       '0');
 
-  _PlayerConfig get playerConfig => _PlayerConfig(json.decode(
-      _matchJson(_extractJson(_root.getElementsByTagName('html').first.text))));
+  _PlayerConfig get playerConfig =>
+      _PlayerConfig(json.decode(_matchJson(_extractJson(
+          _root.getElementsByTagName('html').first.text,
+          'ytplayer.config = '))));
 
-  final String configSep = 'ytplayer.config = ';
-
-  String _extractJson(String html) {
+  String _extractJson(String html, String separator) {
     return _matchJson(
-        html.substring(html.indexOf(configSep) + configSep.length));
+        html.substring(html.indexOf(separator) + separator.length));
   }
 
   String _matchJson(String str) {
