@@ -3,13 +3,17 @@ import 'dart:convert';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
-import '../../playlists/playlists.dart';
+import '../../extensions/helpers_extension.dart';
+import '../../playlists/playlist_id.dart';
 import '../../retry.dart';
 import '../../search/related_query.dart';
+import '../../search/search_playlist.dart';
+import '../../search/search_video.dart';
 import '../../videos/videos.dart';
 import '../youtube_http_client.dart';
 
 class SearchPage {
+  final String queryString;
   final Document _root;
 
   _InitialData _initialData;
@@ -22,6 +26,17 @@ class SearchPage {
               .toList()
               .firstWhere((e) => e.contains('window["ytInitialData"] =')),
           'window["ytInitialData"] ='))));
+
+  String _xsrfToken;
+
+  static final _xsfrTokenExp = RegExp('"XSRF_TOKEN":"(.+?)"');
+
+  String get xsfrToken => _xsrfToken ??= _xsfrTokenExp
+      .firstMatch(_root
+          .querySelectorAll('script')
+          .firstWhere((e) => _xsfrTokenExp.hasMatch(e.text))
+          .text)
+      .group(1);
 
   String _extractJson(String html, String separator) {
     return _matchJson(
@@ -46,22 +61,53 @@ class SearchPage {
     return str.substring(0, lastI + 1);
   }
 
-  SearchPage(this._root);
+  SearchPage(this._root, this.queryString,
+      [_InitialData initalData, String xsfrToken])
+      : _initialData = initalData,
+        _xsrfToken = xsfrToken;
+
+  Future<SearchPage> nextPage(YoutubeHttpClient httpClient) {
+    if (initialData.continuation == '') {
+      return null;
+    }
+    return get(httpClient, queryString,
+          ctoken: initialData.continuation,
+          itct: initialData.clickTrackingParams,
+          xsrfToken: xsfrToken);
+  }
 
   static Future<SearchPage> get(
-      YoutubeHttpClient httpClient, String queryString) {
-    final url =
+      YoutubeHttpClient httpClient, String queryString,
+      {String ctoken, String itct, String xsrfToken}) {
+    var url =
         'https://www.youtube.com/results?search_query=${Uri.encodeQueryComponent(queryString)}';
+    if (ctoken != null) {
+      assert(itct != null, 'If ctoken is not null itct cannot be null');
+      url += '&pbj=1';
+      url += '&ctoken=${Uri.encodeQueryComponent(ctoken)}';
+      url += '&continuation=${Uri.encodeQueryComponent(ctoken)}';
+      url += '&itct=${Uri.encodeQueryComponent(itct)}';
+    }
     return retry(() async {
+      Map<String, String> body;
+      if (xsrfToken != null) {
+        body = {'session_token': xsrfToken};
+      }
       var raw = await httpClient.postString(url);
-      return SearchPage.parse(raw);
+      if (ctoken != null) {
+        return SearchPage(
+            null, queryString, _InitialData(json.decode(raw)[1]), xsrfToken);
+      }
+      return SearchPage.parse(raw, queryString);
     });
   }
 
-  SearchPage.parse(String raw) : _root = parser.parse(raw);
+  SearchPage.parse(String raw, this.queryString) : _root = parser.parse(raw);
 }
 
 class _InitialData {
+  //TODO: Add total result
+
   // Json parsed map
   final Map<String, dynamic> _root;
 
@@ -72,57 +118,114 @@ class _InitialData {
   List<dynamic> _searchContent;
   List<dynamic> _relatedVideos;
   List<RelatedQuery> _relatedQueries;
+  String _continuation;
+  String _clickTrackingParams;
 
-  // Contains only [VideoId] or [PlaylistId]
-  List<dynamic> get searchContent =>
-      _searchContent ??= _root['contents']['twoColumnSearchResultsRenderer']
+  List<Map<String, dynamic>> getContentContext(Map<String, dynamic> root) {
+    if (root['contents'] != null) {
+      return _root['contents']['twoColumnSearchResultsRenderer']
               ['primaryContents']['sectionListRenderer']['contents']
           .first['itemSectionRenderer']['contents']
-          .map(_parseContent)
-          .where((e) => e != null)
-          .toList();
+          .cast<Map<String, dynamic>>();
+    }
+    if (root['response'] != null) {
+      return _root['response']['continuationContents']
+              ['itemSectionContinuation']['contents']
+          .cast<Map<String, dynamic>>();
+    }
+    throw Exception('Couldn\'t find the content data');
+  }
+
+  Map<String, dynamic> getContinuationContext(Map<String, dynamic> root) {
+    if (_root['contents'] != null) {
+      return _root['contents']['twoColumnSearchResultsRenderer']
+              ['primaryContents']['sectionListRenderer']['contents']
+          ?.first['itemSectionRenderer']['continuations']
+          ?.first
+          ?.getValue('nextContinuationData')
+          ?.cast<String, dynamic>();
+    }
+    if (_root['response'] != null) {
+      return _root['response']['continuationContents']
+              ['itemSectionContinuation']['continuations']
+          ?.first['nextContinuationData']
+          ?.cast<String, dynamic>();
+    }
+    return null;
+  }
+
+  // Contains only [SearchVideo] or [SearchPlaylist]
+  List<dynamic> get searchContent => _searchContent ??= getContentContext(_root)
+      .map(_parseContent)
+      .where((e) => e != null)
+      .toList();
 
   List<RelatedQuery> get relatedQueries =>
-      _relatedQueries ??= _root['contents']['twoColumnSearchResultsRenderer']
-              ['primaryContents']['sectionListRenderer']['contents']
-          .first['itemSectionRenderer']['contents']
-          .where((e) => e.containsKey('horizontalCardListRenderer') as bool)
-          .map((e) => e['horizontalCardListRenderer']['cards'])
-          .first
-          .map((e) => e['searchRefinementCardRenderer'])
-          .map((e) => RelatedQuery(
+      (_relatedQueries ??= getContentContext(_root)
+          ?.where((e) => e.containsKey('horizontalCardListRenderer'))
+          ?.map((e) => e['horizontalCardListRenderer']['cards'])
+          ?.firstOrNull
+          ?.map((e) => e['searchRefinementCardRenderer'])
+          ?.map((e) => RelatedQuery(
               e['searchEndpoint']['searchEndpoint']['query'],
               VideoId(Uri.parse(e['thumbnail']['thumbnails'].first['url'])
                   .pathSegments[1])))
-          .toList()
-          .cast<RelatedQuery>();
+          ?.toList()
+          ?.cast<RelatedQuery>()) ??
+      const [];
 
-  List<dynamic> get relatedVideos => _relatedVideos ??= _root['contents']
-              ['twoColumnSearchResultsRenderer']['primaryContents']
-          ['sectionListRenderer']['contents']
-      .first['itemSectionRenderer']['contents']
-      .where((e) => e.containsKey('shelfRenderer') as bool)
-      .map(
-          (e) => e['shelfRenderer']['content']['verticalListRenderer']['items'])
-      .first
-      .map(_parseContent)
-      .toList();
+  List<dynamic> get relatedVideos =>
+      (_relatedVideos ??= getContentContext(_root)
+          ?.where((e) => e.containsKey('shelfRenderer'))
+          ?.map((e) =>
+              e['shelfRenderer']['content']['verticalListRenderer']['items'])
+          ?.firstOrNull
+          ?.map(_parseContent)
+          ?.toList()) ??
+      const [];
+
+  String get continuation => _continuation ??=
+      getContinuationContext(_root)?.getValue('continuation') ?? '';
+
+  String get clickTrackingParams => _clickTrackingParams ??=
+      getContinuationContext(_root)?.getValue('clickTrackingParams') ?? '';
 
   dynamic _parseContent(dynamic content) {
-    // If is a video
-    print(content);
     if (content == null) {
       return null;
     }
     if (content.containsKey('videoRenderer')) {
-      return VideoId(content['videoRenderer']['videoId']);
+      Map<String, dynamic> renderer = content['videoRenderer'];
+      //TODO: Add it's a live
+      return SearchVideo(
+          VideoId(renderer['videoId']),
+          _parseRuns(renderer['title']),
+          _parseRuns(renderer['ownerText']),
+          _parseRuns(renderer['descriptionSnippet']),
+          renderer.get('lengthText')?.getValue('simpleText') ?? '',
+          int.parse(renderer['viewCountText']['simpleText']
+                  .toString()
+                  .stripNonDigits()
+                  .nullIfWhitespace ??
+              '0'));
     }
     if (content.containsKey('radioRenderer')) {
-      return PlaylistId(content['radioRenderer']['playlistId']);
+      var renderer = content['radioRenderer'];
+
+      return SearchPlaylist(
+          PlaylistId(renderer['playlistId']),
+          renderer['title']['simpleText'],
+          int.parse(_parseRuns(renderer['videoCountText'])
+                  .stripNonDigits()
+                  .nullIfWhitespace ??
+              0));
     }
     // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
     return null;
   }
+
+  String _parseRuns(Map<dynamic, dynamic> runs) =>
+      runs?.getValue('runs')?.map((e) => e['text'])?.join() ?? '';
 }
 
 // ['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'].first['itemSectionRenderer']

@@ -5,7 +5,7 @@ class RelatedQuery {
   /// Query related to a search query.
   final String query;
 
-  /// Video related to a seach query.
+  /// Video related to a search query.
   final VideoId videoId;
 
   /// Initialize a [RelatedQuery] instance.

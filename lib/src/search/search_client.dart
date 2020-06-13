@@ -1,3 +1,6 @@
+import 'package:youtube_explode_dart/src/search/search_query.dart'
+    show SearchQuery;
+
 import '../common/common.dart';
 import '../reverse_engineering/responses/playerlist_response.dart';
 import '../reverse_engineering/youtube_http_client.dart';
@@ -46,4 +49,8 @@ class SearchClient {
       }
     }
   }
+
+  /// Queries to YouTube to get the results.
+  Future<SearchQuery> queryFromPage(String searchQuery) =>
+      SearchQuery.search(_httpClient, searchQuery);
 }

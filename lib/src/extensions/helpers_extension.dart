@@ -44,7 +44,7 @@ extension ListDecipher on Iterable<CipherOperation> {
 }
 
 /// List Utility.
-extension ListFirst<E> on List<E> {
+extension ListFirst<E> on Iterable<E> {
   /// Returns the first element of a list or null if empty.
   E get firstOrNull {
     if (length == 0) {

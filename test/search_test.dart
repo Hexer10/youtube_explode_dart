@@ -12,11 +12,18 @@ void main() {
       yt.close();
     });
 
-    test('SearchYouTubeVideos', () async {
+    test('SearchYouTubeVideosFromApi', () async {
       var videos = await yt.search
           .getVideosAsync('undead corporation megalomania')
           .toList();
       expect(videos, isNotEmpty);
+    });
+    test('SearchYouTubeVideosFromPage', () async {
+      var searchQuery = await yt.search
+          .queryFromPage('hello');
+      expect(searchQuery.content, isNotEmpty);
+      expect(searchQuery.relatedVideos, isNotEmpty);
+      expect(searchQuery.relatedQueries, isNotEmpty);
     });
   });
 }
