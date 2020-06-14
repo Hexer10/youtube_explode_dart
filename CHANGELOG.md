@@ -1,3 +1,11 @@
+## 1.0.0
+- Stable release
+
+## 1.1.0
+- Implement for advanced Search parsing from search page. `SearchQuery`.
+
+<hr>
+
 ## 1.0.0-beta
 
 - Updated to v5 of YouTube Explode for C#
