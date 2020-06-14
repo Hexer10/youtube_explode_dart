@@ -45,7 +45,7 @@ class ChannelClient {
     var playerResponse = videoInfoResponse.playerResponse;
 
     var channelId = playerResponse.videoChannelId;
-    return await get(ChannelId(channelId));
+    return get(ChannelId(channelId));
   }
 
   /// Enumerates videos uploaded by the specified channel.

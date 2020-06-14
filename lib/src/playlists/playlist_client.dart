@@ -32,6 +32,7 @@ class PlaylistClient {
     id = PlaylistId.fromString(id);
     var encounteredVideoIds = <String>{};
     var index = 0;
+    // ignore: literal_only_boolean_expressions
     while (true) {
       var response =
           await PlaylistResponse.get(_httpClient, id.value, index: index);

@@ -109,22 +109,3 @@ class _StreamInfo extends StreamInfoProvider {
   @override
   int get framerate => int.tryParse(_root['fps'] ?? '');
 }
-
-extension on String {
-  String get nullIfWhitespace => trim().isEmpty ? null : this;
-
-  bool get isNullOrWhiteSpace {
-    if (this == null) {
-      return true;
-    }
-    if (trim().isEmpty) {
-      return true;
-    }
-    return false;
-  }
-
-  String substringUntil(String separator) => substring(0, indexOf(separator));
-
-  String substringAfter(String separator) =>
-      substring(indexOf(separator) + length);
-}

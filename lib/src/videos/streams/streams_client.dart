@@ -43,9 +43,9 @@ class StreamsClient {
         await PlayerSource.get(_httpClient, playerConfig.sourceUrl);
     var cipherOperations = playerSource.getCiperOperations();
 
-    var videoInfoReponse = await VideoInfoResponse.get(
+    var videoInfoResponse = await VideoInfoResponse.get(
         _httpClient, videoId.toString(), playerSource.sts);
-    var playerResponse = videoInfoReponse.playerResponse;
+    var playerResponse = videoInfoResponse.playerResponse;
 
     var previewVideoId = playerResponse.previewVideoId;
     if (!previewVideoId.isNullOrWhiteSpace) {
@@ -63,7 +63,7 @@ class StreamsClient {
     }
 
     var streamInfoProviders = <StreamInfoProvider>[
-      ...videoInfoReponse.streams,
+      ...videoInfoResponse.streams,
       ...playerResponse.streams
     ];
 

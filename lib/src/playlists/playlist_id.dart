@@ -5,7 +5,7 @@ class PlaylistId {
   static final _regMatchExp =
       RegExp(r'youtube\..+?/playlist.*?list=(.*?)(?:&|/|$)');
   static final _compositeMatchExp = RegExp(
-      r'https://www.youtube.com/watch?v=b8m9zhNAgKs&list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr');
+      'https://www.youtube.com/watch?v=b8m9zhNAgKs&list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr');
   static final _shortCompositeMatchExp =
       RegExp(r'youtu\.be/.*?/.*?list=(.*?)(?:&|/|$)');
   static final _embedCompositeMatchExp =
