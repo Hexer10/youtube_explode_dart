@@ -71,9 +71,9 @@ class SearchPage {
       return null;
     }
     return get(httpClient, queryString,
-          ctoken: initialData.continuation,
-          itct: initialData.clickTrackingParams,
-          xsrfToken: xsfrToken);
+        ctoken: initialData.continuation,
+        itct: initialData.clickTrackingParams,
+        xsrfToken: xsfrToken);
   }
 
   static Future<SearchPage> get(
@@ -106,8 +106,6 @@ class SearchPage {
 }
 
 class _InitialData {
-  //TODO: Add total result
-
   // Json parsed map
   final Map<String, dynamic> _root;
 
@@ -189,6 +187,8 @@ class _InitialData {
 
   String get clickTrackingParams => _clickTrackingParams ??=
       getContinuationContext(_root)?.getValue('clickTrackingParams') ?? '';
+
+  int get estimatedResults => int.parse(_root['estimatedResults'] ?? 0);
 
   dynamic _parseContent(dynamic content) {
     if (content == null) {

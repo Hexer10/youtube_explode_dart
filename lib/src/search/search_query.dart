@@ -41,4 +41,7 @@ class SearchQuery {
 
   /// Returns the queries related to this search.
   List<RelatedQuery> get relatedQueries => _page.initialData.relatedQueries;
+
+  /// Returns the estimated search result count.
+  int get estimatedResults => _page.initialData.estimatedResults;
 }
