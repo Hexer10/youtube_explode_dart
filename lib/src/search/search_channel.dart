@@ -1,7 +1,5 @@
 import '../channels/channel_id.dart';
 
-import '../playlists/playlist_id.dart';
-
 /// Metadata related to a search query result (channel)
 class SearchChannel {
   /// ChannelId.

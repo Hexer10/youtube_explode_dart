@@ -1,11 +1,9 @@
-import 'package:youtube_explode_dart/src/search/search_query.dart'
-    show SearchQuery;
-
 import '../common/common.dart';
 import '../reverse_engineering/responses/playerlist_response.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
 import '../videos/video_id.dart';
+import 'search_query.dart';
 
 /// YouTube search queries.
 class SearchClient {

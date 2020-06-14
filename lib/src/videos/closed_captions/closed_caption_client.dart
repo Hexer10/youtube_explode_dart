@@ -33,6 +33,7 @@ class ClosedCaptionClient {
     return ClosedCaptionManifest(tracks);
   }
 
+  ///
   Future<ClosedCaptionTrack> get(ClosedCaptionTrackInfo trackInfo) async {
     var response = await ClosedCaptionTrackResponse.get(
         _httpClient, trackInfo.url.toString());

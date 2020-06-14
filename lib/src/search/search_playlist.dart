@@ -11,6 +11,7 @@ class SearchPlaylist {
   /// Playlist video count, cannot be greater than 50.
   final int playlistVideoCount;
 
+  /// Initialize an instance of [SearchPlaylist]
   SearchPlaylist(this.playlistId, this.playlistTitle, this.playlistVideoCount);
 
   @override
