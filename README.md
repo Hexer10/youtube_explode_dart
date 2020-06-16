@@ -1,6 +1,10 @@
 # YoutubeExplodeDart
 This is a port of the [YoutubeExplode] library from C#, most of the functions, doc comments, readme information, is taken from YoutubeExplode repository.
 
+![Pub Version](https://img.shields.io/pub/v/youtube_explode_dart)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Hexer10/youtube_explode_dart/Dart%20CI)
+![License](https://img.shields.io/github/license/Hexer10/youtube_explode_dart)
+![Effective Dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)
 ---
 
 YoutubeExplode is a library that provides an interface to query metadata of YouTube videos, playlists and channels, as well as to resolve and download video streams and closed caption tracks. Behind a layer of abstraction, the library parses raw page content and uses reverse-engineered AJAX requests to retrieve information. As it doesn't use the official API, there's also no need for an API key and there are no usage quotas.
@@ -30,7 +34,7 @@ YoutubeExplode is a library that provides an interface to query metadata of YouT
 
 Add the dependency to the pubspec.yaml (Check for the latest version)
 ```yaml
-youtube_explode_dart: ^1.0.0
+youtube_explode_dart: ^1.2.0
 ```
 
 Import the library
