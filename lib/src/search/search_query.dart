@@ -22,11 +22,11 @@ class SearchQuery {
   }
 
   /// Get the data of the next page.
+  /// Returns null if there is no next page.
   Future<SearchQuery> nextPage() async {
     var page = await _page.nextPage(_httpClient);
     if (page == null) {
-      // TODO: Throw custom exception
-      throw Exception('Page limit reached!');
+      return null;
     }
     return SearchQuery(_httpClient, searchQuery, page);
   }

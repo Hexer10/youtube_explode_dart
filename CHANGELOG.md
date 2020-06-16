@@ -4,7 +4,7 @@
 - Implemented `withHighestBitrate` and `sortByBitrate` for `StreamInfo` iterables.
 - Implemented `withHighestBitrate` for `VideoStreamInfo` iterables.
 - Now `sortByVideoQuality` returns a List of `T`.
- 
+- `SearchQuery.nextPage` now returns null if there is no next page. 
 ## 1.1.0
 - Implement parsing of the search page to retrieve information from youtube searches. See `SearchQuery`.
 

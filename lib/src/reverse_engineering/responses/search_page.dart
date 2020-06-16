@@ -196,7 +196,7 @@ class _InitialData {
     }
     if (content.containsKey('videoRenderer')) {
       Map<String, dynamic> renderer = content['videoRenderer'];
-      //TODO: Add it's a live
+      //TODO: Add if it's a live
       return SearchVideo(
           VideoId(renderer['videoId']),
           _parseRuns(renderer['title']),
