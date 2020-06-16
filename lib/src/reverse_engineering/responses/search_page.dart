@@ -93,7 +93,7 @@ class SearchPage {
       if (xsrfToken != null) {
         body = {'session_token': xsrfToken};
       }
-      var raw = await httpClient.postString(url);
+      var raw = await httpClient.postString(url, body: body);
       if (ctoken != null) {
         return SearchPage(
             null, queryString, _InitialData(json.decode(raw)[1]), xsrfToken);
