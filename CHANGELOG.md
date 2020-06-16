@@ -1,10 +1,18 @@
+## 1.2.0
+- Improved documentation.
+- Deprecated `StreamInfoExt.getHighestBitrate`, use list.`sortByBitrate`.
+- Implemented `withHighestBitrate` and `sortByBitrate` for `StreamInfo` iterables.
+- Implemented `withHighestBitrate` for `VideoStreamInfo` iterables.
+- Now `sortByVideoQuality` returns a List of `T`.
+ 
+## 1.1.0
+- Implement parsing of the search page to retrieve information from youtube searches. See `SearchQuery`.
+
+
 ## 1.0.0
 - Stable release
 
-## 1.1.0
-- Implement for advanced Search parsing from search page. `SearchQuery`.
-
-<hr>
+---
 
 ## 1.0.0-beta
 

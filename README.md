@@ -1,27 +1,32 @@
 # YoutubeExplodeDart
-This is a port of the [YoutubeExplode] library from C#, most of the API functions or doc comments come from YoutubeExplode's API.
+This is a port of the [YoutubeExplode] library from C#, most of the functions, doc comments, readme information, is taken from YoutubeExplode repository.
 
 ---
 
-This library provides a class to query metadata of Youtube videos, playlists and channels.
-This doesn't require an API key and has no usage quotas.
+YoutubeExplode is a library that provides an interface to query metadata of YouTube videos, playlists and channels, as well as to resolve and download video streams and closed caption tracks. Behind a layer of abstraction, the library parses raw page content and uses reverse-engineered AJAX requests to retrieve information. As it doesn't use the official API, there's also no need for an API key and there are no usage quotas.
 
 ## Features from YoutubeExplode
 
-- Retrieve info about videos, playlists, channels, media streams, closed caption tracks.
-- Handles all types of videos, including legacy, signed, restricted, non-embeddable and unlisted videos
-- Downloads videos by exposing their media content as a stream
-- Parses and downloads closed caption tracks
-- All metadata properties are exposed using strong types and enums
-- Provides static methods to validate IDs and to parse IDs from URLs
-- No need for an API key and no usage quotas
+- Retrieve metadata on videos, playlists, channels, streams, and closed captions
+- Execute search queries and get resulting videos.
+- Get or download video streams.
+- Get closed captions.
 - All model extend `Equatable` to easily perform equality checks 
 
 ## Differences from YoutubeExplode
 
 - The entry point is `YoutubeExplode`, not `YoutubeClient`.
+- Download closed captions as `srt` is not supported yet.
+- Search queries can be fetched from the search page as well (thus fetch Videos, Channels and Playlists).
 
-## Install
+## Usage
+- [Install](#install)
+- [Downloading a video stream](#downloading-a-video-stream)
+- [Working with playlists](#working-with-playlists)
+- [Extracting closed captions](#extracting-closed-captions)
+- [Cleanup](#cleanup)
+
+### Install
 
 Add the dependency to the pubspec.yaml (Check for the latest version)
 ```yaml
@@ -33,62 +38,141 @@ Import the library
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 ```
 
-# Usage
+### Getting metadata of a video
+ The following example shows how you can extract various metadata from a YouTube video:
 
-To start using the API you need to initialize the `YoutubeExplode` class (which will create a new http client), and get (for example) the video id of the video you'd want to retrieve information, which usually is the `v` parameter.
+```dart
+// You can provider either a video ID or URL as String or an instance of `VideoId`.
+var video = yt.video.get('https://youtube.com/watch?v=bnsUkE8i0tU'); // Returns a Video instance.
+
+var title = video.title; // "Infected Mushroom - Spitfire [Monstercat Release]"
+var author = video.author; // "MonsterCat"
+var duration = video.duration; // Instance of Duration - 0:07:14.00000
+```
+
+### Downloading a video stream
+Every YouTube video has a number of streams available. These streams may have different containers, video quality, bitrate, etc.
+
+On top of that, depending on the content of the stream, the streams are further divided into 3 categories:
+- Muxed streams -- contain both video and audio
+- Audio-only streams -- contain only audio
+-- Video-only streams -- contain only video
+
+You can request the stream manifest to get available streams for a particular video:
+
+
 ```dart
 var yt = YoutubeExplode();
+
+var manifest = yt.videos.streamsClient.getManifest('bnsUkE8i0tU');
 ```
 
-## Get video metadata
-The [Video][Video] class contains info about the video such as the video title, the duration or the search keywords.
- 
-```dart
-var video = yt.video.get(id); // Returns a Video instance.
-```
-
-## Get video streams
-The Manifest contains the audio, video and muxed streams of the video. Each of the streams provides an url which can be used to download a video with a get request (See [example][VidExample]).
-```dart
-var manifest = yt.videos.streamsClient.getManifest(videoId);
-
-var muxed = manifest.muxed; // List of `MuxedStreamInfo` sorted by video quality.
-var audio = manifest.audio; // List of `AudioStreamInfo` sorted by bitrate.
-var video = manifest.video; // List of `VideoSteamInfo` sorted by video quality.
-// There are available manifest.audioOnly and manifest.videoOnly as well.
-```
-
-Be aware, the muxed streams don't hold the best quality, to achieve so, you'd need to merge the audio and video streams. 
-
-## Closed Captions
-To get the video closed caption it is need to query before the caption track infos, which can be used to retrieve the closed caption.
+Once you get the manifest, you can filter through the streams and choose the one you're interested in downloading:
 
 ```dart
-  var trackInfos = await yt.videos.closedCaptions.getManifest(videoId); // Get the caption track infos
-  var trackInfo = manifest.getByLanguage(en); // Get english caption.
-  var track = await track.getByTime(duration); // Get the caption displayed at `duration`.
+// Get highest quality muxed stream
+var streamInfo = streamManifest.muxed.withHigestVideoQuality();
+
+// ...or highest bitrate audio-only stream
+var streamInfo = streamManifest.audioOnly.withHigestBitrate()
+
+// ...or highest quality MP4 video-only stream
+var streamInfo.videoOnly.where((e) => e.container == Container)
 ```
 
-## Cleanup
-You need to close `YoutubeExplode`'s http client when done otherwise this could halt the dart process.
+Finally, you can get the actual `Stream` object represented by the metadata:
+
+```dart
+if (streamInfo != null) {
+  // Get the actual stream
+  var stream = yt.video.streamClient.get(streamInfo);
+  
+  // Open a file for writing.
+  var file = File(filePath);
+  var fileStream = file.openWrite();
+
+  // Pipe all the content of the stream into the file.
+  await stream.pipe(fileStream);
+
+  // Close the file.
+  await fileStream.flush();
+  await fileStream.close();
+}
+```
+
+While it may be tempting to just always use muxed streams, it's important to note that they are limited in quality. Muxed streams don't go beyond 720p30.
+
+If you want to download the video in maximum quality, you need to download the audio-only and video-only streams separately and then mux them together on your own. There are tools like FFmpeg that let you do that.
+
+### Working with playlists
+Among other things, YoutubeExplode also supports playlists:
+```dart
+var yt = YoutubeExplode();
+
+// Get playlist metadata.
+var playlist = await yt.playlists.get('PLQLqnnnfa_fAkUmMFw5xh8Kv0S5voEjC9');
+
+var title = playlist.title; // "Igorrr - Hallelujah"
+var author = playlist.author; // "randomusername604"
+
+  await for (var video in yt.playlists.getVideos(playlist.id)) {
+    var videoTitle = video.title;
+    var videoAuthor = video.author;
+  }
+
+var playlistVideos = await yt.playlists.getVideos(playlist.id);
+
+// Get first 20 playlist videos.
+var somePlaylistVideos = await yt.playlists.getVideos(playlist.id).take(20);
+```
+
+### Extracting closed captions
+Similarly, to streams, you can extract closed captions by getting the manifest and choosing the track you're interested in:
+
+```dart
+  var yt = YoutubeExplode();
+
+  var trackManifest = await yt.videos.closedCaptions.getManifest('_QdPW8JrYzQ')
+
+  var trackInfo = manifest.getByLanguage('en'); // Get english caption.
+  
+  if (trackInfo != null)
+  {
+     // Get the actual closed caption track.
+     var track = await youtube.videos.closedCaptions.get(trackInfo);
+      
+    // Get the caption displayed at 1:01
+    var caption = track.getByTime(Duration(seconds: 61));
+    var text = caption?.text; // "And the game was afoot."
+  }
+```
+
+### Cleanup
+You need to close `YoutubeExplode`'s http client, when done otherwise this could halt the dart process.
 
 
 ```dart
 yt.close();
 ```
 
+### Examples:
 
-# Examples:
-
-Available on [GitHub][Examples]
+More examples available on [GitHub][Examples].
 
 ---
 
-Check the [api doc][API] for additional information.
+
+Check the [api documentation][API] for additional information.
+
+### Credits
+
+- [Tyrrrz] for creating [YoutubeExplode] for C#
+- [Hexer10] (Me) who ported the library over to Dart.
+- All the [Contributors] of this repository.
 
 [YoutubeExplode]: https://github.com/Tyrrrz/YoutubeExplode/
-
-[Video]: https://pub.dev/documentation/youtube_explode_dart/latest/youtube_explode/Video-class.html
-[VidExample]: https://github.com/Hexer10/youtube_explode_dart/blob/master/example/video_download.dart
 [API]: https://pub.dev/documentation/youtube_explode_dart/latest/youtube_explode/youtube_explode-library.html
-[Examples]: [https://github.com/Hexer10/youtube_explode_dart/tree/master/example]
+[Examples]: https://github.com/Hexer10/youtube_explode_dart/tree/master/example
+[Tyrrrz]: https://github.com/Tyrrrz/
+[Hexer10]: https://github.com/Hexer10/
+[Contributors]: https://github.com/Hexer10/youtube_explode_dart/graphs/contributors

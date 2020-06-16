@@ -24,7 +24,7 @@ abstract class StreamInfo {
   StreamInfo(this.tag, this.url, this.container, this.size, this.bitrate);
 }
 
-/// Extensions for [StreamInfo]
+/// Extensions for [StreamInfo].
 extension StreamInfoExt on StreamInfo {
   static final _exp = RegExp('ratebypass[=/]yes');
 
@@ -32,6 +32,19 @@ extension StreamInfoExt on StreamInfo {
   bool isRateLimited() => _exp.hasMatch(url.toString());
 
   /// Gets the stream with highest bitrate.
+  @Deprecated('Use `sortByBitrate` extension instead. '
+      'Will be removed in v1.4.0')
   static StreamInfo getHighestBitrate(List<StreamInfo> streams) =>
       (streams..sort((a, b) => a.bitrate.compareTo(b.bitrate))).last;
+}
+
+/// Extension for Iterables of StreamInfo.
+extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
+  /// Gets the stream with highest bitrate.
+  T withHighestBitrate() => sortByBitrate().last;
+
+  /// Gets the video streams sorted by bitrate in ascending order.
+  /// This returns new list without editing the original list.
+  List<T> sortByBitrate() =>
+      toList()..sort((a, b) => a.bitrate.compareTo(b.bitrate));
 }

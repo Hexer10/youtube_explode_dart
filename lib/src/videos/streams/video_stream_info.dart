@@ -33,7 +33,7 @@ abstract class VideoStreamInfo extends StreamInfo {
 }
 
 /// Extensions for Iterables of [VideoStreamInfo]
-extension VideoStreamInfoExtension on Iterable<VideoStreamInfo> {
+extension VideoStreamInfoExtension<T extends VideoStreamInfo> on Iterable<T> {
   /// Gets all video qualities available in a collection of video streams.
   Set<VideoQuality> getAllVideoQualities() =>
       map((e) => e.videoQuality).toSet();
@@ -41,12 +41,17 @@ extension VideoStreamInfoExtension on Iterable<VideoStreamInfo> {
   /// Gets video quality labels of all streams available in
   /// a collection of video streams.
   /// This could be longer than [getAllVideoQualities] since this gives also all
-  /// the different fps.
+  /// the different framerate values.
   Set<String> getAllVideoQualitiesLabel() =>
       map((e) => e.videoQualityLabel).toSet();
 
-  /// Gets the video stream with highest video quality.
-  List<VideoStreamInfo> sortByVideoQuality() => toList()
+  /// Gets the stream with best video quality.
+  T withHighestBitrate() => sortByVideoQuality().last;
+
+  /// Gets the video streams sorted by highest video quality
+  /// (then by framerate) in ascending order.
+  /// This returns new list without editing the original list.
+  List<T> sortByVideoQuality() => toList()
     ..sort((a, b) => b.framerate.compareTo(a.framerate))
     ..sort((a, b) => b.videoQuality.index.compareTo(a.videoQuality.index));
 }
