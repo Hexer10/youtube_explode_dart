@@ -1,3 +1,8 @@
+## 1.2.1
+
+- Fixed `SearchPage.nextPage`.
+- Added more tests.
+
 ## 1.2.0
 - Improved documentation.
 - Deprecated `StreamInfoExt.getHighestBitrate`, use list.`sortByBitrate`.
@@ -5,6 +10,7 @@
 - Implemented `withHighestBitrate` for `VideoStreamInfo` iterables.
 - Now `sortByVideoQuality` returns a List of `T`.
 - `SearchQuery.nextPage` now returns null if there is no next page. 
+
 ## 1.1.0
 - Implement parsing of the search page to retrieve information from youtube searches. See `SearchQuery`.
 

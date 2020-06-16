@@ -26,5 +26,15 @@ void main() {
       expect(searchQuery.relatedVideos, isNotEmpty);
       expect(searchQuery.relatedQueries, isNotEmpty);
     }, skip: 'This may fail on some environments');
+
+    test('SearchNoResults', () async {
+      var query =
+          await yt.search.queryFromPage('g;jghEOGHJeguEPOUIhjegoUEHGOGHPSASG');
+      expect(query.content, isEmpty);
+      expect(query.relatedQueries, isEmpty);
+      expect(query.relatedVideos, isEmpty);
+      var nextPage = await query.nextPage();
+      expect(nextPage, isNull);
+    });
   });
 }

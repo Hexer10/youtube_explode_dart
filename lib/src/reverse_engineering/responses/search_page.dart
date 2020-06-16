@@ -136,10 +136,10 @@ class _InitialData {
 
   Map<String, dynamic> getContinuationContext(Map<String, dynamic> root) {
     if (_root['contents'] != null) {
-      return _root['contents']['twoColumnSearchResultsRenderer']
-              ['primaryContents']['sectionListRenderer']['contents']
-          ?.first['itemSectionRenderer']['continuations']
-          ?.first
+      return (_root['contents']['twoColumnSearchResultsRenderer']
+                  ['primaryContents']['sectionListRenderer']['contents']
+              ?.first['itemSectionRenderer']['continuations']
+              ?.first as Map)
           ?.getValue('nextContinuationData')
           ?.cast<String, dynamic>();
     }
