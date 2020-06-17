@@ -37,6 +37,9 @@ class Video with EquatableMixin {
   /// Engagement statistics for this video.
   final Engagement engagement;
 
+  /// Get the videos comments
+  final Function(int) getComments;
+
   /// Initializes an instance of [Video]
   Video(
       this.id,
@@ -47,7 +50,7 @@ class Video with EquatableMixin {
       this.duration,
       this.thumbnails,
       Iterable<String> keywords,
-      this.engagement)
+      this.engagement, this.getComments)
       : keywords = UnmodifiableListView(keywords);
 
   @override

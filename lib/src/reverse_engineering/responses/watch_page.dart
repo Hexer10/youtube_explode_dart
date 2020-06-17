@@ -188,3 +188,126 @@ class _PlayerConfig {
 
   List<_StreamInfo> get streams => [...muxedStreams, ...adaptiveStreams];
 }
+
+class _InitialData {
+  // Json parsed map
+  final Map<String, dynamic> _root;
+
+  _InitialData(this._root);
+
+  /* Cache results */
+
+  List<dynamic> _searchContent;
+  List<dynamic> _relatedVideos;
+  List<RelatedQuery> _relatedQueries;
+  String _continuation;
+  String _clickTrackingParams;
+
+  List<Map<String, dynamic>> getContentContext(Map<String, dynamic> root) {
+    if (root['contents'] != null) {
+      return _root['contents']['twoColumnSearchResultsRenderer']
+      ['primaryContents']['sectionListRenderer']['contents']
+          .first['itemSectionRenderer']['contents']
+          .cast<Map<String, dynamic>>();
+    }
+    if (root['response'] != null) {
+      return _root['response']['continuationContents']
+      ['itemSectionContinuation']['contents']
+          .cast<Map<String, dynamic>>();
+    }
+    throw Exception('Couldn\'t find the content data');
+  }
+
+  Map<String, dynamic> getContinuationContext(Map<String, dynamic> root) {
+    if (_root['contents'] != null) {
+      return (_root['contents']['twoColumnSearchResultsRenderer']
+      ['primaryContents']['sectionListRenderer']['contents']
+          ?.first['itemSectionRenderer']['continuations']
+          ?.first as Map)
+          ?.getValue('nextContinuationData')
+          ?.cast<String, dynamic>();
+    }
+    if (_root['response'] != null) {
+      return _root['response']['continuationContents']
+      ['itemSectionContinuation']['continuations']
+          ?.first['nextContinuationData']
+          ?.cast<String, dynamic>();
+    }
+    return null;
+  }
+
+  // Contains only [SearchVideo] or [SearchPlaylist]
+  List<dynamic> get searchContent => _searchContent ??= getContentContext(_root)
+      .map(_parseContent)
+      .where((e) => e != null)
+      .toList();
+
+  List<RelatedQuery> get relatedQueries =>
+      (_relatedQueries ??= getContentContext(_root)
+          ?.where((e) => e.containsKey('horizontalCardListRenderer'))
+          ?.map((e) => e['horizontalCardListRenderer']['cards'])
+          ?.firstOrNull
+          ?.map((e) => e['searchRefinementCardRenderer'])
+          ?.map((e) => RelatedQuery(
+          e['searchEndpoint']['searchEndpoint']['query'],
+          VideoId(Uri.parse(e['thumbnail']['thumbnails'].first['url'])
+              .pathSegments[1])))
+          ?.toList()
+          ?.cast<RelatedQuery>()) ??
+          const [];
+
+  List<dynamic> get relatedVideos =>
+      (_relatedVideos ??= getContentContext(_root)
+          ?.where((e) => e.containsKey('shelfRenderer'))
+          ?.map((e) =>
+      e['shelfRenderer']['content']['verticalListRenderer']['items'])
+          ?.firstOrNull
+          ?.map(_parseContent)
+          ?.toList()) ??
+          const [];
+
+  String get continuation => _continuation ??=
+      getContinuationContext(_root)?.getValue('continuation') ?? '';
+
+  String get clickTrackingParams => _clickTrackingParams ??=
+      getContinuationContext(_root)?.getValue('clickTrackingParams') ?? '';
+
+  int get estimatedResults => int.parse(_root['estimatedResults'] ?? 0);
+
+  dynamic _parseContent(dynamic content) {
+    if (content == null) {
+      return null;
+    }
+    if (content.containsKey('videoRenderer')) {
+      Map<String, dynamic> renderer = content['videoRenderer'];
+      //TODO: Add if it's a live
+      return SearchVideo(
+          VideoId(renderer['videoId']),
+          _parseRuns(renderer['title']),
+          _parseRuns(renderer['ownerText']),
+          _parseRuns(renderer['descriptionSnippet']),
+          renderer.get('lengthText')?.getValue('simpleText') ?? '',
+          int.parse(renderer['viewCountText']['simpleText']
+              .toString()
+              .stripNonDigits()
+              .nullIfWhitespace ??
+              '0'));
+    }
+    if (content.containsKey('radioRenderer')) {
+      var renderer = content['radioRenderer'];
+
+      return SearchPlaylist(
+          PlaylistId(renderer['playlistId']),
+          renderer['title']['simpleText'],
+          int.parse(_parseRuns(renderer['videoCountText'])
+              .stripNonDigits()
+              .nullIfWhitespace ??
+              0));
+    }
+    // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
+    return null;
+  }
+
+  String _parseRuns(Map<dynamic, dynamic> runs) =>
+      runs?.getValue('runs')?.map((e) => e['text'])?.join() ?? '';
+}
