@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import '../extensions/helpers_extension.dart';
 
 /// Encapsulates a valid YouTube playlist ID.
-class PlaylistId {
+class PlaylistId with EquatableMixin {
   static final _regMatchExp =
       RegExp(r'youtube\..+?/playlist.*?list=(.*?)(?:&|/|$)');
   static final _compositeMatchExp = RegExp(
@@ -104,4 +106,7 @@ class PlaylistId {
     }
     return PlaylistId(obj.toString());
   }
+
+  @override
+  List<Object> get props => [value];
 }

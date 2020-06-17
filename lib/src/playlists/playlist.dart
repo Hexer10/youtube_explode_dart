@@ -1,8 +1,10 @@
+import 'package:equatable/equatable.dart';
+
 import '../common/common.dart';
 import 'playlist_id.dart';
 
 /// YouTube playlist metadata.
-class Playlist {
+class Playlist with EquatableMixin {
   /// Playlist ID.
   final PlaylistId id;
 
@@ -27,4 +29,7 @@ class Playlist {
 
   @override
   String toString() => 'Playlist ($title)';
+
+  @override
+  List<Object> get props => [id];
 }

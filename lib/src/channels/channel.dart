@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'channel_id.dart';
 
 /// YouTube channel metadata.
-class Channel {
+class Channel with EquatableMixin {
   /// Channel ID.
   final ChannelId id;
 
@@ -19,4 +21,7 @@ class Channel {
 
   @override
   String toString() => 'Channel ($title)';
+
+  @override
+  List<Object> get props => [id];
 }

@@ -1,10 +1,12 @@
 import 'dart:collection';
 
+import 'package:equatable/equatable.dart';
+
 import '../common/common.dart';
 import 'video_id.dart';
 
 /// YouTube video metadata.
-class Video {
+class Video with EquatableMixin {
   /// Video ID.
   final VideoId id;
 
@@ -50,4 +52,7 @@ class Video {
 
   @override
   String toString() => 'Video ($title)';
+
+  @override
+  List<Object> get props => [id];
 }

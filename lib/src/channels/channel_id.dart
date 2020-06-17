@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../extensions/helpers_extension.dart';
 
 /// Encapsulates a valid YouTube channel ID.
-class ChannelId extends Equatable {
+class ChannelId with EquatableMixin {
   /// ID as a string.
   final String value;
 

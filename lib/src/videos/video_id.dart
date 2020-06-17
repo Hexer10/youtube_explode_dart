@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../extensions/helpers_extension.dart';
 
 /// Encapsulates a valid YouTube video ID.
-class VideoId extends Equatable {
+class VideoId with EquatableMixin {
   static final _regMatchExp = RegExp(r'youtube\..+?/watch.*?v=(.*?)(?:&|/|$)');
   static final _shortMatchExp = RegExp(r'youtu\.be/(.*?)(?:\?|&|/|$)');
   static final _embedMatchExp = RegExp(r'youtube\..+?/embed/(.*?)(?:\?|&|/|$)');
