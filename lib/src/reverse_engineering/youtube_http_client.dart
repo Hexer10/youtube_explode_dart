@@ -73,29 +73,30 @@ class YoutubeHttpClient {
     return response.body;
   }
 
+  // TODO: Check why isRateLimited is not working.
   Stream<List<int>> getStream(StreamInfo streamInfo,
       {Map<String, String> headers, bool validate = true}) async* {
     var url = streamInfo.url;
-    if (!streamInfo.isRateLimited()) {
+//    if (streamInfo.isRateLimited()) {
+//      var request = Request('get', url);
+//      request.headers.addAll(_defaultHeaders);
+//      var response = await request.send();
+//      if (validate) {
+//        _validateResponse(response, response.statusCode);
+//      }
+//      yield* response.stream;
+//    } else {
+    for (var i = 0; i < streamInfo.size.totalBytes; i += 9898989) {
       var request = Request('get', url);
+      request.headers['range'] = 'bytes=$i-${i + 9898989}';
       request.headers.addAll(_defaultHeaders);
       var response = await request.send();
       if (validate) {
         _validateResponse(response, response.statusCode);
       }
       yield* response.stream;
-    } else {
-      for (var i = 0; i < streamInfo.size.totalBytes; i += 9898989) {
-        var request = Request('get', url);
-        request.headers['range'] = 'bytes=$i-${i + 9898989}';
-        request.headers.addAll(_defaultHeaders);
-        var response = await request.send();
-        if (validate) {
-          _validateResponse(response, response.statusCode);
-        }
-        yield* response.stream;
-      }
     }
+//    }
   }
 
   Future<int> getContentLength(dynamic url,

@@ -1,3 +1,6 @@
+## 1.2.2
+- Momentarily ignore `isRateLimited()` when getting streams.
+
 ## 1.2.1
 
 - Fixed `SearchPage.nextPage`.
