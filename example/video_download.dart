@@ -36,8 +36,8 @@ Future<void> download(String id) async {
   var manifest = await yt.videos.streamsClient.getManifest(id);
   var streams = manifest.audioOnly;
 
-  // Get the last audio track (the one with the highest bitrate).
-  var audio = streams.last;
+  // Get the audio track with the highest bitrate.
+  var audio = streams.withHighestBitrate();
   var audioStream = yt.videos.streamsClient.get(audio);
 
   // Compose the file name removing the unallowed characters in windows.

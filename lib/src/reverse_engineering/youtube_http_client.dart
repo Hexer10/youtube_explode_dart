@@ -1,10 +1,10 @@
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 import '../exceptions/exceptions.dart';
 import '../videos/streams/streams.dart';
 
-class YoutubeHttpClient {
-  final Client _httpClient = Client();
+class YoutubeHttpClient extends http.BaseClient {
+  final http.Client _httpClient = http.Client();
 
   final Map<String, String> _defaultHeaders = const {
     'user-agent':
@@ -15,7 +15,7 @@ class YoutubeHttpClient {
   };
 
   /// Throws if something is wrong with the response.
-  void _validateResponse(BaseResponse response, int statusCode) {
+  void _validateResponse(http.BaseResponse response, int statusCode) {
     var request = response.request;
     if (request.url.host.endsWith('.google.com') &&
         request.url.path.startsWith('/sorry/')) {
@@ -35,22 +35,9 @@ class YoutubeHttpClient {
     }
   }
 
-  Future<Response> get(dynamic url, {Map<String, String> headers}) {
-    return _httpClient.get(url, headers: {...?headers, ..._defaultHeaders});
-  }
-
-  Future<Response> post(dynamic url, {Map<String, String> headers}) {
-    return _httpClient.post(url, headers: {...?headers, ..._defaultHeaders});
-  }
-
-  Future<Response> head(dynamic url, {Map<String, String> headers}) {
-    return _httpClient.head(url, headers: {...?headers, ..._defaultHeaders});
-  }
-
   Future<String> getString(dynamic url,
       {Map<String, String> headers, bool validate = true}) async {
-    var response =
-        await _httpClient.get(url, headers: {...?headers, ..._defaultHeaders});
+    var response = await get(url, headers: {...?headers, ..._defaultHeaders});
 
     if (validate) {
       _validateResponse(response, response.statusCode);
@@ -63,8 +50,7 @@ class YoutubeHttpClient {
       {Map<String, String> body,
       Map<String, String> headers,
       bool validate = true}) async {
-    var response = await _httpClient.post(url,
-        headers: {...?headers, ..._defaultHeaders}, body: body);
+    var response = await post(url, headers: headers, body: body);
 
     if (validate) {
       _validateResponse(response, response.statusCode);
@@ -87,10 +73,9 @@ class YoutubeHttpClient {
 //      yield* response.stream;
 //    } else {
     for (var i = 0; i < streamInfo.size.totalBytes; i += 9898989) {
-      var request = Request('get', url);
-      request.headers['range'] = 'bytes=$i-${i + 9898989}';
-      request.headers.addAll(_defaultHeaders);
-      var response = await request.send();
+      var request = http.Request('get', url);
+      request.headers['range'] = 'bytes=$i-${i + 9898989 - 1}';
+      var response = await send(request);
       if (validate) {
         _validateResponse(response, response.statusCode);
       }
@@ -110,7 +95,12 @@ class YoutubeHttpClient {
     return int.tryParse(response.headers['content-length'] ?? '');
   }
 
-  /// Closes the [Client] assigned to this [YoutubeHttpClient].
-  /// Should be called after this is not used anymore.
+  @override
   void close() => _httpClient.close();
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    request.headers.addAll(_defaultHeaders);
+    return _httpClient.send(request);
+  }
 }
