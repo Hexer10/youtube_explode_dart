@@ -1,8 +1,10 @@
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 import '../common/common.dart';
+import '../reverse_engineering/responses/responses.dart';
 import 'video_id.dart';
 
 /// YouTube video metadata.
@@ -37,6 +39,10 @@ class Video with EquatableMixin {
   /// Engagement statistics for this video.
   final Engagement engagement;
 
+  /// Used internally.
+  @protected
+  final WatchPage watchPage;
+
   /// Initializes an instance of [Video]
   Video(
       this.id,
@@ -47,7 +53,8 @@ class Video with EquatableMixin {
       this.duration,
       this.thumbnails,
       Iterable<String> keywords,
-      this.engagement)
+      this.engagement,
+      [this.watchPage])
       : keywords = UnmodifiableListView(keywords);
 
   @override

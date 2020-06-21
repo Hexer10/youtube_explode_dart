@@ -12,6 +12,12 @@ class YoutubeHttpClient extends http.BaseClient {
     'accept-language': 'en-US,en;q=1.0',
     'x-youtube-client-name': '1',
     'x-youtube-client-version': '2.20200609.04.02',
+    'x-spf-previous': 'https://www.youtube.com/',
+    'x-spf-referer': 'https://www.youtube.com/',
+    'x-youtube-device':
+        'cbr=Chrome&cbrver=81.0.4044.138&ceng=WebKit&cengver=537.36'
+            '&cos=Windows&cosver=10.0',
+    'x-youtube-page-label': 'youtube.ytfe.desktop_20200617_1_RC1'
   };
 
   /// Throws if something is wrong with the response.
@@ -37,13 +43,23 @@ class YoutubeHttpClient extends http.BaseClient {
 
   Future<String> getString(dynamic url,
       {Map<String, String> headers, bool validate = true}) async {
-    var response = await get(url, headers: {...?headers, ..._defaultHeaders});
-
+    var response = await get(url, headers: headers);
+    
     if (validate) {
       _validateResponse(response, response.statusCode);
     }
 
     return response.body;
+  }
+
+  @override
+  Future<http.Response> get(dynamic url,
+      {Map<String, String> headers, bool validate = false}) async {
+    var response = await super.get(url, headers: headers);
+    if (validate) {
+      _validateResponse(response, response.statusCode);
+    }
+    return response;
   }
 
   Future<String> postString(dynamic url,
@@ -63,8 +79,8 @@ class YoutubeHttpClient extends http.BaseClient {
   Stream<List<int>> getStream(StreamInfo streamInfo,
       {Map<String, String> headers, bool validate = true}) async* {
     var url = streamInfo.url;
-//    if (streamInfo.isRateLimited()) {
-//      var request = Request('get', url);
+//    if (!streamInfo.isRateLimited()) {
+//      var request = http.Request('get', url);
 //      request.headers.addAll(_defaultHeaders);
 //      var response = await request.send();
 //      if (validate) {
@@ -100,7 +116,11 @@ class YoutubeHttpClient extends http.BaseClient {
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) {
-    request.headers.addAll(_defaultHeaders);
+    _defaultHeaders.forEach((key, value) {
+      if (request.headers[key] == null) {
+        request.headers[key] = _defaultHeaders[key];
+      }
+    });
     return _httpClient.send(request);
   }
 }
