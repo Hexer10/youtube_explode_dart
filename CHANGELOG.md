@@ -1,3 +1,6 @@
+## 1.3.0
+- Added api get youtube comments of a video.
+
 ## 1.2.3
 - Fix duplicated bytes when downloading a stream. See [#41][Comment41]
 

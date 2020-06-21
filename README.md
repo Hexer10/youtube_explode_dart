@@ -15,6 +15,7 @@ YoutubeExplode is a library that provides an interface to query metadata of YouT
 - Execute search queries and get resulting videos.
 - Get or download video streams.
 - Get closed captions.
+- Get video comments.
 - All model extend `Equatable` to easily perform equality checks 
 
 ## Differences from YoutubeExplode
@@ -28,6 +29,7 @@ YoutubeExplode is a library that provides an interface to query metadata of YouT
 - [Downloading a video stream](#downloading-a-video-stream)
 - [Working with playlists](#working-with-playlists)
 - [Extracting closed captions](#extracting-closed-captions)
+- [Getting comments](#getting-comments)
 - [Cleanup](#cleanup)
 
 ### Install
@@ -150,6 +152,18 @@ Similarly, to streams, you can extract closed captions by getting the manifest a
     var text = caption?.text; // "And the game was afoot."
   }
 ```
+
+### Getting comments
+You can easily get the video comments of a given video, the comment pages are fetched automatically, and every page has
+20 videos (that means that there is no point to take 25 comments to save some resources, but you could just take 40)
+
+```
+// Here we are getting the first 20 comments of the video.
+// The stream wont close until all the video comments are fetched.
+var comments = await yt.videos.commentsClient.getComments(video).take(20).toList()
+```
+
+Currently getting comment replies is not supported.
 
 ### Cleanup
 You need to close `YoutubeExplode`'s http client, when done otherwise this could halt the dart process.
