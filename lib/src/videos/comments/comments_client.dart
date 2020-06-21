@@ -15,7 +15,7 @@ class CommentsClient {
   CommentsClient(this._httpClient);
 
   /// Returns the json parsed comments map.
-  Future<dynamic> _getCommentJson(
+  Future<Map<String, dynamic>> _getCommentJson(
       String service,
       String continuation,
       String clickTrackingParams,
