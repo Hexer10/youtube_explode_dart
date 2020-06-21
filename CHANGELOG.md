@@ -1,3 +1,9 @@
+## 1.2.3
+- Fix duplicated bytes when downloading a stream. See [#41][Comment41]
+
+## 1.2.2
+- Momentarily ignore `isRateLimited()` when getting streams.
+
 ## 1.2.1
 
 - Fixed `SearchPage.nextPage`.
@@ -113,3 +119,6 @@
 
 - Fixed bug in #23
 
+
+
+[Comment41]: https://github.com/Hexer10/youtube_explode_dart/issues/41#issuecomment-646974990

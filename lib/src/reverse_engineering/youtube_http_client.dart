@@ -44,7 +44,7 @@ class YoutubeHttpClient extends http.BaseClient {
   Future<String> getString(dynamic url,
       {Map<String, String> headers, bool validate = true}) async {
     var response = await get(url, headers: headers);
-
+    
     if (validate) {
       _validateResponse(response, response.statusCode);
     }
@@ -75,6 +75,7 @@ class YoutubeHttpClient extends http.BaseClient {
     return response.body;
   }
 
+  // TODO: Check why isRateLimited is not working.
   Stream<List<int>> getStream(StreamInfo streamInfo,
       {Map<String, String> headers, bool validate = true}) async* {
     var url = streamInfo.url;
@@ -89,7 +90,7 @@ class YoutubeHttpClient extends http.BaseClient {
 //    } else {
     for (var i = 0; i < streamInfo.size.totalBytes; i += 9898989) {
       var request = http.Request('get', url);
-      request.headers['range'] = 'bytes=$i-${i + 9898989}';
+      request.headers['range'] = 'bytes=$i-${i + 9898989 - 1}';
       var response = await send(request);
       if (validate) {
         _validateResponse(response, response.statusCode);
