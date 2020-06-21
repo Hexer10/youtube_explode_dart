@@ -13,13 +13,36 @@ import 'player_response.dart';
 import 'stream_info_provider.dart';
 
 class WatchPage {
-  final RegExp _videoLikeExp = RegExp(r'"label"\s*:\s*"([\d,\.]+) likes"');
-  final RegExp _videoDislikeExp =
+  static final RegExp _videoLikeExp =
+      RegExp(r'"label"\s*:\s*"([\d,\.]+) likes"');
+  static final RegExp _videoDislikeExp =
       RegExp(r'"label"\s*:\s*"([\d,\.]+) dislikes"');
+  static final RegExp _visitorInfoLiveExp =
+      RegExp('VISITOR_INFO1_LIVE=([^;]+)');
+  static final RegExp _yscExp = RegExp('YSC=([^;]+)');
+  static final _xsfrTokenExp = RegExp(r'"XSRF_TOKEN"\s*:\s*"(.+?)"');
 
   final Document _root;
+  final String visitorInfoLive;
+  final String ysc;
 
-  WatchPage(this._root);
+  WatchPage(this._root, this.visitorInfoLive, this.ysc);
+
+  _InitialData get initialData =>
+      _InitialData(json.decode(_matchJson(_extractJson(
+          _root
+              .querySelectorAll('script')
+              .map((e) => e.text)
+              .toList()
+              .firstWhere((e) => e.contains('window["ytInitialData"] =')),
+          'window["ytInitialData"] ='))));
+
+  String get xsfrToken => _xsfrTokenExp
+      .firstMatch(_root
+          .querySelectorAll('script')
+          .firstWhere((e) => _xsfrTokenExp.hasMatch(e.text))
+          .text)
+      .group(1);
 
   bool get isOk => _root.body.querySelector('#player') != null;
 
@@ -78,14 +101,18 @@ class WatchPage {
     return str.substring(0, lastI + 1);
   }
 
-  WatchPage.parse(String raw) : _root = parser.parse(raw);
+  WatchPage.parse(String raw, this.visitorInfoLive, this.ysc)
+      : _root = parser.parse(raw);
 
   static Future<WatchPage> get(YoutubeHttpClient httpClient, String videoId) {
     final url = 'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en';
     return retry(() async {
-      var raw = await httpClient.getString(url);
+      var req = await httpClient.get(url, validate: true);
 
-      var result = WatchPage.parse(raw);
+      var cookies = req.headers['set-cookie'];
+      var visitorInfoLive = _visitorInfoLiveExp.firstMatch(cookies).group(1);
+      var ysc = _yscExp.firstMatch(cookies).group(1);
+      var result = WatchPage.parse(req.body, visitorInfoLive, ysc);
 
       if (!result.isOk) {
         throw TransientFailureException("Video watch page is broken.");
@@ -197,117 +224,29 @@ class _InitialData {
 
   /* Cache results */
 
-  List<dynamic> _searchContent;
-  List<dynamic> _relatedVideos;
-  List<RelatedQuery> _relatedQueries;
   String _continuation;
   String _clickTrackingParams;
 
-  List<Map<String, dynamic>> getContentContext(Map<String, dynamic> root) {
-    if (root['contents'] != null) {
-      return _root['contents']['twoColumnSearchResultsRenderer']
-      ['primaryContents']['sectionListRenderer']['contents']
-          .first['itemSectionRenderer']['contents']
-          .cast<Map<String, dynamic>>();
-    }
-    if (root['response'] != null) {
-      return _root['response']['continuationContents']
-      ['itemSectionContinuation']['contents']
-          .cast<Map<String, dynamic>>();
-    }
-    throw Exception('Couldn\'t find the content data');
-  }
-
   Map<String, dynamic> getContinuationContext(Map<String, dynamic> root) {
     if (_root['contents'] != null) {
-      return (_root['contents']['twoColumnSearchResultsRenderer']
-      ['primaryContents']['sectionListRenderer']['contents']
-          ?.first['itemSectionRenderer']['continuations']
-          ?.first as Map)
-          ?.getValue('nextContinuationData')
+      return (_root['contents']['twoColumnWatchNextResults']['results']
+              ['results']['contents'] as List<dynamic>)
+          ?.firstWhere((e) => e.containsKey('itemSectionRenderer'))[
+              'itemSectionRenderer']['continuations']
+          ?.first['nextContinuationData']
           ?.cast<String, dynamic>();
     }
     if (_root['response'] != null) {
-      return _root['response']['continuationContents']
-      ['itemSectionContinuation']['continuations']
+      return _root['response']['itemSectionContinuation']['continuations']
           ?.first['nextContinuationData']
           ?.cast<String, dynamic>();
     }
     return null;
   }
 
-  // Contains only [SearchVideo] or [SearchPlaylist]
-  List<dynamic> get searchContent => _searchContent ??= getContentContext(_root)
-      .map(_parseContent)
-      .where((e) => e != null)
-      .toList();
-
-  List<RelatedQuery> get relatedQueries =>
-      (_relatedQueries ??= getContentContext(_root)
-          ?.where((e) => e.containsKey('horizontalCardListRenderer'))
-          ?.map((e) => e['horizontalCardListRenderer']['cards'])
-          ?.firstOrNull
-          ?.map((e) => e['searchRefinementCardRenderer'])
-          ?.map((e) => RelatedQuery(
-          e['searchEndpoint']['searchEndpoint']['query'],
-          VideoId(Uri.parse(e['thumbnail']['thumbnails'].first['url'])
-              .pathSegments[1])))
-          ?.toList()
-          ?.cast<RelatedQuery>()) ??
-          const [];
-
-  List<dynamic> get relatedVideos =>
-      (_relatedVideos ??= getContentContext(_root)
-          ?.where((e) => e.containsKey('shelfRenderer'))
-          ?.map((e) =>
-      e['shelfRenderer']['content']['verticalListRenderer']['items'])
-          ?.firstOrNull
-          ?.map(_parseContent)
-          ?.toList()) ??
-          const [];
-
   String get continuation => _continuation ??=
       getContinuationContext(_root)?.getValue('continuation') ?? '';
 
   String get clickTrackingParams => _clickTrackingParams ??=
       getContinuationContext(_root)?.getValue('clickTrackingParams') ?? '';
-
-  int get estimatedResults => int.parse(_root['estimatedResults'] ?? 0);
-
-  dynamic _parseContent(dynamic content) {
-    if (content == null) {
-      return null;
-    }
-    if (content.containsKey('videoRenderer')) {
-      Map<String, dynamic> renderer = content['videoRenderer'];
-      //TODO: Add if it's a live
-      return SearchVideo(
-          VideoId(renderer['videoId']),
-          _parseRuns(renderer['title']),
-          _parseRuns(renderer['ownerText']),
-          _parseRuns(renderer['descriptionSnippet']),
-          renderer.get('lengthText')?.getValue('simpleText') ?? '',
-          int.parse(renderer['viewCountText']['simpleText']
-              .toString()
-              .stripNonDigits()
-              .nullIfWhitespace ??
-              '0'));
-    }
-    if (content.containsKey('radioRenderer')) {
-      var renderer = content['radioRenderer'];
-
-      return SearchPlaylist(
-          PlaylistId(renderer['playlistId']),
-          renderer['title']['simpleText'],
-          int.parse(_parseRuns(renderer['videoCountText'])
-              .stripNonDigits()
-              .nullIfWhitespace ??
-              0));
-    }
-    // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
-    return null;
-  }
-
-  String _parseRuns(Map<dynamic, dynamic> runs) =>
-      runs?.getValue('runs')?.map((e) => e['text'])?.join() ?? '';
 }
