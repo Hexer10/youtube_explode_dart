@@ -58,26 +58,25 @@ void main() {
             'Qzu-fTdjeFY'
           ]));
     });
-    test('GetVideosInAnyPlaylist', () async {
-      var data = const {
-        'PL601B2E69B03FAB9D',
-        'PLI5YfMzCfRtZ8eV576YoY3vIYrHjyVm_e',
-        'PLWwAypAcFRgKFlxtLbn_u14zddtDJj3mk',
-        'OLAK5uy_mtOdjCW76nDvf5yOzgcAVMYpJ5gcW5uKU',
-        'RD1hu8-y6fKg0',
-        'RDMMU-ty-2B02VY',
-        'RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs',
-        'ULl6WWX-BgIiE',
-        'UUTMt7iMWa7jy0fNXIktwyLA',
-        'OLAK5uy_lLeonUugocG5J0EUAEDmbskX4emejKwcM',
-        'FLEnBXANsKmyj2r9xVyKoDiQ'
-      };
-
-      for (var playlistId in data) {
+    var data = const {
+      'PL601B2E69B03FAB9D',
+      'PLI5YfMzCfRtZ8eV576YoY3vIYrHjyVm_e',
+      'PLWwAypAcFRgKFlxtLbn_u14zddtDJj3mk',
+      'OLAK5uy_mtOdjCW76nDvf5yOzgcAVMYpJ5gcW5uKU',
+      'RD1hu8-y6fKg0',
+      'RDMMU-ty-2B02VY',
+      'RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs',
+      'ULl6WWX-BgIiE',
+      'UUTMt7iMWa7jy0fNXIktwyLA',
+      'OLAK5uy_lLeonUugocG5J0EUAEDmbskX4emejKwcM',
+      'FLEnBXANsKmyj2r9xVyKoDiQ'
+    };
+    for (var playlistId in data) {
+      test('GetVideosInAnyPlaylist - $playlistId', () async {
         var videos =
             await yt.playlists.getVideos(PlaylistId(playlistId)).toList();
         expect(videos, isNotEmpty);
-      }
-    });
+      });
+    }
   });
 }

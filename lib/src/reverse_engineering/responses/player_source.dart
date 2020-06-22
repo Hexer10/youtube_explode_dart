@@ -15,16 +15,20 @@ class PlayerSource {
 
   final String _root;
 
-  PlayerSource(this._root);
+  String _sts;
+  String _deciphererDefinitionBody;
 
   String get sts {
+    if (_sts != null) {
+      return _sts;
+    }
     var val = RegExp(r'(?<=invalid namespace.*?;\w+\s*=)\d+')
         .stringMatch(_root)
         ?.nullIfWhitespace;
     if (val == null) {
       throw FatalFailureException('Could not find sts in player source.');
     }
-    return val;
+    return _sts ??= val;
   }
 
   Iterable<CipherOperation> getCiperOperations() sync* {
@@ -74,11 +78,15 @@ class PlayerSource {
   }
 
   String _getDeciphererFuncBody() {
+    if (_deciphererDefinitionBody != null) {
+      return _deciphererDefinitionBody;
+    }
     var funcName = _funcBodyExp.firstMatch(_root).group(1);
 
     var exp = RegExp(
         r'(?!h\.)' '${RegExp.escape(funcName)}' r'=function\(\w+\)\{(.*?)\}');
-    return exp.firstMatch(_root).group(1).nullIfWhitespace;
+    return _deciphererDefinitionBody ??=
+        exp.firstMatch(_root).group(1).nullIfWhitespace;
   }
 
   String _getDeciphererDefinitionBody(String deciphererFuncBody) {
@@ -91,6 +99,8 @@ class PlayerSource {
         dotAll: true);
     return exp.firstMatch(_root).group(0).nullIfWhitespace;
   }
+
+  PlayerSource(this._root);
 
   // Same as default constructor
   PlayerSource.parse(this._root);

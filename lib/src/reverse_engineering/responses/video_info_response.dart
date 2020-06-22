@@ -9,30 +9,39 @@ import 'stream_info_provider.dart';
 class VideoInfoResponse {
   final Map<String, String> _root;
 
-  VideoInfoResponse(this._root);
+  String _status;
+  bool _isVideoAvailable;
+  PlayerResponse _playerResponse;
+  Iterable<_StreamInfo> _muxedStreams;
+  Iterable<_StreamInfo> _adaptiveStreams;
+  Iterable<_StreamInfo> _streams;
 
-  String get status => _root['status'];
+  String get status => _status ??= _root['status'];
 
-  bool get isVideoAvailable => status.toLowerCase() != 'fail';
+  bool get isVideoAvailable =>
+      _isVideoAvailable ??= status.toLowerCase() != 'fail';
 
   PlayerResponse get playerResponse =>
-      PlayerResponse.parse(_root['player_response']);
+      _playerResponse ??= PlayerResponse.parse(_root['player_response']);
 
   Iterable<_StreamInfo> get muxedStreams =>
-      _root['url_encoded_fmt_stream_map']
-          ?.split(',')
-          ?.map(Uri.splitQueryString)
-          ?.map((e) => _StreamInfo(e)) ??
-      const [];
+      _muxedStreams ??= _root['url_encoded_fmt_stream_map']
+              ?.split(',')
+              ?.map(Uri.splitQueryString)
+              ?.map((e) => _StreamInfo(e)) ??
+          const [];
 
   Iterable<_StreamInfo> get adaptiveStreams =>
-      _root['adaptive_fmts']
-          ?.split(',')
-          ?.map(Uri.splitQueryString)
-          ?.map((e) => _StreamInfo(e)) ??
-      const [];
+      _adaptiveStreams ??= _root['adaptive_fmts']
+              ?.split(',')
+              ?.map(Uri.splitQueryString)
+              ?.map((e) => _StreamInfo(e)) ??
+          const [];
 
-  Iterable<_StreamInfo> get streams => [...muxedStreams, ...adaptiveStreams];
+  Iterable<_StreamInfo> get streams =>
+      _streams ??= [...muxedStreams, ...adaptiveStreams];
+
+  VideoInfoResponse(this._root);
 
   VideoInfoResponse.parse(String raw) : _root = Uri.splitQueryString(raw);
 
@@ -57,55 +66,73 @@ class VideoInfoResponse {
 class _StreamInfo extends StreamInfoProvider {
   final Map<String, String> _root;
 
-  _StreamInfo(this._root);
+  int _tag;
+  String _url;
+  String _signature;
+  String _signatureParameter;
+  int _contentLength;
+  int _bitrate;
+  MediaType _mimeType;
+  String _container;
+  List<String> _codecs;
+  String _audioCodec;
+  String _videoCodec;
+  bool _isAudioOnly;
+  String _videoQualityLabel;
+  List<int> __size;
+  int _videoWidth;
+  int _videoHeight;
+  int _framerate;
 
   @override
-  int get tag => int.parse(_root['itag']);
+  int get tag => _tag ??= int.parse(_root['itag']);
 
   @override
-  String get url => _root['url'];
+  String get url => _url ??= _root['url'];
 
   @override
-  String get signature => _root['s'];
+  String get signature => _signature ??= _root['s'];
 
   @override
-  String get signatureParameter => _root['sp'];
+  String get signatureParameter => _signatureParameter ??= _root['sp'];
 
   @override
-  int get contentLength => int.tryParse(_root['clen'] ??
+  int get contentLength => _contentLength ??= int.tryParse(_root['clen'] ??
       StreamInfoProvider.contentLenExp.firstMatch(url).group(1));
 
   @override
-  int get bitrate => int.parse(_root['bitrate']);
+  int get bitrate => _bitrate ??= int.parse(_root['bitrate']);
 
-  MediaType get mimeType => MediaType.parse(_root["type"]);
+  MediaType get mimeType => _mimeType ??= MediaType.parse(_root["type"]);
 
   @override
-  String get container => mimeType.subtype;
+  String get container => _container ??= mimeType.subtype;
 
   List<String> get codecs =>
-      mimeType.parameters['codecs'].split(',').map((e) => e.trim());
+      _codecs ??= mimeType.parameters['codecs'].split(',').map((e) => e.trim());
 
   @override
-  String get audioCodec => codecs.last;
+  String get audioCodec => _audioCodec ??= codecs.last;
 
   @override
-  String get videoCodec => isAudioOnly ? null : codecs.first;
+  String get videoCodec => _videoCodec ??= isAudioOnly ? null : codecs.first;
 
-  bool get isAudioOnly => mimeType.type == 'audio';
+  bool get isAudioOnly => _isAudioOnly ??= mimeType.type == 'audio';
 
   @override
-  String get videoQualityLabel => _root['quality_label'];
+  String get videoQualityLabel => _videoQualityLabel ??= _root['quality_label'];
 
   List<int> get _size =>
-      _root['size'].split(',').map((e) => int.tryParse(e ?? ''));
+      __size ??= _root['size'].split(',').map((e) => int.tryParse(e ?? ''));
 
   @override
-  int get videoWidth => _size.first;
+  int get videoWidth => _videoWidth ??= _size.first;
 
   @override
-  int get videoHeight => _size.last;
+  int get videoHeight => _videoHeight ??= _size.last;
 
   @override
-  int get framerate => int.tryParse(_root['fps'] ?? '');
+  int get framerate => _framerate ??= int.tryParse(_root['fps'] ?? '');
+
+  _StreamInfo(this._root);
 }

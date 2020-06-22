@@ -12,24 +12,24 @@ void main() {
       yt.close();
     });
 
-    test('GetStreamsOfAnyVideo', () async {
-      var data = {
-        '9bZkp7q19f0',
+    var data = {
+      '9bZkp7q19f0',
 //        'SkRSXFQerZs', age restricted videos are not supported anymore.
-        'hySoCSoH-g8',
-        '_kmeFXjjGfk',
-        'MeJVWBSsPAY',
-        '5VGm0dczmHc',
-        'ZGdLIwrGHG8',
-        'rsAAeyAr-9Y',
-        'AI7ULzgf8RU'
-      };
-      for (var videoId in data) {
+      'hySoCSoH-g8',
+      '_kmeFXjjGfk',
+      'MeJVWBSsPAY',
+      '5VGm0dczmHc',
+      'ZGdLIwrGHG8',
+      'rsAAeyAr-9Y',
+      'AI7ULzgf8RU'
+    };
+    for (var videoId in data) {
+      test('GetStreamsOfAnyVideo - $videoId', () async {
         var manifest =
             await yt.videos.streamsClient.getManifest(VideoId(videoId));
         expect(manifest.streams, isNotEmpty);
-      }
-    });
+      });
+    }
 
     test('GetStreamOfUnplayableVideo', () async {
       expect(yt.videos.streamsClient.getManifest(VideoId('5qap5aO4i9A')),

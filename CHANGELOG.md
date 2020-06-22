@@ -1,3 +1,6 @@
+## 1.3.1
+- Implement caching of some results.
+
 ## 1.3.0
 - Added api get youtube comments of a video.
 

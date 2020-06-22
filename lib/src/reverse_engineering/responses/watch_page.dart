@@ -26,10 +26,12 @@ class WatchPage {
   final String visitorInfoLive;
   final String ysc;
 
-  WatchPage(this._root, this.visitorInfoLive, this.ysc);
+  _InitialData _initialData;
+  String _xsfrToken;
+  _PlayerConfig _playerConfig;
 
   _InitialData get initialData =>
-      _InitialData(json.decode(_matchJson(_extractJson(
+      _initialData ??= _InitialData(json.decode(_matchJson(_extractJson(
           _root
               .querySelectorAll('script')
               .map((e) => e.text)
@@ -37,7 +39,7 @@ class WatchPage {
               .firstWhere((e) => e.contains('window["ytInitialData"] =')),
           'window["ytInitialData"] ='))));
 
-  String get xsfrToken => _xsfrTokenExp
+  String get xsfrToken => _xsfrToken ??= _xsfrTokenExp
       .firstMatch(_root
           .querySelectorAll('script')
           .firstWhere((e) => _xsfrTokenExp.hasMatch(e.text))
@@ -100,6 +102,8 @@ class WatchPage {
     }
     return str.substring(0, lastI + 1);
   }
+
+  WatchPage(this._root, this.visitorInfoLive, this.ysc);
 
   WatchPage.parse(String raw, this.visitorInfoLive, this.ysc)
       : _root = parser.parse(raw);

@@ -9,7 +9,6 @@ class PlaylistResponse {
   // Json parsed map
   final Map<String, dynamic> _root;
 
-  PlaylistResponse(this._root);
 
   String get title => _root['title'];
 
@@ -25,6 +24,8 @@ class PlaylistResponse {
 
   Iterable<_Video> get videos =>
       _root['video']?.map((e) => _Video(e))?.cast<_Video>() ?? const <_Video>[];
+
+  PlaylistResponse(this._root);
 
   PlaylistResponse.parse(String raw) : _root = json.tryDecode(raw) {
     if (_root == null) {

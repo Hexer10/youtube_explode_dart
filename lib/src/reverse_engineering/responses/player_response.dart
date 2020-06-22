@@ -9,36 +9,60 @@ class PlayerResponse {
   // Json parsed map
   final Map<String, dynamic> _root;
 
-  PlayerResponse(this._root);
+  String _playerabilityStatus;
+  bool _isVideoAvailable;
+  bool _isVideoPlayable;
+  String _videoTitle;
+  String _videoAuthor;
+  DateTime _videoUploadDate;
+  String _videoChannelId;
+  Duration _videoDuration;
+  Iterable<String> _videoKeywords;
+  String _videoDescription;
+  int _videoViewCount;
+  String _previewVideoId;
+  bool _isLive;
+  String _hlsManifestUrl;
+  String _dashManifestUrl;
+  Iterable<StreamInfoProvider> _muxedStreams;
+  Iterable<StreamInfoProvider> _adaptiveStreams;
+  List<StreamInfoProvider> _streams;
+  Iterable<ClosedCaptionTrack> _closedCaptionTrack;
+  String _videoPlayabilityError;
 
-  String get playabilityStatus => _root['playabilityStatus']['status'];
+  String get playabilityStatus =>
+      _playerabilityStatus ??= _root['playabilityStatus']['status'];
 
-  bool get isVideoAvailable => playabilityStatus.toLowerCase() != 'error';
+  bool get isVideoAvailable =>
+      _isVideoAvailable ??= playabilityStatus.toLowerCase() != 'error';
 
-  bool get isVideoPlayable => playabilityStatus.toLowerCase() == 'ok';
+  bool get isVideoPlayable =>
+      _isVideoAvailable ??= playabilityStatus.toLowerCase() == 'ok';
 
-  String get videoTitle => _root['videoDetails']['title'];
+  String get videoTitle => _videoTitle ??= _root['videoDetails']['title'];
 
-  String get videoAuthor => _root['videoDetails']['author'];
+  String get videoAuthor => _videoAuthor ??= _root['videoDetails']['author'];
 
-  DateTime get videoUploadDate => DateTime.parse(
+  DateTime get videoUploadDate => _videoUploadDate ??= DateTime.parse(
       _root['microformat']['playerMicroformatRenderer']['uploadDate']);
 
-  String get videoChannelId => _root['videoDetails']['channelId'];
+  String get videoChannelId =>
+      _videoChannelId ??= _root['videoDetails']['channelId'];
 
-  Duration get videoDuration =>
+  Duration get videoDuration => _videoDuration ??=
       Duration(seconds: int.parse(_root['videoDetails']['lengthSeconds']));
 
-  Iterable<String> get videoKeywords =>
+  Iterable<String> get videoKeywords => _videoKeywords ??=
       _root['videoDetails']['keywords']?.cast<String>() ?? const [];
 
-  String get videoDescription => _root['videoDetails']['shortDescription'];
+  String get videoDescription =>
+      _videoDescription ??= _root['videoDetails']['shortDescription'];
 
-  int get videoViewCount => int.parse(_root['videoDetails']['viewCount']);
+  int get videoViewCount =>
+      _videoViewCount ??= int.parse(_root['videoDetails']['viewCount']);
 
   // Can be null
-  String get previewVideoId =>
-      _root
+  String get previewVideoId => _previewVideoId ??= _root
           .get('playabilityStatus')
           ?.get('errorScreen')
           ?.get('playerLegacyDesktopYpcTrailerRenderer')
@@ -51,45 +75,46 @@ class PlayerResponse {
               ?.getValue('playerVars') ??
           '')['video_id'];
 
-  bool get isLive => _root.get('videoDetails')?.getValue('isLive') ?? false;
+  bool get isLive =>
+      _isLive ??= _root.get('videoDetails')?.getValue('isLive') ?? false;
 
   // Can be null
-  String get hlsManifestUrl =>
+  String get hlsManifestUrl => _hlsManifestUrl ??=
       _root.get('streamingData')?.getValue('hlsManifestUrl');
 
   // Can be null
-  String get dashManifestUrl =>
+  String get dashManifestUrl => _dashManifestUrl ??=
       _root.get('streamingData')?.getValue('dashManifestUrl');
 
-  Iterable<StreamInfoProvider> get muxedStreams =>
-      _root
+  Iterable<StreamInfoProvider> get muxedStreams => _muxedStreams ??= _root
           ?.get('streamingData')
           ?.getValue('formats')
           ?.map((e) => _StreamInfo(e))
           ?.cast<StreamInfoProvider>() ??
       const <StreamInfoProvider>[];
 
-  Iterable<StreamInfoProvider> get adaptiveStreams =>
-      _root
+  Iterable<StreamInfoProvider> get adaptiveStreams => _adaptiveStreams ??= _root
           ?.get('streamingData')
           ?.getValue('adaptiveFormats')
           ?.map((e) => _StreamInfo(e))
           ?.cast<StreamInfoProvider>() ??
       const <StreamInfoProvider>[];
 
-  Iterable<StreamInfoProvider> get streams =>
-      [...muxedStreams, ...adaptiveStreams];
+  List<StreamInfoProvider> get streams =>
+      _streams ??= [...muxedStreams, ...adaptiveStreams];
 
   Iterable<ClosedCaptionTrack> get closedCaptionTrack =>
-      _root
-          .get('captions')
-          ?.get('playerCaptionsTracklistRenderer')
-          ?.getValue('captionTracks')
-          ?.map((e) => ClosedCaptionTrack(e))
-          ?.cast<ClosedCaptionTrack>() ??
-      const [];
+      _closedCaptionTrack ??= _root
+              .get('captions')
+              ?.get('playerCaptionsTracklistRenderer')
+              ?.getValue('captionTracks')
+              ?.map((e) => ClosedCaptionTrack(e))
+              ?.cast<ClosedCaptionTrack>() ??
+          const [];
 
-  String getVideoPlayabilityError() =>
+  PlayerResponse(this._root);
+
+  String getVideoPlayabilityError() => _videoPlayabilityError ??=
       _root.get('playabilityStatus')?.getValue('reason');
 
   PlayerResponse.parse(String raw) : _root = json.decode(raw);
@@ -99,53 +124,66 @@ class ClosedCaptionTrack {
   // Json parsed map
   final Map<String, dynamic> _root;
 
+  String _url;
+  String _languageCode;
+  String _languageName;
+  bool _autoGenerated;
+
+  String get url => _url ??= _root['baseUrl'];
+
+  String get languageCode => _languageCode ??= _root['languageCode'];
+
+  String get languageName => _languageName ??= _root['name']['simpleText'];
+
+  bool get autoGenerated =>
+      _autoGenerated ??= _root['vssId'].toLowerCase().startsWith("a.");
+
   ClosedCaptionTrack(this._root);
-
-  String get url => _root['baseUrl'];
-
-  String get languageCode => _root['languageCode'];
-
-  String get languageName => _root['name']['simpleText'];
-
-  bool get autoGenerated => _root['vssId'].toLowerCase().startsWith("a.");
 }
 
 class _StreamInfo extends StreamInfoProvider {
+  static final _contentLenExp = RegExp(r'[\?&]clen=(\d+)');
+
   // Json parsed map
   final Map<String, dynamic> _root;
 
-  _StreamInfo(this._root);
+  int _bitrate;
+  String _container;
+  int _contentLength;
+  int _framerate;
+  String _signature;
+  String _signatureParameter;
+  int _tag;
+  String _url;
 
   @override
-  int get bitrate => _root['bitrate'];
+  int get bitrate => _bitrate ??= _root['bitrate'];
 
   @override
-  String get container => mimeType.subtype;
-
-  static final _contentLenExp = RegExp(r'[\?&]clen=(\d+)');
+  String get container => _container ??= mimeType.subtype;
 
   @override
   int get contentLength =>
-      int.tryParse(_root['contentLength'] ?? '') ??
-      _contentLenExp.firstMatch(url)?.group(1);
+      _contentLength ??= int.tryParse(_root['contentLength'] ?? '') ??
+          _contentLenExp.firstMatch(url)?.group(1);
 
   @override
-  int get framerate => _root['fps'];
+  int get framerate => _framerate ??= _root['fps'];
 
   @override
   String get signature =>
-      Uri.splitQueryString(_root['signatureCipher'] ?? '')['s'];
+      _signature ??= Uri.splitQueryString(_root['signatureCipher'] ?? '')['s'];
 
   @override
-  String get signatureParameter =>
+  String get signatureParameter => _signatureParameter ??=
       Uri.splitQueryString(_root['cipher'] ?? '')['sp'] ??
-      Uri.splitQueryString(_root['signatureCipher'] ?? '')['sp'];
+          Uri.splitQueryString(_root['signatureCipher'] ?? '')['sp'];
 
   @override
-  int get tag => _root['itag'];
+  int get tag => _tag ??= _root['itag'];
 
   @override
-  String get url => _getUrl();
+  String get url => _url ??= _getUrl();
 
   String _getUrl() {
     var url = _root['url'];
@@ -153,6 +191,10 @@ class _StreamInfo extends StreamInfoProvider {
     url ??= Uri.splitQueryString(_root['signatureCipher'] ?? '')['url'];
     return url;
   }
+
+  bool _isAudioOnly;
+  MediaType _mimeType;
+  String _codecs;
 
   @override
   String get videoCodec =>
@@ -167,11 +209,12 @@ class _StreamInfo extends StreamInfoProvider {
   @override
   int get videoWidth => _root['width'];
 
-  bool get isAudioOnly => mimeType.type == 'audio';
+  bool get isAudioOnly => _isAudioOnly ??= mimeType.type == 'audio';
 
-  MediaType get mimeType => MediaType.parse(_root['mimeType']);
+  MediaType get mimeType => _mimeType ??= MediaType.parse(_root['mimeType']);
 
-  String get codecs => mimeType?.parameters['codecs']?.toLowerCase();
+  String get codecs =>
+      _codecs ??= mimeType?.parameters['codecs']?.toLowerCase();
 
   @override
   String get audioCodec =>
@@ -183,4 +226,6 @@ class _StreamInfo extends StreamInfoProvider {
     }
     return codecs.last;
   }
+
+  _StreamInfo(this._root);
 }

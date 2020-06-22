@@ -6,10 +6,12 @@ import '../youtube_http_client.dart';
 class ClosedCaptionTrackResponse {
   final xml.XmlDocument _root;
 
-  ClosedCaptionTrackResponse(this._root);
+  Iterable<ClosedCaption> _closedCaptions;
 
-  Iterable<ClosedCaption> get closedCaptions =>
+  Iterable<ClosedCaption> get closedCaptions => _closedCaptions ??=
       _root.findAllElements('p').map((e) => ClosedCaption._(e));
+
+  ClosedCaptionTrackResponse(this._root);
 
   ClosedCaptionTrackResponse.parse(String raw) : _root = xml.parse(raw);
 
@@ -35,29 +37,36 @@ class ClosedCaptionTrackResponse {
 class ClosedCaption {
   final xml.XmlElement _root;
 
-  ClosedCaption._(this._root);
+  Duration _offset;
+  Duration _duration;
+  Duration _end;
+  Iterable<ClosedCaptionPart> _parts;
 
   String get text => _root.text;
 
-  Duration get offset =>
+  Duration get offset => _offset ??=
       Duration(milliseconds: int.parse(_root.getAttribute('t') ?? 0));
 
-  Duration get duration =>
+  Duration get duration => _duration ??=
       Duration(milliseconds: int.parse(_root.getAttribute('d') ?? 0));
 
-  Duration get end => offset + duration;
+  Duration get end => _end ??= offset + duration;
 
   Iterable<ClosedCaptionPart> getParts() =>
-      _root.findAllElements('s').map((e) => ClosedCaptionPart._(e));
+      _parts ??= _root.findAllElements('s').map((e) => ClosedCaptionPart._(e));
+
+  ClosedCaption._(this._root);
 }
 
 class ClosedCaptionPart {
   final xml.XmlElement _root;
 
-  ClosedCaptionPart._(this._root);
+  Duration _offset;
 
   String get text => _root.text;
 
-  Duration get offset =>
+  Duration get offset => _offset ??=
       Duration(milliseconds: int.parse(_root.getAttribute('t') ?? '0'));
+
+  ClosedCaptionPart._(this._root);
 }

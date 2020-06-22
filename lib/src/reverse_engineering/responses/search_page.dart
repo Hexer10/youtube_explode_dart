@@ -13,10 +13,13 @@ import '../../videos/videos.dart';
 import '../youtube_http_client.dart';
 
 class SearchPage {
+  static final _xsfrTokenExp = RegExp('"XSRF_TOKEN":"(.+?)"');
+
   final String queryString;
   final Document _root;
 
   _InitialData _initialData;
+  String _xsrfToken;
 
   _InitialData get initialData =>
       _initialData ??= _InitialData(json.decode(_matchJson(_extractJson(
@@ -26,10 +29,6 @@ class SearchPage {
               .toList()
               .firstWhere((e) => e.contains('window["ytInitialData"] =')),
           'window["ytInitialData"] ='))));
-
-  String _xsrfToken;
-
-  static final _xsfrTokenExp = RegExp('"XSRF_TOKEN":"(.+?)"');
 
   String get xsfrToken => _xsrfToken ??= _xsfrTokenExp
       .firstMatch(_root
@@ -66,6 +65,7 @@ class SearchPage {
       : _initialData = initalData,
         _xsrfToken = xsfrToken;
 
+  // TODO: Replace this in favour of async* when quering;
   Future<SearchPage> nextPage(YoutubeHttpClient httpClient) {
     if (initialData.continuation == '') {
       return null;

@@ -8,10 +8,9 @@ class DashManifest {
   static final _urlSignatureExp = RegExp(r'/s/(.*?)(?:/|$)');
 
   final xml.XmlDocument _root;
+  Iterable<_StreamInfo> _streams;
 
-  DashManifest(this._root);
-
-  Iterable<_StreamInfo> get streams => _root
+  Iterable<_StreamInfo> get streams => _streams ??= _root
       .findElements('Representation')
       .where((e) => e
           .findElements('Initialization')
@@ -20,6 +19,9 @@ class DashManifest {
           .contains('sq/'))
       .map((e) => _StreamInfo(e));
 
+  DashManifest(this._root);
+
+  // ignore: deprecated_member_use
   DashManifest.parse(String raw) : _root = xml.parse(raw);
 
   static Future<DashManifest> get(YoutubeHttpClient httpClient, dynamic url) {
