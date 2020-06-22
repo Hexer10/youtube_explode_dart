@@ -9,7 +9,6 @@ class PlaylistResponse {
   // Json parsed map
   final Map<String, dynamic> _root;
 
-
   String get title => _root['title'];
 
   String get author => _root['author'];
