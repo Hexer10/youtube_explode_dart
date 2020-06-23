@@ -1,3 +1,6 @@
+## 1.3.2
+- Minor caching changes.
+
 ## 1.3.1
 - Implement caching of some results.
 

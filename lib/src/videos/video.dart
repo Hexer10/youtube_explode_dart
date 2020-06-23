@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 import '../common/common.dart';
 import '../reverse_engineering/responses/responses.dart';
@@ -40,7 +39,7 @@ class Video with EquatableMixin {
   final Engagement engagement;
 
   /// Used internally.
-  @protected
+  /// Shouldn't be used in the code.
   final WatchPage watchPage;
 
   /// Initializes an instance of [Video]

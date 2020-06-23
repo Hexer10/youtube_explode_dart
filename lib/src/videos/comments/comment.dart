@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 import '../../channels/channel_id.dart';
 
@@ -27,11 +26,11 @@ class Comment with EquatableMixin {
   final int replyCount;
 
   /// Used internally.
-  @protected
+  /// Shouldn't be used in the code.
   final String continuation;
 
   /// Used internally.
-  @protected
+  /// Shouldn't be used in the code.
   final String clicktrackingParams;
 
   /// Initializes an instance of [Comment]
