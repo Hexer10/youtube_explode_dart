@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:http/http.dart' as http;
 
 import '../exceptions/exceptions.dart';
@@ -77,7 +79,10 @@ class YoutubeHttpClient extends http.BaseClient {
 
   // TODO: Check why isRateLimited is not working.
   Stream<List<int>> getStream(StreamInfo streamInfo,
-      {Map<String, String> headers, bool validate = true}) async* {
+      {Map<String, String> headers,
+      bool validate = true,
+      int start = 0,
+      int errorCount = 0}) async* {
     var url = streamInfo.url;
 //    if (!streamInfo.isRateLimited()) {
 //      var request = http.Request('get', url);
@@ -88,14 +93,35 @@ class YoutubeHttpClient extends http.BaseClient {
 //      }
 //      yield* response.stream;
 //    } else {
-    for (var i = 0; i < streamInfo.size.totalBytes; i += 9898989) {
-      var request = http.Request('get', url);
-      request.headers['range'] = 'bytes=$i-${i + 9898989 - 1}';
-      var response = await send(request);
-      if (validate) {
-        _validateResponse(response, response.statusCode);
+
+    var bytesCount = start;
+    for (var i = start; i < streamInfo.size.totalBytes; i += 9898989) {
+      try {
+        final request = http.Request('get', url);
+        request.headers['range'] = 'bytes=$i-${i + 9898989 - 1}';
+        final response = await send(request);
+        if (validate) {
+          _validateResponse(response, response.statusCode);
+        }
+        final stream = StreamController<List<int>>();
+        response.stream.listen((data) {
+          bytesCount += data.length;
+          stream.add(data);
+        }, onError: (_) => null, onDone: stream.close, cancelOnError: false);
+        errorCount = 0;
+        yield* stream.stream;
+      } on Exception {
+        if (errorCount == 5) {
+          rethrow;
+        }
+        await Future.delayed(const Duration(milliseconds: 500));
+        yield* getStream(streamInfo,
+            headers: headers,
+            validate: validate,
+            start: bytesCount,
+            errorCount: errorCount + 1);
+        break;
       }
-      yield* response.stream;
     }
 //    }
   }
@@ -121,6 +147,8 @@ class YoutubeHttpClient extends http.BaseClient {
         request.headers[key] = _defaultHeaders[key];
       }
     });
+    //print('Request: $request');
+    //print('Stack:\n${StackTrace.current}');
     return _httpClient.send(request);
   }
 }

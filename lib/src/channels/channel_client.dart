@@ -19,6 +19,7 @@ class ChannelClient {
   /// [id] must be either a [ChannelId] or a string
   /// which is parsed to a [ChannelId]
   Future<Channel> get(dynamic id) async {
+    id = ChannelId.fromString(id);
     var channelPage = await ChannelPage.get(_httpClient, id.value);
 
     return Channel(id, channelPage.channelTitle, channelPage.channelLogoUrl);
