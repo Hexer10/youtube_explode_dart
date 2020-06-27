@@ -3,28 +3,24 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dart_console/dart_console.dart';
+import 'package:console/console.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // Initialize the YoutubeExplode instance.
 final yt = YoutubeExplode();
 
-final console = Console();
-
 Future<void> main() async {
-  console.writeLine('Type the video id or url: ');
+  stdout.writeln('Type the video id or url: ');
 
   var url = stdin.readLineSync().trim();
 
   // Save the video to the download directory.
   Directory('downloads').createSync();
-  console.hideCursor();
 
   // Download the video.
   await download(url);
 
   yt.close();
-  console.showCursor();
   exit(0);
 }
 
@@ -42,7 +38,6 @@ Future<void> download(String id) async {
 
   // Compose the file name removing the unallowed characters in windows.
   var fileName = '${video.title}.${audio.container.name.toString()}'
-      .replaceAll('Container.', '')
       .replaceAll(r'\', '')
       .replaceAll('/', '')
       .replaceAll('*', '')
@@ -53,9 +48,12 @@ Future<void> download(String id) async {
       .replaceAll('|', '');
   var file = File('downloads/$fileName');
 
-  // Create the StreamedRequest to track the download status.
+  // Delete the file if exists.
+  if (file.existsSync()) {
+    file.deleteSync();
+  }
 
-  // Open the file in appendMode.
+  // Open the file in writeAppend.
   var output = file.openWrite(mode: FileMode.writeOnlyAppend);
 
   // Track the file download status.
@@ -64,24 +62,23 @@ Future<void> download(String id) async {
   var oldProgress = -1;
 
   // Create the message and set the cursor position.
-  var msg = 'Downloading `${video.title}`(.${audio.container.name}):  \n';
-  print(msg);
-  //  var row = console.cursorPosition.row;
-//  var col = msg.length - 2;
-//  console.cursorPosition = Coordinate(row, 0);
-//  console.write(msg);
+  var msg = 'Downloading ${video.title}.${audio.container.name}';
+  stdout.writeln(msg);
 
   // Listen for data received.
+  var progressBar = ProgressBar();
   await for (var data in audioStream) {
+    // Keep track of the current downloaded data.
     count += data.length;
-    var progress = ((count / len) * 100).round();
-    if (progress != oldProgress) {
-//      console.cursorPosition = Coordinate(row, col);
-      print('$progress%');
-      oldProgress = progress;
-    }
+
+    // Calculate the current progress.
+    var progress = ((count / len) * 100).ceil();
+
+    // Update the progressbar.
+    progressBar.update(progress);
+
+    // Write to file.
     output.add(data);
   }
-  console.writeLine();
   await output.close();
 }

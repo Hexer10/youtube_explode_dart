@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../exceptions/exceptions.dart';
 import '../../retry.dart';
 import '../cipher/cipher_operations.dart';
@@ -105,12 +107,22 @@ class PlayerSource {
   // Same as default constructor
   PlayerSource.parse(this._root);
 
-  static Future<PlayerSource> get(YoutubeHttpClient httpClient, String url) {
-    return retry(() async {
-      var raw = await httpClient.getString(url);
-      return PlayerSource.parse(raw);
-    });
+  static Future<PlayerSource> get(
+      YoutubeHttpClient httpClient, String url) async {
+    if (_cache[url] == null) {
+      Timer(const Duration(minutes: 10), () {
+        _cache[url] = null;
+      });
+
+      return _cache[url] = await retry(() async {
+        var raw = await httpClient.getString(url);
+        return PlayerSource.parse(raw);
+      });
+    }
+    return _cache[url];
   }
+
+  static final Map<String, PlayerSource> _cache = {};
 }
 
 extension on String {
