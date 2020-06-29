@@ -65,7 +65,7 @@ class _Video {
 
   String get author => _root['author'];
 
-  ChannelId get authorId => ChannelId('UC${_root['user_id']}');
+  ChannelId get channelId => ChannelId('UC${_root['user_id']}');
 
   DateTime get uploadDate =>
       DateTime.fromMillisecondsSinceEpoch(_root['time_created'] * 1000);

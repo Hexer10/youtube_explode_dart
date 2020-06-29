@@ -32,7 +32,7 @@ class SearchClient {
             VideoId(videoId),
             video.title,
             video.author,
-            video.authorId,
+            video.channelId,
             video.uploadDate,
             video.description,
             video.duration,
