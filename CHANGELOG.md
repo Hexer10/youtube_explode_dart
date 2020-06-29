@@ -1,3 +1,6 @@
+## 1.4.0
+- Add ChannelId property to Video class.
+
 ## 1.3.3
 - Error handling when using `getStream` if the connection fails. If it fails more than 5 times on the same request the exception will be thrown anyways.
 - Caching of player source for 10 minutes.

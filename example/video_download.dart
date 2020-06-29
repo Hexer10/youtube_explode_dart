@@ -59,7 +59,6 @@ Future<void> download(String id) async {
   // Track the file download status.
   var len = audio.size.totalBytes;
   var count = 0;
-  var oldProgress = -1;
 
   // Create the message and set the cursor position.
   var msg = 'Downloading ${video.title}.${audio.container.name}';

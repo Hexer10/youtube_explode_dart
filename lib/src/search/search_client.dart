@@ -1,5 +1,5 @@
 import '../common/common.dart';
-import '../reverse_engineering/responses/playerlist_response.dart';
+import '../reverse_engineering/responses/playlist_response.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
 import '../videos/video_id.dart';
@@ -32,6 +32,7 @@ class SearchClient {
             VideoId(videoId),
             video.title,
             video.author,
+            video.authorId,
             video.uploadDate,
             video.description,
             video.duration,

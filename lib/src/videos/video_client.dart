@@ -1,3 +1,4 @@
+import '../channels/channel_id.dart';
 import '../common/common.dart';
 import '../reverse_engineering/responses/responses.dart';
 import '../reverse_engineering/youtube_http_client.dart';
@@ -36,6 +37,7 @@ class VideoClient {
         videoId,
         playerResponse.videoTitle,
         playerResponse.videoAuthor,
+        ChannelId(playerResponse.videoChannelId),
         playerResponse.videoUploadDate,
         playerResponse.videoDescription,
         playerResponse.videoDuration,

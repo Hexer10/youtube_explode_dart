@@ -49,6 +49,7 @@ class PlaylistClient {
             VideoId(videoId),
             video.title,
             video.author,
+            video.authorId,
             video.uploadDate,
             video.description,
             video.duration,

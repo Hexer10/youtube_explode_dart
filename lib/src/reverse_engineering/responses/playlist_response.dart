@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../../channels/channel_id.dart';
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
@@ -63,6 +64,8 @@ class _Video {
   String get id => _root['encrypted_id'];
 
   String get author => _root['author'];
+
+  ChannelId get authorId => ChannelId('UC${_root['user_id']}');
 
   DateTime get uploadDate =>
       DateTime.fromMillisecondsSinceEpoch(_root['time_created'] * 1000);

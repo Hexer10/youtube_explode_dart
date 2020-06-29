@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
 
+import '../channels/channel_id.dart';
 import '../common/common.dart';
 import '../reverse_engineering/responses/responses.dart';
 import 'video_id.dart';
@@ -19,6 +20,9 @@ class Video with EquatableMixin {
 
   /// Video author.
   final String author;
+
+  /// Video author Id.
+  final ChannelId channelId;
 
   /// Video upload date.
   final DateTime uploadDate;
@@ -47,6 +51,7 @@ class Video with EquatableMixin {
       this.id,
       this.title,
       this.author,
+      this.channelId,
       this.uploadDate,
       this.description,
       this.duration,
