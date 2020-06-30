@@ -76,7 +76,7 @@ class WatchPage {
       '0');
 
   _PlayerConfig get playerConfig =>
-      _PlayerConfig(json.decode(_matchJson(_extractJson(
+      _playerConfig ??= _PlayerConfig(json.decode(_matchJson(_extractJson(
           _root.getElementsByTagName('html').first.text,
           'ytplayer.config = '))));
 

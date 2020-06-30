@@ -30,12 +30,6 @@ extension StreamInfoExt on StreamInfo {
 
   /// Returns true if this video is rate limited.
   bool isRateLimited() => _exp.hasMatch(url.toString());
-
-  /// Gets the stream with highest bitrate.
-  @Deprecated('Use `sortByBitrate` extension instead. '
-      'Will be removed in v1.4.0')
-  static StreamInfo getHighestBitrate(List<StreamInfo> streams) =>
-      (streams..sort((a, b) => a.bitrate.compareTo(b.bitrate))).last;
 }
 
 /// Extension for Iterables of StreamInfo.

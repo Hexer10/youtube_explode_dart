@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-import 'package:youtube_explode_dart/src/common/common.dart';
-
 import '../../channels/channel_id.dart';
+import '../../common/common.dart';
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
