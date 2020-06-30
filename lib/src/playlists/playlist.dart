@@ -21,11 +21,16 @@ class Playlist with EquatableMixin {
   /// Playlist description.
   final String description;
 
+  /// Available thumbnails for this playlist.
+  /// Can be null if the playlist is empty.
+  final ThumbnailSet thumbnails;
+
   /// Engagement statistics.
   final Engagement engagement;
 
   /// Initializes an instance of [Playlist].
-  Playlist(this.id, this.title, this.author, this.description, this.engagement);
+  Playlist(this.id, this.title, this.author, this.description, this.thumbnails,
+      this.engagement);
 
   @override
   String toString() => 'Playlist ($title)';

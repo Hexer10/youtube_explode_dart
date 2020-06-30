@@ -1,5 +1,7 @@
 ## 1.4.0
 - Add ChannelId property to Video class.
+- Implement `thumbnails` for playlists. The playlist's thumbnail is the same as the thumbnail of its first video. If the playlist is empty, then this property is `null`.
+- Update for age restricted videos.
 
 ## 1.3.3
 - Error handling when using `getStream` if the connection fails. If it fails more than 5 times on the same request the exception will be thrown anyways.

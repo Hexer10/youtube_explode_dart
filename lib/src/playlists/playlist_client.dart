@@ -23,6 +23,7 @@ class PlaylistClient {
         response.title,
         response.author,
         response.description ?? '',
+        response.thumbnails,
         Engagement(response.viewCount ?? 0, response.likeCount ?? 0,
             response.dislikeCount ?? 0));
   }

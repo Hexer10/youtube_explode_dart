@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:youtube_explode_dart/src/common/common.dart';
+
 import '../../channels/channel_id.dart';
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
@@ -7,6 +9,8 @@ import '../../retry.dart';
 import '../youtube_http_client.dart';
 
 class PlaylistResponse {
+  Iterable<_Video> _videos;
+
   // Json parsed map
   final Map<String, dynamic> _root;
 
@@ -16,13 +20,15 @@ class PlaylistResponse {
 
   String get description => _root['description'];
 
+  ThumbnailSet get thumbnails => ThumbnailSet(videos.firstOrNull.id);
+
   int get viewCount => _root['views'];
 
   int get likeCount => _root['likes'];
 
   int get dislikeCount => _root['dislikes'];
 
-  Iterable<_Video> get videos =>
+  Iterable<_Video> get videos => _videos ??=
       _root['video']?.map((e) => _Video(e))?.cast<_Video>() ?? const <_Video>[];
 
   PlaylistResponse(this._root);
