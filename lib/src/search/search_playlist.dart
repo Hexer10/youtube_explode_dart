@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import '../playlists/playlist_id.dart';
 
 /// Metadata related to a search query result (playlist)
-class SearchPlaylist {
+class SearchPlaylist with EquatableMixin {
   /// PlaylistId.
   final PlaylistId playlistId;
 
@@ -16,4 +18,7 @@ class SearchPlaylist {
 
   @override
   String toString() => '(Playlist) $playlistTitle ($playlistId)';
+
+  @override
+  List<Object> get props => [playlistId];
 }

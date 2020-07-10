@@ -20,8 +20,8 @@ class SearchVideo {
   /// Video View Count
   final int videoViewCount;
 
-  /// Initialize a [RelatedQuery] instance.
-  SearchVideo(this.videoId, this.videoTitle, this.videoAuthor,
+  /// Initialize a [SearchVideo] instance.
+  const SearchVideo(this.videoId, this.videoTitle, this.videoAuthor,
       this.videoDescriptionSnippet, this.videoDuration, this.videoViewCount);
 
   @override
