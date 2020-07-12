@@ -57,7 +57,7 @@ class ChannelClient {
   /// If you want a full list of uploads see [getUploadsFromPage]
   Stream<Video> getUploads(dynamic channelId) {
     channelId = ChannelId.fromString(channelId);
-    var playlistId = 'UU${channelId.value.substringAfter('UC')}';
+    var playlistId = 'UU${(channelId.value as String).substringAfter('UC')}';
     return PlaylistClient(_httpClient).getVideos(PlaylistId(playlistId));
   }
 
