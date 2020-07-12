@@ -1,3 +1,6 @@
+## 1.4.1+1
+- Bug fixes
+
 ## 1.4.1
 - Implement `getUploadsFromPage` to a channel uploaded videos directly from the YouTube page.
 
