@@ -1,3 +1,7 @@
+import 'package:youtube_explode_dart/src/channels/channel_video.dart';
+import 'package:youtube_explode_dart/src/channels/video_sorting.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/responses/channel_upload_page.dart';
+
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';
 import '../reverse_engineering/responses/responses.dart';
@@ -50,8 +54,34 @@ class ChannelClient {
   }
 
   /// Enumerates videos uploaded by the specified channel.
-  Stream<Video> getUploads(ChannelId id) {
-    var playlistId = 'UU${id.value.substringAfter('UC')}';
+  /// If you want a full list of uploads see [getUploadsFromPage]
+  Stream<Video> getUploads(dynamic channelId) {
+    channelId = ChannelId.fromString(channelId);
+    var playlistId = 'UU${channelId.value.substringAfter('UC')}';
     return PlaylistClient(_httpClient).getVideos(PlaylistId(playlistId));
+  }
+
+  /// Enumerates videos uploaded by the specified channel.
+  /// This fetches thru all the uploads pages of the channel so it is
+  /// recommended to use _.take_ (or any other method) to limit the
+  /// search result. Every page has 30 results.
+  ///
+  /// Note that this endpoint provides less info about each video
+  /// (only the Title and VideoId).
+  Stream<ChannelVideo> getUploadsFromPage(dynamic channelId,
+      [VideoSorting videoSorting = VideoSorting.newest]) async* {
+    channelId = ChannelId.fromString(channelId);
+    var page = await ChannelUploadPage.get(
+        _httpClient, channelId.value, videoSorting.code);
+    yield* Stream.fromIterable(page.initialData.uploads);
+
+    // ignore: literal_only_boolean_expressions
+    while (true) {
+      page = await page.nextPage(_httpClient);
+      if (page == null) {
+        return;
+      }
+      yield* Stream.fromIterable(page.initialData.uploads);
+    }
   }
 }

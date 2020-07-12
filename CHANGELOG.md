@@ -1,3 +1,6 @@
+## 1.4.1
+- Implement `getUploadsFromPage` to a channel uploaded videos directly from the YouTube page.
+
 ## 1.4.0
 - Add ChannelId property to Video class.
 - Implement `thumbnails` for playlists. The playlist's thumbnail is the same as the thumbnail of its first video. If the playlist is empty, then this property is `null`.

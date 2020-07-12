@@ -9,7 +9,7 @@ import '../../retry.dart';
 import '../../videos/videos.dart';
 import '../youtube_http_client.dart';
 
-class ChannelWatchPage {
+class ChannelUploadPage {
   final String channelId;
   final Document _root;
 
@@ -47,21 +47,34 @@ class ChannelWatchPage {
     return str.substring(0, lastI + 1);
   }
 
-  ChannelWatchPage(this._root, this.channelId);
+  ChannelUploadPage(this._root, this.channelId, [_InitialData initialData])
+      : _initialData = initialData;
 
-  Future<ChannelWatchPage> nextPage() {}
-
-  static Future<ChannelWatchPage> get(
-      YoutubeHttpClient httpClient, String channelId) {
+  Future<ChannelUploadPage> nextPage(YoutubeHttpClient httpClient) {
+    if (initialData.continuation.isEmpty) {
+      return Future.value(null);
+    }
     var url =
-        'https://www.youtube.com/channel/$channelId/videos?view=0&sort=dd&flow=grid';
+        'https://www.youtube.com/browse_ajax?ctoken=${initialData.continuation}&continuation=${initialData.continuation}&itct=${initialData.clickTrackingParams}';
     return retry(() async {
       var raw = await httpClient.getString(url);
-      return ChannelWatchPage.parse(raw, channelId);
+      return ChannelUploadPage(
+          null, channelId, _InitialData(json.decode(raw)[1]));
     });
   }
 
-  ChannelWatchPage.parse(String raw, this.channelId)
+  static Future<ChannelUploadPage> get(
+      YoutubeHttpClient httpClient, String channelId, String sorting) {
+    assert(sorting != null);
+    var url =
+        'https://www.youtube.com/channel/$channelId/videos?view=0&sort=$sorting&flow=grid';
+    return retry(() async {
+      var raw = await httpClient.getString(url);
+      return ChannelUploadPage.parse(raw, channelId);
+    });
+  }
+
+  ChannelUploadPage.parse(String raw, this.channelId)
       : _root = parser.parse(raw);
 }
 
@@ -118,10 +131,11 @@ class _InitialData {
     return null;
   }
 
-  List<dynamic> get uploads => _uploads ??= getContentContext(_root)
+  List<ChannelVideo> get uploads => _uploads ??= getContentContext(_root)
       ?.map(_parseContent)
       ?.where((e) => e != null)
-      ?.toList();
+      ?.toList()
+      ?.cast<ChannelVideo>();
 
   String get continuation => _continuation ??=
       getContinuationContext(_root)?.getValue('continuation') ?? '';

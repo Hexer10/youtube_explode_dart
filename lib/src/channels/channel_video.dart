@@ -13,7 +13,7 @@ class ChannelVideo with EquatableMixin {
   ChannelVideo(this.videoId, this.videoTitle);
 
   @override
-  String toString() => '(ChannelVideo) $videoId ($videoTitle)';
+  String toString() => '[ChannelVideo] $videoTitle ($videoId)';
 
   @override
   List<Object> get props => [videoId];
