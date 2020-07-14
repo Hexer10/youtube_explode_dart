@@ -222,9 +222,9 @@ class _PlayerConfig {
 
 class _InitialData {
   // Json parsed map
-  final Map<String, dynamic> _root;
+  final Map<String, dynamic> root;
 
-  _InitialData(this._root);
+  _InitialData(this.root);
 
   /* Cache results */
 
@@ -232,16 +232,16 @@ class _InitialData {
   String _clickTrackingParams;
 
   Map<String, dynamic> getContinuationContext(Map<String, dynamic> root) {
-    if (_root['contents'] != null) {
-      return (_root['contents']['twoColumnWatchNextResults']['results']
+    if (root['contents'] != null) {
+      return (root['contents']['twoColumnWatchNextResults']['results']
               ['results']['contents'] as List<dynamic>)
           ?.firstWhere((e) => e.containsKey('itemSectionRenderer'))[
               'itemSectionRenderer']['continuations']
           ?.first['nextContinuationData']
           ?.cast<String, dynamic>();
     }
-    if (_root['response'] != null) {
-      return _root['response']['itemSectionContinuation']['continuations']
+    if (root['response'] != null) {
+      return root['response']['itemSectionContinuation']['continuations']
           ?.first['nextContinuationData']
           ?.cast<String, dynamic>();
     }
@@ -249,8 +249,8 @@ class _InitialData {
   }
 
   String get continuation => _continuation ??=
-      getContinuationContext(_root)?.getValue('continuation') ?? '';
+      getContinuationContext(root)?.getValue('continuation') ?? '';
 
   String get clickTrackingParams => _clickTrackingParams ??=
-      getContinuationContext(_root)?.getValue('clickTrackingParams') ?? '';
+      getContinuationContext(root)?.getValue('clickTrackingParams') ?? '';
 }

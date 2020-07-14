@@ -67,6 +67,7 @@ Future<void> download(String id) async {
   // Listen for data received.
   var progressBar = ProgressBar();
   await for (var data in audioStream) {
+
     // Keep track of the current downloaded data.
     count += data.length;
 
