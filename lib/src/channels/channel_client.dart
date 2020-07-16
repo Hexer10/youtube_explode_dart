@@ -1,16 +1,15 @@
-import 'channel_video.dart';
-import 'video_sorting.dart';
-import '../reverse_engineering/responses/channel_upload_page.dart';
-
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';
+import '../reverse_engineering/responses/channel_upload_page.dart';
 import '../reverse_engineering/responses/responses.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
 import '../videos/video_id.dart';
 import 'channel.dart';
 import 'channel_id.dart';
+import 'channel_video.dart';
 import 'username.dart';
+import 'video_sorting.dart';
 
 /// Queries related to YouTube channels.
 class ChannelClient {

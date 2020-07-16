@@ -4,12 +4,15 @@ import '../../retry.dart';
 import '../youtube_http_client.dart';
 import 'stream_info_provider.dart';
 
+///
 class DashManifest {
   static final _urlSignatureExp = RegExp(r'/s/(.*?)(?:/|$)');
 
   final xml.XmlDocument _root;
   Iterable<_StreamInfo> _streams;
 
+
+  ///
   Iterable<_StreamInfo> get streams => _streams ??= _root
       .findElements('Representation')
       .where((e) => e
@@ -19,11 +22,14 @@ class DashManifest {
           .contains('sq/'))
       .map((e) => _StreamInfo(e));
 
+  ///
   DashManifest(this._root);
 
+  ///
   // ignore: deprecated_member_use
   DashManifest.parse(String raw) : _root = xml.parse(raw);
 
+  ///
   static Future<DashManifest> get(YoutubeHttpClient httpClient, dynamic url) {
     return retry(() async {
       var raw = await httpClient.getString(url);
@@ -31,6 +37,7 @@ class DashManifest {
     });
   }
 
+  ///
   static String getSignatureFromUrl(String url) =>
       _urlSignatureExp.firstMatch(url)?.group(1);
 }

@@ -13,15 +13,18 @@ import '../../search/search_video.dart';
 import '../../videos/videos.dart';
 import '../youtube_http_client.dart';
 
+///
 class SearchPage {
   static final _xsfrTokenExp = RegExp('"XSRF_TOKEN":"(.+?)"');
 
+  ///
   final String queryString;
   final Document _root;
 
   _InitialData _initialData;
   String _xsrfToken;
 
+  ///
   _InitialData get initialData =>
       _initialData ??= _InitialData(json.decode(_matchJson(_extractJson(
           _root
@@ -31,6 +34,7 @@ class SearchPage {
               .firstWhere((e) => e.contains('window["ytInitialData"] =')),
           'window["ytInitialData"] ='))));
 
+  ///
   String get xsfrToken => _xsrfToken ??= _xsfrTokenExp
       .firstMatch(_root
           .querySelectorAll('script')
@@ -61,13 +65,15 @@ class SearchPage {
     return str.substring(0, lastI + 1);
   }
 
+  ///
   SearchPage(this._root, this.queryString,
       [_InitialData initalData, String xsfrToken])
       : _initialData = initalData,
         _xsrfToken = xsfrToken;
 
+  ///
   // TODO: Replace this in favour of async* when quering;
-  Future<SearchPage> nextPage(YoutubeHttpClient httpClient) {
+  Future<SearchPage> nextPage(YoutubeHttpClient httpClient) async {
     if (initialData.continuation == '') {
       return null;
     }
@@ -77,6 +83,7 @@ class SearchPage {
         xsrfToken: xsfrToken);
   }
 
+  ///
   static Future<SearchPage> get(
       YoutubeHttpClient httpClient, String queryString,
       {String ctoken, String itct, String xsrfToken}) {
@@ -103,6 +110,7 @@ class SearchPage {
     });
   }
 
+  ///
   SearchPage.parse(String raw, this.queryString) : _root = parser.parse(raw);
 }
 
@@ -229,7 +237,10 @@ class _InitialData {
       runs?.getValue('runs')?.map((e) => e['text'])?.join() ?? '';
 }
 
-// ['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'].first['itemSectionRenderer']
+// ['contents']['twoColumnSearchResultsRenderer']['primaryContents']
+// ['sectionListRenderer']['contents'].first['itemSectionRenderer']
+//
+//
 // ['contents'] -> @See ContentsList
 // ['continuations'] -> Data to see more
 
@@ -237,10 +248,12 @@ class _InitialData {
 // Key -> 'videoRenderer'
 //    videoId --> VideoId
 //    title['runs'].loop -> ['text'] -> concatenate --> "Video Title"
-//    descriptionSnippet['runs'].loop -> ['text'] -> concatenate --> "Video Description snippet"
+//    descriptionSnippet['runs'].loop -> ['text'] -> concatenate
+//      --> "Video Description snippet"
 //    ownerText['runs'].first -> ['text'] --> "Video Author"
 //    lengthText['simpleText'] -> Parse format H:M:S -> "Video Duration"
-//    viewCountText['simpleText'] -> Strip non digit -> int.parse --> "Video View Count"
+//    viewCountText['simpleText'] -> Strip non digit -> int.parse
+//      --> "Video View Count"
 //
 // Key -> 'radioRenderer'
 //    playlistId -> PlaylistId
@@ -248,8 +261,10 @@ class _InitialData {
 //
 // Key -> 'horizontalCardListRenderer' // Queries related to this search
 //    cards --> List of Maps -> loop -> ['searchRefinementCardRenderer'].first
-//      thumbnail -> ['thumbnails'].first -> ['url'] --> "Thumbnail url" -> Find video id from id.
-//      searchEndpoint -> ['searchEndpoint'] -> ['query'] -> "Related query string"
+//      thumbnail -> ['thumbnails'].first -> ['url']
+//        --> "Thumbnail url" -> Find video id from id.
+//      searchEndpoint -> ['searchEndpoint']
+//        -> ['query'] -> "Related query string"
 //
 // Key -> 'shelfRenderer' // Videos related to this search
 //  contents -> ['verticalListRenderer']['items'] -> loop -> parseContent

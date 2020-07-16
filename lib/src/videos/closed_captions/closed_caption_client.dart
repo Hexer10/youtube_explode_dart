@@ -46,6 +46,7 @@ class ClosedCaptionClient {
     return ClosedCaptionTrack(captions);
   }
 
+  ///
   Future<String> getSrt(ClosedCaptionTrackInfo trackInfo) async {
     var track = await get(trackInfo);
 
@@ -93,7 +94,7 @@ extension on Duration {
     }
 
     if (inMicroseconds < 0) {
-      return "-${-this}";
+      return '-${-this}';
     }
     var twoDigitHours = twoDigits(inHours);
     var twoDigitMinutes =
@@ -102,6 +103,6 @@ extension on Duration {
     twoDigits(inSeconds.remainder(Duration.secondsPerMinute));
     var fourDigitsUs =
     threeDigits(inMilliseconds.remainder(1000));
-    return "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds,$fourDigitsUs";
+    return '$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds,$fourDigitsUs';
   }
 }

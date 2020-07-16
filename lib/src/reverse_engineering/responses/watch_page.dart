@@ -12,6 +12,7 @@ import '../youtube_http_client.dart';
 import 'player_response.dart';
 import 'stream_info_provider.dart';
 
+///
 class WatchPage {
   static final RegExp _videoLikeExp =
       RegExp(r'"label"\s*:\s*"([\d,\.]+) likes"');
@@ -23,13 +24,18 @@ class WatchPage {
   static final _xsfrTokenExp = RegExp(r'"XSRF_TOKEN"\s*:\s*"(.+?)"');
 
   final Document _root;
+
+  ///
   final String visitorInfoLive;
+
+  ///
   final String ysc;
 
   _InitialData _initialData;
   String _xsfrToken;
   _PlayerConfig _playerConfig;
 
+  ///
   _InitialData get initialData =>
       _initialData ??= _InitialData(json.decode(_matchJson(_extractJson(
           _root
@@ -39,6 +45,7 @@ class WatchPage {
               .firstWhere((e) => e.contains('window["ytInitialData"] =')),
           'window["ytInitialData"] ='))));
 
+  ///
   String get xsfrToken => _xsfrToken ??= _xsfrTokenExp
       .firstMatch(_root
           .querySelectorAll('script')
@@ -46,11 +53,14 @@ class WatchPage {
           .text)
       .group(1);
 
+  ///
   bool get isOk => _root.body.querySelector('#player') != null;
 
+  ///
   bool get isVideoAvailable =>
       _root.querySelector('meta[property="og:url"]') != null;
 
+  ///
   int get videoLikeCount => int.parse(_videoLikeExp
           .firstMatch(_root.outerHtml)
           ?.group(1)
@@ -63,6 +73,7 @@ class WatchPage {
           ?.nullIfWhitespace ??
       '0');
 
+  ///
   int get videoDislikeCount => int.parse(_videoDislikeExp
           .firstMatch(_root.outerHtml)
           ?.group(1)
@@ -75,6 +86,7 @@ class WatchPage {
           ?.nullIfWhitespace ??
       '0');
 
+  ///
   _PlayerConfig get playerConfig =>
       _playerConfig ??= _PlayerConfig(json.decode(_matchJson(_extractJson(
           _root.getElementsByTagName('html').first.text,
@@ -103,11 +115,14 @@ class WatchPage {
     return str.substring(0, lastI + 1);
   }
 
+  ///
   WatchPage(this._root, this.visitorInfoLive, this.ysc);
 
+  ///
   WatchPage.parse(String raw, this.visitorInfoLive, this.ysc)
       : _root = parser.parse(raw);
 
+  ///
   static Future<WatchPage> get(YoutubeHttpClient httpClient, String videoId) {
     final url = 'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en';
     return retry(() async {
@@ -119,7 +134,7 @@ class WatchPage {
       var result = WatchPage.parse(req.body, visitorInfoLive, ysc);
 
       if (!result.isOk) {
-        throw TransientFailureException("Video watch page is broken.");
+        throw TransientFailureException('Video watch page is broken.');
       }
 
       if (!result.isVideoAvailable) {

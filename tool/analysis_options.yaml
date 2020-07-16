@@ -1,0 +1,2 @@
+# Analysis options to run test for ginder
+include: package:pedantic/analysis_options.yaml

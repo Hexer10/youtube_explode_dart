@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:youtube_explode_dart/src/videos/video_id.dart';
+import '../videos/video_id.dart';
 
 /// Metadata related to a search query result (playlist)
 class ChannelVideo with EquatableMixin {

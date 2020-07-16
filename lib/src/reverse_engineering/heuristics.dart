@@ -168,8 +168,10 @@ extension VideoQualityUtil on VideoQuality {
         label, 'label', 'Unrecognized video quality label');
   }
 
+  ///
   String getLabel() => '${toString().stripNonDigits()}p';
 
+  ///
   String getLabelWithFramerate(double framerate) {
     // Framerate appears only if it's above 30
     if (framerate <= 30) {
@@ -180,6 +182,7 @@ extension VideoQualityUtil on VideoQuality {
     return '${getLabel()}$framerateRounded';
   }
 
+  ///
   static String getLabelFromTagWithFramerate(int itag, double framerate) {
     var videoQuality = fromTag(itag);
     return videoQuality.getLabelWithFramerate(framerate);

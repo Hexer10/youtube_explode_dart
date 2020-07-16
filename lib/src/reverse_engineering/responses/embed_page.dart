@@ -7,6 +7,7 @@ import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
 
+///
 class EmbedPage {
   static final _playerConfigExp =
       RegExp(r"yt\.setConfig\({'PLAYER_CONFIG':(.*)}\);");
@@ -15,6 +16,7 @@ class EmbedPage {
   _PlayerConfig _playerConfig;
   String __playerConfigJson;
 
+  ///
   _PlayerConfig get playerconfig {
     if (_playerConfig != null) {
       return _playerConfig;
@@ -32,10 +34,13 @@ class EmbedPage {
       .map((e) => _playerConfigExp.firstMatch(e)?.group(1))
       .firstWhere((e) => !e.isNullOrWhiteSpace, orElse: () => null);
 
+  ///
   EmbedPage(this._root);
 
+  ///
   EmbedPage.parse(String raw) : _root = parser.parse(raw);
 
+  ///
   static Future<EmbedPage> get(YoutubeHttpClient httpClient, String videoId) {
     var url = 'https://youtube.com/embed/$videoId?hl=en';
     return retry(() async {

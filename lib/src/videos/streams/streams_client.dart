@@ -128,7 +128,7 @@ class StreamsClient {
 
       // Signature
       var signature = streamInfo.signature;
-      var signatureParameter = streamInfo.signatureParameter ?? "signature";
+      var signatureParameter = streamInfo.signatureParameter ?? 'signature';
 
       if (!signature.isNullOrWhiteSpace) {
         signature = streamContext.cipherOperations.decipher(signature);
@@ -163,7 +163,7 @@ class StreamsClient {
 
         var videoWidth = streamInfo.videoWidth;
         var videoHeight = streamInfo.videoHeight;
-        var videoResolution = videoWidth != null && videoHeight != null
+        var videoResolution = videoWidth != -1 && videoHeight != -1
             ? VideoResolution(videoWidth, videoHeight)
             : videoQuality.toVideoResolution();
 

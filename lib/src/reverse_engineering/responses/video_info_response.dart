@@ -6,6 +6,7 @@ import '../youtube_http_client.dart';
 import 'player_response.dart';
 import 'stream_info_provider.dart';
 
+///
 class VideoInfoResponse {
   final Map<String, String> _root;
 
@@ -16,14 +17,18 @@ class VideoInfoResponse {
   Iterable<_StreamInfo> _adaptiveStreams;
   Iterable<_StreamInfo> _streams;
 
+  ///
   String get status => _status ??= _root['status'];
 
+  ///
   bool get isVideoAvailable =>
       _isVideoAvailable ??= status.toLowerCase() != 'fail';
 
+  ///
   PlayerResponse get playerResponse =>
       _playerResponse ??= PlayerResponse.parse(_root['player_response']);
 
+  ///
   Iterable<_StreamInfo> get muxedStreams =>
       _muxedStreams ??= _root['url_encoded_fmt_stream_map']
               ?.split(',')
@@ -31,6 +36,7 @@ class VideoInfoResponse {
               ?.map((e) => _StreamInfo(e)) ??
           const [];
 
+  ///
   Iterable<_StreamInfo> get adaptiveStreams =>
       _adaptiveStreams ??= _root['adaptive_fmts']
               ?.split(',')
@@ -38,13 +44,17 @@ class VideoInfoResponse {
               ?.map((e) => _StreamInfo(e)) ??
           const [];
 
+  ///
   Iterable<_StreamInfo> get streams =>
       _streams ??= [...muxedStreams, ...adaptiveStreams];
 
+  ///
   VideoInfoResponse(this._root);
 
+  ///
   VideoInfoResponse.parse(String raw) : _root = Uri.splitQueryString(raw);
 
+  ///
   static Future<VideoInfoResponse> get(
       YoutubeHttpClient httpClient, String videoId,
       [String sts]) {
@@ -103,7 +113,7 @@ class _StreamInfo extends StreamInfoProvider {
   @override
   int get bitrate => _bitrate ??= int.parse(_root['bitrate']);
 
-  MediaType get mimeType => _mimeType ??= MediaType.parse(_root["type"]);
+  MediaType get mimeType => _mimeType ??= MediaType.parse(_root['type']);
 
   @override
   String get container => _container ??= mimeType.subtype;

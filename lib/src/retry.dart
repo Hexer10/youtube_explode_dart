@@ -6,7 +6,7 @@ import 'exceptions/exceptions.dart';
 
 /// Run the [function] each time an exception is thrown until the retryCount
 /// is 0.
-Future<T> retry<T>(FutureOr<T> function()) async {
+Future<T> retry<T>(FutureOr<T> Function() function) async {
   var retryCount = 5;
 
   // ignore: literal_only_boolean_expressions
@@ -27,7 +27,6 @@ Future<T> retry<T>(FutureOr<T> function()) async {
 /// Get "retry" cost of each YoutubeExplode exception.
 int getExceptionCost(Exception e) {
   if (e is TransientFailureException || e is FormatException) {
-    print('Ripperoni!');
     return 1;
   }
   if (e is RequestLimitExceededException) {

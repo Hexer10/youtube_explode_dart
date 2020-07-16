@@ -2,20 +2,23 @@ import 'dart:convert';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
-import 'package:youtube_explode_dart/src/exceptions/exceptions.dart';
 
 import '../../channels/channel_video.dart';
+import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../../videos/videos.dart';
 import '../youtube_http_client.dart';
 
+///
 class ChannelUploadPage {
+  ///
   final String channelId;
   final Document _root;
 
   _InitialData _initialData;
 
+  ///
   _InitialData get initialData =>
       _initialData ??= _InitialData(json.decode(_matchJson(_extractJson(
           _root
@@ -48,9 +51,11 @@ class ChannelUploadPage {
     return str.substring(0, lastI + 1);
   }
 
+  ///
   ChannelUploadPage(this._root, this.channelId, [_InitialData initialData])
       : _initialData = initialData;
 
+  ///
   Future<ChannelUploadPage> nextPage(YoutubeHttpClient httpClient) {
     if (initialData.continuation.isEmpty) {
       return Future.value(null);
@@ -64,6 +69,7 @@ class ChannelUploadPage {
     });
   }
 
+  ///
   static Future<ChannelUploadPage> get(
       YoutubeHttpClient httpClient, String channelId, String sorting) {
     assert(sorting != null);
@@ -75,6 +81,7 @@ class ChannelUploadPage {
     });
   }
 
+  ///
   ChannelUploadPage.parse(String raw, this.channelId)
       : _root = parser.parse(raw);
 }

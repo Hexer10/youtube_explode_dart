@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../exceptions/exceptions.dart';
 import '../videos/streams/streams.dart';
 
+///
 class YoutubeHttpClient extends http.BaseClient {
   final http.Client _httpClient = http.Client();
 
@@ -43,6 +44,7 @@ class YoutubeHttpClient extends http.BaseClient {
     }
   }
 
+  ///
   Future<String> getString(dynamic url,
       {Map<String, String> headers, bool validate = true}) async {
     var response = await get(url, headers: headers);
@@ -64,6 +66,7 @@ class YoutubeHttpClient extends http.BaseClient {
     return response;
   }
 
+  ///
   Future<String> postString(dynamic url,
       {Map<String, String> body,
       Map<String, String> headers,
@@ -77,6 +80,7 @@ class YoutubeHttpClient extends http.BaseClient {
     return response.body;
   }
 
+  ///
   // TODO: Check why isRateLimited is not working.
   Stream<List<int>> getStream(StreamInfo streamInfo,
       {Map<String, String> headers,
@@ -126,6 +130,7 @@ class YoutubeHttpClient extends http.BaseClient {
 //    }
   }
 
+  ///
   Future<int> getContentLength(dynamic url,
       {Map<String, String> headers, bool validate = true}) async {
     var response = await head(url, headers: headers);

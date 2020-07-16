@@ -5,6 +5,7 @@ import '../../retry.dart';
 import '../cipher/cipher_operations.dart';
 import '../youtube_http_client.dart';
 
+///
 class PlayerSource {
   final RegExp _statIndexExp = RegExp(r'\(\w+,(\d+)\)');
 
@@ -20,6 +21,7 @@ class PlayerSource {
   String _sts;
   String _deciphererDefinitionBody;
 
+  ///
   String get sts {
     if (_sts != null) {
       return _sts;
@@ -33,6 +35,7 @@ class PlayerSource {
     return _sts ??= val;
   }
 
+  ///
   Iterable<CipherOperation> getCiperOperations() sync* {
     var funcBody = _getDeciphererFuncBody();
 
@@ -102,11 +105,14 @@ class PlayerSource {
     return exp.firstMatch(_root).group(0).nullIfWhitespace;
   }
 
+  ///
   PlayerSource(this._root);
 
+  ///
   // Same as default constructor
   PlayerSource.parse(this._root);
 
+  ///
   static Future<PlayerSource> get(
       YoutubeHttpClient httpClient, String url) async {
     if (_cache[url] == null) {

@@ -27,7 +27,7 @@ void main() {
       expect(video.thumbnails.highResUrl, isNotNull);
       expect(video.thumbnails.standardResUrl, isNotNull);
       expect(video.thumbnails.maxResUrl, isNotNull);
-      expect(video.keywords, orderedEquals(["osu", "mouse", "rhythm game"]));
+      expect(video.keywords, orderedEquals(['osu', 'mouse', 'rhythm game']));
       expect(video.engagement.viewCount, greaterThanOrEqualTo(134));
       expect(video.engagement.likeCount, greaterThanOrEqualTo(5));
       expect(video.engagement.dislikeCount, greaterThanOrEqualTo(0));

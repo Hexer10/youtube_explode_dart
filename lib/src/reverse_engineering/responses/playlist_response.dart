@@ -7,37 +7,49 @@ import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
 
+///
 class PlaylistResponse {
   Iterable<_Video> _videos;
 
   // Json parsed map
   final Map<String, dynamic> _root;
 
+  ///
   String get title => _root['title'];
 
+  ///
   String get author => _root['author'];
 
+  ///
   String get description => _root['description'];
 
+  ///
   ThumbnailSet get thumbnails => ThumbnailSet(videos.firstOrNull.id);
 
+  ///
   int get viewCount => _root['views'];
 
+  ///
   int get likeCount => _root['likes'];
 
+  ///
   int get dislikeCount => _root['dislikes'];
 
+  ///
   Iterable<_Video> get videos => _videos ??=
       _root['video']?.map((e) => _Video(e))?.cast<_Video>() ?? const <_Video>[];
 
+  ///
   PlaylistResponse(this._root);
 
+  ///
   PlaylistResponse.parse(String raw) : _root = json.tryDecode(raw) {
     if (_root == null) {
       throw TransientFailureException('Playerlist response is broken.');
     }
   }
 
+  ///
   static Future<PlaylistResponse> get(YoutubeHttpClient httpClient, String id,
       {int index = 0}) {
     var url =
@@ -48,6 +60,7 @@ class PlaylistResponse {
     });
   }
 
+  ///
   static Future<PlaylistResponse> searchResults(
       YoutubeHttpClient httpClient, String query,
       {int page = 0}) {

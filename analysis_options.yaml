@@ -1,10 +1,5 @@
-# Defines a default set of lint rules enforced for
-# projects at Google. For details and rationale,
-# see https://github.com/dart-lang/pedantic#enabled-lints.
 include: package:effective_dart/analysis_options.yaml
 
-# For lint rules and documentation, see http://dart-lang.github.io/linter/lints.
-# Uncomment to specify additional rules.
 linter:
   rules:
     - valid_regexps
@@ -59,6 +54,8 @@ linter:
     - use_string_buffers
     - void_checks
     - package_names
+    - prefer_single_quotes
+    - use_function_type_syntax_for_parameters
 
 analyzer:
   exclude:
