@@ -1,3 +1,7 @@
+## 1.4.2
+- Implement `getSrt` a video closed captions in srt format.
+- Only throw custom exceptions from the library.
+
 ## 1.4.1+1
 - Bug fixes
 

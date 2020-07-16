@@ -44,12 +44,10 @@ class CommentsClient {
   /// a page contains at most 20 comments, use .take if you want to limit
   /// the results.
   ///
-  /// Throws an exception if the given video has not a watch page available.
-  /// this happens for the videos from playlist or search queries.
+  /// The streams doesn't emit any data if [Video.hasWatchPage] is false.
   Stream<Comment> getComments(Video video) async* {
     if (video.watchPage == null) {
-      //TODO: Implement custom exception.
-      throw Exception('Watch page not available for this video');
+      return;
     }
     yield* _getComments(
         video.watchPage.initialData.continuation,

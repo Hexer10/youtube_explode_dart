@@ -46,6 +46,9 @@ class Video with EquatableMixin {
   /// Shouldn't be used in the code.
   final WatchPage watchPage;
 
+  /// Returns true if the watch page is available for this video.
+  bool get hasWatchPage => watchPage != null;
+
   /// Initializes an instance of [Video]
   Video(
       this.id,

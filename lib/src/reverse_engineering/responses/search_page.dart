@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
+import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../playlists/playlist_id.dart';
 import '../../retry.dart';
@@ -131,7 +132,7 @@ class _InitialData {
               ['itemSectionContinuation']['contents']
           .cast<Map<String, dynamic>>();
     }
-    throw Exception('Couldn\'t find the content data');
+    throw FatalFailureException('Failed to get initial data context.');
   }
 
   Map<String, dynamic> getContinuationContext(Map<String, dynamic> root) {
