@@ -1,6 +1,6 @@
-import 'package:youtube_explode_dart/src/channels/channel_video.dart';
-import 'package:youtube_explode_dart/src/channels/video_sorting.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/channel_upload_page.dart';
+import 'channel_video.dart';
+import 'video_sorting.dart';
+import '../reverse_engineering/responses/channel_upload_page.dart';
 
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';

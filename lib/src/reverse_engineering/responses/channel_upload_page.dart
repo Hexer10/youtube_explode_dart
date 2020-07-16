@@ -100,7 +100,6 @@ class _InitialData {
           .first['itemSectionRenderer']['contents']
           .first['gridRenderer']['items']
           .cast<Map<String, dynamic>>();
-      ;
     }
     if (root['response'] != null) {
       return _root['response']['continuationContents']['gridContinuation']
