@@ -1,3 +1,6 @@
+/// APIs related to YouTube channels.
+///
+/// {@category Channels}
 library youtube_explode.channels;
 
 export 'channel.dart';

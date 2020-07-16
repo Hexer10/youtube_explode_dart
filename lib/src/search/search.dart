@@ -1,3 +1,6 @@
+/// APIs related to YouTube search queries.
+///
+/// {@category Search}
 library youtube_explode.search;
 
 export 'related_query.dart';

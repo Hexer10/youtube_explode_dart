@@ -1,3 +1,6 @@
+/// APIs related to YouTube videos.
+///
+/// {@category Videos}
 library youtube_explode.videos;
 
 export 'comments/comments.dart';

@@ -1,3 +1,6 @@
+/// APIs related to YouTube playlists.
+///
+/// {@category Playlists}
 library youtube_explode.playlists;
 
 export 'playlist.dart';
