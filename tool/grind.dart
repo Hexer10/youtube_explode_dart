@@ -17,7 +17,7 @@ void analysis() {
 build() {
   Pub.build();
   Pub.upgrade();
-  Pub.version()
+  Pub.version();
 }
 
 @Task()

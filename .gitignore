@@ -13,6 +13,6 @@ doc/api/
 .idea/
 .vscode/
 *.iml
-/bin/
+/local/
 
 .flutter-plugins-dependencies
