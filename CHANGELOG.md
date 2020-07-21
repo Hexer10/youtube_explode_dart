@@ -1,7 +1,13 @@
-## 1.4.2
+## 1.4.2 - WIP
 - Implement `getSrt` a video closed captions in srt format.
 - Only throw custom exceptions from the library.
 - `getUploadsFromPage` no longer throws.
+
+## 1.4.1+3
+- Fix decipherer
+
+## 1.4.1+2
+- Implement Container.toString()
 
 ## 1.4.1+1
 - Bug fixes

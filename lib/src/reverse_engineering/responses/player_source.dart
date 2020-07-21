@@ -12,7 +12,7 @@ class PlayerSource {
   final RegExp _funcBodyExp = RegExp(
       r'(\w+)=function\(\w+\){(\w+)=\2\.split\(\x22{2}\);.*?return\s+\2\.join\(\x22{2}\)}');
 
-  final RegExp _funcNameExp = RegExp(r'(\w+).\w+\(\w+,\d+\);');
+  final RegExp _objNameExp = RegExp(r'([\$_\w]+).\w+\(\w+,\d+\);');
 
   final RegExp _calledFuncNameExp = RegExp(r'\w+(?:.|\[)(\"?\w+(?:\")?)\]?\(');
 
@@ -95,11 +95,11 @@ class PlayerSource {
   }
 
   String _getDeciphererDefinitionBody(String deciphererFuncBody) {
-    var funcName = _funcNameExp.firstMatch(deciphererFuncBody).group(1);
+    var objName = _objNameExp.firstMatch(deciphererFuncBody).group(1);
 
     var exp = RegExp(
         r'var\s+'
-        '${RegExp.escape(funcName)}'
+        '${RegExp.escape(objName)}'
         r'=\{(\w+:function\(\w+(,\w+)?\)\{(.*?)\}),?\};',
         dotAll: true);
     return exp.firstMatch(_root).group(0).nullIfWhitespace;
