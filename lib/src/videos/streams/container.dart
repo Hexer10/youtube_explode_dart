@@ -35,4 +35,7 @@ class Container with EquatableMixin {
 
   @override
   List<Object> get props => [name];
+
+  @override
+  String toString() => name;
 }

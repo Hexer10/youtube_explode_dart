@@ -61,5 +61,5 @@ class MuxedStreamInfo implements AudioStreamInfo, VideoStreamInfo {
       this.framerate);
 
   @override
-  String toString() => 'Muxed ($tag | $videoQualityLabel | $container';
+  String toString() => 'Muxed ($tag | $videoQualityLabel | $container)';
 }

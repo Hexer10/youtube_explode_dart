@@ -52,5 +52,5 @@ class VideoOnlyStreamInfo implements VideoStreamInfo {
       this.framerate);
 
   @override
-  String toString() => 'Video-only ($tag | $videoQualityLabel | $container';
+  String toString() => 'Video-only ($tag | $videoQualityLabel | $container)';
 }
