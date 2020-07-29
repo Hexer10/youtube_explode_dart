@@ -83,15 +83,8 @@ class PlayerSource {
   }
 
   String _getDeciphererFuncBody() {
-    if (_deciphererDefinitionBody != null) {
-      return _deciphererDefinitionBody;
-    }
-    var funcName = _funcBodyExp.firstMatch(_root).group(1);
-
-    var exp = RegExp(
-        r'(?!h\.)' '${RegExp.escape(funcName)}' r'=function\(\w+\)\{(.*?)\}');
     return _deciphererDefinitionBody ??=
-        exp.firstMatch(_root).group(1).nullIfWhitespace;
+        _funcBodyExp.firstMatch(_root).group(0);
   }
 
   String _getDeciphererDefinitionBody(String deciphererFuncBody) {
@@ -102,7 +95,7 @@ class PlayerSource {
         '${RegExp.escape(objName)}'
         r'=\{(\w+:function\(\w+(,\w+)?\)\{(.*?)\}),?\};',
         dotAll: true);
-    return exp.firstMatch(_root).group(0).nullIfWhitespace;
+    return exp.firstMatch(_root)?.group(0)?.nullIfWhitespace;
   }
 
   ///
