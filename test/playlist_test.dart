@@ -44,7 +44,7 @@ void main() {
           .getVideos(PlaylistId(
               'https://www.youtube.com/playlist?list=PLr-IftNTIujSF-8tlGbZBQyGIT6TCF6Yd'))
           .toList();
-      expect(videos.length, greaterThanOrEqualTo(20));
+      expect(videos.length, greaterThanOrEqualTo(19));
       expect(
           videos.map((e) => e.id.value).toList(),
           containsAll([

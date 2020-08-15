@@ -1,3 +1,5 @@
+import 'package:youtube_explode_dart/src/exceptions/exceptions.dart';
+
 import '../channels/channel_id.dart';
 import '../common/common.dart';
 import '../reverse_engineering/responses/responses.dart';
@@ -26,8 +28,7 @@ class VideoClient {
         commentsClient = CommentsClient(_httpClient);
 
   /// Gets the metadata associated with the specified video.
-  Future<Video> get(dynamic videoId) async {
-    videoId = VideoId.fromString(videoId);
+  Future<Video> _getVideoFromWatchPage(VideoId videoId) async {
     var videoInfoResponse =
         await VideoInfoResponse.get(_httpClient, videoId.value);
     var playerResponse = videoInfoResponse.playerResponse;
@@ -46,5 +47,32 @@ class VideoClient {
         Engagement(playerResponse.videoViewCount ?? 0, watchPage.videoLikeCount,
             watchPage.videoDislikeCount),
         watchPage);
+  }
+
+  Future<Video> _getVideoFromFixPlaylist(VideoId id) async {
+    var playlistInfo = await PlaylistResponse.get(_httpClient, 'RD${id.value}');
+    var video = playlistInfo.videos.firstWhere((e) => e.id == id.value);
+
+    return Video(
+        id,
+        video.title,
+        video.author,
+        video.channelId,
+        video.uploadDate,
+        video.description,
+        video.duration,
+        ThumbnailSet(id.value),
+        video.keywords,
+        Engagement(video.viewCount, video.likes, video.dislikes));
+  }
+
+  Future<Video> get(dynamic videoId) async {
+    videoId = VideoId.fromString(videoId);
+
+    try {
+      return await _getVideoFromFixPlaylist(videoId);
+    } on YoutubeExplodeException {
+      return _getVideoFromWatchPage(videoId);
+    }
   }
 }
