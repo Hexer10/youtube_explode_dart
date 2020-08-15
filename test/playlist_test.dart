@@ -24,6 +24,11 @@ void main() {
       expect(playlist.engagement.viewCount, greaterThanOrEqualTo(133));
       expect(playlist.engagement.likeCount, greaterThanOrEqualTo(0));
       expect(playlist.engagement.dislikeCount, greaterThanOrEqualTo(0));
+      expect(playlist.thumbnails.lowResUrl, isNotEmpty);
+      expect(playlist.thumbnails.mediumResUrl, isNotEmpty);
+      expect(playlist.thumbnails.highResUrl, isNotEmpty);
+      expect(playlist.thumbnails.standardResUrl, isNotEmpty);
+      expect(playlist.thumbnails.maxResUrl, isNotEmpty);
     });
     test('GetMetadataOfAnyPlaylist', () async {
       var data = {

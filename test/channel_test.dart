@@ -18,7 +18,7 @@ void main() {
       var channel = await yt.channels.get(ChannelId(channelUrl));
       expect(channel.url, channelUrl);
       expect(channel.title, 'Tyrrrz');
-      expect(channel.logoUrl, isNotNull);
+      expect(channel.logoUrl, isNotEmpty);
       expect(channel.logoUrl, isNot(equalsIgnoringWhitespace('')));
     });
 
@@ -69,6 +69,14 @@ void main() {
           .getUploads(ChannelId('UCiGm_E4ZwYSHV3bcW1pnSeQ'))
           .toList();
       expect(videos, isNotEmpty);
+    });
+
+    test('GetVideosOfYoutubeChannelFromUploadPage', () async {
+      var videos = await yt.channels
+          .getUploadsFromPage('UCEnBXANsKmyj2r9xVyKoDiQ')
+          .take(30)
+          .toList();
+      expect(videos, hasLength(30));
     });
   });
 }

@@ -51,7 +51,12 @@ class VideoClient {
 
   Future<Video> _getVideoFromFixPlaylist(VideoId id) async {
     var playlistInfo = await PlaylistResponse.get(_httpClient, 'RD${id.value}');
-    var video = playlistInfo.videos.firstWhere((e) => e.id == id.value);
+
+    var video = playlistInfo.videos
+        .firstWhere((e) => e.id == id.value, orElse: () => null);
+    if (video == null) {
+      throw TransientFailureException('Video not found in mix playlist');
+    }
 
     return Video(
         id,
