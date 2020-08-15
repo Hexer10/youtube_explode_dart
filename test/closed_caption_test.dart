@@ -33,8 +33,8 @@ void main() {
       var captionPart =
           caption.getPartByTime(const Duration(milliseconds: 650));
 
-      expect(caption, isNotEmpty);
-      expect(captionPart, isNotEmpty);
+      expect(caption, isNotNull);
+      expect(captionPart, isNotNull);
       expect(caption.text, 'know I worked really hard on not doing');
       expect(captionPart.text, ' hard');
     });

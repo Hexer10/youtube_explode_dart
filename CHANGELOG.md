@@ -1,7 +1,12 @@
-## 1.4.3 - WIP
+## 1.x.x - WIP
 - Implement `getSrt` a video closed captions in srt format.
 - Only throw custom exceptions from the library.
 - `getUploadsFromPage` no longer throws.
+
+## 1.4.3
+- Fix #59
+- Implement for tests #47
+- Better performance for VideoClient.get
 
 ## 1.4.2
 - Fix Decipher error #53
