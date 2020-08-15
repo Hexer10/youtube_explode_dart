@@ -26,9 +26,13 @@ class PlayerSource {
     if (_sts != null) {
       return _sts;
     }
-    var val = RegExp(r'(?<=invalid namespace.*?;[\w+\s]+=)\d+')
-        .stringMatch(_root)
-        ?.nullIfWhitespace;
+
+    var val = RegExp(r'(?<=invalid namespace.*?;[\w\s]+=)\d+')
+            .stringMatch(_root)
+            ?.nullIfWhitespace ??
+        RegExp(r'(?<=this\.signatureTimestamp=)\d+"')
+            .stringMatch(_root)
+            ?.nullIfWhitespace;
     if (val == null) {
       throw FatalFailureException('Could not find sts in player source.');
     }
