@@ -49,7 +49,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 ```dart
 // You can provider either a video ID or URL as String or an instance of `VideoId`.
-var video = yt.video.get('https://youtube.com/watch?v=bnsUkE8i0tU'); // Returns a Video instance.
+var video = yt.videos.get('https://youtube.com/watch?v=bnsUkE8i0tU'); // Returns a Video instance.
 
 var title = video.title; // "Infected Mushroom - Spitfire [Monstercat Release]"
 var author = video.author; // "MonsterCat"
