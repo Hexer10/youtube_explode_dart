@@ -1,7 +1,6 @@
-import 'package:youtube_explode_dart/src/exceptions/exceptions.dart';
-
 import '../channels/channel_id.dart';
 import '../common/common.dart';
+import '../exceptions/exceptions.dart';
 import '../reverse_engineering/responses/responses.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import 'closed_captions/closed_caption_client.dart';
@@ -71,6 +70,7 @@ class VideoClient {
         Engagement(video.viewCount, video.likes, video.dislikes));
   }
 
+  /// Get a [Video] instance from a [videoId]
   Future<Video> get(dynamic videoId) async {
     videoId = VideoId.fromString(videoId);
 

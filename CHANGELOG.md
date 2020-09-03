@@ -3,6 +3,11 @@
 - Only throw custom exceptions from the library.
 - `getUploadsFromPage` no longer throws.
 
+## 1.4.4
+- Expose HttpClient in APIs
+- Fix #55: Typo in README.md
+- Fix #61: DartVM when the YouTube explode client is closed.
+
 ## 1.4.3
 - Fix #59
 - Implement for tests #47
