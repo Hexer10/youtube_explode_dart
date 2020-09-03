@@ -20,7 +20,7 @@ void main() {
       expect(video.title, 'Aka no Ha [Another] +HDHR');
       expect(video.channelId.value, 'UCEnBXANsKmyj2r9xVyKoDiQ');
       expect(video.author, 'Tyrrrz');
-      expect(video.uploadDate, DateTime(2017, 09, 30, 19, 15, 26));
+      expect(video.uploadDate, DateTime(2017, 09, 30, 17, 15, 26));
       expect(video.description, contains('246pp'));
       expect(video.duration, const Duration(minutes: 1, seconds: 49));
       expect(video.thumbnails.lowResUrl, isNotEmpty);
