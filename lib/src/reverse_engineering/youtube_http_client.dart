@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import '../exceptions/exceptions.dart';
 import '../videos/streams/streams.dart';
 
-///
+/// HttpClient wrapper for YouTube
 class YoutubeHttpClient extends http.BaseClient {
-  final http.Client _httpClient = http.Client();
+  final http.Client _httpClient;
 
   final Map<String, String> _defaultHeaders = const {
     'user-agent':
@@ -22,6 +22,10 @@ class YoutubeHttpClient extends http.BaseClient {
             '&cos=Windows&cosver=10.0',
     'x-youtube-page-label': 'youtube.ytfe.desktop_20200617_1_RC1'
   };
+
+  /// Initialize an instance of [YoutubeHttpClient]
+  YoutubeHttpClient([http.Client httpClient])
+      : _httpClient = httpClient ?? http.Client();
 
   /// Throws if something is wrong with the response.
   void _validateResponse(http.BaseResponse response, int statusCode) {

@@ -23,7 +23,8 @@ class YoutubeExplode {
   SearchClient get search => _search;
 
   /// Initializes an instance of [YoutubeClient].
-  YoutubeExplode() : _httpClient = YoutubeHttpClient() {
+  YoutubeExplode([YoutubeHttpClient httpClient])
+      : _httpClient = httpClient ?? YoutubeHttpClient() {
     _videos = VideoClient(_httpClient);
     _playlists = PlaylistClient(_httpClient);
     _channels = ChannelClient(_httpClient);
