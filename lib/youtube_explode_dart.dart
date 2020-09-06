@@ -7,5 +7,6 @@ export 'src/exceptions/exceptions.dart';
 export 'src/playlists/playlists.dart';
 export 'src/reverse_engineering/youtube_http_client.dart';
 export 'src/search/search.dart';
-export 'src/videos/videos.dart';
+export 'src/videos/videos.dart'
+  hide Container;
 export 'src/youtube_explode_base.dart';
