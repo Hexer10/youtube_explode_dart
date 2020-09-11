@@ -3,6 +3,10 @@
 - Only throw custom exceptions from the library.
 - `getUploadsFromPage` no longer throws.
 
+## 1.5.0
+- BREAKING CHANGE: Renamed `Container` class to `StreamContainer` to avoid conflicting with Flutter `Container`. See #66
+
+
 ## 1.4.4
 - Expose HttpClient in APIs
 - Fix #55: Typo in README.md
