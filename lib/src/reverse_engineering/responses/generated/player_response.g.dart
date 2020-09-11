@@ -1,6 +1,6 @@
 // To parse this JSON data, do
 //
-//     final welcome = welcomeFromJson(jsonString);
+//     final playerResponseJson = playerResponseJsonFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -619,7 +619,7 @@ class SignalServiceEndpointAction {
   });
 
   final String clickTrackingParams;
-  final OpenPopupAction openPopupAction;
+  final ActionOpenPopupAction openPopupAction;
 
   factory SignalServiceEndpointAction.fromRawJson(String str) =>
       SignalServiceEndpointAction.fromJson(json.decode(str));
@@ -629,7 +629,8 @@ class SignalServiceEndpointAction {
   factory SignalServiceEndpointAction.fromJson(Map<String, dynamic> json) =>
       SignalServiceEndpointAction(
         clickTrackingParams: json["clickTrackingParams"],
-        openPopupAction: OpenPopupAction.fromJson(json["openPopupAction"]),
+        openPopupAction:
+            ActionOpenPopupAction.fromJson(json["openPopupAction"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -638,23 +639,23 @@ class SignalServiceEndpointAction {
       };
 }
 
-class OpenPopupAction {
-  OpenPopupAction({
+class ActionOpenPopupAction {
+  ActionOpenPopupAction({
     this.popup,
     this.popupType,
   });
 
-  final Popup popup;
+  final PurplePopup popup;
   final String popupType;
 
-  factory OpenPopupAction.fromRawJson(String str) =>
-      OpenPopupAction.fromJson(json.decode(str));
+  factory ActionOpenPopupAction.fromRawJson(String str) =>
+      ActionOpenPopupAction.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory OpenPopupAction.fromJson(Map<String, dynamic> json) =>
-      OpenPopupAction(
-        popup: Popup.fromJson(json["popup"]),
+  factory ActionOpenPopupAction.fromJson(Map<String, dynamic> json) =>
+      ActionOpenPopupAction(
+        popup: PurplePopup.fromJson(json["popup"]),
         popupType: json["popupType"],
       );
 
@@ -664,18 +665,19 @@ class OpenPopupAction {
       };
 }
 
-class Popup {
-  Popup({
+class PurplePopup {
+  PurplePopup({
     this.confirmDialogRenderer,
   });
 
   final ConfirmDialogRenderer confirmDialogRenderer;
 
-  factory Popup.fromRawJson(String str) => Popup.fromJson(json.decode(str));
+  factory PurplePopup.fromRawJson(String str) =>
+      PurplePopup.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Popup.fromJson(Map<String, dynamic> json) => Popup(
+  factory PurplePopup.fromJson(Map<String, dynamic> json) => PurplePopup(
         confirmDialogRenderer:
             ConfirmDialogRenderer.fromJson(json["confirmDialogRenderer"]),
       );
@@ -1442,7 +1444,7 @@ class SimpleCardContentRenderer {
 
   final IconClass image;
   final HeaderText title;
-  final ActionButton actionButton;
+  final SimpleCardContentRendererActionButton actionButton;
   final String trackingParams;
   final HeaderText displayDomain;
   final bool showLinkIcon;
@@ -1458,7 +1460,8 @@ class SimpleCardContentRenderer {
       SimpleCardContentRenderer(
         image: IconClass.fromJson(json["image"]),
         title: HeaderText.fromJson(json["title"]),
-        actionButton: ActionButton.fromJson(json["actionButton"]),
+        actionButton: SimpleCardContentRendererActionButton.fromJson(
+            json["actionButton"]),
         trackingParams: json["trackingParams"],
         displayDomain: HeaderText.fromJson(json["displayDomain"]),
         showLinkIcon: json["showLinkIcon"],
@@ -1478,19 +1481,21 @@ class SimpleCardContentRenderer {
       };
 }
 
-class ActionButton {
-  ActionButton({
+class SimpleCardContentRendererActionButton {
+  SimpleCardContentRendererActionButton({
     this.simpleCardButtonRenderer,
   });
 
   final SimpleCardButtonRenderer simpleCardButtonRenderer;
 
-  factory ActionButton.fromRawJson(String str) =>
-      ActionButton.fromJson(json.decode(str));
+  factory SimpleCardContentRendererActionButton.fromRawJson(String str) =>
+      SimpleCardContentRendererActionButton.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ActionButton.fromJson(Map<String, dynamic> json) => ActionButton(
+  factory SimpleCardContentRendererActionButton.fromJson(
+          Map<String, dynamic> json) =>
+      SimpleCardContentRendererActionButton(
         simpleCardButtonRenderer:
             SimpleCardButtonRenderer.fromJson(json["simpleCardButtonRenderer"]),
       );
@@ -2165,7 +2170,7 @@ class ActionButtonClass {
     this.buttonRenderer,
   });
 
-  final ActionButtonButtonRenderer buttonRenderer;
+  final DismissButtonButtonRenderer buttonRenderer;
 
   factory ActionButtonClass.fromRawJson(String str) =>
       ActionButtonClass.fromJson(json.decode(str));
@@ -2175,7 +2180,7 @@ class ActionButtonClass {
   factory ActionButtonClass.fromJson(Map<String, dynamic> json) =>
       ActionButtonClass(
         buttonRenderer:
-            ActionButtonButtonRenderer.fromJson(json["buttonRenderer"]),
+            DismissButtonButtonRenderer.fromJson(json["buttonRenderer"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2183,8 +2188,8 @@ class ActionButtonClass {
       };
 }
 
-class ActionButtonButtonRenderer {
-  ActionButtonButtonRenderer({
+class DismissButtonButtonRenderer {
+  DismissButtonButtonRenderer({
     this.style,
     this.size,
     this.text,
@@ -2200,13 +2205,13 @@ class ActionButtonButtonRenderer {
   final NavigationEndpoint navigationEndpoint;
   final String trackingParams;
 
-  factory ActionButtonButtonRenderer.fromRawJson(String str) =>
-      ActionButtonButtonRenderer.fromJson(json.decode(str));
+  factory DismissButtonButtonRenderer.fromRawJson(String str) =>
+      DismissButtonButtonRenderer.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ActionButtonButtonRenderer.fromJson(Map<String, dynamic> json) =>
-      ActionButtonButtonRenderer(
+  factory DismissButtonButtonRenderer.fromJson(Map<String, dynamic> json) =>
+      DismissButtonButtonRenderer(
         style: json["style"],
         size: json["size"],
         text: MessageTitle.fromJson(json["text"]),
@@ -2346,6 +2351,7 @@ class PlayerMicroformatRenderer {
     this.publishDate,
     this.ownerChannelName,
     this.uploadDate,
+    this.liveBroadcastDetails,
   });
 
   final IconClass thumbnail;
@@ -2363,6 +2369,7 @@ class PlayerMicroformatRenderer {
   final DateTime publishDate;
   final String ownerChannelName;
   final DateTime uploadDate;
+  final LiveBroadcastDetails liveBroadcastDetails;
 
   factory PlayerMicroformatRenderer.fromRawJson(String str) =>
       PlayerMicroformatRenderer.fromJson(json.decode(str));
@@ -2387,6 +2394,8 @@ class PlayerMicroformatRenderer {
         publishDate: DateTime.parse(json["publishDate"]),
         ownerChannelName: json["ownerChannelName"],
         uploadDate: DateTime.parse(json["uploadDate"]),
+        liveBroadcastDetails:
+            LiveBroadcastDetails.fromJson(json["liveBroadcastDetails"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2408,6 +2417,7 @@ class PlayerMicroformatRenderer {
         "ownerChannelName": ownerChannelName,
         "uploadDate":
             "${uploadDate.year.toString().padLeft(4, '0')}-${uploadDate.month.toString().padLeft(2, '0')}-${uploadDate.day.toString().padLeft(2, '0')}",
+        "liveBroadcastDetails": liveBroadcastDetails.toJson(),
       };
 }
 
@@ -2447,18 +2457,46 @@ class Embed {
       };
 }
 
+class LiveBroadcastDetails {
+  LiveBroadcastDetails({
+    this.isLiveNow,
+    this.startTimestamp,
+  });
+
+  final bool isLiveNow;
+  final DateTime startTimestamp;
+
+  factory LiveBroadcastDetails.fromRawJson(String str) =>
+      LiveBroadcastDetails.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory LiveBroadcastDetails.fromJson(Map<String, dynamic> json) =>
+      LiveBroadcastDetails(
+        isLiveNow: json["isLiveNow"],
+        startTimestamp: DateTime.parse(json["startTimestamp"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "isLiveNow": isLiveNow,
+        "startTimestamp": startTimestamp.toIso8601String(),
+      };
+}
+
 class PlayabilityStatus {
   PlayabilityStatus({
     this.status,
     this.playableInEmbed,
     this.miniplayer,
     this.contextParams,
+    this.liveStreamability,
   });
 
   final String status;
   final bool playableInEmbed;
   final Miniplayer miniplayer;
   final String contextParams;
+  final LiveStreamability liveStreamability;
 
   factory PlayabilityStatus.fromRawJson(String str) =>
       PlayabilityStatus.fromJson(json.decode(str));
@@ -2471,6 +2509,8 @@ class PlayabilityStatus {
         playableInEmbed: json["playableInEmbed"],
         miniplayer: Miniplayer.fromJson(json["miniplayer"]),
         contextParams: json["contextParams"],
+        liveStreamability:
+            LiveStreamability.fromJson(json["liveStreamability"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2478,6 +2518,56 @@ class PlayabilityStatus {
         "playableInEmbed": playableInEmbed,
         "miniplayer": miniplayer.toJson(),
         "contextParams": contextParams,
+        "liveStreamability": liveStreamability.toJson(),
+      };
+}
+
+class LiveStreamability {
+  LiveStreamability({
+    this.liveStreamabilityRenderer,
+  });
+
+  final LiveStreamabilityRenderer liveStreamabilityRenderer;
+
+  factory LiveStreamability.fromRawJson(String str) =>
+      LiveStreamability.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory LiveStreamability.fromJson(Map<String, dynamic> json) =>
+      LiveStreamability(
+        liveStreamabilityRenderer: LiveStreamabilityRenderer.fromJson(
+            json["liveStreamabilityRenderer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "liveStreamabilityRenderer": liveStreamabilityRenderer.toJson(),
+      };
+}
+
+class LiveStreamabilityRenderer {
+  LiveStreamabilityRenderer({
+    this.videoId,
+    this.pollDelayMs,
+  });
+
+  final String videoId;
+  final String pollDelayMs;
+
+  factory LiveStreamabilityRenderer.fromRawJson(String str) =>
+      LiveStreamabilityRenderer.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory LiveStreamabilityRenderer.fromJson(Map<String, dynamic> json) =>
+      LiveStreamabilityRenderer(
+        videoId: json["videoId"],
+        pollDelayMs: json["pollDelayMs"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "videoId": videoId,
+        "pollDelayMs": pollDelayMs,
       };
 }
 
@@ -2506,9 +2596,11 @@ class Miniplayer {
 class MiniplayerRenderer {
   MiniplayerRenderer({
     this.playbackMode,
+    this.minimizedEndpoint,
   });
 
   final String playbackMode;
+  final MinimizedEndpoint minimizedEndpoint;
 
   factory MiniplayerRenderer.fromRawJson(String str) =>
       MiniplayerRenderer.fromJson(json.decode(str));
@@ -2518,10 +2610,173 @@ class MiniplayerRenderer {
   factory MiniplayerRenderer.fromJson(Map<String, dynamic> json) =>
       MiniplayerRenderer(
         playbackMode: json["playbackMode"],
+        minimizedEndpoint:
+            MinimizedEndpoint.fromJson(json["minimizedEndpoint"]),
       );
 
   Map<String, dynamic> toJson() => {
         "playbackMode": playbackMode,
+        "minimizedEndpoint": minimizedEndpoint.toJson(),
+      };
+}
+
+class MinimizedEndpoint {
+  MinimizedEndpoint({
+    this.clickTrackingParams,
+    this.openPopupAction,
+  });
+
+  final String clickTrackingParams;
+  final MinimizedEndpointOpenPopupAction openPopupAction;
+
+  factory MinimizedEndpoint.fromRawJson(String str) =>
+      MinimizedEndpoint.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory MinimizedEndpoint.fromJson(Map<String, dynamic> json) =>
+      MinimizedEndpoint(
+        clickTrackingParams: json["clickTrackingParams"],
+        openPopupAction:
+            MinimizedEndpointOpenPopupAction.fromJson(json["openPopupAction"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "clickTrackingParams": clickTrackingParams,
+        "openPopupAction": openPopupAction.toJson(),
+      };
+}
+
+class MinimizedEndpointOpenPopupAction {
+  MinimizedEndpointOpenPopupAction({
+    this.popup,
+    this.popupType,
+  });
+
+  final FluffyPopup popup;
+  final String popupType;
+
+  factory MinimizedEndpointOpenPopupAction.fromRawJson(String str) =>
+      MinimizedEndpointOpenPopupAction.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory MinimizedEndpointOpenPopupAction.fromJson(
+          Map<String, dynamic> json) =>
+      MinimizedEndpointOpenPopupAction(
+        popup: FluffyPopup.fromJson(json["popup"]),
+        popupType: json["popupType"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "popup": popup.toJson(),
+        "popupType": popupType,
+      };
+}
+
+class FluffyPopup {
+  FluffyPopup({
+    this.notificationActionRenderer,
+  });
+
+  final NotificationActionRenderer notificationActionRenderer;
+
+  factory FluffyPopup.fromRawJson(String str) =>
+      FluffyPopup.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyPopup.fromJson(Map<String, dynamic> json) => FluffyPopup(
+        notificationActionRenderer: NotificationActionRenderer.fromJson(
+            json["notificationActionRenderer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "notificationActionRenderer": notificationActionRenderer.toJson(),
+      };
+}
+
+class NotificationActionRenderer {
+  NotificationActionRenderer({
+    this.responseText,
+    this.actionButton,
+    this.trackingParams,
+  });
+
+  final HeaderText responseText;
+  final NotificationActionRendererActionButton actionButton;
+  final String trackingParams;
+
+  factory NotificationActionRenderer.fromRawJson(String str) =>
+      NotificationActionRenderer.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory NotificationActionRenderer.fromJson(Map<String, dynamic> json) =>
+      NotificationActionRenderer(
+        responseText: HeaderText.fromJson(json["responseText"]),
+        actionButton: NotificationActionRendererActionButton.fromJson(
+            json["actionButton"]),
+        trackingParams: json["trackingParams"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "responseText": responseText.toJson(),
+        "actionButton": actionButton.toJson(),
+        "trackingParams": trackingParams,
+      };
+}
+
+class NotificationActionRendererActionButton {
+  NotificationActionRendererActionButton({
+    this.buttonRenderer,
+  });
+
+  final PurpleButtonRenderer buttonRenderer;
+
+  factory NotificationActionRendererActionButton.fromRawJson(String str) =>
+      NotificationActionRendererActionButton.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory NotificationActionRendererActionButton.fromJson(
+          Map<String, dynamic> json) =>
+      NotificationActionRendererActionButton(
+        buttonRenderer: PurpleButtonRenderer.fromJson(json["buttonRenderer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "buttonRenderer": buttonRenderer.toJson(),
+      };
+}
+
+class PurpleButtonRenderer {
+  PurpleButtonRenderer({
+    this.text,
+    this.trackingParams,
+    this.command,
+  });
+
+  final HeaderText text;
+  final String trackingParams;
+  final NavigationEndpoint command;
+
+  factory PurpleButtonRenderer.fromRawJson(String str) =>
+      PurpleButtonRenderer.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory PurpleButtonRenderer.fromJson(Map<String, dynamic> json) =>
+      PurpleButtonRenderer(
+        text: HeaderText.fromJson(json["text"]),
+        trackingParams: json["trackingParams"],
+        command: NavigationEndpoint.fromJson(json["command"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "text": text.toJson(),
+        "trackingParams": trackingParams,
+        "command": command.toJson(),
       };
 }
 
@@ -2538,7 +2793,7 @@ class PlaybackTracking {
   });
 
   final PtrackingUrlClass videostatsPlaybackUrl;
-  final PtrackingUrlClass videostatsDelayplayUrl;
+  final AtrUrlClass videostatsDelayplayUrl;
   final PtrackingUrlClass videostatsWatchtimeUrl;
   final PtrackingUrlClass ptrackingUrl;
   final PtrackingUrlClass qoeUrl;
@@ -2556,7 +2811,7 @@ class PlaybackTracking {
         videostatsPlaybackUrl:
             PtrackingUrlClass.fromJson(json["videostatsPlaybackUrl"]),
         videostatsDelayplayUrl:
-            PtrackingUrlClass.fromJson(json["videostatsDelayplayUrl"]),
+            AtrUrlClass.fromJson(json["videostatsDelayplayUrl"]),
         videostatsWatchtimeUrl:
             PtrackingUrlClass.fromJson(json["videostatsWatchtimeUrl"]),
         ptrackingUrl: PtrackingUrlClass.fromJson(json["ptrackingUrl"]),
@@ -2633,6 +2888,7 @@ class PlayerConfig {
     this.daiConfig,
     this.mediaCommonConfig,
     this.webPlayerConfig,
+    this.livePlayerConfig,
   });
 
   final AudioConfig audioConfig;
@@ -2640,6 +2896,7 @@ class PlayerConfig {
   final DaiConfig daiConfig;
   final MediaCommonConfig mediaCommonConfig;
   final WebPlayerConfig webPlayerConfig;
+  final LivePlayerConfig livePlayerConfig;
 
   factory PlayerConfig.fromRawJson(String str) =>
       PlayerConfig.fromJson(json.decode(str));
@@ -2654,6 +2911,7 @@ class PlayerConfig {
         mediaCommonConfig:
             MediaCommonConfig.fromJson(json["mediaCommonConfig"]),
         webPlayerConfig: WebPlayerConfig.fromJson(json["webPlayerConfig"]),
+        livePlayerConfig: LivePlayerConfig.fromJson(json["livePlayerConfig"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2662,6 +2920,7 @@ class PlayerConfig {
         "daiConfig": daiConfig.toJson(),
         "mediaCommonConfig": mediaCommonConfig.toJson(),
         "webPlayerConfig": webPlayerConfig.toJson(),
+        "livePlayerConfig": livePlayerConfig.toJson(),
       };
 }
 
@@ -2697,9 +2956,11 @@ class AudioConfig {
 class DaiConfig {
   DaiConfig({
     this.enableServerStitchedDai,
+    this.enableDai,
   });
 
   final bool enableServerStitchedDai;
+  final bool enableDai;
 
   factory DaiConfig.fromRawJson(String str) =>
       DaiConfig.fromJson(json.decode(str));
@@ -2708,10 +2969,38 @@ class DaiConfig {
 
   factory DaiConfig.fromJson(Map<String, dynamic> json) => DaiConfig(
         enableServerStitchedDai: json["enableServerStitchedDai"],
+        enableDai: json["enableDai"],
       );
 
   Map<String, dynamic> toJson() => {
         "enableServerStitchedDai": enableServerStitchedDai,
+        "enableDai": enableDai,
+      };
+}
+
+class LivePlayerConfig {
+  LivePlayerConfig({
+    this.liveReadaheadSeconds,
+    this.hasSubfragmentedFmp4,
+  });
+
+  final double liveReadaheadSeconds;
+  final bool hasSubfragmentedFmp4;
+
+  factory LivePlayerConfig.fromRawJson(String str) =>
+      LivePlayerConfig.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory LivePlayerConfig.fromJson(Map<String, dynamic> json) =>
+      LivePlayerConfig(
+        liveReadaheadSeconds: json["liveReadaheadSeconds"].toDouble(),
+        hasSubfragmentedFmp4: json["hasSubfragmentedFmp4"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "liveReadaheadSeconds": liveReadaheadSeconds,
+        "hasSubfragmentedFmp4": hasSubfragmentedFmp4,
       };
 }
 
@@ -3225,9 +3514,11 @@ class WebResponseContextExtensionData {
 class Storyboards {
   Storyboards({
     this.playerStoryboardSpecRenderer,
+    this.playerLiveStoryboardSpecRenderer,
   });
 
   final PlayerStoryboardSpecRenderer playerStoryboardSpecRenderer;
+  final PlayerStoryboardSpecRenderer playerLiveStoryboardSpecRenderer;
 
   factory Storyboards.fromRawJson(String str) =>
       Storyboards.fromJson(json.decode(str));
@@ -3237,10 +3528,14 @@ class Storyboards {
   factory Storyboards.fromJson(Map<String, dynamic> json) => Storyboards(
         playerStoryboardSpecRenderer: PlayerStoryboardSpecRenderer.fromJson(
             json["playerStoryboardSpecRenderer"]),
+        playerLiveStoryboardSpecRenderer: PlayerStoryboardSpecRenderer.fromJson(
+            json["playerLiveStoryboardSpecRenderer"]),
       );
 
   Map<String, dynamic> toJson() => {
         "playerStoryboardSpecRenderer": playerStoryboardSpecRenderer.toJson(),
+        "playerLiveStoryboardSpecRenderer":
+            playerLiveStoryboardSpecRenderer.toJson(),
       };
 }
 
@@ -3271,11 +3566,15 @@ class StreamingData {
     this.expiresInSeconds,
     this.formats,
     this.adaptiveFormats,
+    this.dashManifestUrl,
+    this.hlsManifestUrl,
   });
 
   final String expiresInSeconds;
   final List<Format> formats;
   final List<Format> adaptiveFormats;
+  final String dashManifestUrl;
+  final String hlsManifestUrl;
 
   factory StreamingData.fromRawJson(String str) =>
       StreamingData.fromJson(json.decode(str));
@@ -3288,6 +3587,8 @@ class StreamingData {
             List<Format>.from(json["formats"].map((x) => Format.fromJson(x))),
         adaptiveFormats: List<Format>.from(
             json["adaptiveFormats"].map((x) => Format.fromJson(x))),
+        dashManifestUrl: json["dashManifestUrl"],
+        hlsManifestUrl: json["hlsManifestUrl"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -3295,6 +3596,8 @@ class StreamingData {
         "formats": List<dynamic>.from(formats.map((x) => x.toJson())),
         "adaptiveFormats":
             List<dynamic>.from(adaptiveFormats.map((x) => x.toJson())),
+        "dashManifestUrl": dashManifestUrl,
+        "hlsManifestUrl": hlsManifestUrl,
       };
 }
 
@@ -3508,6 +3811,12 @@ class VideoDetails {
     this.isPrivate,
     this.isUnpluggedCorpus,
     this.isLiveContent,
+    this.isLive,
+    this.isLiveDvrEnabled,
+    this.liveChunkReadahead,
+    this.isLiveDefaultBroadcast,
+    this.isLowLatencyLiveStream,
+    this.latencyClass,
   });
 
   final String videoId;
@@ -3526,6 +3835,12 @@ class VideoDetails {
   final bool isPrivate;
   final bool isUnpluggedCorpus;
   final bool isLiveContent;
+  final bool isLive;
+  final bool isLiveDvrEnabled;
+  final int liveChunkReadahead;
+  final bool isLiveDefaultBroadcast;
+  final bool isLowLatencyLiveStream;
+  final String latencyClass;
 
   factory VideoDetails.fromRawJson(String str) =>
       VideoDetails.fromJson(json.decode(str));
@@ -3549,6 +3864,12 @@ class VideoDetails {
         isPrivate: json["isPrivate"],
         isUnpluggedCorpus: json["isUnpluggedCorpus"],
         isLiveContent: json["isLiveContent"],
+        isLive: json["isLive"],
+        isLiveDvrEnabled: json["isLiveDvrEnabled"],
+        liveChunkReadahead: json["liveChunkReadahead"],
+        isLiveDefaultBroadcast: json["isLiveDefaultBroadcast"],
+        isLowLatencyLiveStream: json["isLowLatencyLiveStream"],
+        latencyClass: json["latencyClass"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -3568,6 +3889,12 @@ class VideoDetails {
         "isPrivate": isPrivate,
         "isUnpluggedCorpus": isUnpluggedCorpus,
         "isLiveContent": isLiveContent,
+        "isLive": isLive,
+        "isLiveDvrEnabled": isLiveDvrEnabled,
+        "liveChunkReadahead": liveChunkReadahead,
+        "isLiveDefaultBroadcast": isLiveDefaultBroadcast,
+        "isLowLatencyLiveStream": isLowLatencyLiveStream,
+        "latencyClass": latencyClass,
       };
 }
 
