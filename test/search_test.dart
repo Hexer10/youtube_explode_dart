@@ -17,7 +17,7 @@ void main() {
           .getVideosAsync('undead corporation megalomania')
           .toList();
       expect(videos, isNotEmpty);
-    });
+    }, skip: 'Endpoint removed from YouTube');
 
     //TODO: Find out why this fails
     test('SearchYouTubeVideosFromPage', () async {
