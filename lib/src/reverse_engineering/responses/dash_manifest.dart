@@ -11,7 +11,6 @@ class DashManifest {
   final xml.XmlDocument _root;
   Iterable<_StreamInfo> _streams;
 
-
   ///
   Iterable<_StreamInfo> get streams => _streams ??= _root
       .findElements('Representation')

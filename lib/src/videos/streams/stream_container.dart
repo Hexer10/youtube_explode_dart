@@ -1,33 +1,33 @@
 import 'package:equatable/equatable.dart';
 
 /// Stream container.
-class Container with EquatableMixin {
+class StreamContainer with EquatableMixin {
   /// Container name.
   /// Can be used as file extension
   final String name;
 
-  /// Initializes an instance of [Container]
-  Container._(this.name);
+  /// Initializes an instance of [StreamContainer]
+  StreamContainer._(this.name);
 
   /// MPEG-4 Part 14 (.mp4).
-  static final Container mp4 = Container._('mp4');
+  static final StreamContainer mp4 = StreamContainer._('mp4');
 
   /// Web Media (.webm).
-  static final Container webM = Container._('webm');
+  static final StreamContainer webM = StreamContainer._('webm');
 
   /// 3rd Generation Partnership Project (.3gpp).
-  static final Container tgpp = Container._('3gpp');
+  static final StreamContainer tgpp = StreamContainer._('3gpp');
 
   /// Parse a container from name.
-  static Container parse(String name) {
+  static StreamContainer parse(String name) {
     if (name.toLowerCase() == 'mp4') {
-      return Container.mp4;
+      return StreamContainer.mp4;
     }
     if (name.toLowerCase() == 'webm') {
-      return Container.webM;
+      return StreamContainer.webM;
     }
     if (name.toLowerCase() == '3gpp') {
-      return Container.tgpp;
+      return StreamContainer.tgpp;
     }
 
     throw ArgumentError.value(name, 'name', 'Valid values: mp4, webm, 3gpp');

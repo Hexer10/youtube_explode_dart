@@ -1,6 +1,6 @@
 import 'bitrate.dart';
-import 'container.dart';
 import 'filesize.dart';
+import 'stream_container.dart';
 
 /// Generic YouTube media stream.
 abstract class StreamInfo {
@@ -12,7 +12,7 @@ abstract class StreamInfo {
   final Uri url;
 
   /// Stream container.
-  final Container container;
+  final StreamContainer container;
 
   /// Stream size.
   final FileSize size;

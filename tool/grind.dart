@@ -1,16 +1,13 @@
 import 'package:grinder/grinder.dart';
 
-
-final pub =  sdkBin('pub');
+final pub = sdkBin('pub');
 void main(args) => grind(args);
 
 @Task('Run tests')
 void test() => TestRunner().testAsync();
 
 @Task('Dart analysis')
-void analysis() {
-
-}
+void analysis() {}
 
 @DefaultTask()
 @Depends(test)

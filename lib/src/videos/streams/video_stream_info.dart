@@ -21,7 +21,7 @@ abstract class VideoStreamInfo extends StreamInfo {
   VideoStreamInfo(
       int tag,
       Uri url,
-      Container container,
+      StreamContainer container,
       FileSize size,
       Bitrate bitrate,
       this.videoCodec,

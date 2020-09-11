@@ -6,9 +6,9 @@ import '../../reverse_engineering/responses/responses.dart';
 import '../../reverse_engineering/youtube_http_client.dart';
 import '../video_id.dart';
 import 'bitrate.dart';
-import 'container.dart';
 import 'filesize.dart';
 import 'framerate.dart';
+import 'stream_container.dart';
 import 'stream_context.dart';
 import 'stream_info.dart';
 import 'stream_manifest.dart';
@@ -145,7 +145,7 @@ class StreamsClient {
       }
 
       // Common
-      var container = Container.parse(streamInfo.container);
+      var container = StreamContainer.parse(streamInfo.container);
       var fileSize = FileSize(contentLength);
       var bitrate = Bitrate(streamInfo.bitrate);
 

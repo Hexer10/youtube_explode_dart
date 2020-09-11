@@ -98,11 +98,10 @@ extension on Duration {
     }
     var twoDigitHours = twoDigits(inHours);
     var twoDigitMinutes =
-    twoDigits(inMinutes.remainder(Duration.minutesPerHour));
+        twoDigits(inMinutes.remainder(Duration.minutesPerHour));
     var twoDigitSeconds =
-    twoDigits(inSeconds.remainder(Duration.secondsPerMinute));
-    var fourDigitsUs =
-    threeDigits(inMilliseconds.remainder(1000));
+        twoDigits(inSeconds.remainder(Duration.secondsPerMinute));
+    var fourDigitsUs = threeDigits(inMilliseconds.remainder(1000));
     return '$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds,$fourDigitsUs';
   }
 }

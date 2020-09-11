@@ -9,7 +9,7 @@ class AudioOnlyStreamInfo implements AudioStreamInfo {
   final Uri url;
 
   @override
-  final Container container;
+  final StreamContainer container;
 
   @override
   final FileSize size;

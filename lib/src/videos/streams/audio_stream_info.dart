@@ -6,7 +6,7 @@ abstract class AudioStreamInfo extends StreamInfo {
   final String audioCodec;
 
   ///
-  AudioStreamInfo(int tag, Uri url, Container container, FileSize size,
+  AudioStreamInfo(int tag, Uri url, StreamContainer container, FileSize size,
       Bitrate bitrate, this.audioCodec)
       : super(tag, url, container, size, bitrate);
 }

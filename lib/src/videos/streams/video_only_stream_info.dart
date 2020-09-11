@@ -1,7 +1,7 @@
 import 'bitrate.dart';
-import 'container.dart';
 import 'filesize.dart';
 import 'framerate.dart';
+import 'stream_container.dart';
 import 'video_quality.dart';
 import 'video_resolution.dart';
 import 'video_stream_info.dart';
@@ -15,7 +15,7 @@ class VideoOnlyStreamInfo implements VideoStreamInfo {
   final Uri url;
 
   @override
-  final Container container;
+  final StreamContainer container;
 
   @override
   final FileSize size;
