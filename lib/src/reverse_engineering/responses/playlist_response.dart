@@ -67,7 +67,12 @@ class PlaylistResponse {
     var url = 'https://youtube.com/search_ajax?style=json&search_query='
         '${Uri.encodeQueryComponent(query)}&page=$page&hl=en';
     return retry(() async {
-      var raw = await httpClient.getString(url, validate: false);
+      var raw = await httpClient.getString(url,
+          validate: false,
+          headers: const {
+            'x-youtube-client-name': '56',
+            'x-youtube-client-version': '20200911'
+          });
       return PlaylistResponse.parse(raw);
     });
   }

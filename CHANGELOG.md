@@ -3,6 +3,9 @@
 - Only throw custom exceptions from the library.
 - `getUploadsFromPage` no longer throws.
 
+## 1.5.1
+- Fix Video Search: https://github.com/Tyrrrz/YoutubeExplode/issues/438
+
 ## 1.5.0
 - BREAKING CHANGE: Renamed `Container` class to `StreamContainer` to avoid conflicting with Flutter `Container`. See #66
 
