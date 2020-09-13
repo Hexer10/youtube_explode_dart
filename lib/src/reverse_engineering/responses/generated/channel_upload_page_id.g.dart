@@ -209,7 +209,7 @@ class NavigationEndpointClass {
 
   final String clickTrackingParams;
   final NextEndpointCommandMetadata commandMetadata;
-  final PurpleBrowseEndpoint browseEndpoint;
+  final NextEndpointBrowseEndpoint browseEndpoint;
 
   factory NavigationEndpointClass.fromRawJson(String str) =>
       NavigationEndpointClass.fromJson(json.decode(str));
@@ -226,7 +226,7 @@ class NavigationEndpointClass {
             : NextEndpointCommandMetadata.fromJson(json["commandMetadata"]),
         browseEndpoint: json["browseEndpoint"] == null
             ? null
-            : PurpleBrowseEndpoint.fromJson(json["browseEndpoint"]),
+            : NextEndpointBrowseEndpoint.fromJson(json["browseEndpoint"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -239,8 +239,8 @@ class NavigationEndpointClass {
       };
 }
 
-class PurpleBrowseEndpoint {
-  PurpleBrowseEndpoint({
+class NextEndpointBrowseEndpoint {
+  NextEndpointBrowseEndpoint({
     this.browseId,
     this.params,
     this.canonicalBaseUrl,
@@ -250,13 +250,13 @@ class PurpleBrowseEndpoint {
   final String params;
   final CanonicalBaseUrl canonicalBaseUrl;
 
-  factory PurpleBrowseEndpoint.fromRawJson(String str) =>
-      PurpleBrowseEndpoint.fromJson(json.decode(str));
+  factory NextEndpointBrowseEndpoint.fromRawJson(String str) =>
+      NextEndpointBrowseEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory PurpleBrowseEndpoint.fromJson(Map<String, dynamic> json) =>
-      PurpleBrowseEndpoint(
+  factory NextEndpointBrowseEndpoint.fromJson(Map<String, dynamic> json) =>
+      NextEndpointBrowseEndpoint(
         browseId:
             json["browseId"] == null ? null : idValues.map[json["browseId"]],
         params: json["params"] == null ? null : json["params"],
@@ -274,15 +274,19 @@ class PurpleBrowseEndpoint {
       };
 }
 
-enum Id { U_CS7_O9_S_OU_QI_BG_BXAA_AGU_IWIG }
+enum Id { U_CS7_O9_S_OU_QI_BG_BXAA_AGU_IWIG, UCSFC5_CIO8_ZA_LQDF_PX_A7_Y_HQ }
 
-final idValues = EnumValues(
-    {"UCs7O9sOUQiBGBxaaAguIwig": Id.U_CS7_O9_S_OU_QI_BG_BXAA_AGU_IWIG});
+final idValues = EnumValues({
+  "UCSFC5Cio8zaLQDFPxA7y_HQ": Id.UCSFC5_CIO8_ZA_LQDF_PX_A7_Y_HQ,
+  "UCs7O9sOUQiBGBxaaAguIwig": Id.U_CS7_O9_S_OU_QI_BG_BXAA_AGU_IWIG
+});
 
-enum CanonicalBaseUrl { C_PATRIK_PIETSCHMANN }
+enum CanonicalBaseUrl { C_PATRIK_PIETSCHMANN, C_FAVIJ_TV }
 
-final canonicalBaseUrlValues =
-    EnumValues({"/c/PatrikPietschmann": CanonicalBaseUrl.C_PATRIK_PIETSCHMANN});
+final canonicalBaseUrlValues = EnumValues({
+  "/c/FavijTV": CanonicalBaseUrl.C_FAVIJ_TV,
+  "/c/PatrikPietschmann": CanonicalBaseUrl.C_PATRIK_PIETSCHMANN
+});
 
 class NextEndpointCommandMetadata {
   NextEndpointCommandMetadata({
@@ -524,7 +528,7 @@ class ItemSectionRendererContent {
     this.gridRenderer,
   });
 
-  final Grid gridRenderer;
+  final GridRenderer gridRenderer;
 
   factory ItemSectionRendererContent.fromRawJson(String str) =>
       ItemSectionRendererContent.fromJson(json.decode(str));
@@ -535,7 +539,7 @@ class ItemSectionRendererContent {
       ItemSectionRendererContent(
         gridRenderer: json["gridRenderer"] == null
             ? null
-            : Grid.fromJson(json["gridRenderer"]),
+            : GridRenderer.fromJson(json["gridRenderer"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -543,26 +547,27 @@ class ItemSectionRendererContent {
       };
 }
 
-class Grid {
-  Grid({
+class GridRenderer {
+  GridRenderer({
     this.items,
     this.continuations,
     this.trackingParams,
   });
 
-  final List<GridContinuationItem> items;
+  final List<GridRendererItem> items;
   final List<Continuation> continuations;
   final String trackingParams;
 
-  factory Grid.fromRawJson(String str) => Grid.fromJson(json.decode(str));
+  factory GridRenderer.fromRawJson(String str) =>
+      GridRenderer.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Grid.fromJson(Map<String, dynamic> json) => Grid(
+  factory GridRenderer.fromJson(Map<String, dynamic> json) => GridRenderer(
         items: json["items"] == null
             ? null
-            : List<GridContinuationItem>.from(
-                json["items"].map((x) => GridContinuationItem.fromJson(x))),
+            : List<GridRendererItem>.from(
+                json["items"].map((x) => GridRendererItem.fromJson(x))),
         continuations: json["continuations"] == null
             ? null
             : List<Continuation>.from(
@@ -636,23 +641,23 @@ class NextContinuationData {
       };
 }
 
-class GridContinuationItem {
-  GridContinuationItem({
+class GridRendererItem {
+  GridRendererItem({
     this.gridVideoRenderer,
   });
 
-  final GridVideoRenderer gridVideoRenderer;
+  final PurpleGridVideoRenderer gridVideoRenderer;
 
-  factory GridContinuationItem.fromRawJson(String str) =>
-      GridContinuationItem.fromJson(json.decode(str));
+  factory GridRendererItem.fromRawJson(String str) =>
+      GridRendererItem.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory GridContinuationItem.fromJson(Map<String, dynamic> json) =>
-      GridContinuationItem(
+  factory GridRendererItem.fromJson(Map<String, dynamic> json) =>
+      GridRendererItem(
         gridVideoRenderer: json["gridVideoRenderer"] == null
             ? null
-            : GridVideoRenderer.fromJson(json["gridVideoRenderer"]),
+            : PurpleGridVideoRenderer.fromJson(json["gridVideoRenderer"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -661,8 +666,8 @@ class GridContinuationItem {
       };
 }
 
-class GridVideoRenderer {
-  GridVideoRenderer({
+class PurpleGridVideoRenderer {
+  PurpleGridVideoRenderer({
     this.videoId,
     this.thumbnail,
     this.title,
@@ -674,38 +679,43 @@ class GridVideoRenderer {
     this.shortViewCountText,
     this.menu,
     this.thumbnailOverlays,
+    this.shortBylineText,
+    this.richThumbnail,
   });
 
   final String videoId;
   final Avatar thumbnail;
-  final Title title;
-  final Text publishedTimeText;
-  final Text viewCountText;
+  final PurpleTitle title;
+  final PublishedTimeTextClass publishedTimeText;
+  final SubscriberCountText viewCountText;
   final GridVideoRendererNavigationEndpoint navigationEndpoint;
   final List<Badge> ownerBadges;
   final String trackingParams;
-  final Text shortViewCountText;
+  final SubscriberCountText shortViewCountText;
   final Menu menu;
-  final List<ThumbnailOverlay> thumbnailOverlays;
+  final List<PurpleThumbnailOverlay> thumbnailOverlays;
+  final ShortBylineText shortBylineText;
+  final RichThumbnail richThumbnail;
 
-  factory GridVideoRenderer.fromRawJson(String str) =>
-      GridVideoRenderer.fromJson(json.decode(str));
+  factory PurpleGridVideoRenderer.fromRawJson(String str) =>
+      PurpleGridVideoRenderer.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory GridVideoRenderer.fromJson(Map<String, dynamic> json) =>
-      GridVideoRenderer(
+  factory PurpleGridVideoRenderer.fromJson(Map<String, dynamic> json) =>
+      PurpleGridVideoRenderer(
         videoId: json["videoId"] == null ? null : json["videoId"],
         thumbnail: json["thumbnail"] == null
             ? null
             : Avatar.fromJson(json["thumbnail"]),
-        title: json["title"] == null ? null : Title.fromJson(json["title"]),
+        title:
+            json["title"] == null ? null : PurpleTitle.fromJson(json["title"]),
         publishedTimeText: json["publishedTimeText"] == null
             ? null
-            : Text.fromJson(json["publishedTimeText"]),
+            : PublishedTimeTextClass.fromJson(json["publishedTimeText"]),
         viewCountText: json["viewCountText"] == null
             ? null
-            : Text.fromJson(json["viewCountText"]),
+            : SubscriberCountText.fromJson(json["viewCountText"]),
         navigationEndpoint: json["navigationEndpoint"] == null
             ? null
             : GridVideoRendererNavigationEndpoint.fromJson(
@@ -718,12 +728,18 @@ class GridVideoRenderer {
             json["trackingParams"] == null ? null : json["trackingParams"],
         shortViewCountText: json["shortViewCountText"] == null
             ? null
-            : Text.fromJson(json["shortViewCountText"]),
+            : SubscriberCountText.fromJson(json["shortViewCountText"]),
         menu: json["menu"] == null ? null : Menu.fromJson(json["menu"]),
         thumbnailOverlays: json["thumbnailOverlays"] == null
             ? null
-            : List<ThumbnailOverlay>.from(json["thumbnailOverlays"]
-                .map((x) => ThumbnailOverlay.fromJson(x))),
+            : List<PurpleThumbnailOverlay>.from(json["thumbnailOverlays"]
+                .map((x) => PurpleThumbnailOverlay.fromJson(x))),
+        shortBylineText: json["shortBylineText"] == null
+            ? null
+            : ShortBylineText.fromJson(json["shortBylineText"]),
+        richThumbnail: json["richThumbnail"] == null
+            ? null
+            : RichThumbnail.fromJson(json["richThumbnail"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -745,6 +761,9 @@ class GridVideoRenderer {
         "thumbnailOverlays": thumbnailOverlays == null
             ? null
             : List<dynamic>.from(thumbnailOverlays.map((x) => x.toJson())),
+        "shortBylineText":
+            shortBylineText == null ? null : shortBylineText.toJson(),
+        "richThumbnail": richThumbnail == null ? null : richThumbnail.toJson(),
       };
 }
 
@@ -779,7 +798,7 @@ class MenuMenuRenderer {
 
   final List<MenuRendererItem> items;
   final String trackingParams;
-  final Accessibility accessibility;
+  final AccessibilityData accessibility;
 
   factory MenuMenuRenderer.fromRawJson(String str) =>
       MenuMenuRenderer.fromJson(json.decode(str));
@@ -796,7 +815,7 @@ class MenuMenuRenderer {
             json["trackingParams"] == null ? null : json["trackingParams"],
         accessibility: json["accessibility"] == null
             ? null
-            : Accessibility.fromJson(json["accessibility"]),
+            : AccessibilityData.fromJson(json["accessibility"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -808,36 +827,12 @@ class MenuMenuRenderer {
       };
 }
 
-class Accessibility {
-  Accessibility({
+class AccessibilityData {
+  AccessibilityData({
     this.accessibilityData,
   });
 
-  final AccessibilityData accessibilityData;
-
-  factory Accessibility.fromRawJson(String str) =>
-      Accessibility.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Accessibility.fromJson(Map<String, dynamic> json) => Accessibility(
-        accessibilityData: json["accessibilityData"] == null
-            ? null
-            : AccessibilityData.fromJson(json["accessibilityData"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "accessibilityData":
-            accessibilityData == null ? null : accessibilityData.toJson(),
-      };
-}
-
-class AccessibilityData {
-  AccessibilityData({
-    this.label,
-  });
-
-  final String label;
+  final AccessibilityDataAccessibilityData accessibilityData;
 
   factory AccessibilityData.fromRawJson(String str) =>
       AccessibilityData.fromJson(json.decode(str));
@@ -846,6 +841,33 @@ class AccessibilityData {
 
   factory AccessibilityData.fromJson(Map<String, dynamic> json) =>
       AccessibilityData(
+        accessibilityData: json["accessibilityData"] == null
+            ? null
+            : AccessibilityDataAccessibilityData.fromJson(
+                json["accessibilityData"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "accessibilityData":
+            accessibilityData == null ? null : accessibilityData.toJson(),
+      };
+}
+
+class AccessibilityDataAccessibilityData {
+  AccessibilityDataAccessibilityData({
+    this.label,
+  });
+
+  final String label;
+
+  factory AccessibilityDataAccessibilityData.fromRawJson(String str) =>
+      AccessibilityDataAccessibilityData.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory AccessibilityDataAccessibilityData.fromJson(
+          Map<String, dynamic> json) =>
+      AccessibilityDataAccessibilityData(
         label: json["label"] == null ? null : json["label"],
       );
 
@@ -888,7 +910,7 @@ class MenuServiceItemRenderer {
     this.trackingParams,
   });
 
-  final SubscriberCountText text;
+  final Text text;
   final IconImage icon;
   final ServiceEndpoint serviceEndpoint;
   final String trackingParams;
@@ -900,9 +922,7 @@ class MenuServiceItemRenderer {
 
   factory MenuServiceItemRenderer.fromJson(Map<String, dynamic> json) =>
       MenuServiceItemRenderer(
-        text: json["text"] == null
-            ? null
-            : SubscriberCountText.fromJson(json["text"]),
+        text: json["text"] == null ? null : Text.fromJson(json["text"]),
         icon: json["icon"] == null ? null : IconImage.fromJson(json["icon"]),
         serviceEndpoint: json["serviceEndpoint"] == null
             ? null
@@ -946,6 +966,8 @@ class IconImage {
 enum IconType {
   ADD_TO_QUEUE_TAIL,
   OFFICIAL_ARTIST_BADGE,
+  CHECK_CIRCLE_THICK,
+  LIVE,
   CHECK,
   PLAYLIST_ADD_CHECK,
   WATCH_LATER,
@@ -969,8 +991,10 @@ final iconTypeValues = EnumValues({
   "APPS": IconType.APPS,
   "AVATAR_LOGGED_OUT": IconType.AVATAR_LOGGED_OUT,
   "CHECK": IconType.CHECK,
+  "CHECK_CIRCLE_THICK": IconType.CHECK_CIRCLE_THICK,
   "CREATION_LIVE": IconType.CREATION_LIVE,
   "CREATION_UPLOAD": IconType.CREATION_UPLOAD,
+  "LIVE": IconType.LIVE,
   "MORE_VERT": IconType.MORE_VERT,
   "OFFICIAL_ARTIST_BADGE": IconType.OFFICIAL_ARTIST_BADGE,
   "PLAYLIST_ADD_CHECK": IconType.PLAYLIST_ADD_CHECK,
@@ -1351,23 +1375,21 @@ enum Signal { CLIENT_SIGNAL }
 
 final signalValues = EnumValues({"CLIENT_SIGNAL": Signal.CLIENT_SIGNAL});
 
-class SubscriberCountText {
-  SubscriberCountText({
+class Text {
+  Text({
     this.runs,
   });
 
-  final List<Run> runs;
+  final List<TextRun> runs;
 
-  factory SubscriberCountText.fromRawJson(String str) =>
-      SubscriberCountText.fromJson(json.decode(str));
+  factory Text.fromRawJson(String str) => Text.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory SubscriberCountText.fromJson(Map<String, dynamic> json) =>
-      SubscriberCountText(
+  factory Text.fromJson(Map<String, dynamic> json) => Text(
         runs: json["runs"] == null
             ? null
-            : List<Run>.from(json["runs"].map((x) => Run.fromJson(x))),
+            : List<TextRun>.from(json["runs"].map((x) => TextRun.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -1377,18 +1399,18 @@ class SubscriberCountText {
       };
 }
 
-class Run {
-  Run({
+class TextRun {
+  TextRun({
     this.text,
   });
 
   final String text;
 
-  factory Run.fromRawJson(String str) => Run.fromJson(json.decode(str));
+  factory TextRun.fromRawJson(String str) => TextRun.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Run.fromJson(Map<String, dynamic> json) => Run(
+  factory TextRun.fromJson(Map<String, dynamic> json) => TextRun(
         text: json["text"] == null ? null : json["text"],
       );
 
@@ -1521,30 +1543,39 @@ class MetadataBadgeRenderer {
       };
 }
 
-enum MetadataBadgeRendererStyle { BADGE_STYLE_TYPE_VERIFIED_ARTIST }
+enum MetadataBadgeRendererStyle {
+  BADGE_STYLE_TYPE_VERIFIED_ARTIST,
+  BADGE_STYLE_TYPE_VERIFIED
+}
 
 final metadataBadgeRendererStyleValues = EnumValues({
+  "BADGE_STYLE_TYPE_VERIFIED":
+      MetadataBadgeRendererStyle.BADGE_STYLE_TYPE_VERIFIED,
   "BADGE_STYLE_TYPE_VERIFIED_ARTIST":
       MetadataBadgeRendererStyle.BADGE_STYLE_TYPE_VERIFIED_ARTIST
 });
 
-enum Tooltip { OFFICIAL_ARTIST_CHANNEL }
+enum Tooltip { OFFICIAL_ARTIST_CHANNEL, VERIFIED }
 
-final tooltipValues =
-    EnumValues({"Official Artist Channel": Tooltip.OFFICIAL_ARTIST_CHANNEL});
+final tooltipValues = EnumValues({
+  "Official Artist Channel": Tooltip.OFFICIAL_ARTIST_CHANNEL,
+  "Verified": Tooltip.VERIFIED
+});
 
-class Text {
-  Text({
+class PublishedTimeTextClass {
+  PublishedTimeTextClass({
     this.simpleText,
   });
 
   final String simpleText;
 
-  factory Text.fromRawJson(String str) => Text.fromJson(json.decode(str));
+  factory PublishedTimeTextClass.fromRawJson(String str) =>
+      PublishedTimeTextClass.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Text.fromJson(Map<String, dynamic> json) => Text(
+  factory PublishedTimeTextClass.fromJson(Map<String, dynamic> json) =>
+      PublishedTimeTextClass(
         simpleText: json["simpleText"] == null ? null : json["simpleText"],
       );
 
@@ -1553,28 +1584,100 @@ class Text {
       };
 }
 
-class Avatar {
-  Avatar({
-    this.thumbnails,
+class RichThumbnail {
+  RichThumbnail({
+    this.movingThumbnailRenderer,
   });
 
-  final List<Thumbnail> thumbnails;
+  final MovingThumbnailRenderer movingThumbnailRenderer;
 
-  factory Avatar.fromRawJson(String str) => Avatar.fromJson(json.decode(str));
+  factory RichThumbnail.fromRawJson(String str) =>
+      RichThumbnail.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Avatar.fromJson(Map<String, dynamic> json) => Avatar(
+  factory RichThumbnail.fromJson(Map<String, dynamic> json) => RichThumbnail(
+        movingThumbnailRenderer: json["movingThumbnailRenderer"] == null
+            ? null
+            : MovingThumbnailRenderer.fromJson(json["movingThumbnailRenderer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "movingThumbnailRenderer": movingThumbnailRenderer == null
+            ? null
+            : movingThumbnailRenderer.toJson(),
+      };
+}
+
+class MovingThumbnailRenderer {
+  MovingThumbnailRenderer({
+    this.movingThumbnailDetails,
+    this.enableHoveredLogging,
+    this.enableOverlay,
+  });
+
+  final MovingThumbnailDetails movingThumbnailDetails;
+  final bool enableHoveredLogging;
+  final bool enableOverlay;
+
+  factory MovingThumbnailRenderer.fromRawJson(String str) =>
+      MovingThumbnailRenderer.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory MovingThumbnailRenderer.fromJson(Map<String, dynamic> json) =>
+      MovingThumbnailRenderer(
+        movingThumbnailDetails: json["movingThumbnailDetails"] == null
+            ? null
+            : MovingThumbnailDetails.fromJson(json["movingThumbnailDetails"]),
+        enableHoveredLogging: json["enableHoveredLogging"] == null
+            ? null
+            : json["enableHoveredLogging"],
+        enableOverlay:
+            json["enableOverlay"] == null ? null : json["enableOverlay"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "movingThumbnailDetails": movingThumbnailDetails == null
+            ? null
+            : movingThumbnailDetails.toJson(),
+        "enableHoveredLogging":
+            enableHoveredLogging == null ? null : enableHoveredLogging,
+        "enableOverlay": enableOverlay == null ? null : enableOverlay,
+      };
+}
+
+class MovingThumbnailDetails {
+  MovingThumbnailDetails({
+    this.thumbnails,
+    this.logAsMovingThumbnail,
+  });
+
+  final List<Thumbnail> thumbnails;
+  final bool logAsMovingThumbnail;
+
+  factory MovingThumbnailDetails.fromRawJson(String str) =>
+      MovingThumbnailDetails.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory MovingThumbnailDetails.fromJson(Map<String, dynamic> json) =>
+      MovingThumbnailDetails(
         thumbnails: json["thumbnails"] == null
             ? null
             : List<Thumbnail>.from(
                 json["thumbnails"].map((x) => Thumbnail.fromJson(x))),
+        logAsMovingThumbnail: json["logAsMovingThumbnail"] == null
+            ? null
+            : json["logAsMovingThumbnail"],
       );
 
   Map<String, dynamic> toJson() => {
         "thumbnails": thumbnails == null
             ? null
             : List<dynamic>.from(thumbnails.map((x) => x.toJson())),
+        "logAsMovingThumbnail":
+            logAsMovingThumbnail == null ? null : logAsMovingThumbnail,
       };
 }
 
@@ -1607,29 +1710,211 @@ class Thumbnail {
       };
 }
 
-class ThumbnailOverlay {
-  ThumbnailOverlay({
+class ShortBylineText {
+  ShortBylineText({
+    this.runs,
+  });
+
+  final List<ShortBylineTextRun> runs;
+
+  factory ShortBylineText.fromRawJson(String str) =>
+      ShortBylineText.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory ShortBylineText.fromJson(Map<String, dynamic> json) =>
+      ShortBylineText(
+        runs: json["runs"] == null
+            ? null
+            : List<ShortBylineTextRun>.from(
+                json["runs"].map((x) => ShortBylineTextRun.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "runs": runs == null
+            ? null
+            : List<dynamic>.from(runs.map((x) => x.toJson())),
+      };
+}
+
+class ShortBylineTextRun {
+  ShortBylineTextRun({
+    this.text,
+    this.navigationEndpoint,
+  });
+
+  final String text;
+  final RunNavigationEndpoint navigationEndpoint;
+
+  factory ShortBylineTextRun.fromRawJson(String str) =>
+      ShortBylineTextRun.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory ShortBylineTextRun.fromJson(Map<String, dynamic> json) =>
+      ShortBylineTextRun(
+        text: json["text"] == null ? null : json["text"],
+        navigationEndpoint: json["navigationEndpoint"] == null
+            ? null
+            : RunNavigationEndpoint.fromJson(json["navigationEndpoint"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "text": text == null ? null : text,
+        "navigationEndpoint":
+            navigationEndpoint == null ? null : navigationEndpoint.toJson(),
+      };
+}
+
+class RunNavigationEndpoint {
+  RunNavigationEndpoint({
+    this.clickTrackingParams,
+    this.commandMetadata,
+    this.browseEndpoint,
+  });
+
+  final String clickTrackingParams;
+  final NextEndpointCommandMetadata commandMetadata;
+  final PurpleBrowseEndpoint browseEndpoint;
+
+  factory RunNavigationEndpoint.fromRawJson(String str) =>
+      RunNavigationEndpoint.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory RunNavigationEndpoint.fromJson(Map<String, dynamic> json) =>
+      RunNavigationEndpoint(
+        clickTrackingParams: json["clickTrackingParams"] == null
+            ? null
+            : json["clickTrackingParams"],
+        commandMetadata: json["commandMetadata"] == null
+            ? null
+            : NextEndpointCommandMetadata.fromJson(json["commandMetadata"]),
+        browseEndpoint: json["browseEndpoint"] == null
+            ? null
+            : PurpleBrowseEndpoint.fromJson(json["browseEndpoint"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "clickTrackingParams":
+            clickTrackingParams == null ? null : clickTrackingParams,
+        "commandMetadata":
+            commandMetadata == null ? null : commandMetadata.toJson(),
+        "browseEndpoint":
+            browseEndpoint == null ? null : browseEndpoint.toJson(),
+      };
+}
+
+class PurpleBrowseEndpoint {
+  PurpleBrowseEndpoint({
+    this.browseId,
+    this.canonicalBaseUrl,
+  });
+
+  final Id browseId;
+  final CanonicalBaseUrl canonicalBaseUrl;
+
+  factory PurpleBrowseEndpoint.fromRawJson(String str) =>
+      PurpleBrowseEndpoint.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory PurpleBrowseEndpoint.fromJson(Map<String, dynamic> json) =>
+      PurpleBrowseEndpoint(
+        browseId:
+            json["browseId"] == null ? null : idValues.map[json["browseId"]],
+        canonicalBaseUrl: json["canonicalBaseUrl"] == null
+            ? null
+            : canonicalBaseUrlValues.map[json["canonicalBaseUrl"]],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "browseId": browseId == null ? null : idValues.reverse[browseId],
+        "canonicalBaseUrl": canonicalBaseUrl == null
+            ? null
+            : canonicalBaseUrlValues.reverse[canonicalBaseUrl],
+      };
+}
+
+class SubscriberCountText {
+  SubscriberCountText({
+    this.simpleText,
+    this.runs,
+  });
+
+  final String simpleText;
+  final List<TextRun> runs;
+
+  factory SubscriberCountText.fromRawJson(String str) =>
+      SubscriberCountText.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory SubscriberCountText.fromJson(Map<String, dynamic> json) =>
+      SubscriberCountText(
+        simpleText: json["simpleText"] == null ? null : json["simpleText"],
+        runs: json["runs"] == null
+            ? null
+            : List<TextRun>.from(json["runs"].map((x) => TextRun.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "simpleText": simpleText == null ? null : simpleText,
+        "runs": runs == null
+            ? null
+            : List<dynamic>.from(runs.map((x) => x.toJson())),
+      };
+}
+
+class Avatar {
+  Avatar({
+    this.thumbnails,
+  });
+
+  final List<Thumbnail> thumbnails;
+
+  factory Avatar.fromRawJson(String str) => Avatar.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Avatar.fromJson(Map<String, dynamic> json) => Avatar(
+        thumbnails: json["thumbnails"] == null
+            ? null
+            : List<Thumbnail>.from(
+                json["thumbnails"].map((x) => Thumbnail.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "thumbnails": thumbnails == null
+            ? null
+            : List<dynamic>.from(thumbnails.map((x) => x.toJson())),
+      };
+}
+
+class PurpleThumbnailOverlay {
+  PurpleThumbnailOverlay({
     this.thumbnailOverlayTimeStatusRenderer,
     this.thumbnailOverlayToggleButtonRenderer,
     this.thumbnailOverlayNowPlayingRenderer,
   });
 
-  final ThumbnailOverlayTimeStatusRenderer thumbnailOverlayTimeStatusRenderer;
+  final PurpleThumbnailOverlayTimeStatusRenderer
+      thumbnailOverlayTimeStatusRenderer;
   final ThumbnailOverlayToggleButtonRenderer
       thumbnailOverlayToggleButtonRenderer;
   final ThumbnailOverlayNowPlayingRenderer thumbnailOverlayNowPlayingRenderer;
 
-  factory ThumbnailOverlay.fromRawJson(String str) =>
-      ThumbnailOverlay.fromJson(json.decode(str));
+  factory PurpleThumbnailOverlay.fromRawJson(String str) =>
+      PurpleThumbnailOverlay.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ThumbnailOverlay.fromJson(Map<String, dynamic> json) =>
-      ThumbnailOverlay(
+  factory PurpleThumbnailOverlay.fromJson(Map<String, dynamic> json) =>
+      PurpleThumbnailOverlay(
         thumbnailOverlayTimeStatusRenderer:
             json["thumbnailOverlayTimeStatusRenderer"] == null
                 ? null
-                : ThumbnailOverlayTimeStatusRenderer.fromJson(
+                : PurpleThumbnailOverlayTimeStatusRenderer.fromJson(
                     json["thumbnailOverlayTimeStatusRenderer"]),
         thumbnailOverlayToggleButtonRenderer:
             json["thumbnailOverlayToggleButtonRenderer"] == null
@@ -1664,7 +1949,7 @@ class ThumbnailOverlayNowPlayingRenderer {
     this.text,
   });
 
-  final SubscriberCountText text;
+  final Text text;
 
   factory ThumbnailOverlayNowPlayingRenderer.fromRawJson(String str) =>
       ThumbnailOverlayNowPlayingRenderer.fromJson(json.decode(str));
@@ -1674,9 +1959,7 @@ class ThumbnailOverlayNowPlayingRenderer {
   factory ThumbnailOverlayNowPlayingRenderer.fromJson(
           Map<String, dynamic> json) =>
       ThumbnailOverlayNowPlayingRenderer(
-        text: json["text"] == null
-            ? null
-            : SubscriberCountText.fromJson(json["text"]),
+        text: json["text"] == null ? null : Text.fromJson(json["text"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -1684,27 +1967,30 @@ class ThumbnailOverlayNowPlayingRenderer {
       };
 }
 
-class ThumbnailOverlayTimeStatusRenderer {
-  ThumbnailOverlayTimeStatusRenderer({
+class PurpleThumbnailOverlayTimeStatusRenderer {
+  PurpleThumbnailOverlayTimeStatusRenderer({
     this.text,
     this.style,
+    this.icon,
   });
 
-  final Title text;
+  final PurpleTitle text;
   final ThumbnailOverlayTimeStatusRendererStyle style;
+  final IconImage icon;
 
-  factory ThumbnailOverlayTimeStatusRenderer.fromRawJson(String str) =>
-      ThumbnailOverlayTimeStatusRenderer.fromJson(json.decode(str));
+  factory PurpleThumbnailOverlayTimeStatusRenderer.fromRawJson(String str) =>
+      PurpleThumbnailOverlayTimeStatusRenderer.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ThumbnailOverlayTimeStatusRenderer.fromJson(
+  factory PurpleThumbnailOverlayTimeStatusRenderer.fromJson(
           Map<String, dynamic> json) =>
-      ThumbnailOverlayTimeStatusRenderer(
-        text: json["text"] == null ? null : Title.fromJson(json["text"]),
+      PurpleThumbnailOverlayTimeStatusRenderer(
+        text: json["text"] == null ? null : PurpleTitle.fromJson(json["text"]),
         style: json["style"] == null
             ? null
             : thumbnailOverlayTimeStatusRendererStyleValues.map[json["style"]],
+        icon: json["icon"] == null ? null : IconImage.fromJson(json["icon"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -1712,37 +1998,49 @@ class ThumbnailOverlayTimeStatusRenderer {
         "style": style == null
             ? null
             : thumbnailOverlayTimeStatusRendererStyleValues.reverse[style],
+        "icon": icon == null ? null : icon.toJson(),
       };
 }
 
-enum ThumbnailOverlayTimeStatusRendererStyle { DEFAULT }
+enum ThumbnailOverlayTimeStatusRendererStyle { DEFAULT, LIVE }
 
-final thumbnailOverlayTimeStatusRendererStyleValues =
-    EnumValues({"DEFAULT": ThumbnailOverlayTimeStatusRendererStyle.DEFAULT});
+final thumbnailOverlayTimeStatusRendererStyleValues = EnumValues({
+  "DEFAULT": ThumbnailOverlayTimeStatusRendererStyle.DEFAULT,
+  "LIVE": ThumbnailOverlayTimeStatusRendererStyle.LIVE
+});
 
-class Title {
-  Title({
+class PurpleTitle {
+  PurpleTitle({
     this.accessibility,
     this.simpleText,
+    this.runs,
   });
 
-  final Accessibility accessibility;
+  final AccessibilityData accessibility;
   final String simpleText;
+  final List<TextRun> runs;
 
-  factory Title.fromRawJson(String str) => Title.fromJson(json.decode(str));
+  factory PurpleTitle.fromRawJson(String str) =>
+      PurpleTitle.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Title.fromJson(Map<String, dynamic> json) => Title(
+  factory PurpleTitle.fromJson(Map<String, dynamic> json) => PurpleTitle(
         accessibility: json["accessibility"] == null
             ? null
-            : Accessibility.fromJson(json["accessibility"]),
+            : AccessibilityData.fromJson(json["accessibility"]),
         simpleText: json["simpleText"] == null ? null : json["simpleText"],
+        runs: json["runs"] == null
+            ? null
+            : List<TextRun>.from(json["runs"].map((x) => TextRun.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "accessibility": accessibility == null ? null : accessibility.toJson(),
         "simpleText": simpleText == null ? null : simpleText,
+        "runs": runs == null
+            ? null
+            : List<dynamic>.from(runs.map((x) => x.toJson())),
       };
 }
 
@@ -1767,8 +2065,8 @@ class ThumbnailOverlayToggleButtonRenderer {
   final ToggledTooltip toggledTooltip;
   final UntoggledServiceEndpoint untoggledServiceEndpoint;
   final ToggledServiceEndpoint toggledServiceEndpoint;
-  final Accessibility untoggledAccessibility;
-  final Accessibility toggledAccessibility;
+  final AccessibilityData untoggledAccessibility;
+  final AccessibilityData toggledAccessibility;
   final String trackingParams;
 
   factory ThumbnailOverlayToggleButtonRenderer.fromRawJson(String str) =>
@@ -1801,10 +2099,10 @@ class ThumbnailOverlayToggleButtonRenderer {
             : ToggledServiceEndpoint.fromJson(json["toggledServiceEndpoint"]),
         untoggledAccessibility: json["untoggledAccessibility"] == null
             ? null
-            : Accessibility.fromJson(json["untoggledAccessibility"]),
+            : AccessibilityData.fromJson(json["untoggledAccessibility"]),
         toggledAccessibility: json["toggledAccessibility"] == null
             ? null
-            : Accessibility.fromJson(json["toggledAccessibility"]),
+            : AccessibilityData.fromJson(json["toggledAccessibility"]),
         trackingParams:
             json["trackingParams"] == null ? null : json["trackingParams"],
       );
@@ -2191,7 +2489,7 @@ class DismissButtonButtonRenderer {
   final String style;
   final String size;
   final bool isDisabled;
-  final Text text;
+  final SubscriberCountText text;
   final PurpleNavigationEndpoint navigationEndpoint;
   final String trackingParams;
 
@@ -2205,7 +2503,9 @@ class DismissButtonButtonRenderer {
         style: json["style"] == null ? null : json["style"],
         size: json["size"] == null ? null : json["size"],
         isDisabled: json["isDisabled"] == null ? null : json["isDisabled"],
-        text: json["text"] == null ? null : Text.fromJson(json["text"]),
+        text: json["text"] == null
+            ? null
+            : SubscriberCountText.fromJson(json["text"]),
         navigationEndpoint: json["navigationEndpoint"] == null
             ? null
             : PurpleNavigationEndpoint.fromJson(json["navigationEndpoint"]),
@@ -2324,7 +2624,7 @@ class SortFilterSubMenuRenderer {
   final List<SubMenuItem> subMenuItems;
   final String title;
   final IconImage icon;
-  final Accessibility accessibility;
+  final AccessibilityData accessibility;
   final String trackingParams;
 
   factory SortFilterSubMenuRenderer.fromRawJson(String str) =>
@@ -2342,7 +2642,7 @@ class SortFilterSubMenuRenderer {
         icon: json["icon"] == null ? null : IconImage.fromJson(json["icon"]),
         accessibility: json["accessibility"] == null
             ? null
-            : Accessibility.fromJson(json["accessibility"]),
+            : AccessibilityData.fromJson(json["accessibility"]),
         trackingParams:
             json["trackingParams"] == null ? null : json["trackingParams"],
       );
@@ -2397,7 +2697,7 @@ class ChannelUploadPageIdEndpoint {
   });
 
   final PurpleCommandMetadata commandMetadata;
-  final EndpointUrlEndpoint urlEndpoint;
+  final UrlEndpoint urlEndpoint;
 
   factory ChannelUploadPageIdEndpoint.fromRawJson(String str) =>
       ChannelUploadPageIdEndpoint.fromJson(json.decode(str));
@@ -2411,7 +2711,7 @@ class ChannelUploadPageIdEndpoint {
             : PurpleCommandMetadata.fromJson(json["commandMetadata"]),
         urlEndpoint: json["urlEndpoint"] == null
             ? null
-            : EndpointUrlEndpoint.fromJson(json["urlEndpoint"]),
+            : UrlEndpoint.fromJson(json["urlEndpoint"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2475,20 +2775,19 @@ class StickyWebCommandMetadata {
       };
 }
 
-class EndpointUrlEndpoint {
-  EndpointUrlEndpoint({
+class UrlEndpoint {
+  UrlEndpoint({
     this.url,
   });
 
   final String url;
 
-  factory EndpointUrlEndpoint.fromRawJson(String str) =>
-      EndpointUrlEndpoint.fromJson(json.decode(str));
+  factory UrlEndpoint.fromRawJson(String str) =>
+      UrlEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory EndpointUrlEndpoint.fromJson(Map<String, dynamic> json) =>
-      EndpointUrlEndpoint(
+  factory UrlEndpoint.fromJson(Map<String, dynamic> json) => UrlEndpoint(
         url: json["url"] == null ? null : json["url"],
       );
 
@@ -2535,11 +2834,13 @@ class C4TabbedHeaderRenderer {
     this.tvBanner,
     this.mobileBanner,
     this.trackingParams,
+    this.visitTracking,
+    this.sponsorButton,
   });
 
   final Id channelId;
   final String title;
-  final C4TabbedHeaderRendererNavigationEndpoint navigationEndpoint;
+  final RunNavigationEndpoint navigationEndpoint;
   final Avatar avatar;
   final Avatar banner;
   final List<Badge> badges;
@@ -2549,6 +2850,8 @@ class C4TabbedHeaderRenderer {
   final Avatar tvBanner;
   final Avatar mobileBanner;
   final String trackingParams;
+  final VisitTracking visitTracking;
+  final SponsorButton sponsorButton;
 
   factory C4TabbedHeaderRenderer.fromRawJson(String str) =>
       C4TabbedHeaderRenderer.fromJson(json.decode(str));
@@ -2562,8 +2865,7 @@ class C4TabbedHeaderRenderer {
         title: json["title"] == null ? null : json["title"],
         navigationEndpoint: json["navigationEndpoint"] == null
             ? null
-            : C4TabbedHeaderRendererNavigationEndpoint.fromJson(
-                json["navigationEndpoint"]),
+            : RunNavigationEndpoint.fromJson(json["navigationEndpoint"]),
         avatar: json["avatar"] == null ? null : Avatar.fromJson(json["avatar"]),
         banner: json["banner"] == null ? null : Avatar.fromJson(json["banner"]),
         badges: json["badges"] == null
@@ -2585,6 +2887,12 @@ class C4TabbedHeaderRenderer {
             : Avatar.fromJson(json["mobileBanner"]),
         trackingParams:
             json["trackingParams"] == null ? null : json["trackingParams"],
+        visitTracking: json["visitTracking"] == null
+            ? null
+            : VisitTracking.fromJson(json["visitTracking"]),
+        sponsorButton: json["sponsorButton"] == null
+            ? null
+            : SponsorButton.fromJson(json["sponsorButton"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2605,6 +2913,8 @@ class C4TabbedHeaderRenderer {
         "tvBanner": tvBanner == null ? null : tvBanner.toJson(),
         "mobileBanner": mobileBanner == null ? null : mobileBanner.toJson(),
         "trackingParams": trackingParams == null ? null : trackingParams,
+        "visitTracking": visitTracking == null ? null : visitTracking.toJson(),
+        "sponsorButton": sponsorButton == null ? null : sponsorButton.toJson(),
       };
 }
 
@@ -2637,9 +2947,13 @@ class HeaderLinks {
 class ChannelHeaderLinksRenderer {
   ChannelHeaderLinksRenderer({
     this.hack,
+    this.primaryLinks,
+    this.secondaryLinks,
   });
 
   final bool hack;
+  final List<PrimaryLink> primaryLinks;
+  final List<SecondaryLink> secondaryLinks;
 
   factory ChannelHeaderLinksRenderer.fromRawJson(String str) =>
       ChannelHeaderLinksRenderer.fromJson(json.decode(str));
@@ -2649,41 +2963,114 @@ class ChannelHeaderLinksRenderer {
   factory ChannelHeaderLinksRenderer.fromJson(Map<String, dynamic> json) =>
       ChannelHeaderLinksRenderer(
         hack: json["hack"] == null ? null : json["hack"],
+        primaryLinks: json["primaryLinks"] == null
+            ? null
+            : List<PrimaryLink>.from(
+                json["primaryLinks"].map((x) => PrimaryLink.fromJson(x))),
+        secondaryLinks: json["secondaryLinks"] == null
+            ? null
+            : List<SecondaryLink>.from(
+                json["secondaryLinks"].map((x) => SecondaryLink.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "hack": hack == null ? null : hack,
+        "primaryLinks": primaryLinks == null
+            ? null
+            : List<dynamic>.from(primaryLinks.map((x) => x.toJson())),
+        "secondaryLinks": secondaryLinks == null
+            ? null
+            : List<dynamic>.from(secondaryLinks.map((x) => x.toJson())),
       };
 }
 
-class C4TabbedHeaderRendererNavigationEndpoint {
-  C4TabbedHeaderRendererNavigationEndpoint({
+class PrimaryLink {
+  PrimaryLink({
+    this.navigationEndpoint,
+    this.icon,
+    this.title,
+  });
+
+  final PrimaryLinkNavigationEndpoint navigationEndpoint;
+  final Icon icon;
+  final PublishedTimeTextClass title;
+
+  factory PrimaryLink.fromRawJson(String str) =>
+      PrimaryLink.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory PrimaryLink.fromJson(Map<String, dynamic> json) => PrimaryLink(
+        navigationEndpoint: json["navigationEndpoint"] == null
+            ? null
+            : PrimaryLinkNavigationEndpoint.fromJson(
+                json["navigationEndpoint"]),
+        icon: json["icon"] == null ? null : Icon.fromJson(json["icon"]),
+        title: json["title"] == null
+            ? null
+            : PublishedTimeTextClass.fromJson(json["title"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "navigationEndpoint":
+            navigationEndpoint == null ? null : navigationEndpoint.toJson(),
+        "icon": icon == null ? null : icon.toJson(),
+        "title": title == null ? null : title.toJson(),
+      };
+}
+
+class Icon {
+  Icon({
+    this.thumbnails,
+  });
+
+  final List<UrlEndpoint> thumbnails;
+
+  factory Icon.fromRawJson(String str) => Icon.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Icon.fromJson(Map<String, dynamic> json) => Icon(
+        thumbnails: json["thumbnails"] == null
+            ? null
+            : List<UrlEndpoint>.from(
+                json["thumbnails"].map((x) => UrlEndpoint.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "thumbnails": thumbnails == null
+            ? null
+            : List<dynamic>.from(thumbnails.map((x) => x.toJson())),
+      };
+}
+
+class PrimaryLinkNavigationEndpoint {
+  PrimaryLinkNavigationEndpoint({
     this.clickTrackingParams,
     this.commandMetadata,
-    this.browseEndpoint,
+    this.urlEndpoint,
   });
 
   final String clickTrackingParams;
   final NextEndpointCommandMetadata commandMetadata;
-  final FluffyBrowseEndpoint browseEndpoint;
+  final PurpleUrlEndpoint urlEndpoint;
 
-  factory C4TabbedHeaderRendererNavigationEndpoint.fromRawJson(String str) =>
-      C4TabbedHeaderRendererNavigationEndpoint.fromJson(json.decode(str));
+  factory PrimaryLinkNavigationEndpoint.fromRawJson(String str) =>
+      PrimaryLinkNavigationEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory C4TabbedHeaderRendererNavigationEndpoint.fromJson(
-          Map<String, dynamic> json) =>
-      C4TabbedHeaderRendererNavigationEndpoint(
+  factory PrimaryLinkNavigationEndpoint.fromJson(Map<String, dynamic> json) =>
+      PrimaryLinkNavigationEndpoint(
         clickTrackingParams: json["clickTrackingParams"] == null
             ? null
             : json["clickTrackingParams"],
         commandMetadata: json["commandMetadata"] == null
             ? null
             : NextEndpointCommandMetadata.fromJson(json["commandMetadata"]),
-        browseEndpoint: json["browseEndpoint"] == null
+        urlEndpoint: json["urlEndpoint"] == null
             ? null
-            : FluffyBrowseEndpoint.fromJson(json["browseEndpoint"]),
+            : PurpleUrlEndpoint.fromJson(json["urlEndpoint"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2691,59 +3078,161 @@ class C4TabbedHeaderRendererNavigationEndpoint {
             clickTrackingParams == null ? null : clickTrackingParams,
         "commandMetadata":
             commandMetadata == null ? null : commandMetadata.toJson(),
-        "browseEndpoint":
-            browseEndpoint == null ? null : browseEndpoint.toJson(),
+        "urlEndpoint": urlEndpoint == null ? null : urlEndpoint.toJson(),
       };
 }
 
-class FluffyBrowseEndpoint {
-  FluffyBrowseEndpoint({
-    this.browseId,
-    this.canonicalBaseUrl,
+class PurpleUrlEndpoint {
+  PurpleUrlEndpoint({
+    this.url,
+    this.nofollow,
   });
 
-  final Id browseId;
-  final CanonicalBaseUrl canonicalBaseUrl;
+  final String url;
+  final bool nofollow;
 
-  factory FluffyBrowseEndpoint.fromRawJson(String str) =>
-      FluffyBrowseEndpoint.fromJson(json.decode(str));
+  factory PurpleUrlEndpoint.fromRawJson(String str) =>
+      PurpleUrlEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory FluffyBrowseEndpoint.fromJson(Map<String, dynamic> json) =>
-      FluffyBrowseEndpoint(
-        browseId:
-            json["browseId"] == null ? null : idValues.map[json["browseId"]],
-        canonicalBaseUrl: json["canonicalBaseUrl"] == null
-            ? null
-            : canonicalBaseUrlValues.map[json["canonicalBaseUrl"]],
+  factory PurpleUrlEndpoint.fromJson(Map<String, dynamic> json) =>
+      PurpleUrlEndpoint(
+        url: json["url"] == null ? null : json["url"],
+        nofollow: json["nofollow"] == null ? null : json["nofollow"],
       );
 
   Map<String, dynamic> toJson() => {
-        "browseId": browseId == null ? null : idValues.reverse[browseId],
-        "canonicalBaseUrl": canonicalBaseUrl == null
-            ? null
-            : canonicalBaseUrlValues.reverse[canonicalBaseUrl],
+        "url": url == null ? null : url,
+        "nofollow": nofollow == null ? null : nofollow,
       };
 }
 
-class SubscribeButton {
-  SubscribeButton({
-    this.buttonRenderer,
+class SecondaryLink {
+  SecondaryLink({
+    this.navigationEndpoint,
+    this.icon,
+    this.title,
   });
 
-  final SubscribeButtonButtonRenderer buttonRenderer;
+  final SecondaryLinkNavigationEndpoint navigationEndpoint;
+  final Icon icon;
+  final PublishedTimeTextClass title;
 
-  factory SubscribeButton.fromRawJson(String str) =>
-      SubscribeButton.fromJson(json.decode(str));
+  factory SecondaryLink.fromRawJson(String str) =>
+      SecondaryLink.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory SubscribeButton.fromJson(Map<String, dynamic> json) =>
-      SubscribeButton(
+  factory SecondaryLink.fromJson(Map<String, dynamic> json) => SecondaryLink(
+        navigationEndpoint: json["navigationEndpoint"] == null
+            ? null
+            : SecondaryLinkNavigationEndpoint.fromJson(
+                json["navigationEndpoint"]),
+        icon: json["icon"] == null ? null : Icon.fromJson(json["icon"]),
+        title: json["title"] == null
+            ? null
+            : PublishedTimeTextClass.fromJson(json["title"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "navigationEndpoint":
+            navigationEndpoint == null ? null : navigationEndpoint.toJson(),
+        "icon": icon == null ? null : icon.toJson(),
+        "title": title == null ? null : title.toJson(),
+      };
+}
+
+class SecondaryLinkNavigationEndpoint {
+  SecondaryLinkNavigationEndpoint({
+    this.clickTrackingParams,
+    this.commandMetadata,
+    this.urlEndpoint,
+  });
+
+  final String clickTrackingParams;
+  final NextEndpointCommandMetadata commandMetadata;
+  final FluffyUrlEndpoint urlEndpoint;
+
+  factory SecondaryLinkNavigationEndpoint.fromRawJson(String str) =>
+      SecondaryLinkNavigationEndpoint.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory SecondaryLinkNavigationEndpoint.fromJson(Map<String, dynamic> json) =>
+      SecondaryLinkNavigationEndpoint(
+        clickTrackingParams: json["clickTrackingParams"] == null
+            ? null
+            : json["clickTrackingParams"],
+        commandMetadata: json["commandMetadata"] == null
+            ? null
+            : NextEndpointCommandMetadata.fromJson(json["commandMetadata"]),
+        urlEndpoint: json["urlEndpoint"] == null
+            ? null
+            : FluffyUrlEndpoint.fromJson(json["urlEndpoint"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "clickTrackingParams":
+            clickTrackingParams == null ? null : clickTrackingParams,
+        "commandMetadata":
+            commandMetadata == null ? null : commandMetadata.toJson(),
+        "urlEndpoint": urlEndpoint == null ? null : urlEndpoint.toJson(),
+      };
+}
+
+class FluffyUrlEndpoint {
+  FluffyUrlEndpoint({
+    this.url,
+    this.target,
+    this.nofollow,
+  });
+
+  final String url;
+  final Target target;
+  final bool nofollow;
+
+  factory FluffyUrlEndpoint.fromRawJson(String str) =>
+      FluffyUrlEndpoint.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyUrlEndpoint.fromJson(Map<String, dynamic> json) =>
+      FluffyUrlEndpoint(
+        url: json["url"] == null ? null : json["url"],
+        target:
+            json["target"] == null ? null : targetValues.map[json["target"]],
+        nofollow: json["nofollow"] == null ? null : json["nofollow"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "url": url == null ? null : url,
+        "target": target == null ? null : targetValues.reverse[target],
+        "nofollow": nofollow == null ? null : nofollow,
+      };
+}
+
+enum Target { TARGET_NEW_WINDOW }
+
+final targetValues =
+    EnumValues({"TARGET_NEW_WINDOW": Target.TARGET_NEW_WINDOW});
+
+class SponsorButton {
+  SponsorButton({
+    this.buttonRenderer,
+  });
+
+  final SponsorButtonButtonRenderer buttonRenderer;
+
+  factory SponsorButton.fromRawJson(String str) =>
+      SponsorButton.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory SponsorButton.fromJson(Map<String, dynamic> json) => SponsorButton(
         buttonRenderer: json["buttonRenderer"] == null
             ? null
-            : SubscribeButtonButtonRenderer.fromJson(json["buttonRenderer"]),
+            : SponsorButtonButtonRenderer.fromJson(json["buttonRenderer"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2752,14 +3241,17 @@ class SubscribeButton {
       };
 }
 
-class SubscribeButtonButtonRenderer {
-  SubscribeButtonButtonRenderer({
+class SponsorButtonButtonRenderer {
+  SponsorButtonButtonRenderer({
     this.style,
     this.size,
     this.isDisabled,
     this.text,
     this.navigationEndpoint,
     this.trackingParams,
+    this.hint,
+    this.accessibilityData,
+    this.targetId,
   });
 
   final String style;
@@ -2768,14 +3260,17 @@ class SubscribeButtonButtonRenderer {
   final Text text;
   final FluffyNavigationEndpoint navigationEndpoint;
   final String trackingParams;
+  final Hint hint;
+  final AccessibilityData accessibilityData;
+  final String targetId;
 
-  factory SubscribeButtonButtonRenderer.fromRawJson(String str) =>
-      SubscribeButtonButtonRenderer.fromJson(json.decode(str));
+  factory SponsorButtonButtonRenderer.fromRawJson(String str) =>
+      SponsorButtonButtonRenderer.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory SubscribeButtonButtonRenderer.fromJson(Map<String, dynamic> json) =>
-      SubscribeButtonButtonRenderer(
+  factory SponsorButtonButtonRenderer.fromJson(Map<String, dynamic> json) =>
+      SponsorButtonButtonRenderer(
         style: json["style"] == null ? null : json["style"],
         size: json["size"] == null ? null : json["size"],
         isDisabled: json["isDisabled"] == null ? null : json["isDisabled"],
@@ -2785,6 +3280,11 @@ class SubscribeButtonButtonRenderer {
             : FluffyNavigationEndpoint.fromJson(json["navigationEndpoint"]),
         trackingParams:
             json["trackingParams"] == null ? null : json["trackingParams"],
+        hint: json["hint"] == null ? null : Hint.fromJson(json["hint"]),
+        accessibilityData: json["accessibilityData"] == null
+            ? null
+            : AccessibilityData.fromJson(json["accessibilityData"]),
+        targetId: json["targetId"] == null ? null : json["targetId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -2795,6 +3295,88 @@ class SubscribeButtonButtonRenderer {
         "navigationEndpoint":
             navigationEndpoint == null ? null : navigationEndpoint.toJson(),
         "trackingParams": trackingParams == null ? null : trackingParams,
+        "hint": hint == null ? null : hint.toJson(),
+        "accessibilityData":
+            accessibilityData == null ? null : accessibilityData.toJson(),
+        "targetId": targetId == null ? null : targetId,
+      };
+}
+
+class Hint {
+  Hint({
+    this.hintRenderer,
+  });
+
+  final HintRenderer hintRenderer;
+
+  factory Hint.fromRawJson(String str) => Hint.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Hint.fromJson(Map<String, dynamic> json) => Hint(
+        hintRenderer: json["hintRenderer"] == null
+            ? null
+            : HintRenderer.fromJson(json["hintRenderer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "hintRenderer": hintRenderer == null ? null : hintRenderer.toJson(),
+      };
+}
+
+class HintRenderer {
+  HintRenderer({
+    this.hintId,
+    this.dwellTimeMs,
+    this.hintCap,
+    this.trackingParams,
+  });
+
+  final String hintId;
+  final String dwellTimeMs;
+  final HintCap hintCap;
+  final String trackingParams;
+
+  factory HintRenderer.fromRawJson(String str) =>
+      HintRenderer.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory HintRenderer.fromJson(Map<String, dynamic> json) => HintRenderer(
+        hintId: json["hintId"] == null ? null : json["hintId"],
+        dwellTimeMs: json["dwellTimeMs"] == null ? null : json["dwellTimeMs"],
+        hintCap:
+            json["hintCap"] == null ? null : HintCap.fromJson(json["hintCap"]),
+        trackingParams:
+            json["trackingParams"] == null ? null : json["trackingParams"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "hintId": hintId == null ? null : hintId,
+        "dwellTimeMs": dwellTimeMs == null ? null : dwellTimeMs,
+        "hintCap": hintCap == null ? null : hintCap.toJson(),
+        "trackingParams": trackingParams == null ? null : trackingParams,
+      };
+}
+
+class HintCap {
+  HintCap({
+    this.impressionCap,
+  });
+
+  final String impressionCap;
+
+  factory HintCap.fromRawJson(String str) => HintCap.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory HintCap.fromJson(Map<String, dynamic> json) => HintCap(
+        impressionCap:
+            json["impressionCap"] == null ? null : json["impressionCap"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "impressionCap": impressionCap == null ? null : impressionCap,
       };
 }
 
@@ -2807,7 +3389,7 @@ class FluffyNavigationEndpoint {
 
   final String clickTrackingParams;
   final FluffyCommandMetadata commandMetadata;
-  final ModalEndpoint modalEndpoint;
+  final PurpleModalEndpoint modalEndpoint;
 
   factory FluffyNavigationEndpoint.fromRawJson(String str) =>
       FluffyNavigationEndpoint.fromJson(json.decode(str));
@@ -2824,7 +3406,7 @@ class FluffyNavigationEndpoint {
             : FluffyCommandMetadata.fromJson(json["commandMetadata"]),
         modalEndpoint: json["modalEndpoint"] == null
             ? null
-            : ModalEndpoint.fromJson(json["modalEndpoint"]),
+            : PurpleModalEndpoint.fromJson(json["modalEndpoint"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2884,20 +3466,22 @@ class IndigoWebCommandMetadata {
       };
 }
 
-class ModalEndpoint {
-  ModalEndpoint({
+class PurpleModalEndpoint {
+  PurpleModalEndpoint({
     this.modal,
   });
 
-  final Modal modal;
+  final PurpleModal modal;
 
-  factory ModalEndpoint.fromRawJson(String str) =>
-      ModalEndpoint.fromJson(json.decode(str));
+  factory PurpleModalEndpoint.fromRawJson(String str) =>
+      PurpleModalEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ModalEndpoint.fromJson(Map<String, dynamic> json) => ModalEndpoint(
-        modal: json["modal"] == null ? null : Modal.fromJson(json["modal"]),
+  factory PurpleModalEndpoint.fromJson(Map<String, dynamic> json) =>
+      PurpleModalEndpoint(
+        modal:
+            json["modal"] == null ? null : PurpleModal.fromJson(json["modal"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2905,22 +3489,23 @@ class ModalEndpoint {
       };
 }
 
-class Modal {
-  Modal({
+class PurpleModal {
+  PurpleModal({
     this.modalWithTitleAndButtonRenderer,
   });
 
-  final ModalWithTitleAndButtonRenderer modalWithTitleAndButtonRenderer;
+  final PurpleModalWithTitleAndButtonRenderer modalWithTitleAndButtonRenderer;
 
-  factory Modal.fromRawJson(String str) => Modal.fromJson(json.decode(str));
+  factory PurpleModal.fromRawJson(String str) =>
+      PurpleModal.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Modal.fromJson(Map<String, dynamic> json) => Modal(
+  factory PurpleModal.fromJson(Map<String, dynamic> json) => PurpleModal(
         modalWithTitleAndButtonRenderer:
             json["modalWithTitleAndButtonRenderer"] == null
                 ? null
-                : ModalWithTitleAndButtonRenderer.fromJson(
+                : PurpleModalWithTitleAndButtonRenderer.fromJson(
                     json["modalWithTitleAndButtonRenderer"]),
       );
 
@@ -2932,8 +3517,8 @@ class Modal {
       };
 }
 
-class ModalWithTitleAndButtonRenderer {
-  ModalWithTitleAndButtonRenderer({
+class PurpleModalWithTitleAndButtonRenderer {
+  PurpleModalWithTitleAndButtonRenderer({
     this.title,
     this.content,
     this.button,
@@ -2941,19 +3526,22 @@ class ModalWithTitleAndButtonRenderer {
 
   final Text title;
   final Text content;
-  final Button button;
+  final PurpleButton button;
 
-  factory ModalWithTitleAndButtonRenderer.fromRawJson(String str) =>
-      ModalWithTitleAndButtonRenderer.fromJson(json.decode(str));
+  factory PurpleModalWithTitleAndButtonRenderer.fromRawJson(String str) =>
+      PurpleModalWithTitleAndButtonRenderer.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ModalWithTitleAndButtonRenderer.fromJson(Map<String, dynamic> json) =>
-      ModalWithTitleAndButtonRenderer(
+  factory PurpleModalWithTitleAndButtonRenderer.fromJson(
+          Map<String, dynamic> json) =>
+      PurpleModalWithTitleAndButtonRenderer(
         title: json["title"] == null ? null : Text.fromJson(json["title"]),
         content:
             json["content"] == null ? null : Text.fromJson(json["content"]),
-        button: json["button"] == null ? null : Button.fromJson(json["button"]),
+        button: json["button"] == null
+            ? null
+            : PurpleButton.fromJson(json["button"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2963,21 +3551,22 @@ class ModalWithTitleAndButtonRenderer {
       };
 }
 
-class Button {
-  Button({
+class PurpleButton {
+  PurpleButton({
     this.buttonRenderer,
   });
 
-  final ButtonButtonRenderer buttonRenderer;
+  final PurpleButtonRenderer buttonRenderer;
 
-  factory Button.fromRawJson(String str) => Button.fromJson(json.decode(str));
+  factory PurpleButton.fromRawJson(String str) =>
+      PurpleButton.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Button.fromJson(Map<String, dynamic> json) => Button(
+  factory PurpleButton.fromJson(Map<String, dynamic> json) => PurpleButton(
         buttonRenderer: json["buttonRenderer"] == null
             ? null
-            : ButtonButtonRenderer.fromJson(json["buttonRenderer"]),
+            : PurpleButtonRenderer.fromJson(json["buttonRenderer"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -2986,8 +3575,8 @@ class Button {
       };
 }
 
-class ButtonButtonRenderer {
-  ButtonButtonRenderer({
+class PurpleButtonRenderer {
+  PurpleButtonRenderer({
     this.style,
     this.size,
     this.isDisabled,
@@ -2999,21 +3588,23 @@ class ButtonButtonRenderer {
   final String style;
   final String size;
   final bool isDisabled;
-  final Text text;
+  final PublishedTimeTextClass text;
   final TentacledNavigationEndpoint navigationEndpoint;
   final String trackingParams;
 
-  factory ButtonButtonRenderer.fromRawJson(String str) =>
-      ButtonButtonRenderer.fromJson(json.decode(str));
+  factory PurpleButtonRenderer.fromRawJson(String str) =>
+      PurpleButtonRenderer.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ButtonButtonRenderer.fromJson(Map<String, dynamic> json) =>
-      ButtonButtonRenderer(
+  factory PurpleButtonRenderer.fromJson(Map<String, dynamic> json) =>
+      PurpleButtonRenderer(
         style: json["style"] == null ? null : json["style"],
         size: json["size"] == null ? null : json["size"],
         isDisabled: json["isDisabled"] == null ? null : json["isDisabled"],
-        text: json["text"] == null ? null : Text.fromJson(json["text"]),
+        text: json["text"] == null
+            ? null
+            : PublishedTimeTextClass.fromJson(json["text"]),
         navigationEndpoint: json["navigationEndpoint"] == null
             ? null
             : TentacledNavigationEndpoint.fromJson(json["navigationEndpoint"]),
@@ -3073,14 +3664,10 @@ class TentacledNavigationEndpoint {
 
 class PurpleSignInEndpoint {
   PurpleSignInEndpoint({
-    this.nextEndpoint,
-    this.continueAction,
-    this.idamTag,
+    this.hack,
   });
 
-  final PurpleNextEndpoint nextEndpoint;
-  final String continueAction;
-  final String idamTag;
+  final bool hack;
 
   factory PurpleSignInEndpoint.fromRawJson(String str) =>
       PurpleSignInEndpoint.fromJson(json.decode(str));
@@ -3089,9 +3676,345 @@ class PurpleSignInEndpoint {
 
   factory PurpleSignInEndpoint.fromJson(Map<String, dynamic> json) =>
       PurpleSignInEndpoint(
+        hack: json["hack"] == null ? null : json["hack"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "hack": hack == null ? null : hack,
+      };
+}
+
+class SubscribeButton {
+  SubscribeButton({
+    this.buttonRenderer,
+  });
+
+  final SubscribeButtonButtonRenderer buttonRenderer;
+
+  factory SubscribeButton.fromRawJson(String str) =>
+      SubscribeButton.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory SubscribeButton.fromJson(Map<String, dynamic> json) =>
+      SubscribeButton(
+        buttonRenderer: json["buttonRenderer"] == null
+            ? null
+            : SubscribeButtonButtonRenderer.fromJson(json["buttonRenderer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "buttonRenderer":
+            buttonRenderer == null ? null : buttonRenderer.toJson(),
+      };
+}
+
+class SubscribeButtonButtonRenderer {
+  SubscribeButtonButtonRenderer({
+    this.style,
+    this.size,
+    this.isDisabled,
+    this.text,
+    this.navigationEndpoint,
+    this.trackingParams,
+  });
+
+  final String style;
+  final String size;
+  final bool isDisabled;
+  final SubscriberCountText text;
+  final StickyNavigationEndpoint navigationEndpoint;
+  final String trackingParams;
+
+  factory SubscribeButtonButtonRenderer.fromRawJson(String str) =>
+      SubscribeButtonButtonRenderer.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory SubscribeButtonButtonRenderer.fromJson(Map<String, dynamic> json) =>
+      SubscribeButtonButtonRenderer(
+        style: json["style"] == null ? null : json["style"],
+        size: json["size"] == null ? null : json["size"],
+        isDisabled: json["isDisabled"] == null ? null : json["isDisabled"],
+        text: json["text"] == null
+            ? null
+            : SubscriberCountText.fromJson(json["text"]),
+        navigationEndpoint: json["navigationEndpoint"] == null
+            ? null
+            : StickyNavigationEndpoint.fromJson(json["navigationEndpoint"]),
+        trackingParams:
+            json["trackingParams"] == null ? null : json["trackingParams"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "style": style == null ? null : style,
+        "size": size == null ? null : size,
+        "isDisabled": isDisabled == null ? null : isDisabled,
+        "text": text == null ? null : text.toJson(),
+        "navigationEndpoint":
+            navigationEndpoint == null ? null : navigationEndpoint.toJson(),
+        "trackingParams": trackingParams == null ? null : trackingParams,
+      };
+}
+
+class StickyNavigationEndpoint {
+  StickyNavigationEndpoint({
+    this.clickTrackingParams,
+    this.commandMetadata,
+    this.modalEndpoint,
+  });
+
+  final String clickTrackingParams;
+  final FluffyCommandMetadata commandMetadata;
+  final FluffyModalEndpoint modalEndpoint;
+
+  factory StickyNavigationEndpoint.fromRawJson(String str) =>
+      StickyNavigationEndpoint.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory StickyNavigationEndpoint.fromJson(Map<String, dynamic> json) =>
+      StickyNavigationEndpoint(
+        clickTrackingParams: json["clickTrackingParams"] == null
+            ? null
+            : json["clickTrackingParams"],
+        commandMetadata: json["commandMetadata"] == null
+            ? null
+            : FluffyCommandMetadata.fromJson(json["commandMetadata"]),
+        modalEndpoint: json["modalEndpoint"] == null
+            ? null
+            : FluffyModalEndpoint.fromJson(json["modalEndpoint"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "clickTrackingParams":
+            clickTrackingParams == null ? null : clickTrackingParams,
+        "commandMetadata":
+            commandMetadata == null ? null : commandMetadata.toJson(),
+        "modalEndpoint": modalEndpoint == null ? null : modalEndpoint.toJson(),
+      };
+}
+
+class FluffyModalEndpoint {
+  FluffyModalEndpoint({
+    this.modal,
+  });
+
+  final FluffyModal modal;
+
+  factory FluffyModalEndpoint.fromRawJson(String str) =>
+      FluffyModalEndpoint.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyModalEndpoint.fromJson(Map<String, dynamic> json) =>
+      FluffyModalEndpoint(
+        modal:
+            json["modal"] == null ? null : FluffyModal.fromJson(json["modal"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "modal": modal == null ? null : modal.toJson(),
+      };
+}
+
+class FluffyModal {
+  FluffyModal({
+    this.modalWithTitleAndButtonRenderer,
+  });
+
+  final FluffyModalWithTitleAndButtonRenderer modalWithTitleAndButtonRenderer;
+
+  factory FluffyModal.fromRawJson(String str) =>
+      FluffyModal.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyModal.fromJson(Map<String, dynamic> json) => FluffyModal(
+        modalWithTitleAndButtonRenderer:
+            json["modalWithTitleAndButtonRenderer"] == null
+                ? null
+                : FluffyModalWithTitleAndButtonRenderer.fromJson(
+                    json["modalWithTitleAndButtonRenderer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "modalWithTitleAndButtonRenderer":
+            modalWithTitleAndButtonRenderer == null
+                ? null
+                : modalWithTitleAndButtonRenderer.toJson(),
+      };
+}
+
+class FluffyModalWithTitleAndButtonRenderer {
+  FluffyModalWithTitleAndButtonRenderer({
+    this.title,
+    this.content,
+    this.button,
+  });
+
+  final SubscriberCountText title;
+  final SubscriberCountText content;
+  final FluffyButton button;
+
+  factory FluffyModalWithTitleAndButtonRenderer.fromRawJson(String str) =>
+      FluffyModalWithTitleAndButtonRenderer.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyModalWithTitleAndButtonRenderer.fromJson(
+          Map<String, dynamic> json) =>
+      FluffyModalWithTitleAndButtonRenderer(
+        title: json["title"] == null
+            ? null
+            : SubscriberCountText.fromJson(json["title"]),
+        content: json["content"] == null
+            ? null
+            : SubscriberCountText.fromJson(json["content"]),
+        button: json["button"] == null
+            ? null
+            : FluffyButton.fromJson(json["button"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "title": title == null ? null : title.toJson(),
+        "content": content == null ? null : content.toJson(),
+        "button": button == null ? null : button.toJson(),
+      };
+}
+
+class FluffyButton {
+  FluffyButton({
+    this.buttonRenderer,
+  });
+
+  final FluffyButtonRenderer buttonRenderer;
+
+  factory FluffyButton.fromRawJson(String str) =>
+      FluffyButton.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyButton.fromJson(Map<String, dynamic> json) => FluffyButton(
+        buttonRenderer: json["buttonRenderer"] == null
+            ? null
+            : FluffyButtonRenderer.fromJson(json["buttonRenderer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "buttonRenderer":
+            buttonRenderer == null ? null : buttonRenderer.toJson(),
+      };
+}
+
+class FluffyButtonRenderer {
+  FluffyButtonRenderer({
+    this.style,
+    this.size,
+    this.isDisabled,
+    this.text,
+    this.navigationEndpoint,
+    this.trackingParams,
+  });
+
+  final String style;
+  final String size;
+  final bool isDisabled;
+  final PublishedTimeTextClass text;
+  final IndigoNavigationEndpoint navigationEndpoint;
+  final String trackingParams;
+
+  factory FluffyButtonRenderer.fromRawJson(String str) =>
+      FluffyButtonRenderer.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyButtonRenderer.fromJson(Map<String, dynamic> json) =>
+      FluffyButtonRenderer(
+        style: json["style"] == null ? null : json["style"],
+        size: json["size"] == null ? null : json["size"],
+        isDisabled: json["isDisabled"] == null ? null : json["isDisabled"],
+        text: json["text"] == null
+            ? null
+            : PublishedTimeTextClass.fromJson(json["text"]),
+        navigationEndpoint: json["navigationEndpoint"] == null
+            ? null
+            : IndigoNavigationEndpoint.fromJson(json["navigationEndpoint"]),
+        trackingParams:
+            json["trackingParams"] == null ? null : json["trackingParams"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "style": style == null ? null : style,
+        "size": size == null ? null : size,
+        "isDisabled": isDisabled == null ? null : isDisabled,
+        "text": text == null ? null : text.toJson(),
+        "navigationEndpoint":
+            navigationEndpoint == null ? null : navigationEndpoint.toJson(),
+        "trackingParams": trackingParams == null ? null : trackingParams,
+      };
+}
+
+class IndigoNavigationEndpoint {
+  IndigoNavigationEndpoint({
+    this.clickTrackingParams,
+    this.commandMetadata,
+    this.signInEndpoint,
+  });
+
+  final String clickTrackingParams;
+  final NextEndpointCommandMetadata commandMetadata;
+  final FluffySignInEndpoint signInEndpoint;
+
+  factory IndigoNavigationEndpoint.fromRawJson(String str) =>
+      IndigoNavigationEndpoint.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory IndigoNavigationEndpoint.fromJson(Map<String, dynamic> json) =>
+      IndigoNavigationEndpoint(
+        clickTrackingParams: json["clickTrackingParams"] == null
+            ? null
+            : json["clickTrackingParams"],
+        commandMetadata: json["commandMetadata"] == null
+            ? null
+            : NextEndpointCommandMetadata.fromJson(json["commandMetadata"]),
+        signInEndpoint: json["signInEndpoint"] == null
+            ? null
+            : FluffySignInEndpoint.fromJson(json["signInEndpoint"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "clickTrackingParams":
+            clickTrackingParams == null ? null : clickTrackingParams,
+        "commandMetadata":
+            commandMetadata == null ? null : commandMetadata.toJson(),
+        "signInEndpoint":
+            signInEndpoint == null ? null : signInEndpoint.toJson(),
+      };
+}
+
+class FluffySignInEndpoint {
+  FluffySignInEndpoint({
+    this.nextEndpoint,
+    this.continueAction,
+    this.idamTag,
+  });
+
+  final NavigationEndpointClass nextEndpoint;
+  final String continueAction;
+  final String idamTag;
+
+  factory FluffySignInEndpoint.fromRawJson(String str) =>
+      FluffySignInEndpoint.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffySignInEndpoint.fromJson(Map<String, dynamic> json) =>
+      FluffySignInEndpoint(
         nextEndpoint: json["nextEndpoint"] == null
             ? null
-            : PurpleNextEndpoint.fromJson(json["nextEndpoint"]),
+            : NavigationEndpointClass.fromJson(json["nextEndpoint"]),
         continueAction:
             json["continueAction"] == null ? null : json["continueAction"],
         idamTag: json["idamTag"] == null ? null : json["idamTag"],
@@ -3104,69 +4027,25 @@ class PurpleSignInEndpoint {
       };
 }
 
-class PurpleNextEndpoint {
-  PurpleNextEndpoint({
-    this.clickTrackingParams,
-    this.commandMetadata,
-    this.browseEndpoint,
+class VisitTracking {
+  VisitTracking({
+    this.remarketingPing,
   });
 
-  final String clickTrackingParams;
-  final NextEndpointCommandMetadata commandMetadata;
-  final NextEndpointBrowseEndpoint browseEndpoint;
+  final String remarketingPing;
 
-  factory PurpleNextEndpoint.fromRawJson(String str) =>
-      PurpleNextEndpoint.fromJson(json.decode(str));
+  factory VisitTracking.fromRawJson(String str) =>
+      VisitTracking.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory PurpleNextEndpoint.fromJson(Map<String, dynamic> json) =>
-      PurpleNextEndpoint(
-        clickTrackingParams: json["clickTrackingParams"] == null
-            ? null
-            : json["clickTrackingParams"],
-        commandMetadata: json["commandMetadata"] == null
-            ? null
-            : NextEndpointCommandMetadata.fromJson(json["commandMetadata"]),
-        browseEndpoint: json["browseEndpoint"] == null
-            ? null
-            : NextEndpointBrowseEndpoint.fromJson(json["browseEndpoint"]),
+  factory VisitTracking.fromJson(Map<String, dynamic> json) => VisitTracking(
+        remarketingPing:
+            json["remarketingPing"] == null ? null : json["remarketingPing"],
       );
 
   Map<String, dynamic> toJson() => {
-        "clickTrackingParams":
-            clickTrackingParams == null ? null : clickTrackingParams,
-        "commandMetadata":
-            commandMetadata == null ? null : commandMetadata.toJson(),
-        "browseEndpoint":
-            browseEndpoint == null ? null : browseEndpoint.toJson(),
-      };
-}
-
-class NextEndpointBrowseEndpoint {
-  NextEndpointBrowseEndpoint({
-    this.browseId,
-    this.params,
-  });
-
-  final Id browseId;
-  final String params;
-
-  factory NextEndpointBrowseEndpoint.fromRawJson(String str) =>
-      NextEndpointBrowseEndpoint.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory NextEndpointBrowseEndpoint.fromJson(Map<String, dynamic> json) =>
-      NextEndpointBrowseEndpoint(
-        browseId:
-            json["browseId"] == null ? null : idValues.map[json["browseId"]],
-        params: json["params"] == null ? null : json["params"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "browseId": browseId == null ? null : idValues.reverse[browseId],
-        "params": params == null ? null : params,
+        "remarketingPing": remarketingPing == null ? null : remarketingPing,
       };
 }
 
@@ -3212,6 +4091,10 @@ class ChannelMetadataRenderer {
     this.iosAppindexingLink,
     this.tabPath,
     this.vanityChannelUrl,
+    this.rssUrl,
+    this.channelConversionUrl,
+    this.doubleclickTrackingUsername,
+    this.facebookProfileId,
   });
 
   final String title;
@@ -3229,6 +4112,10 @@ class ChannelMetadataRenderer {
   final String iosAppindexingLink;
   final String tabPath;
   final String vanityChannelUrl;
+  final String rssUrl;
+  final String channelConversionUrl;
+  final String doubleclickTrackingUsername;
+  final String facebookProfileId;
 
   factory ChannelMetadataRenderer.fromRawJson(String str) =>
       ChannelMetadataRenderer.fromJson(json.decode(str));
@@ -3266,6 +4153,16 @@ class ChannelMetadataRenderer {
         tabPath: json["tabPath"] == null ? null : json["tabPath"],
         vanityChannelUrl:
             json["vanityChannelUrl"] == null ? null : json["vanityChannelUrl"],
+        rssUrl: json["rssUrl"] == null ? null : json["rssUrl"],
+        channelConversionUrl: json["channelConversionUrl"] == null
+            ? null
+            : json["channelConversionUrl"],
+        doubleclickTrackingUsername: json["doubleclickTrackingUsername"] == null
+            ? null
+            : json["doubleclickTrackingUsername"],
+        facebookProfileId: json["facebookProfileId"] == null
+            ? null
+            : json["facebookProfileId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -3290,6 +4187,14 @@ class ChannelMetadataRenderer {
             iosAppindexingLink == null ? null : iosAppindexingLink,
         "tabPath": tabPath == null ? null : tabPath,
         "vanityChannelUrl": vanityChannelUrl == null ? null : vanityChannelUrl,
+        "rssUrl": rssUrl == null ? null : rssUrl,
+        "channelConversionUrl":
+            channelConversionUrl == null ? null : channelConversionUrl,
+        "doubleclickTrackingUsername": doubleclickTrackingUsername == null
+            ? null
+            : doubleclickTrackingUsername,
+        "facebookProfileId":
+            facebookProfileId == null ? null : facebookProfileId,
       };
 }
 
@@ -3341,6 +4246,9 @@ class MicroformatDataRenderer {
     this.noindex,
     this.unlisted,
     this.linkAlternates,
+    this.familySafe,
+    this.tags,
+    this.availableCountries,
   });
 
   final String urlCanonical;
@@ -3364,6 +4272,9 @@ class MicroformatDataRenderer {
   final bool noindex;
   final bool unlisted;
   final List<LinkAlternate> linkAlternates;
+  final bool familySafe;
+  final List<String> tags;
+  final List<String> availableCountries;
 
   factory MicroformatDataRenderer.fromRawJson(String str) =>
       MicroformatDataRenderer.fromJson(json.decode(str));
@@ -3413,6 +4324,13 @@ class MicroformatDataRenderer {
             ? null
             : List<LinkAlternate>.from(
                 json["linkAlternates"].map((x) => LinkAlternate.fromJson(x))),
+        familySafe: json["familySafe"] == null ? null : json["familySafe"],
+        tags: json["tags"] == null
+            ? null
+            : List<String>.from(json["tags"].map((x) => x)),
+        availableCountries: json["availableCountries"] == null
+            ? null
+            : List<String>.from(json["availableCountries"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -3442,6 +4360,11 @@ class MicroformatDataRenderer {
         "linkAlternates": linkAlternates == null
             ? null
             : List<dynamic>.from(linkAlternates.map((x) => x.toJson())),
+        "familySafe": familySafe == null ? null : familySafe,
+        "tags": tags == null ? null : List<dynamic>.from(tags.map((x) => x)),
+        "availableCountries": availableCountries == null
+            ? null
+            : List<dynamic>.from(availableCountries.map((x) => x)),
       };
 }
 
@@ -3519,7 +4442,7 @@ class ContinuationContents {
     this.gridContinuation,
   });
 
-  final Grid gridContinuation;
+  final GridContinuation gridContinuation;
 
   factory ContinuationContents.fromRawJson(String str) =>
       ContinuationContents.fromJson(json.decode(str));
@@ -3530,12 +4453,252 @@ class ContinuationContents {
       ContinuationContents(
         gridContinuation: json["gridContinuation"] == null
             ? null
-            : Grid.fromJson(json["gridContinuation"]),
+            : GridContinuation.fromJson(json["gridContinuation"]),
       );
 
   Map<String, dynamic> toJson() => {
         "gridContinuation":
             gridContinuation == null ? null : gridContinuation.toJson(),
+      };
+}
+
+class GridContinuation {
+  GridContinuation({
+    this.items,
+    this.continuations,
+    this.trackingParams,
+  });
+
+  final List<GridRendererItem> items;
+  final List<Continuation> continuations;
+  final String trackingParams;
+
+  factory GridContinuation.fromRawJson(String str) =>
+      GridContinuation.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory GridContinuation.fromJson(Map<String, dynamic> json) =>
+      GridContinuation(
+        items: json["items"] == null
+            ? null
+            : List<GridRendererItem>.from(
+                json["items"].map((x) => GridRendererItem.fromJson(x))),
+        continuations: json["continuations"] == null
+            ? null
+            : List<Continuation>.from(
+                json["continuations"].map((x) => Continuation.fromJson(x))),
+        trackingParams:
+            json["trackingParams"] == null ? null : json["trackingParams"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "items": items == null
+            ? null
+            : List<dynamic>.from(items.map((x) => x.toJson())),
+        "continuations": continuations == null
+            ? null
+            : List<dynamic>.from(continuations.map((x) => x.toJson())),
+        "trackingParams": trackingParams == null ? null : trackingParams,
+      };
+}
+
+class FluffyGridVideoRenderer {
+  FluffyGridVideoRenderer({
+    this.videoId,
+    this.thumbnail,
+    this.title,
+    this.publishedTimeText,
+    this.viewCountText,
+    this.navigationEndpoint,
+    this.ownerBadges,
+    this.trackingParams,
+    this.shortViewCountText,
+    this.menu,
+    this.thumbnailOverlays,
+  });
+
+  final String videoId;
+  final Avatar thumbnail;
+  final FluffyTitle title;
+  final PublishedTimeTextClass publishedTimeText;
+  final PublishedTimeTextClass viewCountText;
+  final GridVideoRendererNavigationEndpoint navigationEndpoint;
+  final List<Badge> ownerBadges;
+  final String trackingParams;
+  final PublishedTimeTextClass shortViewCountText;
+  final Menu menu;
+  final List<FluffyThumbnailOverlay> thumbnailOverlays;
+
+  factory FluffyGridVideoRenderer.fromRawJson(String str) =>
+      FluffyGridVideoRenderer.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyGridVideoRenderer.fromJson(Map<String, dynamic> json) =>
+      FluffyGridVideoRenderer(
+        videoId: json["videoId"] == null ? null : json["videoId"],
+        thumbnail: json["thumbnail"] == null
+            ? null
+            : Avatar.fromJson(json["thumbnail"]),
+        title:
+            json["title"] == null ? null : FluffyTitle.fromJson(json["title"]),
+        publishedTimeText: json["publishedTimeText"] == null
+            ? null
+            : PublishedTimeTextClass.fromJson(json["publishedTimeText"]),
+        viewCountText: json["viewCountText"] == null
+            ? null
+            : PublishedTimeTextClass.fromJson(json["viewCountText"]),
+        navigationEndpoint: json["navigationEndpoint"] == null
+            ? null
+            : GridVideoRendererNavigationEndpoint.fromJson(
+                json["navigationEndpoint"]),
+        ownerBadges: json["ownerBadges"] == null
+            ? null
+            : List<Badge>.from(
+                json["ownerBadges"].map((x) => Badge.fromJson(x))),
+        trackingParams:
+            json["trackingParams"] == null ? null : json["trackingParams"],
+        shortViewCountText: json["shortViewCountText"] == null
+            ? null
+            : PublishedTimeTextClass.fromJson(json["shortViewCountText"]),
+        menu: json["menu"] == null ? null : Menu.fromJson(json["menu"]),
+        thumbnailOverlays: json["thumbnailOverlays"] == null
+            ? null
+            : List<FluffyThumbnailOverlay>.from(json["thumbnailOverlays"]
+                .map((x) => FluffyThumbnailOverlay.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "videoId": videoId == null ? null : videoId,
+        "thumbnail": thumbnail == null ? null : thumbnail.toJson(),
+        "title": title == null ? null : title.toJson(),
+        "publishedTimeText":
+            publishedTimeText == null ? null : publishedTimeText.toJson(),
+        "viewCountText": viewCountText == null ? null : viewCountText.toJson(),
+        "navigationEndpoint":
+            navigationEndpoint == null ? null : navigationEndpoint.toJson(),
+        "ownerBadges": ownerBadges == null
+            ? null
+            : List<dynamic>.from(ownerBadges.map((x) => x.toJson())),
+        "trackingParams": trackingParams == null ? null : trackingParams,
+        "shortViewCountText":
+            shortViewCountText == null ? null : shortViewCountText.toJson(),
+        "menu": menu == null ? null : menu.toJson(),
+        "thumbnailOverlays": thumbnailOverlays == null
+            ? null
+            : List<dynamic>.from(thumbnailOverlays.map((x) => x.toJson())),
+      };
+}
+
+class FluffyThumbnailOverlay {
+  FluffyThumbnailOverlay({
+    this.thumbnailOverlayTimeStatusRenderer,
+    this.thumbnailOverlayToggleButtonRenderer,
+    this.thumbnailOverlayNowPlayingRenderer,
+  });
+
+  final FluffyThumbnailOverlayTimeStatusRenderer
+      thumbnailOverlayTimeStatusRenderer;
+  final ThumbnailOverlayToggleButtonRenderer
+      thumbnailOverlayToggleButtonRenderer;
+  final ThumbnailOverlayNowPlayingRenderer thumbnailOverlayNowPlayingRenderer;
+
+  factory FluffyThumbnailOverlay.fromRawJson(String str) =>
+      FluffyThumbnailOverlay.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyThumbnailOverlay.fromJson(Map<String, dynamic> json) =>
+      FluffyThumbnailOverlay(
+        thumbnailOverlayTimeStatusRenderer:
+            json["thumbnailOverlayTimeStatusRenderer"] == null
+                ? null
+                : FluffyThumbnailOverlayTimeStatusRenderer.fromJson(
+                    json["thumbnailOverlayTimeStatusRenderer"]),
+        thumbnailOverlayToggleButtonRenderer:
+            json["thumbnailOverlayToggleButtonRenderer"] == null
+                ? null
+                : ThumbnailOverlayToggleButtonRenderer.fromJson(
+                    json["thumbnailOverlayToggleButtonRenderer"]),
+        thumbnailOverlayNowPlayingRenderer:
+            json["thumbnailOverlayNowPlayingRenderer"] == null
+                ? null
+                : ThumbnailOverlayNowPlayingRenderer.fromJson(
+                    json["thumbnailOverlayNowPlayingRenderer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "thumbnailOverlayTimeStatusRenderer":
+            thumbnailOverlayTimeStatusRenderer == null
+                ? null
+                : thumbnailOverlayTimeStatusRenderer.toJson(),
+        "thumbnailOverlayToggleButtonRenderer":
+            thumbnailOverlayToggleButtonRenderer == null
+                ? null
+                : thumbnailOverlayToggleButtonRenderer.toJson(),
+        "thumbnailOverlayNowPlayingRenderer":
+            thumbnailOverlayNowPlayingRenderer == null
+                ? null
+                : thumbnailOverlayNowPlayingRenderer.toJson(),
+      };
+}
+
+class FluffyThumbnailOverlayTimeStatusRenderer {
+  FluffyThumbnailOverlayTimeStatusRenderer({
+    this.text,
+    this.style,
+  });
+
+  final FluffyTitle text;
+  final ThumbnailOverlayTimeStatusRendererStyle style;
+
+  factory FluffyThumbnailOverlayTimeStatusRenderer.fromRawJson(String str) =>
+      FluffyThumbnailOverlayTimeStatusRenderer.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyThumbnailOverlayTimeStatusRenderer.fromJson(
+          Map<String, dynamic> json) =>
+      FluffyThumbnailOverlayTimeStatusRenderer(
+        text: json["text"] == null ? null : FluffyTitle.fromJson(json["text"]),
+        style: json["style"] == null
+            ? null
+            : thumbnailOverlayTimeStatusRendererStyleValues.map[json["style"]],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "text": text == null ? null : text.toJson(),
+        "style": style == null
+            ? null
+            : thumbnailOverlayTimeStatusRendererStyleValues.reverse[style],
+      };
+}
+
+class FluffyTitle {
+  FluffyTitle({
+    this.accessibility,
+    this.simpleText,
+  });
+
+  final AccessibilityData accessibility;
+  final String simpleText;
+
+  factory FluffyTitle.fromRawJson(String str) =>
+      FluffyTitle.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory FluffyTitle.fromJson(Map<String, dynamic> json) => FluffyTitle(
+        accessibility: json["accessibility"] == null
+            ? null
+            : AccessibilityData.fromJson(json["accessibility"]),
+        simpleText: json["simpleText"] == null ? null : json["simpleText"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "accessibility": accessibility == null ? null : accessibility.toJson(),
+        "simpleText": simpleText == null ? null : simpleText,
       };
 }
 
@@ -3975,7 +5138,7 @@ class A11YSkipNavigationButtonButtonRenderer {
   final String style;
   final String size;
   final bool isDisabled;
-  final SubscriberCountText text;
+  final Text text;
   final String trackingParams;
   final Command command;
 
@@ -3990,9 +5153,7 @@ class A11YSkipNavigationButtonButtonRenderer {
         style: json["style"] == null ? null : json["style"],
         size: json["size"] == null ? null : json["size"],
         isDisabled: json["isDisabled"] == null ? null : json["isDisabled"],
-        text: json["text"] == null
-            ? null
-            : SubscriberCountText.fromJson(json["text"]),
+        text: json["text"] == null ? null : Text.fromJson(json["text"]),
         trackingParams:
             json["trackingParams"] == null ? null : json["trackingParams"],
         command:
@@ -4209,7 +5370,7 @@ class HotkeyDialogRenderer {
     this.trackingParams,
   });
 
-  final SubscriberCountText title;
+  final Text title;
   final List<HotkeyDialogRendererSection> sections;
   final DismissButtonClass dismissButton;
   final String trackingParams;
@@ -4221,9 +5382,7 @@ class HotkeyDialogRenderer {
 
   factory HotkeyDialogRenderer.fromJson(Map<String, dynamic> json) =>
       HotkeyDialogRenderer(
-        title: json["title"] == null
-            ? null
-            : SubscriberCountText.fromJson(json["title"]),
+        title: json["title"] == null ? null : Text.fromJson(json["title"]),
         sections: json["sections"] == null
             ? null
             : List<HotkeyDialogRendererSection>.from(json["sections"]
@@ -4278,7 +5437,7 @@ class HotkeyDialogSectionRenderer {
     this.options,
   });
 
-  final SubscriberCountText title;
+  final Text title;
   final List<Option> options;
 
   factory HotkeyDialogSectionRenderer.fromRawJson(String str) =>
@@ -4288,9 +5447,7 @@ class HotkeyDialogSectionRenderer {
 
   factory HotkeyDialogSectionRenderer.fromJson(Map<String, dynamic> json) =>
       HotkeyDialogSectionRenderer(
-        title: json["title"] == null
-            ? null
-            : SubscriberCountText.fromJson(json["title"]),
+        title: json["title"] == null ? null : Text.fromJson(json["title"]),
         options: json["options"] == null
             ? null
             : List<Option>.from(json["options"].map((x) => Option.fromJson(x))),
@@ -4338,9 +5495,9 @@ class HotkeyDialogSectionOptionRenderer {
     this.hotkeyAccessibilityLabel,
   });
 
-  final SubscriberCountText label;
+  final Text label;
   final String hotkey;
-  final Accessibility hotkeyAccessibilityLabel;
+  final AccessibilityData hotkeyAccessibilityLabel;
 
   factory HotkeyDialogSectionOptionRenderer.fromRawJson(String str) =>
       HotkeyDialogSectionOptionRenderer.fromJson(json.decode(str));
@@ -4350,13 +5507,11 @@ class HotkeyDialogSectionOptionRenderer {
   factory HotkeyDialogSectionOptionRenderer.fromJson(
           Map<String, dynamic> json) =>
       HotkeyDialogSectionOptionRenderer(
-        label: json["label"] == null
-            ? null
-            : SubscriberCountText.fromJson(json["label"]),
+        label: json["label"] == null ? null : Text.fromJson(json["label"]),
         hotkey: json["hotkey"] == null ? null : json["hotkey"],
         hotkeyAccessibilityLabel: json["hotkeyAccessibilityLabel"] == null
             ? null
-            : Accessibility.fromJson(json["hotkeyAccessibilityLabel"]),
+            : AccessibilityData.fromJson(json["hotkeyAccessibilityLabel"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -4400,7 +5555,7 @@ class TopbarLogoRenderer {
   });
 
   final IconImage iconImage;
-  final SubscriberCountText tooltipText;
+  final Text tooltipText;
   final TopbarLogoRendererEndpoint endpoint;
   final String trackingParams;
 
@@ -4416,7 +5571,7 @@ class TopbarLogoRenderer {
             : IconImage.fromJson(json["iconImage"]),
         tooltipText: json["tooltipText"] == null
             ? null
-            : SubscriberCountText.fromJson(json["tooltipText"]),
+            : Text.fromJson(json["tooltipText"]),
         endpoint: json["endpoint"] == null
             ? null
             : TopbarLogoRendererEndpoint.fromJson(json["endpoint"]),
@@ -4441,7 +5596,7 @@ class TopbarLogoRendererEndpoint {
 
   final String clickTrackingParams;
   final NextEndpointCommandMetadata commandMetadata;
-  final TentacledBrowseEndpoint browseEndpoint;
+  final FluffyBrowseEndpoint browseEndpoint;
 
   factory TopbarLogoRendererEndpoint.fromRawJson(String str) =>
       TopbarLogoRendererEndpoint.fromJson(json.decode(str));
@@ -4458,7 +5613,7 @@ class TopbarLogoRendererEndpoint {
             : NextEndpointCommandMetadata.fromJson(json["commandMetadata"]),
         browseEndpoint: json["browseEndpoint"] == null
             ? null
-            : TentacledBrowseEndpoint.fromJson(json["browseEndpoint"]),
+            : FluffyBrowseEndpoint.fromJson(json["browseEndpoint"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -4471,20 +5626,20 @@ class TopbarLogoRendererEndpoint {
       };
 }
 
-class TentacledBrowseEndpoint {
-  TentacledBrowseEndpoint({
+class FluffyBrowseEndpoint {
+  FluffyBrowseEndpoint({
     this.browseId,
   });
 
   final String browseId;
 
-  factory TentacledBrowseEndpoint.fromRawJson(String str) =>
-      TentacledBrowseEndpoint.fromJson(json.decode(str));
+  factory FluffyBrowseEndpoint.fromRawJson(String str) =>
+      FluffyBrowseEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory TentacledBrowseEndpoint.fromJson(Map<String, dynamic> json) =>
-      TentacledBrowseEndpoint(
+  factory FluffyBrowseEndpoint.fromJson(Map<String, dynamic> json) =>
+      FluffyBrowseEndpoint(
         browseId: json["browseId"] == null ? null : json["browseId"],
       );
 
@@ -4528,7 +5683,7 @@ class FusionSearchboxRenderer {
   });
 
   final IconImage icon;
-  final SubscriberCountText placeholderText;
+  final Text placeholderText;
   final Config config;
   final String trackingParams;
   final FusionSearchboxRendererSearchEndpoint searchEndpoint;
@@ -4543,7 +5698,7 @@ class FusionSearchboxRenderer {
         icon: json["icon"] == null ? null : IconImage.fromJson(json["icon"]),
         placeholderText: json["placeholderText"] == null
             ? null
-            : SubscriberCountText.fromJson(json["placeholderText"]),
+            : Text.fromJson(json["placeholderText"]),
         config: json["config"] == null ? null : Config.fromJson(json["config"]),
         trackingParams:
             json["trackingParams"] == null ? null : json["trackingParams"],
@@ -4737,9 +5892,9 @@ class TopbarButtonButtonRenderer {
   final String style;
   final String size;
   final bool isDisabled;
-  final Text text;
+  final SubscriberCountText text;
   final IconImage icon;
-  final StickyNavigationEndpoint navigationEndpoint;
+  final IndecentNavigationEndpoint navigationEndpoint;
   final String trackingParams;
   final String targetId;
 
@@ -4753,11 +5908,13 @@ class TopbarButtonButtonRenderer {
         style: json["style"] == null ? null : json["style"],
         size: json["size"] == null ? null : json["size"],
         isDisabled: json["isDisabled"] == null ? null : json["isDisabled"],
-        text: json["text"] == null ? null : Text.fromJson(json["text"]),
+        text: json["text"] == null
+            ? null
+            : SubscriberCountText.fromJson(json["text"]),
         icon: json["icon"] == null ? null : IconImage.fromJson(json["icon"]),
         navigationEndpoint: json["navigationEndpoint"] == null
             ? null
-            : StickyNavigationEndpoint.fromJson(json["navigationEndpoint"]),
+            : IndecentNavigationEndpoint.fromJson(json["navigationEndpoint"]),
         trackingParams:
             json["trackingParams"] == null ? null : json["trackingParams"],
         targetId: json["targetId"] == null ? null : json["targetId"],
@@ -4776,8 +5933,8 @@ class TopbarButtonButtonRenderer {
       };
 }
 
-class StickyNavigationEndpoint {
-  StickyNavigationEndpoint({
+class IndecentNavigationEndpoint {
+  IndecentNavigationEndpoint({
     this.clickTrackingParams,
     this.commandMetadata,
     this.signInEndpoint,
@@ -4785,15 +5942,15 @@ class StickyNavigationEndpoint {
 
   final String clickTrackingParams;
   final NextEndpointCommandMetadata commandMetadata;
-  final FluffySignInEndpoint signInEndpoint;
+  final TentacledSignInEndpoint signInEndpoint;
 
-  factory StickyNavigationEndpoint.fromRawJson(String str) =>
-      StickyNavigationEndpoint.fromJson(json.decode(str));
+  factory IndecentNavigationEndpoint.fromRawJson(String str) =>
+      IndecentNavigationEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory StickyNavigationEndpoint.fromJson(Map<String, dynamic> json) =>
-      StickyNavigationEndpoint(
+  factory IndecentNavigationEndpoint.fromJson(Map<String, dynamic> json) =>
+      IndecentNavigationEndpoint(
         clickTrackingParams: json["clickTrackingParams"] == null
             ? null
             : json["clickTrackingParams"],
@@ -4802,7 +5959,7 @@ class StickyNavigationEndpoint {
             : NextEndpointCommandMetadata.fromJson(json["commandMetadata"]),
         signInEndpoint: json["signInEndpoint"] == null
             ? null
-            : FluffySignInEndpoint.fromJson(json["signInEndpoint"]),
+            : TentacledSignInEndpoint.fromJson(json["signInEndpoint"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -4815,8 +5972,8 @@ class StickyNavigationEndpoint {
       };
 }
 
-class FluffySignInEndpoint {
-  FluffySignInEndpoint({
+class TentacledSignInEndpoint {
+  TentacledSignInEndpoint({
     this.hack,
     this.idamTag,
   });
@@ -4824,13 +5981,13 @@ class FluffySignInEndpoint {
   final bool hack;
   final String idamTag;
 
-  factory FluffySignInEndpoint.fromRawJson(String str) =>
-      FluffySignInEndpoint.fromJson(json.decode(str));
+  factory TentacledSignInEndpoint.fromRawJson(String str) =>
+      TentacledSignInEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory FluffySignInEndpoint.fromJson(Map<String, dynamic> json) =>
-      FluffySignInEndpoint(
+  factory TentacledSignInEndpoint.fromJson(Map<String, dynamic> json) =>
+      TentacledSignInEndpoint(
         hack: json["hack"] == null ? null : json["hack"],
         idamTag: json["idamTag"] == null ? null : json["idamTag"],
       );
@@ -4850,15 +6007,17 @@ class TopbarMenuButtonRenderer {
     this.tooltip,
     this.style,
     this.menuRequest,
+    this.targetId,
   });
 
   final IconImage icon;
   final TopbarMenuButtonRendererMenuRenderer menuRenderer;
   final String trackingParams;
-  final Accessibility accessibility;
+  final AccessibilityData accessibility;
   final String tooltip;
   final String style;
   final MenuRequest menuRequest;
+  final String targetId;
 
   factory TopbarMenuButtonRenderer.fromRawJson(String str) =>
       TopbarMenuButtonRenderer.fromJson(json.decode(str));
@@ -4876,12 +6035,13 @@ class TopbarMenuButtonRenderer {
             json["trackingParams"] == null ? null : json["trackingParams"],
         accessibility: json["accessibility"] == null
             ? null
-            : Accessibility.fromJson(json["accessibility"]),
+            : AccessibilityData.fromJson(json["accessibility"]),
         tooltip: json["tooltip"] == null ? null : json["tooltip"],
         style: json["style"] == null ? null : json["style"],
         menuRequest: json["menuRequest"] == null
             ? null
             : MenuRequest.fromJson(json["menuRequest"]),
+        targetId: json["targetId"] == null ? null : json["targetId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -4892,6 +6052,7 @@ class TopbarMenuButtonRenderer {
         "tooltip": tooltip == null ? null : tooltip,
         "style": style == null ? null : style,
         "menuRequest": menuRequest == null ? null : menuRequest.toJson(),
+        "targetId": targetId == null ? null : targetId,
       };
 }
 
@@ -5056,7 +6217,7 @@ class CompactLinkRenderer {
   });
 
   final IconImage icon;
-  final SubscriberCountText title;
+  final Text title;
   final CompactLinkRendererNavigationEndpoint navigationEndpoint;
   final String trackingParams;
   final String style;
@@ -5069,9 +6230,7 @@ class CompactLinkRenderer {
   factory CompactLinkRenderer.fromJson(Map<String, dynamic> json) =>
       CompactLinkRenderer(
         icon: json["icon"] == null ? null : IconImage.fromJson(json["icon"]),
-        title: json["title"] == null
-            ? null
-            : SubscriberCountText.fromJson(json["title"]),
+        title: json["title"] == null ? null : Text.fromJson(json["title"]),
         navigationEndpoint: json["navigationEndpoint"] == null
             ? null
             : CompactLinkRendererNavigationEndpoint.fromJson(
@@ -5101,8 +6260,8 @@ class CompactLinkRendererNavigationEndpoint {
 
   final String clickTrackingParams;
   final NextEndpointCommandMetadata commandMetadata;
-  final TentacledSignInEndpoint signInEndpoint;
-  final NavigationEndpointUrlEndpoint urlEndpoint;
+  final StickySignInEndpoint signInEndpoint;
+  final TentacledUrlEndpoint urlEndpoint;
 
   factory CompactLinkRendererNavigationEndpoint.fromRawJson(String str) =>
       CompactLinkRendererNavigationEndpoint.fromJson(json.decode(str));
@@ -5120,10 +6279,10 @@ class CompactLinkRendererNavigationEndpoint {
             : NextEndpointCommandMetadata.fromJson(json["commandMetadata"]),
         signInEndpoint: json["signInEndpoint"] == null
             ? null
-            : TentacledSignInEndpoint.fromJson(json["signInEndpoint"]),
+            : StickySignInEndpoint.fromJson(json["signInEndpoint"]),
         urlEndpoint: json["urlEndpoint"] == null
             ? null
-            : NavigationEndpointUrlEndpoint.fromJson(json["urlEndpoint"]),
+            : TentacledUrlEndpoint.fromJson(json["urlEndpoint"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -5137,23 +6296,23 @@ class CompactLinkRendererNavigationEndpoint {
       };
 }
 
-class TentacledSignInEndpoint {
-  TentacledSignInEndpoint({
+class StickySignInEndpoint {
+  StickySignInEndpoint({
     this.nextEndpoint,
   });
 
-  final FluffyNextEndpoint nextEndpoint;
+  final NextEndpoint nextEndpoint;
 
-  factory TentacledSignInEndpoint.fromRawJson(String str) =>
-      TentacledSignInEndpoint.fromJson(json.decode(str));
+  factory StickySignInEndpoint.fromRawJson(String str) =>
+      StickySignInEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory TentacledSignInEndpoint.fromJson(Map<String, dynamic> json) =>
-      TentacledSignInEndpoint(
+  factory StickySignInEndpoint.fromJson(Map<String, dynamic> json) =>
+      StickySignInEndpoint(
         nextEndpoint: json["nextEndpoint"] == null
             ? null
-            : FluffyNextEndpoint.fromJson(json["nextEndpoint"]),
+            : NextEndpoint.fromJson(json["nextEndpoint"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -5161,8 +6320,8 @@ class TentacledSignInEndpoint {
       };
 }
 
-class FluffyNextEndpoint {
-  FluffyNextEndpoint({
+class NextEndpoint {
+  NextEndpoint({
     this.clickTrackingParams,
     this.commandMetadata,
     this.urlEndpoint,
@@ -5170,15 +6329,14 @@ class FluffyNextEndpoint {
 
   final String clickTrackingParams;
   final NextEndpointCommandMetadata commandMetadata;
-  final EndpointUrlEndpoint urlEndpoint;
+  final UrlEndpoint urlEndpoint;
 
-  factory FluffyNextEndpoint.fromRawJson(String str) =>
-      FluffyNextEndpoint.fromJson(json.decode(str));
+  factory NextEndpoint.fromRawJson(String str) =>
+      NextEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory FluffyNextEndpoint.fromJson(Map<String, dynamic> json) =>
-      FluffyNextEndpoint(
+  factory NextEndpoint.fromJson(Map<String, dynamic> json) => NextEndpoint(
         clickTrackingParams: json["clickTrackingParams"] == null
             ? null
             : json["clickTrackingParams"],
@@ -5187,7 +6345,7 @@ class FluffyNextEndpoint {
             : NextEndpointCommandMetadata.fromJson(json["commandMetadata"]),
         urlEndpoint: json["urlEndpoint"] == null
             ? null
-            : EndpointUrlEndpoint.fromJson(json["urlEndpoint"]),
+            : UrlEndpoint.fromJson(json["urlEndpoint"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -5199,29 +6357,30 @@ class FluffyNextEndpoint {
       };
 }
 
-class NavigationEndpointUrlEndpoint {
-  NavigationEndpointUrlEndpoint({
+class TentacledUrlEndpoint {
+  TentacledUrlEndpoint({
     this.url,
     this.target,
   });
 
   final String url;
-  final String target;
+  final Target target;
 
-  factory NavigationEndpointUrlEndpoint.fromRawJson(String str) =>
-      NavigationEndpointUrlEndpoint.fromJson(json.decode(str));
+  factory TentacledUrlEndpoint.fromRawJson(String str) =>
+      TentacledUrlEndpoint.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory NavigationEndpointUrlEndpoint.fromJson(Map<String, dynamic> json) =>
-      NavigationEndpointUrlEndpoint(
+  factory TentacledUrlEndpoint.fromJson(Map<String, dynamic> json) =>
+      TentacledUrlEndpoint(
         url: json["url"] == null ? null : json["url"],
-        target: json["target"] == null ? null : json["target"],
+        target:
+            json["target"] == null ? null : targetValues.map[json["target"]],
       );
 
   Map<String, dynamic> toJson() => {
         "url": url == null ? null : url,
-        "target": target == null ? null : target,
+        "target": target == null ? null : targetValues.reverse[target],
       };
 }
 

@@ -98,7 +98,7 @@ class _InitialData {
   String _continuation;
   String _clickTrackingParams;
 
-  List<GridContinuationItem> getContentContext() {
+  List<GridRendererItem> getContentContext() {
     if (root.contents != null) {
       return root.contents.twoColumnBrowseResultsRenderer.tabs
           .map((e) => e.tabRenderer)
@@ -146,8 +146,7 @@ class _InitialData {
   List<ChannelVideo> get uploads => _uploads ??= getContentContext()
       ?.map(_parseContent)
       ?.where((e) => e != null)
-      ?.toList()
-      ?.cast<ChannelVideo>();
+      ?.toList();
 
   String get continuation =>
       _continuation ??= getContinuationContext().continuation ?? '';
@@ -155,11 +154,15 @@ class _InitialData {
   String get clickTrackingParams => _clickTrackingParams ??=
       getContinuationContext()?.clickTrackingParams ?? '';
 
-  dynamic _parseContent(GridContinuationItem content) {
+  ChannelVideo _parseContent(GridRendererItem content) {
     if (content == null || content.gridVideoRenderer == null) {
       return null;
     }
     var video = content.gridVideoRenderer;
-    return ChannelVideo(VideoId(video.videoId), video.title.simpleText);
+    return ChannelVideo(
+        VideoId(video.videoId),
+        video.title?.simpleText ??
+            video.title?.runs?.map((e) => e.text)?.join() ??
+            '');
   }
 }
