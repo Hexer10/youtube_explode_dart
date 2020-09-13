@@ -26,13 +26,13 @@ class SearchPage {
 
   ///
   _InitialData get initialData =>
-      _initialData ??= _InitialData(json.decode(_matchJson(_extractJson(
+      _initialData ??= _InitialData(json.decode(_extractJson(
           _root
               .querySelectorAll('script')
               .map((e) => e.text)
               .toList()
               .firstWhere((e) => e.contains('window["ytInitialData"] =')),
-          'window["ytInitialData"] ='))));
+          'window["ytInitialData"] =')));
 
   ///
   String get xsfrToken => _xsrfToken ??= _xsfrTokenExp

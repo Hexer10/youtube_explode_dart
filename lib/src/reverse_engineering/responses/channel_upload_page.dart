@@ -86,25 +86,6 @@ class ChannelUploadPage {
       : _root = parser.parse(raw);
 }
 
-void x() {
-  ChannelUploadPageId _id;
-  // @getContentContext
-  var x = _id.contents.twoColumnBrowseResultsRenderer.tabs
-      .map((e) => e.tabRenderer)
-      .firstWhere((e) => e.selected)
-      .content
-      .sectionListRenderer
-      .contents
-      .first
-      .itemSectionRenderer
-      .contents
-      .first
-      .gridRenderer
-      .items;
-
-  _id.response.continuationContents.gridContinuation.items;
-}
-
 class _InitialData {
   // Json parsed map
   final ChannelUploadPageId root;
