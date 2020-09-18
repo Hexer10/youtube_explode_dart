@@ -13,11 +13,14 @@ class Channel with EquatableMixin {
   /// Channel title.
   final String title;
 
+  /// Channel description
+  final String description;
+
   /// URL of the channel's logo image.
   final String logoUrl;
 
   /// Initializes an instance of [Channel]
-  Channel(this.id, this.title, this.logoUrl);
+  Channel(this.id, this.title, this.description, this.logoUrl);
 
   @override
   String toString() => 'Channel ($title)';

@@ -1,5 +1,6 @@
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';
+import '../reverse_engineering/responses/channel_about_page.dart';
 import '../reverse_engineering/responses/channel_upload_page.dart';
 import '../reverse_engineering/responses/responses.dart';
 import '../reverse_engineering/youtube_http_client.dart';
@@ -24,8 +25,10 @@ class ChannelClient {
   Future<Channel> get(dynamic id) async {
     id = ChannelId.fromString(id);
     var channelPage = await ChannelPage.get(_httpClient, id.value);
+    var channelAboutPage = await ChannelAboutPage.get(_httpClient, id.value);
 
-    return Channel(id, channelPage.channelTitle, channelPage.channelLogoUrl);
+    return Channel(id, channelPage.channelTitle, channelAboutPage.description,
+        channelPage.channelLogoUrl);
   }
 
   /// Gets the metadata associated with the channel of the specified user.
@@ -36,8 +39,11 @@ class ChannelClient {
 
     var channelPage =
         await ChannelPage.getByUsername(_httpClient, username.value);
+    var channelAboutPage =
+        await ChannelAboutPage.getByUsername(_httpClient, username.value);
+
     return Channel(ChannelId(channelPage.channelId), channelPage.channelTitle,
-        channelPage.channelLogoUrl);
+        channelAboutPage.description, channelPage.channelLogoUrl);
   }
 
   /// Gets the metadata associated with the channel
