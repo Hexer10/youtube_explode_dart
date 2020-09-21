@@ -104,10 +104,7 @@ class StreamsClient {
       throw VideoUnplayableException.liveStream(videoId);
     }
 
-    var streamInfoProviders = <StreamInfoProvider>[
-      ...playerConfig.streams,
-      ...playerResponse.streams
-    ];
+    var streamInfoProviders = <StreamInfoProvider>[...playerResponse.streams];
 
     var dashManifestUrl = playerResponse.dashManifestUrl;
     if (!dashManifestUrl.isNullOrWhiteSpace) {

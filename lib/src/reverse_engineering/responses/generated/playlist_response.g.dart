@@ -85,7 +85,7 @@ class Video {
   final int timeCreated;
   final bool ccLicense;
   final String title;
-  final int rating;
+  final num rating;
   final bool isHd;
   final Privacy privacy;
   final int lengthSeconds;

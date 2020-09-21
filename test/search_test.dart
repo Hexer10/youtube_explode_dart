@@ -13,9 +13,8 @@ void main() {
     });
 
     test('SearchYouTubeVideosFromApi', () async {
-      var videos = await yt.search
-          .getVideosAsync('undead corporation megalomania')
-          .toList();
+      var videos =
+          await yt.search.getVideos('undead corporation megalomania').toList();
       expect(videos, isNotEmpty);
     }, skip: 'Endpoint removed from YouTube');
 
@@ -35,6 +34,11 @@ void main() {
       expect(query.relatedVideos, isEmpty);
       var nextPage = await query.nextPage();
       expect(nextPage, isNull);
+    });
+
+    test('SearchYouTubeVideosFromPageStream', () async {
+      var query = await yt.search.getVideosFromPage('hello').take(30).toList();
+      expect(query, hasLength(30));
     });
   });
 }

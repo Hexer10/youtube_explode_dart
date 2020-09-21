@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import '../videos/video_id.dart';
 
 ///
-class RelatedQuery {
+class RelatedQuery with EquatableMixin {
   /// Query related to a search query.
   final String query;
 
@@ -10,4 +12,10 @@ class RelatedQuery {
 
   /// Initialize a [RelatedQuery] instance.
   RelatedQuery(this.query, this.videoId);
+
+  @override
+  String toString() => 'RelatedQuery($videoId): $query';
+
+  @override
+  List<Object> get props => [query, videoId];
 }

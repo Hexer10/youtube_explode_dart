@@ -45,6 +45,8 @@ class CommentsClient {
   /// the results.
   ///
   /// The streams doesn't emit any data if [Video.hasWatchPage] is false.
+  /// Use `videos.get(videoId, forceWatchPage: true)` to assure that the
+  /// WatchPage is fetched.
   Stream<Comment> getComments(Video video) async* {
     if (video.watchPage == null) {
       return;

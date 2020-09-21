@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 import '../playlists/playlist_id.dart';
+import 'base_search_content.dart';
 
 /// Metadata related to a search query result (playlist)
-class SearchPlaylist with EquatableMixin {
+class SearchPlaylist extends BaseSearchContent with EquatableMixin {
   /// PlaylistId.
   final PlaylistId playlistId;
 
@@ -17,7 +18,7 @@ class SearchPlaylist with EquatableMixin {
   SearchPlaylist(this.playlistId, this.playlistTitle, this.playlistVideoCount);
 
   @override
-  String toString() => '(Playlist) $playlistTitle ($playlistId)';
+  String toString() => '[Playlist] $playlistTitle ($playlistId)';
 
   @override
   List<Object> get props => [playlistId];

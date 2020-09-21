@@ -37,12 +37,13 @@ class PlaylistResponse {
   int get dislikeCount => _root.dislikes;
 
   ///
-  List<_Video> get videos => _videos ??= _root.video.map((e) => _Video(e));
+  List<_Video> get videos =>
+      _videos ??= _root.video.map((e) => _Video(e)).toList();
 
   ///
   PlaylistResponse.parse(String raw) {
     final t = json.tryDecode(raw);
-    if (_root == null) {
+    if (t == null) {
       throw TransientFailureException('Playerlist response is broken.');
     }
     _root = PlaylistResponseJson.fromJson(t);

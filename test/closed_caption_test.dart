@@ -13,11 +13,11 @@ void main() {
     });
 
     test('GetClosedCaptionTracksOfAnyVideo', () async {
-      var manifest = await yt.videos.closedCaptions.getManifest('_QdPW8JrYzQ');
+      var manifest = await yt.videos.closedCaptions.getManifest('WOxr2dmLHLo');
       expect(manifest.tracks, isNotEmpty);
     });
     test('GetClosedCaptionTrackOfAnyVideoSpecific', () async {
-      var manifest = await yt.videos.closedCaptions.getManifest('_QdPW8JrYzQ');
+      var manifest = await yt.videos.closedCaptions.getManifest('WOxr2dmLHLo');
       var trackInfo = manifest.tracks.first;
       var track = await yt.videos.closedCaptions.get(trackInfo);
 
@@ -25,7 +25,7 @@ void main() {
     });
     test('GetClosedCaptionTrackAtSpecificTime', () async {
       var manifest = await yt.videos.closedCaptions
-          .getManifest('https://www.youtube.com/watch?v=YltHGKX80Y8');
+          .getManifest('https://www.youtube.com/watch?v=ppJy5uGZLi4');
       var trackInfo = manifest.getByLanguage('en');
       var track = await yt.videos.closedCaptions.get(trackInfo);
       var caption =
@@ -35,8 +35,8 @@ void main() {
 
       expect(caption, isNotNull);
       expect(captionPart, isNotNull);
-      expect(caption.text, 'know I worked really hard on not doing');
-      expect(captionPart.text, ' hard');
+      expect(caption.text, 'how about this black there are some');
+      expect(captionPart.text, ' about');
     });
   });
 }
