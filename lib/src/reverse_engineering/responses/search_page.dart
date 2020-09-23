@@ -205,6 +205,11 @@ class _InitialData {
     }
     if (content.containsKey('videoRenderer')) {
       Map<String, dynamic> renderer = content['videoRenderer'];
+
+      final thumbnails = List<Map<String, dynamic>>.from(
+        renderer.get('thumbnail')?.getValue('thumbnails') ?? []
+      )..sort((a, b) => a['width'].compareTo(b['width']));
+
       //TODO: Add if it's a live
       return SearchVideo(
           VideoId(renderer['videoId']),
@@ -215,8 +220,9 @@ class _InitialData {
           int.parse(renderer['viewCountText']['simpleText']
                   .toString()
                   .stripNonDigits()
-                  .nullIfWhitespace ??
-              '0'));
+                  .nullIfWhitespace ?? '0'),
+          thumbnails.map<String>((thumb) => thumb['url']).toList(growable: false)
+      );
     }
     if (content.containsKey('radioRenderer')) {
       var renderer = content['radioRenderer'];
