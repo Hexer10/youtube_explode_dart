@@ -36,5 +36,13 @@ void main() {
       var nextPage = await query.nextPage();
       expect(nextPage, isNull);
     });
+
+    test('SearchVideosHaveThumbnails', () async {
+      var searchQuery = await yt.search.queryFromPage('hello');
+      expect(searchQuery.content.first is SearchVideo, isTrue);
+
+      var video = searchQuery.content.first as SearchVideo;
+      expect(video.videoThumbnails, isNotEmpty);
+    });
   });
 }
