@@ -1,3 +1,5 @@
+import 'package:youtube_explode_dart/src/reverse_engineering/responses/responses.dart';
+
 import '../common/common.dart';
 import '../reverse_engineering/responses/playlist_response.dart';
 import '../reverse_engineering/youtube_http_client.dart';
@@ -28,12 +30,16 @@ class SearchClient {
           continue;
         }
 
+        var videoInfoResponse =
+            await VideoInfoResponse.get(_httpClient, videoId);
+
         yield Video(
             VideoId(videoId),
             video.title,
             video.author,
             video.channelId,
             video.uploadDate,
+            videoInfoResponse.playerResponse.videoPublishDate,
             video.description,
             video.duration,
             ThumbnailSet(videoId),

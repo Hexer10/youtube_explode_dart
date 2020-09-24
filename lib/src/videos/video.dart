@@ -27,6 +27,9 @@ class Video with EquatableMixin {
   /// Video upload date.
   final DateTime uploadDate;
 
+  /// Video publish date.
+  final DateTime publishDate;
+
   /// Video description.
   final String description;
 
@@ -56,6 +59,7 @@ class Video with EquatableMixin {
       this.author,
       this.channelId,
       this.uploadDate,
+      this.publishDate,
       this.description,
       this.duration,
       this.thumbnails,

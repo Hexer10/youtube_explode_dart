@@ -36,6 +36,10 @@ class PlayerResponse {
       _root['microformat']['playerMicroformatRenderer']['uploadDate']);
 
   ///
+  DateTime get videoPublishDate => DateTime.parse(
+      _root['microformat']['playerMicroformatRenderer']['publishDate']);
+
+  ///
   String get videoChannelId => _root['videoDetails']['channelId'];
 
   ///

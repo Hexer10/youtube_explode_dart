@@ -46,12 +46,16 @@ class PlaylistClient {
           continue;
         }
 
+        var videoInfoResponse =
+            await VideoInfoResponse.get(_httpClient, videoId);
+
         yield Video(
             VideoId(videoId),
             video.title,
             video.author,
             video.channelId,
             video.uploadDate,
+            videoInfoResponse.playerResponse.videoPublishDate,
             video.description,
             video.duration,
             ThumbnailSet(videoId),

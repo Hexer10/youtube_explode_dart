@@ -39,6 +39,7 @@ class VideoClient {
         playerResponse.videoAuthor,
         ChannelId(playerResponse.videoChannelId),
         playerResponse.videoUploadDate,
+        playerResponse.videoPublishDate,
         playerResponse.videoDescription,
         playerResponse.videoDuration,
         ThumbnailSet(videoId.value),
@@ -57,12 +58,15 @@ class VideoClient {
       throw TransientFailureException('Video not found in mix playlist');
     }
 
+    var videoInfoResponse = await VideoInfoResponse.get(_httpClient, id.value);
+
     return Video(
         id,
         video.title,
         video.author,
         video.channelId,
         video.uploadDate,
+        videoInfoResponse.playerResponse.videoPublishDate,
         video.description,
         video.duration,
         ThumbnailSet(id.value),
