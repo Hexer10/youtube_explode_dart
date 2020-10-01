@@ -61,4 +61,4 @@ linter:
 analyzer:
   exclude:
     - example\**
-    - src\**.g.gdart
+    - lib\src\reverse_engineering\responses\generated\**

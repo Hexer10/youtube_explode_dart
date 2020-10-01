@@ -21,7 +21,4 @@ Unfortunately, there's nothing the library can do to work around this error.
 Request: ${response.request}
 Response: $response
 ''';
-
-  @override
-  String toString() => 'RequestLimitExceeded: $message';
 }

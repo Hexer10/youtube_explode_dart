@@ -10,8 +10,7 @@ import '../youtube_http_client.dart';
 ///
 class EmbedPage {
   static final _playerConfigExp =
-      RegExp(r"yt\.setConfig\({'PLAYER_CONFIG':(.*)}\);");
-
+      RegExp(r"yt\.setConfig\({.*?'PLAYER_CONFIG':(.*?)}");
   final Document _root;
   _PlayerConfig _playerConfig;
   String __playerConfigJson;

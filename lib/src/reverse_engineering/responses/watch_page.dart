@@ -85,10 +85,17 @@ class WatchPage {
       '0');
 
   ///
-  _PlayerConfig get playerConfig =>
-      _playerConfig ??= _PlayerConfig(PlayerConfigJson.fromRawJson(_extractJson(
-          _root.getElementsByTagName('html').first.text,
-          'ytplayer.config = ')));
+  _PlayerConfig get playerConfig {
+    if (_playerConfig != null) {
+      return _playerConfig;
+    }
+    var text = _root.getElementsByTagName('html').first.text;
+    if (!text.contains('ytplayer.config = ')) {
+      return null;
+    }
+    return _playerConfig = _PlayerConfig(
+        PlayerConfigJson.fromRawJson(_extractJson(text, 'ytplayer.config = ')));
+  }
 
   String _extractJson(String html, String separator) {
     return _matchJson(

@@ -20,7 +20,4 @@ If this issue persists, please report it on the project's GitHub page.
 Request: ${response.request}
 Response: (${response.statusCode})
 ''';
-
-  @override
-  String toString() => 'FatalFailureException: $message';
 }
