@@ -218,6 +218,7 @@ class StreamsClient {
     // We can try to extract the manifest from two sources:
     //    get_video_info and the video watch page.
     // In some cases one works, in some cases another does.
+
     try {
       var context = await _getStreamContextFromVideoInfo(videoId);
       return _getManifest(context);

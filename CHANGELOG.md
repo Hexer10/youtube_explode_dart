@@ -3,6 +3,9 @@
 - Only throw custom exceptions from the library.
 - `getUploadsFromPage` no longer throws.
 
+## 1.15.2
+- Fix extraction for same videos (#76)
+
 ## 1.5.1
 - Fix Video Search: https://github.com/Tyrrrz/YoutubeExplode/issues/438
 

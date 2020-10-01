@@ -86,11 +86,13 @@ class WatchPage {
           ?.nullIfWhitespace ??
       '0');
 
+  static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\}\});');
+
   ///
   _PlayerConfig get playerConfig =>
-      _playerConfig ??= _PlayerConfig(json.decode(_matchJson(_extractJson(
-          _root.getElementsByTagName('html').first.text,
-          'ytplayer.config = '))));
+      _playerConfig ??= _PlayerConfig(json.decode(_playerConfigExp
+          .firstMatch(_root.getElementsByTagName('html').first.text)
+          ?.group(1)));
 
   String _extractJson(String html, String separator) {
     return _matchJson(
