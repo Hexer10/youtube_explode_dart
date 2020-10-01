@@ -30,7 +30,7 @@ class PlayerSource {
     var val = RegExp(r'(?<=invalid namespace.*?;[\w\s]+=)\d+')
             .stringMatch(_root)
             ?.nullIfWhitespace ??
-        RegExp(r'(?<=this\.signatureTimestamp=)\d+"')
+        RegExp(r'(?<=this\.signatureTimestamp=)\d+')
             .stringMatch(_root)
             ?.nullIfWhitespace;
     if (val == null) {

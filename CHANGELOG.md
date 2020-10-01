@@ -3,6 +3,9 @@
 - Only throw custom exceptions from the library.
 - `getUploadsFromPage` no longer throws.
 
+## 1.15.2
+- Fix extraction for same videos (#76)
+
 ## 1.5.1
 - BREAKING CHANGE: Renamed `getVideosAsync` to `getVideos`.
 - Implemented `getVideosFromPage` which supersedes `queryFromPage`.

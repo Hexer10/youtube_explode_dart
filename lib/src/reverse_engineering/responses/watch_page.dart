@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
@@ -84,18 +86,13 @@ class WatchPage {
           ?.nullIfWhitespace ??
       '0');
 
+  static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\}\});');
+
   ///
-  _PlayerConfig get playerConfig {
-    if (_playerConfig != null) {
-      return _playerConfig;
-    }
-    var text = _root.getElementsByTagName('html').first.text;
-    if (!text.contains('ytplayer.config = ')) {
-      return null;
-    }
-    return _playerConfig = _PlayerConfig(
-        PlayerConfigJson.fromRawJson(_extractJson(text, 'ytplayer.config = ')));
-  }
+  _PlayerConfig get playerConfig =>
+      _playerConfig ??= _PlayerConfig(json.decode(_playerConfigExp
+          .firstMatch(_root.getElementsByTagName('html').first.text)
+          ?.group(1)));
 
   String _extractJson(String html, String separator) {
     return _matchJson(

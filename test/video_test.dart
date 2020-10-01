@@ -25,7 +25,7 @@ void main() {
       expect(video.uploadDate.millisecondsSinceEpoch,
           inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
       expect(video.description, contains('246pp'));
-      expect(video.duration, const Duration(minutes: 1, seconds: 49));
+      expect(video.duration, const Duration(minutes: 1, seconds: 48));
       expect(video.thumbnails.lowResUrl, isNotEmpty);
       expect(video.thumbnails.mediumResUrl, isNotEmpty);
       expect(video.thumbnails.highResUrl, isNotEmpty);
