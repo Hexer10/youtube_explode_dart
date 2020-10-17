@@ -29,9 +29,9 @@ void main() {
       var trackInfo = manifest.getByLanguage('en');
       var track = await yt.videos.closedCaptions.get(trackInfo);
       var caption =
-          track.getByTime(const Duration(hours: 0, minutes: 10, seconds: 41));
+          track.getByTime(const Duration(hours: 0, minutes: 13, seconds: 22));
       var captionPart =
-          caption.getPartByTime(const Duration(milliseconds: 650));
+          caption.getPartByTime(const Duration(milliseconds: 200));
 
       expect(caption, isNotNull);
       expect(captionPart, isNotNull);

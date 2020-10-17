@@ -3,16 +3,23 @@
 - Only throw custom exceptions from the library.
 - `getUploadsFromPage` no longer throws.
 
-## 1.15.2
-- Fix extraction for same videos (#76)
-
-## 1.5.1
+## 1.6.0
 - BREAKING CHANGE: Renamed `getVideosAsync` to `getVideos`.
 - Implemented `getVideosFromPage` which supersedes `queryFromPage`.
 - Implemented JSON Classes for reverse engineer.
 - Added `forceWatchPage` to the video client to assure the fetching of the video page. (ATM useful only if using the comments api)
-- Remove adaptive streams. These are not used anymore. 
- 
+- Remove adaptive streams. These are not used anymore.
+- Implement `channelClient.getAboutPage` and `getAboutPageByUsername` to fetch data from a channel's about page.
+
+## 1.15.2
+- Fix extraction for same videos (#76)
+
+## 1.5.2
+- Fix extraction for same videos (#76)
+
+## 1.5.1
+- Fix Video Search: https://github.com/Tyrrrz/YoutubeExplode/issues/438
+
 ## 1.5.0
 - BREAKING CHANGE: Renamed `Container` class to `StreamContainer` to avoid conflicting with Flutter `Container`. See #66
 
