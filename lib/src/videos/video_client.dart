@@ -71,8 +71,12 @@ class VideoClient {
   }
 
   /// Get a [Video] instance from a [videoId]
-  Future<Video> get(dynamic videoId) async {
+  Future<Video> get(dynamic videoId, {forceWatchPage = false}) async {
     videoId = VideoId.fromString(videoId);
+
+    if (forceWatchPage) {
+      return _getVideoFromWatchPage(videoId);
+    }
 
     try {
       return await _getVideoFromFixPlaylist(videoId);

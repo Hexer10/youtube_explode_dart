@@ -2,15 +2,15 @@ import 'dart:convert';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
-import 'package:http_parser/http_parser.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../../videos/video_id.dart';
 import '../youtube_http_client.dart';
+import 'generated/player_response_json.g.dart';
+import 'generated/watch_page_id.g.dart';
 import 'player_response.dart';
-import 'stream_info_provider.dart';
 
 ///
 class WatchPage {
@@ -37,13 +37,13 @@ class WatchPage {
 
   ///
   _InitialData get initialData =>
-      _initialData ??= _InitialData(json.decode(_matchJson(_extractJson(
+      _initialData ??= _InitialData(WatchPageId.fromRawJson(_extractJson(
           _root
               .querySelectorAll('script')
               .map((e) => e.text)
               .toList()
               .firstWhere((e) => e.contains('window["ytInitialData"] =')),
-          'window["ytInitialData"] ='))));
+          'window["ytInitialData"] =')));
 
   ///
   String get xsfrToken => _xsfrToken ??= _xsfrTokenExp
@@ -89,8 +89,8 @@ class WatchPage {
   static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\}\});');
 
   ///
-  _PlayerConfig get playerConfig =>
-      _playerConfig ??= _PlayerConfig(json.decode(_playerConfigExp
+  _PlayerConfig get playerConfig => _playerConfig ??= _PlayerConfig(
+      PlayerConfigJson.fromRawJson(_playerConfigExp
           .firstMatch(_root.getElementsByTagName('html').first.text)
           ?.group(1)));
 
@@ -147,99 +147,21 @@ class WatchPage {
   }
 }
 
-class _StreamInfo extends StreamInfoProvider {
-  final Map<String, String> _root;
-
-  _StreamInfo(this._root);
-
-  @override
-  int get bitrate => int.parse(_root['bitrate']);
-
-  @override
-  int get tag => int.parse(_root['itag']);
-
-  @override
-  String get url => _root['url'];
-
-  @override
-  String get signature => _root['s'];
-
-  @override
-  String get signatureParameter => _root['sp'];
-
-  @override
-  int get contentLength => int.tryParse(_root['clen'] ??
-      StreamInfoProvider.contentLenExp
-          .firstMatch(url)
-          .group(1)
-          .nullIfWhitespace ??
-      '');
-
-  MediaType get mimeType => MediaType.parse(_root['mimeType']);
-
-  @override
-  String get container => mimeType.subtype;
-
-  bool get isAudioOnly => mimeType.type == 'audio';
-
-  @override
-  String get audioCodec => codecs.last;
-
-  @override
-  String get videoCodec => isAudioOnly ? null : codecs.first;
-
-  List<String> get codecs =>
-      mimeType.parameters['codecs'].split(',').map((e) => e.trim());
-
-  @override
-  String get videoQualityLabel => _root['quality_label'];
-
-  List<int> get _size =>
-      _root['size'].split(',').map((e) => int.tryParse(e ?? ''));
-
-  @override
-  int get videoWidth => _size.first;
-
-  @override
-  int get videoHeight => _size.last;
-
-  @override
-  int get framerate => int.tryParse(_root['fps'] ?? '');
-}
-
 class _PlayerConfig {
   // Json parsed map
-  final Map<String, dynamic> _root;
+  final PlayerConfigJson root;
 
-  _PlayerConfig(this._root);
+  _PlayerConfig(this.root);
 
-  String get sourceUrl => 'https://youtube.com${_root['assets']['js']}';
+  String get sourceUrl => 'https://youtube.com${root.assets.js}';
 
   PlayerResponse get playerResponse =>
-      PlayerResponse.parse(_root['args']['player_response']);
-
-  List<_StreamInfo> get muxedStreams =>
-      _root
-          .get('args')
-          ?.getValue('url_encoded_fmt_stream_map')
-          ?.split(',')
-          ?.map((e) => _StreamInfo(Uri.splitQueryString(e))) ??
-      const [];
-
-  List<_StreamInfo> get adaptiveStreams =>
-      _root
-          .get('args')
-          ?.getValue('adaptive_fmts')
-          ?.split(',')
-          ?.map((e) => _StreamInfo(Uri.splitQueryString(e))) ??
-      const [];
-
-  List<_StreamInfo> get streams => [...muxedStreams, ...adaptiveStreams];
+      PlayerResponse.parse(root.args.playerResponse);
 }
 
 class _InitialData {
   // Json parsed map
-  final Map<String, dynamic> root;
+  final WatchPageId root;
 
   _InitialData(this.root);
 
@@ -248,26 +170,21 @@ class _InitialData {
   String _continuation;
   String _clickTrackingParams;
 
-  Map<String, dynamic> getContinuationContext(Map<String, dynamic> root) {
-    if (root['contents'] != null) {
-      return (root['contents']['twoColumnWatchNextResults']['results']
-              ['results']['contents'] as List<dynamic>)
-          ?.firstWhere((e) => e.containsKey('itemSectionRenderer'))[
-              'itemSectionRenderer']['continuations']
-          ?.first['nextContinuationData']
-          ?.cast<String, dynamic>();
-    }
-    if (root['response'] != null) {
-      return root['response']['itemSectionContinuation']['continuations']
-          ?.first['nextContinuationData']
-          ?.cast<String, dynamic>();
+  NextContinuationData getContinuationContext() {
+    if (root.contents != null) {
+      return root.contents.twoColumnWatchNextResults.results.results.contents
+          .firstWhere((e) => e.itemSectionRenderer != null)
+          .itemSectionRenderer
+          .continuations
+          .first
+          .nextContinuationData;
     }
     return null;
   }
 
-  String get continuation => _continuation ??=
-      getContinuationContext(root)?.getValue('continuation') ?? '';
+  String get continuation =>
+      _continuation ??= getContinuationContext()?.continuation ?? '';
 
   String get clickTrackingParams => _clickTrackingParams ??=
-      getContinuationContext(root)?.getValue('clickTrackingParams') ?? '';
+      getContinuationContext()?.clickTrackingParams ?? '';
 }

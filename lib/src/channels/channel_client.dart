@@ -1,3 +1,6 @@
+import 'package:youtube_explode_dart/src/channels/channels.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/responses/channel_about_page.dart';
+
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';
 import '../reverse_engineering/responses/channel_upload_page.dart';
@@ -38,6 +41,51 @@ class ChannelClient {
         await ChannelPage.getByUsername(_httpClient, username.value);
     return Channel(ChannelId(channelPage.channelId), channelPage.channelTitle,
         channelPage.channelLogoUrl);
+  }
+
+  /// Gets the info found on a YouTube Channel About page.
+  /// [id] must be either a [ChannelId] or a string
+  /// which is parsed to a [ChannelId]
+  Future<ChannelAbout> getAboutPage(dynamic id) async {
+    id = ChannelId.fromString(id);
+
+    var channelAboutPage = await ChannelAboutPage.get(_httpClient, id.value);
+    var iData = channelAboutPage.initialData;
+    assert(iData != null);
+    return ChannelAbout(
+        id.description,
+        id.viewCount,
+        id.joinDate,
+        id.title,
+        [
+          for (var e in id.avatar)
+            ChannelThumbnail(Uri.parse(e.url), e.height, e.width)
+        ],
+        id.country,
+        id.channelLinks);
+  }
+
+  /// Gets the info found on a YouTube Channel About page.
+  /// [username] must be either a [Username] or a string
+  /// which is parsed to a [Username]
+  Future<ChannelAbout> getAboutPageByUsername(dynamic username) async {
+    username = Username.fromString(username);
+
+    var channelAboutPage =
+        await ChannelAboutPage.getByUsername(_httpClient, username.value);
+    var id = channelAboutPage.initialData;
+    assert(id != null);
+    return ChannelAbout(
+        id.description,
+        id.viewCount,
+        id.joinDate,
+        id.title,
+        [
+          for (var e in id.avatar)
+            ChannelThumbnail(Uri.parse(e.url), e.height, e.width)
+        ],
+        id.country,
+        id.channelLinks);
   }
 
   /// Gets the metadata associated with the channel

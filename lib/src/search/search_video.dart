@@ -1,7 +1,8 @@
 import '../videos/video_id.dart';
+import 'base_search_content.dart';
 
 /// Metadata related to a search query result (video).
-class SearchVideo {
+class SearchVideo extends BaseSearchContent {
   /// VideoId.
   final VideoId videoId;
 

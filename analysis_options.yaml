@@ -1,5 +1,6 @@
 include: package:effective_dart/analysis_options.yaml
 
+
 linter:
   rules:
     - valid_regexps
@@ -60,3 +61,4 @@ linter:
 analyzer:
   exclude:
     - example\**
+    - lib\src\reverse_engineering\responses\generated\**

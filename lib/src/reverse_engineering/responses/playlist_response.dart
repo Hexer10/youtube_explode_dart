@@ -6,47 +6,47 @@ import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
+import 'generated/playlist_response.g.dart';
 
 ///
 class PlaylistResponse {
-  Iterable<_Video> _videos;
+  List<_Video> _videos;
 
   // Json parsed map
-  final Map<String, dynamic> _root;
+  PlaylistResponseJson _root;
 
   ///
-  String get title => _root['title'];
+  String get title => _root.title;
 
   ///
-  String get author => _root['author'];
+  String get author => _root.author;
 
   ///
-  String get description => _root['description'];
+  String get description => _root.description;
 
   ///
   ThumbnailSet get thumbnails => ThumbnailSet(videos.firstOrNull.id);
 
   ///
-  int get viewCount => _root['views'];
+  int get viewCount => _root.views;
 
   ///
-  int get likeCount => _root['likes'];
+  int get likeCount => _root.likes;
 
   ///
-  int get dislikeCount => _root['dislikes'];
+  int get dislikeCount => _root.dislikes;
 
   ///
-  Iterable<_Video> get videos => _videos ??=
-      _root['video']?.map((e) => _Video(e))?.cast<_Video>() ?? const <_Video>[];
+  List<_Video> get videos =>
+      _videos ??= _root.video.map((e) => _Video(e)).toList();
 
   ///
-  PlaylistResponse(this._root);
-
-  ///
-  PlaylistResponse.parse(String raw) : _root = json.tryDecode(raw) {
-    if (_root == null) {
+  PlaylistResponse.parse(String raw) {
+    final t = json.tryDecode(raw);
+    if (t == null) {
       throw TransientFailureException('Playerlist response is broken.');
     }
+    _root = PlaylistResponseJson.fromJson(t);
   }
 
   ///
@@ -80,33 +80,33 @@ class PlaylistResponse {
 
 class _Video {
   // Json parsed map
-  final Map<String, dynamic> _root;
+  final Video root;
 
-  _Video(this._root);
+  _Video(this.root);
 
-  String get id => _root['encrypted_id'];
+  String get id => root.encryptedId;
 
-  String get author => _root['author'];
+  String get author => root.author;
 
-  ChannelId get channelId => ChannelId('UC${_root['user_id']}');
+  ChannelId get channelId => ChannelId('UC${root.userId}');
 
   DateTime get uploadDate =>
-      DateTime.fromMillisecondsSinceEpoch(_root['time_created'] * 1000);
+      DateTime.fromMillisecondsSinceEpoch(root.timeCreated * 1000);
 
-  String get title => _root['title'];
+  String get title => root.title;
 
-  String get description => _root['description'];
+  String get description => root.description;
 
-  Duration get duration => Duration(seconds: _root['length_seconds']);
+  Duration get duration => Duration(seconds: root.lengthSeconds);
 
-  int get viewCount => int.parse((_root['views'] as String).stripNonDigits());
+  int get viewCount => int.parse(root.views.stripNonDigits());
 
-  int get likes => _root['likes'];
+  int get likes => root.likes;
 
-  int get dislikes => _root['dislikes'];
+  int get dislikes => root.dislikes;
 
   Iterable<String> get keywords => RegExp(r'"[^\"]+"|\S+')
-      .allMatches(_root['keywords'])
+      .allMatches(root.keywords)
       .map((e) => e.group(0))
       .toList(growable: false);
 }
