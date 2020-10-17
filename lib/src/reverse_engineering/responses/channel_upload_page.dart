@@ -5,10 +5,10 @@ import 'package:html/parser.dart' as parser;
 
 import '../../channels/channel_video.dart';
 import '../../exceptions/exceptions.dart';
-import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../../videos/videos.dart';
 import '../youtube_http_client.dart';
+import 'generated/channel_upload_page_id.g.dart';
 
 ///
 class ChannelUploadPage {
@@ -19,8 +19,8 @@ class ChannelUploadPage {
   _InitialData _initialData;
 
   ///
-  _InitialData get initialData =>
-      _initialData ??= _InitialData(json.decode(_matchJson(_extractJson(
+  _InitialData get initialData => _initialData ??= _InitialData(
+      ChannelUploadPageId.fromJson(json.decode(_extractJson(
           _root
               .querySelectorAll('script')
               .map((e) => e.text)
@@ -64,8 +64,8 @@ class ChannelUploadPage {
         'https://www.youtube.com/browse_ajax?ctoken=${initialData.continuation}&continuation=${initialData.continuation}&itct=${initialData.clickTrackingParams}';
     return retry(() async {
       var raw = await httpClient.getString(url);
-      return ChannelUploadPage(
-          null, channelId, _InitialData(json.decode(raw)[1]));
+      return ChannelUploadPage(null, channelId,
+          _InitialData(ChannelUploadPageId.fromJson(json.decode(raw)[1])));
     });
   }
 
@@ -88,9 +88,9 @@ class ChannelUploadPage {
 
 class _InitialData {
   // Json parsed map
-  final Map<String, dynamic> _root;
+  final ChannelUploadPageId root;
 
-  _InitialData(this._root);
+  _InitialData(this.root);
 
   /* Cache results */
 
@@ -98,64 +98,71 @@ class _InitialData {
   String _continuation;
   String _clickTrackingParams;
 
-  List<Map<String, dynamic>> getContentContext(Map<String, dynamic> root) {
-    if (root['contents'] != null) {
-      return (_root['contents']['twoColumnBrowseResultsRenderer']['tabs']
-              as List<dynamic>)
-          .map((e) => e['tabRenderer'])
-          .firstWhere((e) => e['selected'] == true)['content']
-              ['sectionListRenderer']['contents']
-          .first['itemSectionRenderer']['contents']
-          .first['gridRenderer']['items']
-          .cast<Map<String, dynamic>>();
+  List<GridRendererItem> getContentContext() {
+    if (root.contents != null) {
+      return root.contents.twoColumnBrowseResultsRenderer.tabs
+          .map((e) => e.tabRenderer)
+          .firstWhere((e) => e.selected)
+          .content
+          .sectionListRenderer
+          .contents
+          .first
+          .itemSectionRenderer
+          .contents
+          .first
+          .gridRenderer
+          .items;
     }
-    if (root['response'] != null) {
-      return _root['response']['continuationContents']['gridContinuation']
-              ['items']
-          .cast<Map<String, dynamic>>();
+    if (root.response != null) {
+      return root.response.continuationContents.gridContinuation.items;
     }
     throw FatalFailureException('Failed to get initial data context.');
   }
 
-  Map<String, dynamic> getContinuationContext(Map<String, dynamic> root) {
-    if (_root['contents'] != null) {
-      return (_root['contents']['twoColumnBrowseResultsRenderer']['tabs']
-              as List<dynamic>)
-          ?.map((e) => e['tabRenderer'])
-          ?.firstWhere((e) => e['selected'] == true)['content']
-              ['sectionListRenderer']['contents']
-          ?.first['itemSectionRenderer']['contents']
-          ?.first['gridRenderer']['continuations']
-          ?.first['nextContinuationData']
-          ?.cast<String, dynamic>();
+  NextContinuationData getContinuationContext() {
+    if (root.contents != null) {
+      return root.contents.twoColumnBrowseResultsRenderer.tabs
+          .map((e) => e.tabRenderer)
+          .firstWhere((e) => e.selected)
+          .content
+          .sectionListRenderer
+          .contents
+          .first
+          .itemSectionRenderer
+          .contents
+          .first
+          .gridRenderer
+          .continuations
+          .first
+          .nextContinuationData;
     }
-    if (_root['response'] != null) {
-      return _root['response']['continuationContents']['gridContinuation']
-              ['continuations']
-          ?.first
-          ?.cast<String, dynamic>();
+    if (root.response != null) {
+      return root.response.continuationContents.gridContinuation.continuations
+          .first.nextContinuationData;
     }
     return null;
   }
 
-  List<ChannelVideo> get uploads => _uploads ??= getContentContext(_root)
+  List<ChannelVideo> get uploads => _uploads ??= getContentContext()
       ?.map(_parseContent)
       ?.where((e) => e != null)
-      ?.toList()
-      ?.cast<ChannelVideo>();
+      ?.toList();
 
-  String get continuation => _continuation ??=
-      getContinuationContext(_root)?.getValue('continuation') ?? '';
+  String get continuation =>
+      _continuation ??= getContinuationContext().continuation ?? '';
 
   String get clickTrackingParams => _clickTrackingParams ??=
-      getContinuationContext(_root)?.getValue('clickTrackingParams') ?? '';
+      getContinuationContext()?.clickTrackingParams ?? '';
 
-  dynamic _parseContent(content) {
-    if (content == null || content['gridVideoRenderer'] == null) {
+  ChannelVideo _parseContent(GridRendererItem content) {
+    if (content == null || content.gridVideoRenderer == null) {
       return null;
     }
-    var video = content['gridVideoRenderer'] as Map<String, dynamic>;
+    var video = content.gridVideoRenderer;
     return ChannelVideo(
-        VideoId(video['videoId']), video['title']['simpleText']);
+        VideoId(video.videoId),
+        video.title?.simpleText ??
+            video.title?.runs?.map((e) => e.text)?.join() ??
+            '');
   }
 }

@@ -2,40 +2,40 @@ import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
-  group('VideoId', () {
-    test('ValidVideoId', () {
-      var data = const {
-        '9bZkp7q19f0',
-        '_kmeFXjjGfk',
-        'AI7ULzgf8RU',
-      };
-      // ignore: avoid_function_literals_in_foreach_calls
-      data.forEach((videoId) {
-        var video = VideoId(videoId);
-        expect(video.value, videoId);
+  group('These are valid video ids', () {
+    for (var val in {'9bZkp7q19f0', '_kmeFXjjGfk', 'AI7ULzgf8RU'}) {
+      test('VideoID - $val', () {
+        expect(VideoId(val).value, val);
       });
-    });
-    test('ValidVideoUrl', () {
-      var data = const {
-        'youtube.com/watch?v=yIVRs6YSbOM': 'yIVRs6YSbOM',
-        'youtu.be/yIVRs6YSbOM': 'yIVRs6YSbOM',
-        'youtube.com/embed/yIVRs6YSbOM': 'yIVRs6YSbOM',
-      };
-      data.forEach((url, videoId) {
-        var video = VideoId(url);
-        expect(video.value, videoId);
+    }
+  });
+  group('These are valid video urls', () {
+    for (var val in {
+      ['youtube.com/watch?v=yIVRs6YSbOM', 'yIVRs6YSbOM'],
+      ['youtu.be/yIVRs6YSbOM', 'yIVRs6YSbOM'],
+      ['youtube.com/embed/yIVRs6YSbOM', 'yIVRs6YSbOM'],
+    }) {
+      test('Video - $val', () {
+        expect(VideoId(val[0]).value, val[1]);
       });
-    });
-    test('InvalidVideoId', () {
-      expect(() => VideoId(''), throwsArgumentError);
-      expect(() => VideoId('pI2I2zqzeK'), throwsArgumentError);
-      expect(() => VideoId('pI2I2z zeKg'), throwsArgumentError);
-    });
-    test('InvalidVideoUrl', () {
-      expect(
-          () => VideoId('youtube.com/xxx?v=pI2I2zqzeKg'), throwsArgumentError);
-      expect(() => VideoId('youtu.be/watch?v=xxx'), throwsArgumentError);
-      expect(() => VideoId('youtube.com/embed/'), throwsArgumentError);
-    });
+    }
+  });
+  group('These are not valid video ids', () {
+    for (var val in {'', 'pI2I2zqzeK', 'pI2I2z zeKg'}) {
+      test('VideoID - $val', () {
+        expect(() => VideoId(val), throwsArgumentError);
+      });
+    }
+  });
+  group('These are not valid video urls', () {
+    for (var val in {
+      'youtube.com/xxx?v=pI2I2zqzeKg',
+      'youtu.be/watch?v=xxx',
+      'youtube.com/embed'
+    }) {
+      test('VideoURL - $val', () {
+        expect(() => VideoId(val), throwsArgumentError);
+      });
+    }
   });
 }

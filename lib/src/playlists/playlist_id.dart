@@ -6,8 +6,8 @@ import '../extensions/helpers_extension.dart';
 class PlaylistId with EquatableMixin {
   static final _regMatchExp =
       RegExp(r'youtube\..+?/playlist.*?list=(.*?)(?:&|/|$)');
-  static final _compositeMatchExp = RegExp(
-      'https://www.youtube.com/watch?v=b8m9zhNAgKs&list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr');
+  static final _compositeMatchExp =
+      RegExp(r'youtube\..+?/watch.*?list=(.*?)(?:&|/|$)');
   static final _shortCompositeMatchExp =
       RegExp(r'youtu\.be/.*?/.*?list=(.*?)(?:&|/|$)');
   static final _embedCompositeMatchExp =

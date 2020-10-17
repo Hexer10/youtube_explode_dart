@@ -2,34 +2,44 @@ import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
-  group('Username', () {
-    test('ValidUsername', () {
-      var data = const {'TheTyrrr', 'KannibalenRecords', 'JClayton1994'};
-      // ignore: avoid_function_literals_in_foreach_calls
-      data.forEach((usernameStr) {
-        var username = Username(usernameStr);
-        expect(username.value, usernameStr);
+  group('These are valid usernames', () {
+    for (var val in {'TheTyrrr', 'KannibalenRecords', 'JClayton1994'}) {
+      test('Username - $val', () {
+        expect(Username(val).value, val);
       });
-    });
-    test('ValidUsernameUrl', () {
-      var data = const {
-        'youtube.com/user/ProZD': 'ProZD',
-        'youtube.com/user/TheTyrrr': 'TheTyrrr',
-      };
-      data.forEach((url, usernameStr) {
-        var username = Username(url);
-        expect(username.value, usernameStr);
+    }
+  });
+  group('These are valid username urls', () {
+    for (var val in {
+      ['youtube.com/user/ProZD', 'ProZD'],
+      ['youtube.com/user/TheTyrrr', 'TheTyrrr'],
+    }) {
+      test('UsernameURL - $val', () {
+        expect(Username(val[0]).value, val[1]);
       });
-    });
-    test('InvalidUsername', () {
-      expect(() => Username('The_Tyrrr'), throwsArgumentError);
-      expect(() => Username('0123456789ABCDEFGHIJK'), throwsArgumentError);
-      expect(() => Username('A1B2C3-'), throwsArgumentError);
-      expect(() => Username('=0123456789ABCDEF'), throwsArgumentError);
-    });
-    test('InvalidUsernameUrl', () {
-      expect(() => Username('youtube.com/user/P_roZD'), throwsArgumentError);
-      expect(() => Username('youtube.com/user/P_roZD'), throwsArgumentError);
-    });
+    }
+  });
+  group('These are invalid usernames', () {
+    for (var val in {
+      'The_Tyrrr',
+      '0123456789ABCDEFGHIJK',
+      'A1B2C3-',
+      '=0123456789ABCDEF'
+    }) {
+      test('Username - $val', () {
+        expect(() => Username(val), throwsArgumentError);
+      });
+    }
+  });
+
+  group('These are not valid username urls', () {
+    for (var val in {
+      'youtube.com/user/P_roZD',
+      'example.com/user/ProZD',
+    }) {
+      test('UsernameURL - $val', () {
+        expect(() => Username(val), throwsArgumentError);
+      });
+    }
   });
 }

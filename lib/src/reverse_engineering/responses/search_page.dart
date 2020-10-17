@@ -2,49 +2,64 @@ import 'dart:convert';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:youtube_explode_dart/src/search/base_search_content.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
-import '../../playlists/playlist_id.dart';
 import '../../retry.dart';
 import '../../search/related_query.dart';
-import '../../search/search_playlist.dart';
 import '../../search/search_video.dart';
 import '../../videos/videos.dart';
 import '../youtube_http_client.dart';
+import 'generated/search_page_id.g.dart' hide PlaylistId;
 
 ///
 class SearchPage {
-  static final _xsfrTokenExp = RegExp('"XSRF_TOKEN":"(.+?)"');
+  final _apiKeyExp = RegExp(r'"INNERTUBE_API_KEY":"(\w+?)"');
 
   ///
   final String queryString;
   final Document _root;
 
-  _InitialData _initialData;
-  String _xsrfToken;
+  String _apiKey;
 
   ///
-  _InitialData get initialData =>
-      _initialData ??= _InitialData(json.decode(_matchJson(_extractJson(
-          _root
-              .querySelectorAll('script')
-              .map((e) => e.text)
-              .toList()
-              .firstWhere((e) => e.contains('window["ytInitialData"] =')),
-          'window["ytInitialData"] ='))));
-
-  ///
-  String get xsfrToken => _xsrfToken ??= _xsfrTokenExp
+  String get apiKey => _apiKey ??= _apiKeyExp
       .firstMatch(_root
           .querySelectorAll('script')
-          .firstWhere((e) => _xsfrTokenExp.hasMatch(e.text))
+          .firstWhere((e) => e.text.contains('INNERTUBE_API_KEY'))
           .text)
       .group(1);
 
+  _InitialData _initialData;
+
+  ///
+  _InitialData get initialData {
+    if (_initialData != null) {
+      return _initialData;
+    }
+    var scriptTag = _extractJson(
+        _root.querySelectorAll('script').map((e) => e.text).toList().firstWhere(
+            (e) => e.contains('window["ytInitialData"] ='),
+            orElse: () => null),
+        'window["ytInitialData"] =');
+    scriptTag ??= _extractJson(
+        _root.querySelectorAll('script').map((e) => e.text).toList().firstWhere(
+            (e) => e.contains('var ytInitialData ='),
+            orElse: () => '{}'),
+        'var ytInitialData =');
+    return _initialData ??= _InitialData(SearchPageId.fromRawJson(scriptTag));
+  }
+
   String _extractJson(String html, String separator) {
-    return _matchJson(
-        html.substring(html.indexOf(separator) + separator.length));
+    if (html == null || separator == null) {
+      return null;
+    }
+    var index = html.indexOf(separator) + separator.length;
+    if (index > html.length) {
+      return null;
+    }
+    return _matchJson(html.substring(index));
   }
 
   String _matchJson(String str) {
@@ -67,47 +82,54 @@ class SearchPage {
 
   ///
   SearchPage(this._root, this.queryString,
-      [_InitialData initalData, String xsfrToken])
-      : _initialData = initalData,
-        _xsrfToken = xsfrToken;
+      [_InitialData initialData, this._apiKey])
+      : _initialData = initialData;
 
   ///
   // TODO: Replace this in favour of async* when quering;
   Future<SearchPage> nextPage(YoutubeHttpClient httpClient) async {
-    if (initialData.continuation == '') {
+    if (initialData.continuationToken == '' ||
+        initialData.estimatedResults == 0) {
       return null;
     }
     return get(httpClient, queryString,
-        ctoken: initialData.continuation,
-        itct: initialData.clickTrackingParams,
-        xsrfToken: xsfrToken);
+        token: initialData.continuationToken, key: apiKey);
   }
 
   ///
   static Future<SearchPage> get(
       YoutubeHttpClient httpClient, String queryString,
-      {String ctoken, String itct, String xsrfToken}) {
+      {String token, String key}) {
+    if (token != null) {
+      assert(key != null, 'A key must be supplied along with a token');
+      var url = 'https://www.youtube.com/youtubei/v1/search?key=$key';
+
+      return retry(() async {
+        var body = {
+          'context': const {
+            'client': {
+              'hl': 'en',
+              'clientName': 'WEB',
+              'clientVersion': '2.20200911.04.00'
+            }
+          },
+          'continuation': token
+        };
+
+        var raw = await httpClient.post(url, body: json.encode(body));
+        return SearchPage(null, queryString,
+            _InitialData(SearchPageId.fromJson(json.decode(raw.body))), key);
+      });
+      // Ask for next page,
+
+    }
     var url =
         'https://www.youtube.com/results?search_query=${Uri.encodeQueryComponent(queryString)}';
-    if (ctoken != null) {
-      assert(itct != null, 'If ctoken is not null itct cannot be null');
-      url += '&pbj=1';
-      url += '&ctoken=${Uri.encodeQueryComponent(ctoken)}';
-      url += '&continuation=${Uri.encodeQueryComponent(ctoken)}';
-      url += '&itct=${Uri.encodeQueryComponent(itct)}';
-    }
     return retry(() async {
-      Map<String, String> body;
-      if (xsrfToken != null) {
-        body = {'session_token': xsrfToken};
-      }
-      var raw = await httpClient.postString(url, body: body);
-      if (ctoken != null) {
-        return SearchPage(
-            null, queryString, _InitialData(json.decode(raw)[1]), xsrfToken);
-      }
+      var raw = await httpClient.getString(url);
       return SearchPage.parse(raw, queryString);
     });
+    // ask for next page
   }
 
   ///
@@ -116,121 +138,114 @@ class SearchPage {
 
 class _InitialData {
   // Json parsed map
-  final Map<String, dynamic> _root;
+  final SearchPageId root;
 
-  _InitialData(this._root);
+  _InitialData(this.root);
 
   /* Cache results */
 
   List<dynamic> _searchContent;
   List<dynamic> _relatedVideos;
   List<RelatedQuery> _relatedQueries;
-  String _continuation;
-  String _clickTrackingParams;
 
-  List<Map<String, dynamic>> getContentContext(Map<String, dynamic> root) {
-    if (root['contents'] != null) {
-      return _root['contents']['twoColumnSearchResultsRenderer']
-              ['primaryContents']['sectionListRenderer']['contents']
-          .first['itemSectionRenderer']['contents']
-          .cast<Map<String, dynamic>>();
+  List<PurpleContent> getContentContext() {
+    if (root.contents != null) {
+      return root.contents.twoColumnSearchResultsRenderer.primaryContents
+          .sectionListRenderer.contents.first.itemSectionRenderer.contents;
     }
-    if (root['response'] != null) {
-      return _root['response']['continuationContents']
-              ['itemSectionContinuation']['contents']
-          .cast<Map<String, dynamic>>();
+    if (root.onResponseReceivedCommands != null) {
+      return root.onResponseReceivedCommands.first.appendContinuationItemsAction
+          .continuationItems[0].itemSectionRenderer.contents;
     }
-    throw FatalFailureException('Failed to get initial data context.');
+    return null;
   }
 
-  Map<String, dynamic> getContinuationContext(Map<String, dynamic> root) {
-    if (_root['contents'] != null) {
-      return (_root['contents']['twoColumnSearchResultsRenderer']
-                  ['primaryContents']['sectionListRenderer']['contents']
-              ?.first['itemSectionRenderer']['continuations']
-              ?.first as Map)
-          ?.getValue('nextContinuationData')
-          ?.cast<String, dynamic>();
+  String _getContinuationToken() {
+    if (root.contents != null) {
+      var contents = root.contents.twoColumnSearchResultsRenderer
+          .primaryContents.sectionListRenderer.contents;
+
+      if (contents.length <= 1) {
+        return null;
+      }
+      return contents[1]
+          .continuationItemRenderer
+          .continuationEndpoint
+          .continuationCommand
+          .token;
     }
-    if (_root['response'] != null) {
-      return _root['response']['continuationContents']
-              ['itemSectionContinuation']['continuations']
-          ?.first['nextContinuationData']
-          ?.cast<String, dynamic>();
+    if (root.onResponseReceivedCommands != null) {
+      return root
+              .onResponseReceivedCommands
+              .first
+              .appendContinuationItemsAction
+              .continuationItems[1]
+              ?.continuationItemRenderer
+              ?.continuationEndpoint
+              ?.continuationCommand
+              ?.token ??
+          ' ';
     }
     return null;
   }
 
   // Contains only [SearchVideo] or [SearchPlaylist]
-  List<dynamic> get searchContent => _searchContent ??= getContentContext(_root)
-      .map(_parseContent)
-      .where((e) => e != null)
-      .toList();
+  List<BaseSearchContent> get searchContent => _searchContent ??=
+      getContentContext().map(_parseContent).where((e) => e != null).toList();
 
   List<RelatedQuery> get relatedQueries =>
-      (_relatedQueries ??= getContentContext(_root)
-          ?.where((e) => e.containsKey('horizontalCardListRenderer'))
-          ?.map((e) => e['horizontalCardListRenderer']['cards'])
+      (_relatedQueries ??= getContentContext()
+          ?.where((e) => e.horizontalCardListRenderer != null)
+          ?.map((e) => e.horizontalCardListRenderer.cards)
           ?.firstOrNull
-          ?.map((e) => e['searchRefinementCardRenderer'])
+          ?.map((e) => e.searchRefinementCardRenderer)
           ?.map((e) => RelatedQuery(
-              e['searchEndpoint']['searchEndpoint']['query'],
-              VideoId(Uri.parse(e['thumbnail']['thumbnails'].first['url'])
-                  .pathSegments[1])))
+              e.searchEndpoint.searchEndpoint.query,
+              VideoId(
+                  Uri.parse(e.thumbnail.thumbnails.first.url).pathSegments[1])))
           ?.toList()
           ?.cast<RelatedQuery>()) ??
       const [];
 
   List<dynamic> get relatedVideos =>
-      (_relatedVideos ??= getContentContext(_root)
-          ?.where((e) => e.containsKey('shelfRenderer'))
-          ?.map((e) =>
-              e['shelfRenderer']['content']['verticalListRenderer']['items'])
+      (_relatedVideos ??= getContentContext()
+          ?.where((e) => e.shelfRenderer != null)
+          ?.map((e) => e.shelfRenderer.content.verticalListRenderer.items)
           ?.firstOrNull
           ?.map(_parseContent)
           ?.toList()) ??
       const [];
 
-  String get continuation => _continuation ??=
-      getContinuationContext(_root)?.getValue('continuation') ?? '';
+  String get continuationToken => _getContinuationToken();
 
-  String get clickTrackingParams => _clickTrackingParams ??=
-      getContinuationContext(_root)?.getValue('clickTrackingParams') ?? '';
+  int get estimatedResults => int.parse(root.estimatedResults ?? 0);
 
-  int get estimatedResults => int.parse(_root['estimatedResults'] ?? 0);
-
-  dynamic _parseContent(dynamic content) {
+  BaseSearchContent _parseContent(PurpleContent content) {
     if (content == null) {
       return null;
     }
-    if (content.containsKey('videoRenderer')) {
-      Map<String, dynamic> renderer = content['videoRenderer'];
-
-      final thumbnails = List<Map<String, dynamic>>.from(
-        renderer.get('thumbnail')?.getValue('thumbnails') ?? []
-      )..sort((a, b) => a['width'].compareTo(b['width']));
-
+    if (content.videoRenderer != null) {
+      var renderer = content.videoRenderer;
       //TODO: Add if it's a live
       return SearchVideo(
-          VideoId(renderer['videoId']),
-          _parseRuns(renderer['title']),
-          _parseRuns(renderer['ownerText']),
-          _parseRuns(renderer['descriptionSnippet']),
-          renderer.get('lengthText')?.getValue('simpleText') ?? '',
-          int.parse(renderer['viewCountText']['simpleText']
-                  .toString()
-                  .stripNonDigits()
-                  .nullIfWhitespace ?? '0'),
-          thumbnails.map<String>((thumb) => thumb['url']).toList(growable: false)
-      );
+          VideoId(renderer.videoId),
+          _parseRuns(renderer.title.runs),
+          _parseRuns(renderer.ownerText.runs),
+          _parseRuns(renderer.descriptionSnippet?.runs),
+          (renderer.thumbnail.thumbnails ?? [])..sort((a ,b) => a.width.compareTo(b.width));
+          renderer.lengthText?.simpleText ?? '',
+          int.parse(renderer.viewCountText?.simpleText
+                  ?.stripNonDigits()
+                  ?.nullIfWhitespace ??
+              '0'));
     }
-    if (content.containsKey('radioRenderer')) {
-      var renderer = content['radioRenderer'];
+    if (content.radioRenderer != null) {
+      var renderer = content.radioRenderer;
 
       return SearchPlaylist(
-          PlaylistId(renderer['playlistId']),
-          renderer['title']['simpleText'],
-          int.parse(_parseRuns(renderer['videoCountText'])
+          PlaylistId(renderer.playlistId),
+          renderer.title.simpleText,
+          int.parse(_parseRuns(renderer.videoCountText.runs)
                   .stripNonDigits()
                   .nullIfWhitespace ??
               0));
@@ -239,38 +254,6 @@ class _InitialData {
     return null;
   }
 
-  String _parseRuns(Map<dynamic, dynamic> runs) =>
-      runs?.getValue('runs')?.map((e) => e['text'])?.join() ?? '';
+  String _parseRuns(List<dynamic> runs) =>
+      runs?.map((e) => e.text)?.join() ?? '';
 }
-
-// ['contents']['twoColumnSearchResultsRenderer']['primaryContents']
-// ['sectionListRenderer']['contents'].first['itemSectionRenderer']
-//
-//
-// ['contents'] -> @See ContentsList
-// ['continuations'] -> Data to see more
-
-//ContentsList:
-// Key -> 'videoRenderer'
-//    videoId --> VideoId
-//    title['runs'].loop -> ['text'] -> concatenate --> "Video Title"
-//    descriptionSnippet['runs'].loop -> ['text'] -> concatenate
-//      --> "Video Description snippet"
-//    ownerText['runs'].first -> ['text'] --> "Video Author"
-//    lengthText['simpleText'] -> Parse format H:M:S -> "Video Duration"
-//    viewCountText['simpleText'] -> Strip non digit -> int.parse
-//      --> "Video View Count"
-//
-// Key -> 'radioRenderer'
-//    playlistId -> PlaylistId
-//    title['simpleText'] --> "Playlist Title"
-//
-// Key -> 'horizontalCardListRenderer' // Queries related to this search
-//    cards --> List of Maps -> loop -> ['searchRefinementCardRenderer'].first
-//      thumbnail -> ['thumbnails'].first -> ['url']
-//        --> "Thumbnail url" -> Find video id from id.
-//      searchEndpoint -> ['searchEndpoint']
-//        -> ['query'] -> "Related query string"
-//
-// Key -> 'shelfRenderer' // Videos related to this search
-//  contents -> ['verticalListRenderer']['items'] -> loop -> parseContent

@@ -1,12 +1,12 @@
-import 'dart:convert';
-
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../../exceptions/exceptions.dart';
-import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
+import 'generated/channel_about_page_id.g.dart';
+import '../../extensions/helpers_extension.dart';
 
 ///
 class ChannelAboutPage {
@@ -16,13 +16,13 @@ class ChannelAboutPage {
 
   ///
   _InitialData get initialData =>
-      _initialData ??= _InitialData(json.decode(_matchJson(_extractJson(
+      _initialData ??= _InitialData(ChannelAboutPageId.fromRawJson(_extractJson(
           _root
               .querySelectorAll('script')
               .map((e) => e.text)
               .toList()
               .firstWhere((e) => e.contains('window["ytInitialData"] =')),
-          'window["ytInitialData"] ='))));
+          'window["ytInitialData"] =')));
 
   ///
   bool get isOk => initialData != null;
@@ -91,23 +91,63 @@ class ChannelAboutPage {
   }
 }
 
+final _urlExp = RegExp(r'q=([^=]*)$');
+
 class _InitialData {
-  // Json parsed map
-  final Map<String, dynamic> root;
+  // Json parsed class
+  final ChannelAboutPageId root;
 
   _InitialData(this.root);
 
   /* Cache results */
+  ChannelAboutFullMetadataRenderer _content;
 
-  String _description;
+  ChannelAboutFullMetadataRenderer get content =>
+      _content ??= getContentContext();
 
-  Map<String, dynamic> getDescriptionContext(Map<String, dynamic> root) {
-    if (root['metadata'] != null) {
-      return root['metadata']['channelMetadataRenderer'];
-    }
-    return null;
+  ChannelAboutFullMetadataRenderer getContentContext() {
+    return root
+        .contents
+        .twoColumnBrowseResultsRenderer
+        .tabs[5]
+        .tabRenderer
+        .content
+        .sectionListRenderer
+        .contents
+        .first
+        .itemSectionRenderer
+        .contents
+        .first
+        .channelAboutFullMetadataRenderer;
   }
 
-  String get description => _description ??=
-      getDescriptionContext(root)?.getValue('description') ?? '';
+  String get description => content.description.simpleText;
+
+  List<ChannelLink> get channelLinks {
+    return content.primaryLinks
+        .map((e) => ChannelLink(
+            e.title.simpleText,
+            extractUrl(e.navigationEndpoint?.commandMetadata?.webCommandMetadata
+                    ?.url ??
+                e.navigationEndpoint.urlEndpoint.url),
+            Uri.parse(e.icon.thumbnails.first.url)))
+        .toList();
+  }
+
+  int get viewCount =>
+      int.parse(content.viewCountText.simpleText.stripNonDigits());
+
+  String get joinDate => content.joinedDateText.runs[1].text;
+
+  String get title => content.title.simpleText;
+
+  List<AvatarThumbnail> get avatar => content.avatar.thumbnails;
+
+  String get country => content.country.simpleText;
+
+  String parseRuns(List<dynamic> runs) =>
+      runs?.map((e) => e.text)?.join() ?? '';
+
+  Uri extractUrl(String text) =>
+      Uri.parse(Uri.decodeFull(_urlExp.firstMatch(text)?.group(1) ?? ''));
 }

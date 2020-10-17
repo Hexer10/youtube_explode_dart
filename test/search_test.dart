@@ -2,47 +2,48 @@ import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
-  group('Search', () {
-    YoutubeExplode yt;
-    setUp(() {
-      yt = YoutubeExplode();
-    });
+  YoutubeExplode yt;
+  setUp(() {
+    yt = YoutubeExplode();
+  });
 
-    tearDown(() {
-      yt.close();
-    });
+  tearDown(() {
+    yt.close();
+  });
 
-    test('SearchYouTubeVideosFromApi', () async {
-      var videos = await yt.search
-          .getVideosAsync('undead corporation megalomania')
-          .toList();
-      expect(videos, isNotEmpty);
-    }, skip: 'Endpoint removed from YouTube');
+  test('Search a youtube video from the api', () async {
+    var videos =
+        await yt.search.getVideos('undead corporation megalomania').toList();
+    expect(videos, isNotEmpty);
+  });
 
-    //TODO: Find out why this fails
-    test('SearchYouTubeVideosFromPage', () async {
+  test('Search a youtube videos from the search page', () async {
+    var searchQuery = await yt.search.queryFromPage('hello');
+    expect(searchQuery.content, isNotEmpty);
+    expect(searchQuery.relatedVideos, isNotEmpty);
+    expect(searchQuery.relatedQueries, isNotEmpty);
+  });
+
+  test('Search with no results', () async {
+    var query =
+        await yt.search.queryFromPage('g;jghEOGHJeguEPOUIhjegoUEHGOGHPSASG');
+    expect(query.content, isEmpty);
+    expect(query.relatedQueries, isEmpty);
+    expect(query.relatedVideos, isEmpty);
+    var nextPage = await query.nextPage();
+    expect(nextPage, isNull);
+  });
+
+  test('Search youtube videos have thumbnails', () async {
       var searchQuery = await yt.search.queryFromPage('hello');
-      expect(searchQuery.content, isNotEmpty);
-      expect(searchQuery.relatedVideos, isNotEmpty);
-      expect(searchQuery.relatedQueries, isNotEmpty);
-    }, skip: 'This may fail on some environments');
-
-    test('SearchNoResults', () async {
-      var query =
-          await yt.search.queryFromPage('g;jghEOGHJeguEPOUIhjegoUEHGOGHPSASG');
-      expect(query.content, isEmpty);
-      expect(query.relatedQueries, isEmpty);
-      expect(query.relatedVideos, isEmpty);
-      var nextPage = await query.nextPage();
-      expect(nextPage, isNull);
-    });
-
-    test('SearchVideosHaveThumbnails', () async {
-      var searchQuery = await yt.search.queryFromPage('hello');
-      expect(searchQuery.content.first is SearchVideo, isTrue);
+      expect(searchQuery.content.first, isA<SearchVideo>());
 
       var video = searchQuery.content.first as SearchVideo;
       expect(video.videoThumbnails, isNotEmpty);
     });
+
+  test('Search youtube videos from search page (stream)', () async {
+    var query = await yt.search.getVideosFromPage('hello').take(30).toList();
+    expect(query, hasLength(30));
   });
 }
