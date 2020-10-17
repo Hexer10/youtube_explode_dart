@@ -57,8 +57,10 @@ class ChannelClient {
         id.viewCount,
         id.joinDate,
         id.title,
-        id.avatar
-            .map((e) => ChannelThumbnail(Uri.parse(e.url), e.height, e.width)),
+        [
+          for (var e in id.avatar)
+            ChannelThumbnail(Uri.parse(e.url), e.height, e.width)
+        ],
         id.country,
         id.channelLinks);
   }
@@ -78,9 +80,10 @@ class ChannelClient {
         id.viewCount,
         id.joinDate,
         id.title,
-        id.avatar
-            .map((e) => ChannelThumbnail(Uri.parse(e.url), e.height, e.width))
-            .toList(),
+        [
+          for (var e in id.avatar)
+            ChannelThumbnail(Uri.parse(e.url), e.height, e.width)
+        ],
         id.country,
         id.channelLinks);
   }
