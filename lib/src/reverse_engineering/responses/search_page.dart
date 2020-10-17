@@ -232,6 +232,7 @@ class _InitialData {
           _parseRuns(renderer.title.runs),
           _parseRuns(renderer.ownerText.runs),
           _parseRuns(renderer.descriptionSnippet?.runs),
+          (renderer.thumbnail.thumbnails ?? [])..sort((a ,b) => a.width.compareTo(b.width));
           renderer.lengthText?.simpleText ?? '',
           int.parse(renderer.viewCountText?.simpleText
                   ?.stripNonDigits()

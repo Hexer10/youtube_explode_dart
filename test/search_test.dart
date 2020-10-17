@@ -34,6 +34,14 @@ void main() {
     expect(nextPage, isNull);
   });
 
+  test('Search youtube videos have thumbnails', () async {
+      var searchQuery = await yt.search.queryFromPage('hello');
+      expect(searchQuery.content.first, isA<SearchVideo>());
+
+      var video = searchQuery.content.first as SearchVideo;
+      expect(video.videoThumbnails, isNotEmpty);
+    });
+
   test('Search youtube videos from search page (stream)', () async {
     var query = await yt.search.getVideosFromPage('hello').take(30).toList();
     expect(query, hasLength(30));
