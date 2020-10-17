@@ -2,69 +2,65 @@ import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
-  group('Streams', () {
-    YoutubeExplode yt;
-    setUp(() {
-      yt = YoutubeExplode();
-    });
+  YoutubeExplode yt;
+  setUp(() {
+    yt = YoutubeExplode();
+  });
 
-    tearDown(() {
-      yt.close();
-    });
+  tearDown(() {
+    yt.close();
+  });
 
-    var data = {
-      '9bZkp7q19f0',
-      'SkRSXFQerZs',
-      'hySoCSoH-g8',
-      '_kmeFXjjGfk',
-      'MeJVWBSsPAY',
-      '5VGm0dczmHc',
-      'ZGdLIwrGHG8',
-      'rsAAeyAr-9Y',
-      'AI7ULzgf8RU'
-    };
-    for (var videoId in data) {
-      test('GetStreamsOfAnyVideo - $videoId', () async {
-        var manifest =
-            await yt.videos.streamsClient.getManifest(VideoId(videoId));
+  group('Get streams of any video', () {
+    for (var val in {
+      VideoId('9bZkp7q19f0'), // very popular
+      VideoId('SkRSXFQerZs'), // age-restricted
+      VideoId('hySoCSoH-g8'),
+      VideoId('_kmeFXjjGfk'),
+      VideoId('MeJVWBSsPAY'),
+      VideoId('5VGm0dczmHc'), // rating is not allowed
+      VideoId('ZGdLIwrGHG8'), // unlisted
+      VideoId('rsAAeyAr-9Y'),
+      VideoId('AI7ULzgf8RU')
+    }) {
+      test('VideoId - ${val.value}', () async {
+        var manifest = await yt.videos.streamsClient.getManifest(val);
         expect(manifest.streams, isNotEmpty);
       });
     }
-
-    test('GetStreamOfUnplayableVideo', () async {
-      expect(yt.videos.streamsClient.getManifest(VideoId('5qap5aO4i9A')),
-          throwsA(const TypeMatcher<VideoUnplayableException>()));
-    });
-    test('GetStreamOfPurchaseVideo', () async {
-      expect(yt.videos.streamsClient.getManifest(VideoId('p3dDcKOFXQg')),
-          throwsA(const TypeMatcher<VideoRequiresPurchaseException>()));
-    });
-    //TODO: Fix this with VideoRequiresPurchaseException.
-    test('GetStreamOfPurchaseVideo', () async {
-      expect(yt.videos.streamsClient.getManifest(VideoId('qld9w0b-1ao')),
-          throwsA(const TypeMatcher<VideoUnavailableException>()));
-      expect(yt.videos.streamsClient.getManifest(VideoId('pb_hHv3fByo')),
-          throwsA(const TypeMatcher<VideoUnavailableException>()));
-    });
-    test('GetStreamOfAnyPlayableVideo', () async {
-      var data = {
-        '9bZkp7q19f0',
-        'SkRSXFQerZs',
-        'hySoCSoH-g8',
-        '_kmeFXjjGfk',
-        'MeJVWBSsPAY',
-        '5VGm0dczmHc',
-        'ZGdLIwrGHG8',
-        'rsAAeyAr-9Y',
-      };
-      for (var videoId in data) {
-        var manifest =
-            await yt.videos.streamsClient.getManifest(VideoId(videoId));
-        for (var streamInfo in manifest.streams) {
-          var stream = await yt.videos.streamsClient.get(streamInfo).toList();
-          expect(stream, isNotEmpty);
-        }
-      }
-    }, timeout: const Timeout(Duration(minutes: 10)), skip: 'Takes too long.');
   });
+
+  test('Stream of paid videos throw VideoRequiresPurchaseException', () {
+    expect(yt.videos.streamsClient.getManifest(VideoId('p3dDcKOFXQg')),
+        throwsA(const TypeMatcher<VideoRequiresPurchaseException>()));
+  });
+
+  group('Stream of unavailable videos throws VideoUnavailableException', () {
+    for (var val in {VideoId('qld9w0b-1ao'), VideoId('pb_hHv3fByo')}) {
+      test('VideoId - ${val.value}', () {
+        expect(yt.videos.streamsClient.getManifest(val),
+            throwsA(const TypeMatcher<VideoUnavailableException>()));
+      });
+    }
+  });
+
+  group('Get stream of any playable video', () {
+    for (var val in {
+      VideoId('9bZkp7q19f0'),
+      VideoId('SkRSXFQerZs'),
+      VideoId('hySoCSoH-g8'),
+      VideoId('_kmeFXjjGfk'),
+      VideoId('MeJVWBSsPAY'),
+      VideoId('5VGm0dczmHc'),
+      VideoId('ZGdLIwrGHG8'),
+      VideoId('rsAAeyAr-9Y'),
+    }) {
+      test('VideoId - ${val.value}', () async {
+        var manifest = await yt.videos.streamsClient.getManifest(val);
+        for (var streamInfo in manifest.streams) {
+          expect( yt.videos.streamsClient.get(streamInfo), emits(isNotNull));
+        }
+      });
+    }
+  }, skip: 'Occasionally may fail with certain videos');
 }

@@ -71,7 +71,8 @@ class SearchClient {
   }
 
   /// Queries to YouTube to get the results.
-  @Deprecated('Use getVideosFromPage instead')
+  @Deprecated('Use getVideosFromPage instead - '
+      'Should be used only to get related videos')
   Future<SearchQuery> queryFromPage(String searchQuery) =>
       SearchQuery.search(_httpClient, searchQuery);
 }

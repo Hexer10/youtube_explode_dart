@@ -34,18 +34,32 @@ class SearchPage {
   _InitialData _initialData;
 
   ///
-  _InitialData get initialData =>
-      _initialData ??= _InitialData(SearchPageId.fromRawJson(_extractJson(
-          _root
-              .querySelectorAll('script')
-              .map((e) => e.text)
-              .toList()
-              .firstWhere((e) => e.contains('window["ytInitialData"] =')),
-          'window["ytInitialData"] =')));
+  _InitialData get initialData {
+    if (_initialData != null) {
+      return _initialData;
+    }
+    var scriptTag = _extractJson(
+        _root.querySelectorAll('script').map((e) => e.text).toList().firstWhere(
+            (e) => e.contains('window["ytInitialData"] ='),
+            orElse: () => null),
+        'window["ytInitialData"] =');
+    scriptTag ??= _extractJson(
+        _root.querySelectorAll('script').map((e) => e.text).toList().firstWhere(
+            (e) => e.contains('var ytInitialData ='),
+            orElse: () => '{}'),
+        'var ytInitialData =');
+    return _initialData ??= _InitialData(SearchPageId.fromRawJson(scriptTag));
+  }
 
   String _extractJson(String html, String separator) {
-    return _matchJson(
-        html.substring(html.indexOf(separator) + separator.length));
+    if (html == null || separator == null) {
+      return null;
+    }
+    var index = html.indexOf(separator) + separator.length;
+    if (index > html.length) {
+      return null;
+    }
+    return _matchJson(html.substring(index));
   }
 
   String _matchJson(String str) {
@@ -143,7 +157,7 @@ class _InitialData {
       return root.onResponseReceivedCommands.first.appendContinuationItemsAction
           .continuationItems[0].itemSectionRenderer.contents;
     }
-    throw FatalFailureException('Failed to get initial data context.');
+    return null;
   }
 
   String _getContinuationToken() {

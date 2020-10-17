@@ -89,8 +89,8 @@ class WatchPage {
   static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\}\});');
 
   ///
-  _PlayerConfig get playerConfig =>
-      _playerConfig ??= _PlayerConfig(json.decode(_playerConfigExp
+  _PlayerConfig get playerConfig => _playerConfig ??= _PlayerConfig(
+      PlayerConfigJson.fromRawJson(_playerConfigExp
           .firstMatch(_root.getElementsByTagName('html').first.text)
           ?.group(1)));
 
