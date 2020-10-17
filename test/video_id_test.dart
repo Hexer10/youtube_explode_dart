@@ -28,7 +28,11 @@ void main() {
     }
   });
   group('These are not valid video urls', () {
-    for (var val in {'youtube.com/xxx?v=pI2I2zqzeKg', 'youtu.be/watch?v=xxx', 'youtube.com/embed'}) {
+    for (var val in {
+      'youtube.com/xxx?v=pI2I2zqzeKg',
+      'youtu.be/watch?v=xxx',
+      'youtube.com/embed'
+    }) {
       test('VideoURL - $val', () {
         expect(() => VideoId(val), throwsArgumentError);
       });

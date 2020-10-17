@@ -58,7 +58,7 @@ void main() {
       test('VideoId - ${val.value}', () async {
         var manifest = await yt.videos.streamsClient.getManifest(val);
         for (var streamInfo in manifest.streams) {
-          expect( yt.videos.streamsClient.get(streamInfo), emits(isNotNull));
+          expect(yt.videos.streamsClient.get(streamInfo), emits(isNotNull));
         }
       });
     }
