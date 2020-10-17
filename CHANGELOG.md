@@ -11,9 +11,6 @@
 - Remove adaptive streams. These are not used anymore.
 - Implement `channelClient.getAboutPage` and `getAboutPageByUsername` to fetch data from a channel's about page.
 
-## 1.15.2
-- Fix extraction for same videos (#76)
-
 ## 1.5.2
 - Fix extraction for same videos (#76)
 
