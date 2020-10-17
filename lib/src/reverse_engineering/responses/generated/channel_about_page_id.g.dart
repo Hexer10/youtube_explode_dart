@@ -1921,6 +1921,9 @@ class AvatarThumbnail {
         "width": width == null ? null : width,
         "height": height == null ? null : height,
       };
+
+  @override
+  String toString() => '${toJson()}';
 }
 
 class DismissButtonClass {

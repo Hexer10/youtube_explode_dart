@@ -124,10 +124,14 @@ class _InitialData {
   String get description => content.description.simpleText;
 
   List<ChannelLink> get channelLinks {
-    return content.primaryLinks.map((e) => ChannelLink(
-        e.title.simpleText,
-        extractUrl(e.navigationEndpoint.urlEndpoint.url),
-        Uri.parse(e.icon.thumbnails.first.url)));
+    return content.primaryLinks
+        .map((e) => ChannelLink(
+            e.title.simpleText,
+            extractUrl(e.navigationEndpoint?.commandMetadata?.webCommandMetadata
+                    ?.url ??
+                e.navigationEndpoint.urlEndpoint.url),
+            Uri.parse(e.icon.thumbnails.first.url)))
+        .toList();
   }
 
   int get viewCount =>
@@ -137,12 +141,13 @@ class _InitialData {
 
   String get title => content.title.simpleText;
 
-  dynamic get avatar => content.avatar.thumbnails;
+  List<AvatarThumbnail> get avatar => content.avatar.thumbnails;
 
-  /// todo: continue from here with more data!
+  String get country => content.country.simpleText;
+
   String parseRuns(List<dynamic> runs) =>
       runs?.map((e) => e.text)?.join() ?? '';
 
   Uri extractUrl(String text) =>
-      Uri.parse(Uri.decodeFull(_urlExp.firstMatch(text).group(1)));
+      Uri.parse(Uri.decodeFull(_urlExp.firstMatch(text)?.group(1) ?? ''));
 }

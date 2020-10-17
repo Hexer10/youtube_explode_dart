@@ -17,4 +17,7 @@ class ChannelLink with EquatableMixin {
 
   @override
   List<Object> get props => [title, url, icon];
+
+  @override
+  String toString() => 'Link: $title ($url): $icon';
 }
