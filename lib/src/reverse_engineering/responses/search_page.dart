@@ -238,7 +238,8 @@ class _InitialData {
                   ?.nullIfWhitespace ??
               '0'),
           (renderer.thumbnail.thumbnails ?? <ThumbnailElement>[])
-              .map((e) => Thumbnail(Uri.parse(e.url), e.height, e.width)));
+              .map((e) => Thumbnail(Uri.parse(e.url), e.height, e.width))
+              .toList());
     }
     if (content.radioRenderer != null) {
       var renderer = content.radioRenderer;
