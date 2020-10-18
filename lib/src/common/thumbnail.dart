@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 /// Represent a channel thumbnail
-class ChannelThumbnail with EquatableMixin {
+class Thumbnail with EquatableMixin {
   /// Image url.
   final Uri url;
 
@@ -11,8 +11,8 @@ class ChannelThumbnail with EquatableMixin {
   /// Image width.
   final int width;
 
-  /// Initialize an instance of [ChannelThumbnail].
-  ChannelThumbnail(this.url, this.height, this.width);
+  /// Initialize an instance of [Thumbnail].
+  Thumbnail(this.url, this.height, this.width);
 
   @override
   List<Object> get props => [url, height, width];

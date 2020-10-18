@@ -3,6 +3,9 @@
 - Only throw custom exceptions from the library.
 - `getUploadsFromPage` no longer throws.
 
+## 1.6.1
+- Add thumbnail to `SearchVideo` thanks to @shinyford !
+
 ## 1.6.0
 - BREAKING CHANGE: Renamed `getVideosAsync` to `getVideos`.
 - Implemented `getVideosFromPage` which supersedes `queryFromPage`.

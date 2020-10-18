@@ -1,8 +1,7 @@
-import 'package:youtube_explode_dart/src/channels/channels.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/channel_about_page.dart';
-
+import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';
+import '../reverse_engineering/responses/channel_about_page.dart';
 import '../reverse_engineering/responses/channel_upload_page.dart';
 import '../reverse_engineering/responses/responses.dart';
 import '../reverse_engineering/youtube_http_client.dart';
@@ -11,6 +10,7 @@ import '../videos/video_id.dart';
 import 'channel.dart';
 import 'channel_id.dart';
 import 'channel_video.dart';
+import 'channels.dart';
 import 'username.dart';
 import 'video_sorting.dart';
 
@@ -59,7 +59,7 @@ class ChannelClient {
         id.title,
         [
           for (var e in id.avatar)
-            ChannelThumbnail(Uri.parse(e.url), e.height, e.width)
+            Thumbnail(Uri.parse(e.url), e.height, e.width)
         ],
         id.country,
         id.channelLinks);
@@ -82,7 +82,7 @@ class ChannelClient {
         id.title,
         [
           for (var e in id.avatar)
-            ChannelThumbnail(Uri.parse(e.url), e.height, e.width)
+            Thumbnail(Uri.parse(e.url), e.height, e.width)
         ],
         id.country,
         id.channelLinks);

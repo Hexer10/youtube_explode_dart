@@ -1,3 +1,4 @@
+import '../common/common.dart';
 import '../videos/video_id.dart';
 import 'base_search_content.dart';
 
@@ -21,8 +22,8 @@ class SearchVideo extends BaseSearchContent {
   /// Video View Count
   final int videoViewCount;
 
-  /// Video thumbnail uris
-  final List<String> videoThumbnails;
+  /// Video thumbnail
+  final List<Thumbnail> videoThumbnails;
 
   /// Initialize a [SearchVideo] instance.
   const SearchVideo(

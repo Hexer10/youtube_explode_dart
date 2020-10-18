@@ -232,12 +232,13 @@ class _InitialData {
           _parseRuns(renderer.title.runs),
           _parseRuns(renderer.ownerText.runs),
           _parseRuns(renderer.descriptionSnippet?.runs),
-          (renderer.thumbnail.thumbnails ?? [])..sort((a ,b) => a.width.compareTo(b.width));
           renderer.lengthText?.simpleText ?? '',
           int.parse(renderer.viewCountText?.simpleText
                   ?.stripNonDigits()
                   ?.nullIfWhitespace ??
-              '0'));
+              '0'),
+          (renderer.thumbnail.thumbnails ?? <ThumbnailElement>[])
+              .map((e) => Thumbnail(Uri.parse(e.url), e.height, e.width)));
     }
     if (content.radioRenderer != null) {
       var renderer = content.radioRenderer;

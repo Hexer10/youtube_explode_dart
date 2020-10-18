@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import 'channel_link.dart';
-import 'channel_thumbnail.dart';
+import '../common/thumbnail.dart';
 
 /// YouTube channel's about page metadata.
 class ChannelAbout with EquatableMixin {
@@ -19,7 +19,7 @@ class ChannelAbout with EquatableMixin {
   final String title;
 
   /// Channel thumbnails.
-  final List<ChannelThumbnail> thumbnails;
+  final List<Thumbnail> thumbnails;
 
   /// Channel country.
   final String country;
