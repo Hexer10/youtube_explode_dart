@@ -13,11 +13,6 @@ void main() {
 
   group('Get streams of any video', () {
     for (var val in {
-      VideoId('9bZkp7q19f0'), // very popular
-      VideoId('SkRSXFQerZs'), // age-restricted
-      VideoId('hySoCSoH-g8'),
-      VideoId('_kmeFXjjGfk'),
-      VideoId('MeJVWBSsPAY'),
       VideoId('5VGm0dczmHc'), // rating is not allowed
       VideoId('ZGdLIwrGHG8'), // unlisted
       VideoId('rsAAeyAr-9Y'),
@@ -46,14 +41,10 @@ void main() {
 
   group('Get stream of any playable video', () {
     for (var val in {
-      VideoId('9bZkp7q19f0'),
-      VideoId('SkRSXFQerZs'),
-      VideoId('hySoCSoH-g8'),
-      VideoId('_kmeFXjjGfk'),
-      VideoId('MeJVWBSsPAY'),
-      VideoId('5VGm0dczmHc'),
-      VideoId('ZGdLIwrGHG8'),
+      VideoId('5VGm0dczmHc'), // rating is not allowed
+      VideoId('ZGdLIwrGHG8'), // unlisted
       VideoId('rsAAeyAr-9Y'),
+      VideoId('AI7ULzgf8RU')
     }) {
       test('VideoId - ${val.value}', () async {
         var manifest = await yt.videos.streamsClient.getManifest(val);
