@@ -29,6 +29,32 @@ extension StringUtility on String {
 
   /// Strips out all non digit characters.
   String stripNonDigits() => replaceAll(_exp, '');
+
+  ///
+  String extractJson() {
+    var buffer = StringBuffer();
+    var depth = 0;
+
+    for (var i = 0; i < length; i++) {
+      var ch = this[i];
+      var chPrv = i > 0 ? this[i - 1] : '';
+
+      buffer.write(ch);
+
+      if (ch == '{' && chPrv != '\\') {
+        depth++;
+      } else if (ch == '}' && chPrv != '\\') {
+        depth--;
+      }
+
+      if (depth == 0) {
+        break;
+      }
+    }
+    return buffer.toString();
+  }
+
+
 }
 
 /// List decipher utility.

@@ -3,6 +3,9 @@
 - Only throw custom exceptions from the library.
 - `getUploadsFromPage` no longer throws.
 
+## 1.6.2
+- Bug fixes: #80
+
 ## 1.6.1
 - Add thumbnail to `SearchVideo` thanks to @shinyford !
 

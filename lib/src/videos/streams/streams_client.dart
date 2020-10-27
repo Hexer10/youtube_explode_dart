@@ -39,8 +39,8 @@ class StreamsClient {
       throw VideoUnplayableException.unplayable(videoId);
     }
 
-    var playerSource =
-        await PlayerSource.get(_httpClient, playerConfig.sourceUrl);
+    var playerSource = await PlayerSource.get(
+        _httpClient, embedPage.sourceUrl ?? playerConfig.sourceUrl);
     var cipherOperations = playerSource.getCiperOperations();
 
     var videoInfoResponse = await VideoInfoResponse.get(
@@ -91,8 +91,8 @@ class StreamsClient {
           videoId, VideoId(previewVideoId));
     }
 
-    var playerSource =
-        await PlayerSource.get(_httpClient, playerConfig.sourceUrl);
+    var playerSource = await PlayerSource.get(
+        _httpClient, watchPage.sourceUrl ?? playerConfig.sourceUrl);
     var cipherOperations = playerSource.getCiperOperations();
 
     if (!playerResponse.isVideoPlayable) {

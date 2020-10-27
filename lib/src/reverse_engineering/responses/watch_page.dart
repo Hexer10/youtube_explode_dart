@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
@@ -34,6 +32,16 @@ class WatchPage {
   _InitialData _initialData;
   String _xsfrToken;
   _PlayerConfig _playerConfig;
+
+  ///
+  String get sourceUrl {
+    var url =
+        _root.querySelector('*[name="player_ias/base"]').attributes['src'];
+    if (url == null) {
+      return null;
+    }
+    return 'https://youtube.com$url';
+  }
 
   ///
   _InitialData get initialData =>
@@ -86,13 +94,14 @@ class WatchPage {
           ?.nullIfWhitespace ??
       '0');
 
-  static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\}\});');
+  static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\})');
 
   ///
   _PlayerConfig get playerConfig => _playerConfig ??= _PlayerConfig(
       PlayerConfigJson.fromRawJson(_playerConfigExp
           .firstMatch(_root.getElementsByTagName('html').first.text)
-          ?.group(1)));
+          ?.group(1)
+          ?.extractJson()));
 
   String _extractJson(String html, String separator) {
     return _matchJson(

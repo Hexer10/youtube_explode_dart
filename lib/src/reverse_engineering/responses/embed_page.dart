@@ -7,13 +7,24 @@ import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
 
+
 ///
 class EmbedPage {
-  static final _playerConfigExp = RegExp(r"'PLAYER_CONFIG':\s*(\{.*\})\}");
+  static final _playerConfigExp =
+      RegExp('[\'"]PLAYER_CONFIG[\'"]\\s*:\\s*(\\{.*\\})');
 
   final Document _root;
   _PlayerConfig _playerConfig;
   String __playerConfigJson;
+
+  ///
+  String get sourceUrl {
+    var url = _root.querySelector('*[name="player_ias/base"]').attributes['src'];
+    if (url == null) {
+      return null;
+    }
+    return 'https://youtube.com$url';
+  }
 
   ///
   _PlayerConfig get playerconfig {
@@ -24,7 +35,8 @@ class EmbedPage {
     if (playerConfigJson == null) {
       return null;
     }
-    return _playerConfig = _PlayerConfig(json.decode(playerConfigJson));
+    return _playerConfig =
+        _PlayerConfig(json.decode(playerConfigJson.extractJson()));
   }
 
   String get _playerConfigJson => __playerConfigJson ??= _root
