@@ -49,11 +49,11 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 ```dart
 // You can provider either a video ID or URL as String or an instance of `VideoId`.
-var video = yt.videos.get('https://youtube.com/watch?v=bnsUkE8i0tU'); // Returns a Video instance.
+var video = yt.videos.get('https://youtube.com/watch?v=Dpp1sIL1m5Q'); // Returns a Video instance.
 
-var title = video.title; // "Infected Mushroom - Spitfire [Monstercat Release]"
-var author = video.author; // "MonsterCat"
-var duration = video.duration; // Instance of Duration - 0:07:14.00000
+var title = video.title; // "Scamazon Prime"
+var author = video.author; // "Jim Browning"
+var duration = video.duration; // Instance of Duration - 0:19:48.00000
 ```
 
 ### Downloading a video stream
@@ -70,7 +70,7 @@ You can request the stream manifest to get available streams for a particular vi
 ```dart
 var yt = YoutubeExplode();
 
-var manifest = yt.videos.streamsClient.getManifest('bnsUkE8i0tU');
+var manifest = yt.videos.streamsClient.getManifest('Dpp1sIL1m5Q');
 ```
 
 Once you get the manifest, you can filter through the streams and choose the one you're interested in downloading:
@@ -116,10 +116,10 @@ Among other things, YoutubeExplode also supports playlists:
 var yt = YoutubeExplode();
 
 // Get playlist metadata.
-var playlist = await yt.playlists.get('PLQLqnnnfa_fAkUmMFw5xh8Kv0S5voEjC9');
+var playlist = await yt.playlists.get('xxxxx');
 
-var title = playlist.title; // "Igorrr - Hallelujah"
-var author = playlist.author; // "randomusername604"
+var title = playlist.title;
+var author = playlist.author;
 
   await for (var video in yt.playlists.getVideos(playlist.id)) {
     var videoTitle = video.title;
