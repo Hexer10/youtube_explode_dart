@@ -7,7 +7,6 @@ import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
 
-
 ///
 class EmbedPage {
   static final _playerConfigExp =
@@ -19,7 +18,8 @@ class EmbedPage {
 
   ///
   String get sourceUrl {
-    var url = _root.querySelector('*[name="player_ias/base"]').attributes['src'];
+    var url =
+        _root.querySelector('*[name="player_ias/base"]').attributes['src'];
     if (url == null) {
       return null;
     }

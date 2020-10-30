@@ -53,8 +53,6 @@ extension StringUtility on String {
     }
     return buffer.toString();
   }
-
-
 }
 
 /// List decipher utility.
