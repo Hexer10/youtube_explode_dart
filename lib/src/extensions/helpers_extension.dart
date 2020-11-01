@@ -113,3 +113,14 @@ extension GetOrNullMap on Map {
     return v;
   }
 }
+
+///
+extension UriUtils on Uri {
+  ///
+  Uri replaceQueryParameters(Map<String, String> parameters) {
+    var query = Map<String, String>.from(queryParameters);
+    query.addAll(parameters);
+
+    return replace(queryParameters: query);
+  }
+}

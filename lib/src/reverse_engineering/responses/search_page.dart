@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
-import 'package:youtube_explode_dart/src/search/base_search_content.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
+import '../../search/base_search_content.dart';
 import '../../search/related_query.dart';
 import '../../search/search_video.dart';
 import '../../videos/videos.dart';

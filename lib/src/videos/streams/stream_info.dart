@@ -24,14 +24,6 @@ abstract class StreamInfo {
   StreamInfo(this.tag, this.url, this.container, this.size, this.bitrate);
 }
 
-/// Extensions for [StreamInfo].
-extension StreamInfoExt on StreamInfo {
-  static final _exp = RegExp('ratebypass[=/]yes');
-
-  /// Returns true if this video is rate limited.
-  bool isRateLimited() => _exp.hasMatch(url.toString());
-}
-
 /// Extension for Iterables of StreamInfo.
 extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
   /// Gets the stream with highest bitrate.

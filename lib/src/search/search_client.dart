@@ -1,7 +1,6 @@
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/search_page.dart';
-
 import '../common/common.dart';
 import '../reverse_engineering/responses/playlist_response.dart';
+import '../reverse_engineering/responses/search_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
 import '../videos/video_id.dart';

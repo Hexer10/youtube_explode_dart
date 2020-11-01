@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:http_parser/http_parser.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/generated/player_response.g.dart';
 
 import '../../extensions/helpers_extension.dart';
+import 'generated/player_response.g.dart';
 import 'stream_info_provider.dart';
 
 ///

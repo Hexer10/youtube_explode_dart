@@ -32,4 +32,7 @@ class ClosedCaption {
   /// Note that some captions may not have any parts at all.
   ClosedCaptionPart getPartByTime(Duration offset) =>
       parts.firstWhere((e) => e.offset >= offset, orElse: () => null);
+
+  @override
+  String toString() => 'Text: $text';
 }

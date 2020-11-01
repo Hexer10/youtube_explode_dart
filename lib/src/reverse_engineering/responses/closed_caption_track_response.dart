@@ -1,5 +1,6 @@
 import 'package:xml/xml.dart' as xml;
 
+import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
 
@@ -23,20 +24,11 @@ class ClosedCaptionTrackResponse {
   ///
   static Future<ClosedCaptionTrackResponse> get(
       YoutubeHttpClient httpClient, String url) {
-    var formatUrl = _setQueryParameters(url, {'format': '3'});
+    var formatUrl = Uri.parse(url).replaceQueryParameters({'fmt': 'srv3'});
     return retry(() async {
       var raw = await httpClient.getString(formatUrl);
       return ClosedCaptionTrackResponse.parse(raw);
     });
-  }
-
-  static Uri _setQueryParameters(String url, Map<String, String> parameters) {
-    var uri = Uri.parse(url);
-
-    var query = Map<String, String>.from(uri.queryParameters);
-    query.addAll(parameters);
-
-    return uri.replace(queryParameters: query);
   }
 }
 
@@ -47,7 +39,7 @@ class ClosedCaption {
   Duration _offset;
   Duration _duration;
   Duration _end;
-  Iterable<ClosedCaptionPart> _parts;
+  List<ClosedCaptionPart> _parts;
 
   ///
   String get text => _root.text;
@@ -64,8 +56,8 @@ class ClosedCaption {
   Duration get end => _end ??= offset + duration;
 
   ///
-  Iterable<ClosedCaptionPart> getParts() =>
-      _parts ??= _root.findAllElements('s').map((e) => ClosedCaptionPart._(e));
+  List<ClosedCaptionPart> getParts() => _parts ??=
+      _root.findAllElements('s').map((e) => ClosedCaptionPart._(e)).toList();
 
   ClosedCaption._(this._root);
 }

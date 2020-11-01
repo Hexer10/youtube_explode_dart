@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import 'channel_link.dart';
 import '../common/thumbnail.dart';
+import 'channel_link.dart';
 
 /// YouTube channel's about page metadata.
 class ChannelAbout with EquatableMixin {

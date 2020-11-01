@@ -1,5 +1,15 @@
 include: package:effective_dart/analysis_options.yaml
 
+analyzer:
+  exclude: #most likely not all of these are needed, but as it is now it works.
+    - "**/*.g.dart"
+    - /**/*.g.dart
+    - \**\*.g.dart
+    - "*.g.dart"
+    - "**.g.dart"
+    - example\**
+    - lib\src\reverse_engineering\responses\generated\**
+
 linter:
   rules:
     - valid_regexps
@@ -57,13 +67,3 @@ linter:
     - prefer_single_quotes
     - use_function_type_syntax_for_parameters
 
-analyzer:
-  exclude: #most likely not all of these are needed, but as it is now it works.
-    - "**/*.g.dart"
-    - "**\*.g.dart"
-    - /**/*.g.dart
-    - \**\*.g.dart
-    - "*.g.dart"
-    - "**.g.dart"
-    - example\**
-    - lib\src\reverse_engineering\responses\generated\**
