@@ -23,8 +23,8 @@ class ClosedCaptionTrackResponse {
 
   ///
   static Future<ClosedCaptionTrackResponse> get(
-      YoutubeHttpClient httpClient, String url) {
-    var formatUrl = Uri.parse(url).replaceQueryParameters({'fmt': 'srv3'});
+      YoutubeHttpClient httpClient, Uri url) {
+    var formatUrl = url.replaceQueryParameters({'fmt': 'srv3'});
     return retry(() async {
       var raw = await httpClient.getString(formatUrl);
       return ClosedCaptionTrackResponse.parse(raw);

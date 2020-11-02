@@ -12,14 +12,16 @@ class ClosedCaptionManifest {
   ClosedCaptionManifest(Iterable<ClosedCaptionTrackInfo> tracks)
       : tracks = UnmodifiableListView(tracks);
 
-  /// Gets the closed caption track in the specified language.
-  /// Returns null if not found.
-  ClosedCaptionTrackInfo getByLanguage(String language) {
+  /// Gets all the closed caption tracks in the specified language and format.
+  /// Returns an empty list of no track is found.
+  List<ClosedCaptionTrackInfo> getByLanguage(String language,
+      {ClosedCaptionFormat format}) {
     language = language.toLowerCase();
-    return tracks.firstWhere(
-        (e) =>
-            e.language.code.toLowerCase() == language ||
-            e.language.name.toLowerCase() == language,
-        orElse: () => null);
+    return tracks
+        .where((e) =>
+            (e.language.code.toLowerCase() == language ||
+                e.language.name.toLowerCase() == language) &&
+            (format == null || e.format == format))
+        .toList();
   }
 }
