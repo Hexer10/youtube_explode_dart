@@ -6,6 +6,7 @@ import '../../reverse_engineering/responses/responses.dart'
 import '../../reverse_engineering/youtube_http_client.dart';
 import '../videos.dart';
 import 'closed_caption.dart';
+import 'closed_caption_format.dart';
 import 'closed_caption_manifest.dart';
 import 'closed_caption_part.dart';
 import 'closed_caption_track.dart';

@@ -92,7 +92,7 @@ class YoutubeHttpClient extends http.BaseClient {
       int errorCount = 0}) async* {
     var url = streamInfo.url;
 
-    var query = Map.from(url.queryParameters);
+    var query = Map<String, String>.from(url.queryParameters);
     query['ratebypass'] = 'yes';
     url = url.replace(queryParameters: query);
 

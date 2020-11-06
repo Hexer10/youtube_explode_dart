@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'closed_caption_format.dart';
 import 'closed_caption_track_info.dart';
 
 /// Manifest that contains information about available closed caption tracks
