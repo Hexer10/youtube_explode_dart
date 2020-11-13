@@ -1,3 +1,5 @@
+## 1.7.1
+- `ClosedCaptionTrackInfo` and it's members are now json serializable.
 
 ## 1.7.0
 - BREAKING CHANGES: `ClosedCaptionManifest.getByLanguage` now returns a List.

@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'language.g.dart';
 
 /// Language information.
+@JsonSerializable()
 class Language extends Equatable {
   /// ISO 639-1 code of this language.
   final String code;
@@ -16,4 +20,11 @@ class Language extends Equatable {
 
   @override
   String toString() => 'Language: $name';
+
+  ///
+  factory Language.fromJson(Map<String, dynamic> json) =>
+      _$LanguageFromJson(json);
+
+  ///
+  Map<String, dynamic> toJson() => _$LanguageToJson(this);
 }

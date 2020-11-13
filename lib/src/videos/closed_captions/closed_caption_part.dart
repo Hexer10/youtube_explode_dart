@@ -1,4 +1,9 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'closed_caption_part.g.dart';
+
 /// Part of a closed caption (usually a single word).
+@JsonSerializable()
 class ClosedCaptionPart {
   /// Text displayed by this caption part.
   final String text;
@@ -12,4 +17,11 @@ class ClosedCaptionPart {
 
   @override
   String toString() => text;
+
+  ///
+  factory ClosedCaptionPart.fromJson(Map<String, dynamic> json) =>
+      _$ClosedCaptionPartFromJson(json);
+
+  ///
+  Map<String, dynamic> toJson() => _$ClosedCaptionPartToJson(this);
 }

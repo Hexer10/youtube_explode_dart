@@ -1,8 +1,13 @@
 import 'dart:collection';
 
+import 'package:json_annotation/json_annotation.dart';
+
 import 'closed_caption.dart';
 
+part 'closed_caption_track.g.dart';
+
 /// Track that contains closed captions in a specific language.
+@JsonSerializable()
 class ClosedCaptionTrack {
   /// Closed captions.
   final UnmodifiableListView<ClosedCaption> captions;
@@ -15,4 +20,11 @@ class ClosedCaptionTrack {
   /// Returns null if not found.
   ClosedCaption getByTime(Duration time) => captions
       .firstWhere((e) => time >= e.offset && time <= e.end, orElse: () => null);
+
+  ///
+  factory ClosedCaptionTrack.fromJson(Map<String, dynamic> json) =>
+      _$ClosedCaptionTrackFromJson(json);
+
+  ///
+  Map<String, dynamic> toJson() => _$ClosedCaptionTrackToJson(this);
 }
