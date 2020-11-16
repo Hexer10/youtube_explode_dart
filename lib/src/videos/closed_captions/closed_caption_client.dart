@@ -79,8 +79,8 @@ class ClosedCaptionClient {
   /// Gets the actual closed caption track which is
   /// identified by the specified metadata.
   Future<ClosedCaptionTrack> get(ClosedCaptionTrackInfo trackInfo) async {
-    var response = await ClosedCaptionTrackResponse.get(
-        _httpClient, trackInfo.url);
+    var response =
+        await ClosedCaptionTrackResponse.get(_httpClient, trackInfo.url);
 
     var captions = response.closedCaptions
         .where((e) => !e.text.isNullOrWhiteSpace)

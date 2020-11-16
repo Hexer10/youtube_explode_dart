@@ -1,3 +1,7 @@
+## 1.7.2
+- Export Closed Captions Members.
+- Fix #86
+
 ## 1.7.1
 - `ClosedCaptionTrackInfo` and it's members are now json serializable.
 

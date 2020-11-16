@@ -3,6 +3,7 @@
 /// {@category Videos}
 library youtube_explode.videos;
 
+export 'closed_captions/closed_captions.dart';
 export 'comments/comments.dart';
 export 'streams/streams.dart';
 export 'video.dart';

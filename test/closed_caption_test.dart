@@ -1,5 +1,4 @@
 import 'package:test/test.dart';
-import 'package:youtube_explode_dart/src/videos/closed_captions/closed_caption_format.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
