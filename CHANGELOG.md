@@ -1,3 +1,7 @@
+## 1.7.3
+- Fix exceptions on some videos.
+- Closes #89, #88
+
 ## 1.7.2
 - Export Closed Captions Members.
 - Fix #86
