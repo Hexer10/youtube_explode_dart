@@ -34,7 +34,7 @@ class StreamsClient {
 
   Future<StreamContext> _getStreamContextFromVideoInfo(VideoId videoId) async {
     var embedPage = await EmbedPage.get(_httpClient, videoId.toString());
-    var playerConfig = embedPage.playerconfig;
+    var playerConfig = embedPage.playerConfig;
     if (playerConfig == null) {
       throw VideoUnplayableException.unplayable(videoId);
     }
@@ -79,11 +79,11 @@ class StreamsClient {
   Future<StreamContext> _getStreamContextFromWatchPage(VideoId videoId) async {
     var watchPage = await WatchPage.get(_httpClient, videoId.toString());
     var playerConfig = watchPage.playerConfig;
-    if (playerConfig == null) {
+    var playerResponse =
+        playerConfig?.playerResponse ?? watchPage.playerResponse;
+    if (playerResponse == null) {
       throw VideoUnplayableException.unplayable(videoId);
     }
-
-    var playerResponse = playerConfig.playerResponse;
 
     var previewVideoId = playerResponse.previewVideoId;
     if (!previewVideoId.isNullOrWhiteSpace) {
@@ -91,9 +91,12 @@ class StreamsClient {
           videoId, VideoId(previewVideoId));
     }
 
-    var playerSource = await PlayerSource.get(
-        _httpClient, watchPage.sourceUrl ?? playerConfig.sourceUrl);
-    var cipherOperations = playerSource.getCiperOperations();
+    var playerSourceUrl = watchPage.sourceUrl ?? playerConfig?.sourceUrl;
+    var playerSource = !playerSourceUrl.isNullOrWhiteSpace
+        ? await PlayerSource.get(_httpClient, playerSourceUrl)
+        : null;
+    var cipherOperations =
+        playerSource?.getCiperOperations() ?? const <CipherOperation>[];
 
     if (!playerResponse.isVideoPlayable) {
       throw VideoUnplayableException.unplayable(videoId,
@@ -104,7 +107,9 @@ class StreamsClient {
       throw VideoUnplayableException.liveStream(videoId);
     }
 
-    var streamInfoProviders = <StreamInfoProvider>[...playerResponse.streams];
+    var streamInfoProviders = <StreamInfoProvider>[
+      ...playerResponse.streams,
+    ];
 
     var dashManifestUrl = playerResponse.dashManifestUrl;
     if (!dashManifestUrl.isNullOrWhiteSpace) {

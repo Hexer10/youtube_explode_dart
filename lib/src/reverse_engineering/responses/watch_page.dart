@@ -19,6 +19,9 @@ class WatchPage {
   static final RegExp _visitorInfoLiveExp =
       RegExp('VISITOR_INFO1_LIVE=([^;]+)');
   static final RegExp _yscExp = RegExp('YSC=([^;]+)');
+  static final RegExp _playerResponseExp =
+      RegExp(r'var\s+ytInitialPlayerResponse\s*=\s*(\{.*\})');
+
   static final _xsfrTokenExp = RegExp(r'"XSRF_TOKEN"\s*:\s*"(.+?)"');
 
   final Document _root;
@@ -35,8 +38,12 @@ class WatchPage {
 
   ///
   String get sourceUrl {
-    var url =
-        _root.querySelector('*[name="player_ias/base"]').attributes['src'];
+    var url = _root
+        .querySelectorAll('script')
+        .map((e) => e.attributes['src'])
+        .where((e) => !e.isNullOrWhiteSpace)
+        .firstWhere((e) => e.contains('player_ias') && e.endsWith('.js'),
+            orElse: () => null);
     if (url == null) {
       return null;
     }
@@ -103,28 +110,16 @@ class WatchPage {
           ?.group(1)
           ?.extractJson()));
 
-  String _extractJson(String html, String separator) {
-    return _matchJson(
-        html.substring(html.indexOf(separator) + separator.length));
-  }
+  PlayerResponse get playerResponse => PlayerResponse.parse(_root
+      .querySelectorAll('script')
+      .map((e) => e.text)
+      .map((e) => null)
+      .map((e) => _playerResponseExp.firstMatch(e)?.group(1))
+      .firstWhere((e) => !e.isNullOrWhiteSpace)
+      .extractJson());
 
-  String _matchJson(String str) {
-    var bracketCount = 0;
-    int lastI;
-    for (var i = 0; i < str.length; i++) {
-      lastI = i;
-      if (str[i] == '{') {
-        bracketCount++;
-      } else if (str[i] == '}') {
-        bracketCount--;
-      } else if (str[i] == ';') {
-        if (bracketCount == 0) {
-          return str.substring(0, i);
-        }
-      }
-    }
-    return str.substring(0, lastI + 1);
-  }
+  String _extractJson(String html, String separator) =>
+      html.substring(html.indexOf(separator) + separator.length).extractJson();
 
   ///
   WatchPage(this._root, this.visitorInfoLive, this.ysc);

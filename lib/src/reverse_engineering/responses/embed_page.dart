@@ -10,16 +10,21 @@ import '../youtube_http_client.dart';
 ///
 class EmbedPage {
   static final _playerConfigExp =
-      RegExp('[\'"]PLAYER_CONFIG[\'"]\\s*:\\s*(\\{.*\\})');
+      RegExp('[\'""]PLAYER_CONFIG[\'""]\\s*:\\s*(\\{.*\\})');
+  static final _playerConfigExp2 = RegExp(r'yt.setConfig\((\{.*\})');
 
   final Document _root;
   _PlayerConfig _playerConfig;
-  String __playerConfigJson;
 
   ///
   String get sourceUrl {
-    var url =
-        _root.querySelector('*[name="player_ias/base"]').attributes['src'];
+    var url = _root
+        .querySelectorAll('*[name="player_ias/base"]')
+        .map((e) => e.attributes['src'])
+        .where((e) => !e.isNullOrWhiteSpace)
+        .firstWhere((e) => e.contains('player_ias') && e.endsWith('.js'),
+            orElse: () => null);
+    // _root.querySelector('*[name="player_ias/base"]').attributes['src'];
     if (url == null) {
       return null;
     }
@@ -27,11 +32,11 @@ class EmbedPage {
   }
 
   ///
-  _PlayerConfig get playerconfig {
+  _PlayerConfig get playerConfig {
     if (_playerConfig != null) {
       return _playerConfig;
     }
-    var playerConfigJson = _playerConfigJson;
+    var playerConfigJson = _playerConfigJson ?? _playerConfigJson2;
     if (playerConfigJson == null) {
       return null;
     }
@@ -39,10 +44,16 @@ class EmbedPage {
         _PlayerConfig(json.decode(playerConfigJson.extractJson()));
   }
 
-  String get _playerConfigJson => __playerConfigJson ??= _root
+  String get _playerConfigJson => _root
       .getElementsByTagName('script')
       .map((e) => e.text)
       .map((e) => _playerConfigExp.firstMatch(e)?.group(1))
+      .firstWhere((e) => !e.isNullOrWhiteSpace, orElse: () => null);
+
+  String get _playerConfigJson2 => _root
+      .getElementsByTagName('script')
+      .map((e) => e.text)
+      .map((e) => _playerConfigExp2.firstMatch(e)?.group(1))
       .firstWhere((e) => !e.isNullOrWhiteSpace, orElse: () => null);
 
   ///

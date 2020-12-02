@@ -23,7 +23,7 @@ void main() {
     expect(searchQuery.content, isNotEmpty);
     expect(searchQuery.relatedVideos, isNotEmpty);
     expect(searchQuery.relatedQueries, isNotEmpty);
-  });
+  }, skip: 'Not supported anymore');
 
   test('Search with no results', () async {
     var query =
