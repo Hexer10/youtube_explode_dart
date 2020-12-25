@@ -84,25 +84,41 @@ class YoutubeHttpClient extends http.BaseClient {
     return response.body;
   }
 
-  ///
   Stream<List<int>> getStream(StreamInfo streamInfo,
       {Map<String, String> headers,
       bool validate = true,
       int start = 0,
       int errorCount = 0}) async* {
     var url = streamInfo.url;
-
-    var query = Map<String, String>.from(url.queryParameters);
-    query['ratebypass'] = 'yes';
-    url = url.replace(queryParameters: query);
-
-    var request = http.Request('get', url);
-    request.headers.addAll(_defaultHeaders);
-    var response = await request.send();
-    if (validate) {
-      _validateResponse(response, response.statusCode);
+    var bytesCount = start;
+    for (var i = start; i < streamInfo.size.totalBytes; i += 9898989) {
+      try {
+        final request = http.Request('get', url);
+        request.headers['range'] = 'bytes=$i-${i + 9898989 - 1}';
+        final response = await send(request);
+        if (validate) {
+          _validateResponse(response, response.statusCode);
+        }
+        final stream = StreamController<List<int>>();
+        response.stream.listen((data) {
+          bytesCount += data.length;
+          stream.add(data);
+        }, onError: (_) => null, onDone: stream.close, cancelOnError: false);
+        errorCount = 0;
+        yield* stream.stream;
+      } on Exception {
+        if (errorCount == 5) {
+          rethrow;
+        }
+        await Future.delayed(const Duration(milliseconds: 500));
+        yield* getStream(streamInfo,
+            headers: headers,
+            validate: validate,
+            start: bytesCount,
+            errorCount: errorCount + 1);
+        break;
+      }
     }
-    yield* response.stream;
   }
 
   ///

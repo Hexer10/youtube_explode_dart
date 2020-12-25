@@ -38,17 +38,30 @@ class SearchPage {
     if (_initialData != null) {
       return _initialData;
     }
-    var scriptTag = _extractJson(
-        _root.querySelectorAll('script').map((e) => e.text).toList().firstWhere(
-            (e) => e.contains('window["ytInitialData"] ='),
-            orElse: () => null),
-        'window["ytInitialData"] =');
-    scriptTag ??= _extractJson(
-        _root.querySelectorAll('script').map((e) => e.text).toList().firstWhere(
-            (e) => e.contains('var ytInitialData ='),
-            orElse: () => '{}'),
-        'var ytInitialData =');
-    return _initialData ??= _InitialData(SearchPageId.fromRawJson(scriptTag));
+
+    final scriptText = _root
+        .querySelectorAll('script')
+        .map((e) => e.text)
+        .toList(growable: false);
+
+    var initialDataText = scriptText.firstWhere(
+        (e) => e.contains('window["ytInitialData"] ='),
+        orElse: () => null);
+    if (initialDataText != null) {
+      return _initialData = _InitialData(SearchPageId.fromRawJson(
+          _extractJson(initialDataText, 'window["ytInitialData"] =')));
+    }
+
+    initialDataText = scriptText.firstWhere(
+        (e) => e.contains('var ytInitialData = '),
+        orElse: () => null);
+    if (initialDataText != null) {
+      return _initialData = _InitialData(SearchPageId.fromRawJson(
+          _extractJson(initialDataText, 'var ytInitialData = ')));
+    }
+
+    throw TransientFailureException(
+        'Failed to retrieve initial data from the search page, please report this to the project GitHub page.'); // ignore: lines_longer_than_80_chars
   }
 
   String _extractJson(String html, String separator) {

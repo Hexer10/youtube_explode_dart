@@ -1,3 +1,8 @@
+## 1.7.4
+- Fix slow download ( #92 )
+- Fix stream retrieving on some videos ( #90 )
+- Updates tests
+
 ## 1.7.3
 - Fix exceptions on some videos.
 - Closes #89, #88

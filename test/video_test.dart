@@ -32,7 +32,12 @@ void main() {
     expect(video.thumbnails.highResUrl, isNotEmpty);
     expect(video.thumbnails.standardResUrl, isNotEmpty);
     expect(video.thumbnails.maxResUrl, isNotEmpty);
-    expect(video.keywords, containsAll(['osu', 'mouse' /*, 'rhythm game'*/]));
+    expect(
+        video.keywords,
+        containsAll([
+          'osu',
+          'mouse' /*, 'rhythm game'*/
+        ]));
     expect(video.engagement.viewCount, greaterThanOrEqualTo(134));
     expect(video.engagement.likeCount, greaterThanOrEqualTo(5));
     expect(video.engagement.dislikeCount, greaterThanOrEqualTo(0));

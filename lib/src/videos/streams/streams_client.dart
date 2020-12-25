@@ -78,7 +78,13 @@ class StreamsClient {
 
   Future<StreamContext> _getStreamContextFromWatchPage(VideoId videoId) async {
     var watchPage = await WatchPage.get(_httpClient, videoId.toString());
-    var playerConfig = watchPage.playerConfig;
+
+    dynamic /* _PlayerConfig */ playerConfig;
+    try {
+      playerConfig = watchPage.playerConfig;
+    } on FormatException {
+      playerConfig = null;
+    }
     var playerResponse =
         playerConfig?.playerResponse ?? watchPage.playerResponse;
     if (playerResponse == null) {
@@ -86,12 +92,13 @@ class StreamsClient {
     }
 
     var previewVideoId = playerResponse.previewVideoId;
-    if (!previewVideoId.isNullOrWhiteSpace) {
+    if (!((previewVideoId as String)?.isNullOrWhiteSpace ?? true)) {
       throw VideoRequiresPurchaseException.preview(
           videoId, VideoId(previewVideoId));
     }
 
-    var playerSourceUrl = watchPage.sourceUrl ?? playerConfig?.sourceUrl;
+    var playerSourceUrl =
+        watchPage.sourceUrl ?? playerConfig?.sourceUrl as String;
     var playerSource = !playerSourceUrl.isNullOrWhiteSpace
         ? await PlayerSource.get(_httpClient, playerSourceUrl)
         : null;
@@ -112,7 +119,7 @@ class StreamsClient {
     ];
 
     var dashManifestUrl = playerResponse.dashManifestUrl;
-    if (!dashManifestUrl.isNullOrWhiteSpace) {
+    if (!(dashManifestUrl?.isNullOrWhiteSpace ?? true)) {
       var dashManifest =
           await _getDashManifest(Uri.parse(dashManifestUrl), cipherOperations);
       streamInfoProviders.addAll(dashManifest.streams);

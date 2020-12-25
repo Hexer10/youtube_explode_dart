@@ -11,12 +11,18 @@ void main() {
     yt.close();
   });
 
-  group('Get streams of any video', () {
+  group('Get streams manifest of any video', () {
     for (var val in {
-      VideoId('5VGm0dczmHc'), // rating is not allowed
+      VideoId('9bZkp7q19f0'), // very popular
+      VideoId('SkRSXFQerZs'), // age restricted (embed allowed)
+      VideoId('hySoCSoH-g8'), // age restricted (embed not allowed)
+      VideoId('_kmeFXjjGfk'), // embed not allowed (type 1)
+      VideoId('MeJVWBSsPAY'), // embed not allowed (type 2)
+      VideoId('5VGm0dczmHc'), // rating not allowed
       VideoId('ZGdLIwrGHG8'), // unlisted
-      VideoId('rsAAeyAr-9Y'),
-      VideoId('AI7ULzgf8RU')
+      VideoId('rsAAeyAr-9Y'), // recording of a live stream
+      VideoId('AI7ULzgf8RU'), // has DASH manifest
+      VideoId('-xNN-bJQ4vI'), // 360° video
     }) {
       test('VideoId - ${val.value}', () async {
         var manifest = await yt.videos.streamsClient.getManifest(val);
@@ -39,12 +45,18 @@ void main() {
     }
   });
 
-  group('Get stream of any playable video', () {
+  group('Get specific stream of any playable video', () {
     for (var val in {
-      VideoId('5VGm0dczmHc'), // rating is not allowed
+      VideoId('9bZkp7q19f0'), // very popular
+      VideoId('SkRSXFQerZs'), // age restricted (embed allowed)
+      VideoId('hySoCSoH-g8'), // age restricted (embed not allowed)
+      VideoId('_kmeFXjjGfk'), // embed not allowed (type 1)
+      VideoId('MeJVWBSsPAY'), // embed not allowed (type 2)
+      VideoId('5VGm0dczmHc'), // rating not allowed
       VideoId('ZGdLIwrGHG8'), // unlisted
-      VideoId('rsAAeyAr-9Y'),
-      VideoId('AI7ULzgf8RU')
+      VideoId('rsAAeyAr-9Y'), // recording of a live stream
+      VideoId('AI7ULzgf8RU'), // has DASH manifest
+      VideoId('-xNN-bJQ4vI'), // 360° video
     }) {
       test('VideoId - ${val.value}', () async {
         var manifest = await yt.videos.streamsClient.getManifest(val);

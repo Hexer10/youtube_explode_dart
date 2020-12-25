@@ -51,14 +51,35 @@ class WatchPage {
   }
 
   ///
-  _InitialData get initialData =>
-      _initialData ??= _InitialData(WatchPageId.fromRawJson(_extractJson(
-          _root
-              .querySelectorAll('script')
-              .map((e) => e.text)
-              .toList()
-              .firstWhere((e) => e.contains('window["ytInitialData"] =')),
-          'window["ytInitialData"] =')));
+  _InitialData get initialData {
+    if (_initialData != null) {
+      return _initialData;
+    }
+
+    final scriptText = _root
+        .querySelectorAll('script')
+        .map((e) => e.text)
+        .toList(growable: false);
+
+    var initialDataText = scriptText.firstWhere(
+        (e) => e.contains('window["ytInitialData"] ='),
+        orElse: () => null);
+    if (initialDataText != null) {
+      return _initialData = _InitialData(WatchPageId.fromRawJson(
+          _extractJson(initialDataText, 'window["ytInitialData"] =')));
+    }
+
+    initialDataText = scriptText.firstWhere(
+        (e) => e.contains('var ytInitialData = '),
+        orElse: () => null);
+    if (initialDataText != null) {
+      return _initialData = _InitialData(WatchPageId.fromRawJson(
+          _extractJson(initialDataText, 'var ytInitialData = ')));
+    }
+
+    throw TransientFailureException(
+        'Failed to retrieve initial data from the watch page, please report this to the project GitHub page.'); // ignore: lines_longer_than_80_chars
+  }
 
   ///
   String get xsfrToken => _xsfrToken ??= _xsfrTokenExp
@@ -110,10 +131,10 @@ class WatchPage {
           ?.group(1)
           ?.extractJson()));
 
+  ///
   PlayerResponse get playerResponse => PlayerResponse.parse(_root
       .querySelectorAll('script')
       .map((e) => e.text)
-      .map((e) => null)
       .map((e) => _playerResponseExp.firstMatch(e)?.group(1))
       .firstWhere((e) => !e.isNullOrWhiteSpace)
       .extractJson());
