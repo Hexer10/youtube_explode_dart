@@ -15,4 +15,7 @@ class VideoRequiresPurchaseException implements VideoUnplayableException {
       : message = 'Video `$videoId` is unplayable because it requires purchase.'
             'Streams are not available for this video.'
             'There is a preview video available: `$previewVideoId`.';
+
+  @override
+  String toString() => '$runtimeType: $message';
 }

@@ -20,4 +20,7 @@ class VideoUnavailableException implements VideoUnplayableException {
             'If you can however open this video in your browser in incognito mode, ' // ignore: lines_longer_than_80_chars
             'it most likely means that YouTube changed something, which broke this library.\n' // ignore: lines_longer_than_80_chars
             'Please report this issue on GitHub in that case.';
+
+  @override
+  String toString() => '$runtimeType: $message';
 }

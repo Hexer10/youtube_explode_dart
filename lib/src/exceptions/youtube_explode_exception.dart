@@ -5,7 +5,4 @@ abstract class YoutubeExplodeException implements Exception {
 
   ///
   YoutubeExplodeException(this.message);
-
-  @override
-  String toString() => '$runtimeType: $message}';
 }

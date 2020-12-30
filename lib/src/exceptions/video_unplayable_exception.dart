@@ -28,4 +28,7 @@ class VideoUnplayableException implements YoutubeExplodeException {
   VideoUnplayableException.notLiveStream(VideoId videoId)
       : message = 'Video \'$videoId\' is not an ongoing live stream.\n'
             'Live stream manifest is not available for this video';
+
+  @override
+  String toString() => '$runtimeType: $message';
 }

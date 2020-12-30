@@ -3,7 +3,8 @@ import 'package:http/http.dart';
 import 'youtube_explode_exception.dart';
 
 /// Exception thrown when a fatal failure occurs.
-class FatalFailureException implements YoutubeExplodeException {
+class FatalFailureException
+    implements YoutubeExplodeException {
   /// Description message
   @override
   final String message;
@@ -20,4 +21,7 @@ If this issue persists, please report it on the project's GitHub page.
 Request: ${response.request}
 Response: (${response.statusCode})
 ''';
+
+  @override
+  String toString() => '$runtimeType: $message';
 }

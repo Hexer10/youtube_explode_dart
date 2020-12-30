@@ -22,5 +22,5 @@ Response: $response
 ''';
 
   @override
-  String toString() => 'TransientFailureException: $message';
+  String toString() => '$runtimeType: $message';
 }
