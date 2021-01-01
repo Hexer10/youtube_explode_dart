@@ -26,7 +26,9 @@ void main() {
   test('Get closed auto translated caption track file of a video', () async {
     var manifest = await yt.videos.closedCaptions.getManifest('WOxr2dmLHLo');
     var trackInfo = manifest.tracks.first;
-    var subtitles = await yt.videos.closedCaptions.getSubTitles(trackInfo);
+
+    var subtitles = await yt.videos.closedCaptions
+        .getSubTitles(trackInfo.autoTranslate('it'));
 
     expect(subtitles, isNotEmpty);
   });
@@ -39,8 +41,7 @@ void main() {
 
     expect(caption, isNotNull);
     expect(caption.parts, isEmpty);
-    expect(caption.text,
-        'But what if you don\'t have a captions file');
+    expect(caption.text, 'But what if you don\'t have a captions file');
   });
 
   test('Get auto-generated closed caption track at a specific time', () async {
