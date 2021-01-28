@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:youtube_explode_dart/src/reverse_engineering/responses/player_config_base.dart';
 
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
@@ -14,7 +15,7 @@ class EmbedPage {
   static final _playerConfigExp2 = RegExp(r'yt.setConfig\((\{.*\})');
 
   final Document _root;
-  _PlayerConfig _playerConfig;
+  EmbedPlayerConfig _playerConfig;
 
   ///
   String get sourceUrl {
@@ -32,7 +33,7 @@ class EmbedPage {
   }
 
   ///
-  _PlayerConfig get playerConfig {
+  EmbedPlayerConfig get playerConfig {
     if (_playerConfig != null) {
       return _playerConfig;
     }
@@ -41,7 +42,7 @@ class EmbedPage {
       return null;
     }
     return _playerConfig =
-        _PlayerConfig(json.decode(playerConfigJson.extractJson()));
+        EmbedPlayerConfig(json.decode(playerConfigJson.extractJson()));
   }
 
   String get _playerConfigJson => _root
@@ -72,11 +73,14 @@ class EmbedPage {
   }
 }
 
-class _PlayerConfig {
-  // Json parsed map.
-  final Map<String, dynamic> _root;
+/// Used internally
+class EmbedPlayerConfig implements PlayerConfigBase<Map<String, dynamic>> {
+  @override
+  final Map<String, dynamic> root;
 
-  _PlayerConfig(this._root);
+  ///
+  EmbedPlayerConfig(this.root);
 
-  String get sourceUrl => 'https://youtube.com${_root['assets']['js']}';
+  @override
+  String get sourceUrl => 'https://youtube.com${root['assets']['js']}';
 }

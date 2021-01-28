@@ -79,7 +79,7 @@ class StreamsClient {
   Future<StreamContext> _getStreamContextFromWatchPage(VideoId videoId) async {
     var watchPage = await WatchPage.get(_httpClient, videoId.toString());
 
-    dynamic /* _PlayerConfig */ playerConfig;
+    WatchPlayerConfig playerConfig;
     try {
       playerConfig = watchPage.playerConfig;
     } on FormatException {
@@ -92,13 +92,13 @@ class StreamsClient {
     }
 
     var previewVideoId = playerResponse.previewVideoId;
-    if (!((previewVideoId as String)?.isNullOrWhiteSpace ?? true)) {
+    if (!(previewVideoId.isNullOrWhiteSpace ?? true)) {
       throw VideoRequiresPurchaseException.preview(
           videoId, VideoId(previewVideoId));
     }
 
     var playerSourceUrl =
-        watchPage.sourceUrl ?? playerConfig?.sourceUrl as String;
+        watchPage.sourceUrl ?? playerConfig?.sourceUrl;
     var playerSource = !playerSourceUrl.isNullOrWhiteSpace
         ? await PlayerSource.get(_httpClient, playerSourceUrl)
         : null;

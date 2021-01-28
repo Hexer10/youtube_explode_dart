@@ -1,5 +1,6 @@
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:youtube_explode_dart/src/reverse_engineering/responses/player_config_base.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
@@ -34,7 +35,7 @@ class WatchPage {
 
   _InitialData _initialData;
   String _xsfrToken;
-  _PlayerConfig _playerConfig;
+  WatchPlayerConfig _playerConfig;
 
   ///
   String get sourceUrl {
@@ -125,7 +126,7 @@ class WatchPage {
   static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\})');
 
   ///
-  _PlayerConfig get playerConfig => _playerConfig ??= _PlayerConfig(
+  WatchPlayerConfig get playerConfig => _playerConfig ??= WatchPlayerConfig(
       PlayerConfigJson.fromRawJson(_playerConfigExp
           .firstMatch(_root.getElementsByTagName('html').first.text)
           ?.group(1)
@@ -172,14 +173,18 @@ class WatchPage {
   }
 }
 
-class _PlayerConfig {
-  // Json parsed map
+/// Used internally
+class WatchPlayerConfig implements PlayerConfigBase<PlayerConfigJson> {
+  @override
   final PlayerConfigJson root;
 
-  _PlayerConfig(this.root);
+  ///
+  WatchPlayerConfig(this.root);
 
+  @override
   String get sourceUrl => 'https://youtube.com${root.assets.js}';
 
+  ///
   PlayerResponse get playerResponse =>
       PlayerResponse.parse(root.args.playerResponse);
 }
