@@ -118,7 +118,7 @@ class StreamsClient {
       ...playerResponse.streams,
     ];
 
-    var dashManifestUrl = playerResponse.dashManifestUrl;
+    String dashManifestUrl = playerResponse.dashManifestUrl;
     if (!(dashManifestUrl?.isNullOrWhiteSpace ?? true)) {
       var dashManifest =
           await _getDashManifest(Uri.parse(dashManifestUrl), cipherOperations);
