@@ -3,8 +3,8 @@ import '../retry.dart';
 import '../reverse_engineering/responses/search_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import 'base_search_content.dart';
-import 'search_query.dart';
 import 'search_list.dart';
+import 'search_query.dart';
 
 /// YouTube search queries.
 class SearchClient {

@@ -1,3 +1,7 @@
+## 1.8.0-beta.1
+- Removed deprecation of `Video`.
+- Exported `SearchList`.
+
 ## 1.8.0-beta.0
 - Fix video search:
     Now `getVideos` returns `SearchList` holding 20 videos. `SearchList.nextPage()` can be called to get the next batch of videos.
