@@ -15,10 +15,8 @@ class SearchList extends DelegatingList<SearchVideo> {
   static Future<SearchList> create(Stream<SearchVideo> stream) async {
     Stream<SearchVideo> broadcast;
     broadcast = stream.asBroadcastStream(onCancel: (subscription) {
-      print('Pause');
       subscription.pause();
     }, onListen: (subscription) {
-      print('Resume');
       subscription.resume();
     });
     final base = await broadcast.take(20).toList();
