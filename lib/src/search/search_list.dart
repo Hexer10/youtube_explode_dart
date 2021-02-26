@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 
 import '../../youtube_explode_dart.dart';
 
-///
+/// This list contains search videos.
 class SearchList extends DelegatingList<SearchVideo> {
   final Stream<SearchVideo> _stream;
 
