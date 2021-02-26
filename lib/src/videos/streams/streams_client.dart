@@ -97,8 +97,7 @@ class StreamsClient {
           videoId, VideoId(previewVideoId));
     }
 
-    var playerSourceUrl =
-        watchPage.sourceUrl ?? playerConfig?.sourceUrl;
+    var playerSourceUrl = watchPage.sourceUrl ?? playerConfig?.sourceUrl;
     var playerSource = !playerSourceUrl.isNullOrWhiteSpace
         ? await PlayerSource.get(_httpClient, playerSourceUrl)
         : null;

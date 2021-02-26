@@ -155,20 +155,22 @@ class _InitialData {
 
   _InitialData(this.root);
 
-  /* Cache results */
-
-  List<dynamic> _searchContent;
-  List<dynamic> _relatedVideos;
-  List<RelatedQuery> _relatedQueries;
-
   List<PurpleContent> getContentContext() {
     if (root.contents != null) {
       return root.contents.twoColumnSearchResultsRenderer.primaryContents
           .sectionListRenderer.contents.first.itemSectionRenderer.contents;
     }
     if (root.onResponseReceivedCommands != null) {
-      return root.onResponseReceivedCommands.first.appendContinuationItemsAction
-          .continuationItems[0].itemSectionRenderer.contents;
+      final itemSection = root
+          .onResponseReceivedCommands
+          .first
+          .appendContinuationItemsAction
+          .continuationItems[0]
+          .itemSectionRenderer;
+      if (itemSection == null) {
+        throw SearchItemSectionException();
+      }
+      return itemSection.contents;
     }
     return null;
   }
@@ -203,11 +205,11 @@ class _InitialData {
   }
 
   // Contains only [SearchVideo] or [SearchPlaylist]
-  List<BaseSearchContent> get searchContent => _searchContent ??=
+  List<BaseSearchContent> get searchContent =>
       getContentContext().map(_parseContent).where((e) => e != null).toList();
 
   List<RelatedQuery> get relatedQueries =>
-      (_relatedQueries ??= getContentContext()
+      getContentContext()
           ?.where((e) => e.horizontalCardListRenderer != null)
           ?.map((e) => e.horizontalCardListRenderer.cards)
           ?.firstOrNull
@@ -217,16 +219,16 @@ class _InitialData {
               VideoId(
                   Uri.parse(e.thumbnail.thumbnails.first.url).pathSegments[1])))
           ?.toList()
-          ?.cast<RelatedQuery>()) ??
+          ?.cast<RelatedQuery>() ??
       const [];
 
   List<dynamic> get relatedVideos =>
-      (_relatedVideos ??= getContentContext()
+      getContentContext()
           ?.where((e) => e.shelfRenderer != null)
           ?.map((e) => e.shelfRenderer.content.verticalListRenderer.items)
           ?.firstOrNull
           ?.map(_parseContent)
-          ?.toList()) ??
+          ?.toList() ??
       const [];
 
   String get continuationToken => _getContinuationToken();

@@ -13,7 +13,7 @@ void main() {
 
   test('Search a youtube video from the api', () async {
     var videos =
-        await yt.search.getVideos('undead corporation megalomania').toList();
+        await yt.search.getVideos('undead corporation megalomania');
     expect(videos, isNotEmpty);
   });
 

@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/player_config_base.dart';
 
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
+import 'player_config_base.dart';
 
 ///
 class EmbedPage {

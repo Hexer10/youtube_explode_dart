@@ -3,8 +3,7 @@ import 'package:http/http.dart';
 import 'youtube_explode_exception.dart';
 
 /// Exception thrown when a fatal failure occurs.
-class FatalFailureException
-    implements YoutubeExplodeException {
+class FatalFailureException implements YoutubeExplodeException {
   /// Description message
   @override
   final String message;

@@ -7,6 +7,7 @@ import '../common/common.dart';
 import '../reverse_engineering/responses/responses.dart';
 import 'video_id.dart';
 
+@Deprecated('This class is not used anymore - Since youtube changes in 02/2021')
 /// YouTube video metadata.
 class Video with EquatableMixin {
   /// Video ID.

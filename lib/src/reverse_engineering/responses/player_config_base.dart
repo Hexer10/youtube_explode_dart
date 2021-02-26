@@ -1,6 +1,5 @@
 /// Base class for PlayerConfig.
 abstract class PlayerConfigBase<T> {
-
   /// Root node.
   final T root;
 

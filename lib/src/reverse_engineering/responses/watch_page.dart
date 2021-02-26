@@ -1,6 +1,5 @@
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/player_config_base.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
@@ -9,6 +8,7 @@ import '../../videos/video_id.dart';
 import '../youtube_http_client.dart';
 import 'generated/player_response_json.g.dart';
 import 'generated/watch_page_id.g.dart';
+import 'player_config_base.dart';
 import 'player_response.dart';
 
 ///

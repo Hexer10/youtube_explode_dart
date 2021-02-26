@@ -26,7 +26,9 @@ Future<T> retry<T>(FutureOr<T> Function() function) async {
 
 /// Get "retry" cost of each YoutubeExplode exception.
 int getExceptionCost(Exception e) {
-  if (e is TransientFailureException || e is FormatException) {
+  if (e is TransientFailureException ||
+      e is FormatException ||
+      e is SearchItemSectionException) {
     return 1;
   }
   if (e is RequestLimitExceededException) {
