@@ -26,14 +26,14 @@ void main() {
         .toList();
     expect(videos, hasLength(10));
     var video = videos.first;
-    expect(video.videoId, isNotNull);
+    expect(video.id, isNotNull);
 
-    expect(video.videoTitle, isNotEmpty);
-    expect(video.videoAuthor, isNotEmpty);
-    expect(video.videoDescriptionSnippet, isNotEmpty);
-    expect(video.videoDuration, isNotEmpty);
-    expect(video.videoViewCount, greaterThan(0));
-    expect(video.videoThumbnails, isNotEmpty);
+    expect(video.title, isNotEmpty);
+    expect(video.author, isNotEmpty);
+    expect(video.description, isNotEmpty);
+    expect(video.duration, isNotEmpty);
+    expect(video.viewCount, greaterThan(0));
+    expect(video.thumbnails, isNotEmpty);
   });
 
   test('Search a youtube videos from the search page - old', () async {
@@ -61,7 +61,7 @@ void main() {
     expect(searchQuery.content.first, isA<SearchVideo>());
 
     var video = searchQuery.content.first as SearchVideo;
-    expect(video.videoThumbnails, isNotEmpty);
+    expect(video.thumbnails, isNotEmpty);
   });
 
   test('Search youtube videos from search page (stream) - old', () async {

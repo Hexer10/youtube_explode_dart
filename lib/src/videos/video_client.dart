@@ -1,6 +1,5 @@
 import '../channels/channel_id.dart';
 import '../common/common.dart';
-import '../exceptions/exceptions.dart';
 import '../reverse_engineering/responses/responses.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import 'closed_captions/closed_caption_client.dart';
@@ -45,43 +44,11 @@ class VideoClient {
         playerResponse.videoKeywords,
         Engagement(playerResponse.videoViewCount ?? 0, watchPage.videoLikeCount,
             watchPage.videoDislikeCount),
+        playerResponse.isLive,
         watchPage);
   }
 
-  Future<Video> _getVideoFromFixPlaylist(VideoId id) async {
-    var playlistInfo = await PlaylistResponse.get(_httpClient, 'RD${id.value}');
-
-    var video = playlistInfo.videos
-        .firstWhere((e) => e.id == id.value, orElse: () => null);
-    if (video == null) {
-      throw TransientFailureException('Video not found in mix playlist');
-    }
-
-    return Video(
-        id,
-        video.title,
-        video.author,
-        video.channelId,
-        video.uploadDate,
-        video.description,
-        video.duration,
-        ThumbnailSet(id.value),
-        video.keywords,
-        Engagement(video.viewCount, video.likes, video.dislikes));
-  }
-
   /// Get a [Video] instance from a [videoId]
-  Future<Video> get(dynamic videoId, {bool forceWatchPage = false}) async {
-    videoId = VideoId.fromString(videoId);
-
-    if (forceWatchPage) {
-      return _getVideoFromWatchPage(videoId);
-    }
-
-    try {
-      return await _getVideoFromFixPlaylist(videoId);
-    } on YoutubeExplodeException {
-      return _getVideoFromWatchPage(videoId);
-    }
-  }
+  Future<Video> get(dynamic videoId) async =>
+      _getVideoFromWatchPage(VideoId.fromString(videoId));
 }

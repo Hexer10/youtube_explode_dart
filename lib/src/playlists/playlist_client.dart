@@ -56,7 +56,8 @@ class PlaylistClient {
             video.duration,
             ThumbnailSet(videoId),
             video.keywords,
-            Engagement(video.viewCount, video.likes, video.dislikes));
+            Engagement(video.viewCount, video.likes, video.dislikes),
+            null);
         countDelta++;
       }
 

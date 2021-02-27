@@ -1,3 +1,6 @@
+## 1.8.0-beta.2
+- `search.getVideos` now returns a `Video` instance.
+
 ## 1.8.0-beta.1
 - Removed deprecation of `Video`.
 - Exported `SearchList`.

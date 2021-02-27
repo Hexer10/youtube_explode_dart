@@ -4,38 +4,46 @@ import 'base_search_content.dart';
 
 /// Metadata related to a search query result (video).
 class SearchVideo extends BaseSearchContent {
-  /// VideoId.
-  final VideoId videoId;
+  /// Video ID.
+  final VideoId id;
 
   /// Video title.
-  final String videoTitle;
+  final String title;
 
   /// Video author.
-  final String videoAuthor;
+  final String author;
 
   /// Video description snippet. (Part of the full description if too long)
-  final String videoDescriptionSnippet;
+  final String description;
 
   /// Video duration as String, HH:MM:SS
-  final String videoDuration;
+  final String duration;
 
   /// Video View Count
-  final int videoViewCount;
+  final int viewCount;
 
   /// Video thumbnail
-  final List<Thumbnail> videoThumbnails;
+  final List<Thumbnail> thumbnails;
+
+  /// Video upload date - As string: 5 years ago.
+  final String uploadDate;
+
+  /// True if this video is a live stream.
+  final bool isLive;
 
   /// Initialize a [SearchVideo] instance.
   const SearchVideo(
-    this.videoId,
-    this.videoTitle,
-    this.videoAuthor,
-    this.videoDescriptionSnippet,
-    this.videoDuration,
-    this.videoViewCount,
-    this.videoThumbnails,
+    this.id,
+    this.title,
+    this.author,
+    this.description,
+    this.duration,
+    this.viewCount,
+    this.thumbnails,
+    this.uploadDate,
+      this.isLive // ignore: avoid_positional_boolean_parameters
   );
 
   @override
-  String toString() => '(Video) $videoTitle ($videoId)';
+  String toString() => '(Video) $title ($id)';
 }

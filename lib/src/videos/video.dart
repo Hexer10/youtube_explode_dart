@@ -22,9 +22,12 @@ class Video with EquatableMixin {
   final String author;
 
   /// Video author Id.
+  /// Note: null if the video is from a search query.
   final ChannelId channelId;
 
   /// Video upload date.
+  /// Note: For search queries it is calculated with:
+  ///   DateTime.now() - how much time is was published.
   final DateTime uploadDate;
 
   /// Video description.
@@ -41,6 +44,9 @@ class Video with EquatableMixin {
 
   /// Engagement statistics for this video.
   final Engagement engagement;
+
+  /// Returns true if this is a live stream.
+  final bool isLive;
 
   /// Used internally.
   /// Shouldn't be used in the code.
@@ -61,6 +67,7 @@ class Video with EquatableMixin {
       this.thumbnails,
       Iterable<String> keywords,
       this.engagement,
+      this.isLive, // ignore: avoid_positional_boolean_parameters
       [this.watchPage])
       : keywords = UnmodifiableListView(keywords);
 

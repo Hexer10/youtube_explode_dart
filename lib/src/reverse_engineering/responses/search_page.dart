@@ -251,10 +251,16 @@ class _InitialData {
           int.parse(renderer.viewCountText?.simpleText
                   ?.stripNonDigits()
                   ?.nullIfWhitespace ??
+              renderer.viewCountText?.runs?.first?.text
+                  ?.stripNonDigits()
+                  ?.nullIfWhitespace ??
               '0'),
           (renderer.thumbnail.thumbnails ?? <ThumbnailElement>[])
               .map((e) => Thumbnail(Uri.parse(e.url), e.height, e.width))
-              .toList());
+              .toList(),
+          renderer.publishedTimeText?.simpleText,
+          renderer?.viewCountText?.runs?.elementAt(1)?.text?.trim() ==
+              'watching');
     }
     if (content.radioRenderer != null) {
       var renderer = content.radioRenderer;
