@@ -33,16 +33,16 @@ class SearchVideo extends BaseSearchContent {
 
   /// Initialize a [SearchVideo] instance.
   const SearchVideo(
-    this.id,
-    this.title,
-    this.author,
-    this.description,
-    this.duration,
-    this.viewCount,
-    this.thumbnails,
-    this.uploadDate,
+      this.id,
+      this.title,
+      this.author,
+      this.description,
+      this.duration,
+      this.viewCount,
+      this.thumbnails,
+      this.uploadDate,
       this.isLive // ignore: avoid_positional_boolean_parameters
-  );
+      );
 
   @override
   String toString() => '(Video) $title ($id)';
