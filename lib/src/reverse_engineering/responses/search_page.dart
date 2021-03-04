@@ -270,7 +270,7 @@ class _InitialData {
           int.parse(_parseRuns(renderer.videoCountText.runs)
                   .stripNonDigits()
                   .nullIfWhitespace ??
-              0));
+              '0'));
     }
     // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
     return null;

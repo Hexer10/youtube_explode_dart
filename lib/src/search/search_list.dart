@@ -49,6 +49,9 @@ class SearchList extends DelegatingList<Video> {
     }
 
     var parts = string.split(' ');
+    if (parts.length == 4) { // Streamed x y ago
+      parts = parts.skip(1).toList();
+    }
     assert(parts.length == 3);
 
     var qty = int.parse(parts.first);
