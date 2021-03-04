@@ -15,18 +15,21 @@ class ChannelPage {
 
   ///
   String get channelUrl =>
-      _root.querySelector('meta[property="og:url"]')?.attributes['content'];
+      _root.querySelector('meta[property="og:url"]')?.attributes['content'] ??
+      '';
 
   ///
   String get channelId => channelUrl.substringAfter('channel/');
 
   ///
   String get channelTitle =>
-      _root.querySelector('meta[property="og:title"]')?.attributes['content'];
+      _root.querySelector('meta[property="og:title"]')?.attributes['content'] ??
+      '';
 
   ///
   String get channelLogoUrl =>
-      _root.querySelector('meta[property="og:image"]')?.attributes['content'];
+      _root.querySelector('meta[property="og:image"]')?.attributes['content'] ??
+      '';
 
   ///
   ChannelPage(this._root);

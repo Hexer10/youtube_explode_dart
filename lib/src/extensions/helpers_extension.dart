@@ -4,23 +4,8 @@ import '../reverse_engineering/cipher/cipher_operations.dart';
 
 /// Utility for Strings.
 extension StringUtility on String {
-  /// Parses this value as int stripping the non digit characters,
-  /// returns null if this fails.
-  int parseInt() => int.tryParse(this?.stripNonDigits());
-
   /// Returns null if this string is whitespace.
-  String get nullIfWhitespace => trim().isEmpty ? null : this;
-
-  /// Returns true if the string is null or empty.
-  bool get isNullOrWhiteSpace {
-    if (this == null) {
-      return true;
-    }
-    if (trim().isEmpty) {
-      return true;
-    }
-    return false;
-  }
+  String? get nullIfWhitespace => trim().isEmpty ? null : this;
 
   /// Returns null if this string is a whitespace.
   String substringUntil(String separator) => substring(0, indexOf(separator));
@@ -59,6 +44,24 @@ extension StringUtility on String {
   }
 }
 
+/// Utility for Strings.
+extension StringUtility2 on String? {
+  /// Parses this value as int stripping the non digit characters,
+  /// returns null if this fails.
+  int? parseInt() => int.tryParse(this?.stripNonDigits() ?? '');
+
+  /// Returns true if the string is null or empty.
+  bool get isNullOrWhiteSpace {
+    if (this == null) {
+      return true;
+    }
+    if (this!.trim().isEmpty) {
+      return true;
+    }
+    return false;
+  }
+}
+
 /// List decipher utility.
 extension ListDecipher on Iterable<CipherOperation> {
   /// Apply every CipherOperation on the [signature]
@@ -74,7 +77,7 @@ extension ListDecipher on Iterable<CipherOperation> {
 /// List Utility.
 extension ListUtil<E> on Iterable<E> {
   /// Returns the first element of a list or null if empty.
-  E get firstOrNull {
+  E? get firstOrNull {
     if (length == 0) {
       return null;
     }
@@ -83,11 +86,21 @@ extension ListUtil<E> on Iterable<E> {
 
   /// Same as [elementAt] but if the index is higher than the length returns
   /// null
-  E elementAtSafe(int index) {
+  E? elementAtSafe(int index) {
     if (index >= length) {
       return null;
     }
     return elementAt(index);
+  }
+
+  /// Same as [firstWhere] but returns null if no found
+  E? firstWhereNull(bool Function(E element) test) {
+    for (final element in this) {
+      if (test(element)) {
+        return element;
+      }
+    }
+    return null;
   }
 }
 
@@ -106,7 +119,7 @@ extension UriUtility on Uri {
 ///
 extension GetOrNull<K, V> on Map<K, V> {
   /// Get a value from a map
-  V getValue(K key) {
+  V? getValue(K key) {
     var v = this[key];
     if (v == null) {
       return null;
@@ -118,7 +131,7 @@ extension GetOrNull<K, V> on Map<K, V> {
 ///
 extension GetOrNullMap on Map {
   /// Get a map inside a map
-  Map<String, dynamic> get(String key) {
+  Map<String, dynamic>? get(String key) {
     var v = this[key];
     if (v == null) {
       return null;
@@ -128,7 +141,7 @@ extension GetOrNullMap on Map {
 
   /// Get a value inside a map.
   /// If it is null this returns null, if of another type this throws.
-  T getT<T>(String key) {
+  T? getT<T>(String key) {
     var v = this[key];
     if (v == null) {
       return null;
@@ -140,7 +153,7 @@ extension GetOrNullMap on Map {
   }
 
   /// Get a List<Map<String, dynamic>>> from a map.
-  List<Map<String, dynamic>> getList(String key) {
+  List<Map<String, dynamic>>? getList(String key) {
     var v = this[key];
     if (v == null) {
       return null;
@@ -149,7 +162,7 @@ extension GetOrNullMap on Map {
       throw Exception('Invalid type: ${v.runtimeType} should be of type List');
     }
 
-    return (v.toList() as List<dynamic>).cast<Map<String, dynamic>>();
+    return (v.toList()).cast<Map<String, dynamic>>();
   }
 }
 
@@ -164,7 +177,8 @@ extension UriUtils on Uri {
   }
 }
 
-/// Parse properties with `runs` method.
+/// Parse properties with `text` method.
 extension RunsParser on List<dynamic> {
-  String parseRuns() => this?.map((e) => e['text'])?.join() ?? '';
+  ///
+  String parseRuns() => map((e) => e['text']).join() ?? '';
 }

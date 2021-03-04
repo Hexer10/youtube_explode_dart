@@ -28,7 +28,7 @@ class Video with EquatableMixin {
   /// Video upload date.
   /// Note: For search queries it is calculated with:
   ///   DateTime.now() - how much time is was published.
-  final DateTime uploadDate;
+  final DateTime? uploadDate;
 
   /// Video description.
   final String description;
@@ -46,11 +46,11 @@ class Video with EquatableMixin {
   final Engagement engagement;
 
   /// Returns true if this is a live stream.
-  final bool isLive;
+  final bool? isLive;
 
   /// Used internally.
   /// Shouldn't be used in the code.
-  final WatchPage watchPage;
+  final WatchPage? watchPage;
 
   /// Returns true if the watch page is available for this video.
   bool get hasWatchPage => watchPage != null;
@@ -65,15 +65,45 @@ class Video with EquatableMixin {
       this.description,
       this.duration,
       this.thumbnails,
-      Iterable<String> keywords,
+      Iterable<String>? keywords,
       this.engagement,
       this.isLive, // ignore: avoid_positional_boolean_parameters
       [this.watchPage])
-      : keywords = UnmodifiableListView(keywords);
+      : keywords = UnmodifiableListView(keywords ?? []);
 
   @override
   String toString() => 'Video ($title)';
 
   @override
   List<Object> get props => [id];
+}
+
+/// See [Video].
+/// This class has no nullable values.
+class SafeVideo extends Video {
+  @override
+  final DateTime uploadDate;
+
+  @override
+  final SafeEngagement engagement;
+
+  @override
+  final bool isLive;
+
+  ///
+  SafeVideo(
+      VideoId id,
+      String title,
+      String author,
+      ChannelId channelId,
+      this.uploadDate,
+      String description,
+      Duration duration,
+      ThumbnailSet thumbnails,
+      Iterable<String>? keywords,
+      this.engagement,
+      this.isLive, // ignore: avoid_positional_boolean_parameters
+      [WatchPage? watchPage])
+      : super(id, title, author, channelId, uploadDate, description, duration,
+            thumbnails, keywords, engagement, isLive, watchPage);
 }

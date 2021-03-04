@@ -12,14 +12,10 @@ import 'generated/channel_about_page_id.g.dart';
 class ChannelAboutPage {
   final Document _root;
 
-  _InitialData _initialData;
-
   ///
-  _InitialData get initialData {
-    if (_initialData != null) {
-      return _initialData;
-    }
+  late final _InitialData initialData = _getInitialData();
 
+  _InitialData _getInitialData() {
     final scriptText = _root
         .querySelectorAll('script')
         .map((e) => e.text)
@@ -27,26 +23,23 @@ class ChannelAboutPage {
 
     var initialDataText = scriptText.firstWhere(
         (e) => e.contains('window["ytInitialData"] ='),
-        orElse: () => null);
-    if (initialDataText != null) {
-      return _initialData = _InitialData(ChannelAboutPageId.fromRawJson(
+        orElse: () => '');
+    if (initialDataText.isNotEmpty) {
+      return _InitialData(ChannelAboutPageId.fromRawJson(
           _extractJson(initialDataText, 'window["ytInitialData"] =')));
     }
 
     initialDataText = scriptText.firstWhere(
         (e) => e.contains('var ytInitialData = '),
-        orElse: () => null);
-    if (initialDataText != null) {
-      return _initialData = _InitialData(ChannelAboutPageId.fromRawJson(
+        orElse: () => '');
+    if (initialDataText.isNotEmpty) {
+      return _InitialData(ChannelAboutPageId.fromRawJson(
           _extractJson(initialDataText, 'var ytInitialData = ')));
     }
 
     throw TransientFailureException(
         'Failed to retrieve initial data from the channel about page, please report this to the project GitHub page.'); // ignore: lines_longer_than_80_chars
   }
-
-  ///
-  bool get isOk => initialData != null;
 
   ///
   String get description => initialData.description;
@@ -58,7 +51,7 @@ class ChannelAboutPage {
 
   String _matchJson(String str) {
     var bracketCount = 0;
-    int lastI;
+    late int lastI;
     for (var i = 0; i < str.length; i++) {
       lastI = i;
       if (str[i] == '{') {
@@ -88,9 +81,6 @@ class ChannelAboutPage {
       var raw = await httpClient.getString(url);
       var result = ChannelAboutPage.parse(raw);
 
-      if (!result.isOk) {
-        throw TransientFailureException('Channel about page is broken');
-      }
       return result;
     });
   }
@@ -104,9 +94,6 @@ class ChannelAboutPage {
       var raw = await httpClient.getString(url);
       var result = ChannelAboutPage.parse(raw);
 
-      if (!result.isOk) {
-        throw TransientFailureException('Channel about page is broken');
-      }
       return result;
     });
   }
@@ -120,13 +107,10 @@ class _InitialData {
 
   _InitialData(this.root);
 
-  /* Cache results */
-  ChannelAboutFullMetadataRenderer _content;
 
-  ChannelAboutFullMetadataRenderer get content =>
-      _content ??= getContentContext();
+  late final ChannelAboutFullMetadataRenderer content = _getContentContext();
 
-  ChannelAboutFullMetadataRenderer getContentContext() {
+  ChannelAboutFullMetadataRenderer _getContentContext() {
     return root
         .contents
         .twoColumnBrowseResultsRenderer
@@ -166,8 +150,8 @@ class _InitialData {
 
   String get country => content.country.simpleText;
 
-  String parseRuns(List<dynamic> runs) =>
-      runs?.map((e) => e.text)?.join() ?? '';
+  String parseRuns(List<dynamic>? runs) =>
+      runs?.map((e) => e.text).join() ?? '';
 
   Uri extractUrl(String text) =>
       Uri.parse(Uri.decodeFull(_urlExp.firstMatch(text)?.group(1) ?? ''));

@@ -11,12 +11,12 @@ void main() {
     yt.close();
   });
 
-  test('Search a youtube video from the api', () async {
+  test('Search a youtube video from the search page', () async {
     var videos = await yt.search.getVideos('undead corporation megalomania');
     expect(videos, isNotEmpty);
   });
 
-  test('Search a youtube video from the search page', () async {
+  test('Search a youtube video from the search page-2', () async {
     var videos = await yt.search
         .getVideosFromPage('hello')
         .where((e) => e is SearchVideo) // Take only the videos.

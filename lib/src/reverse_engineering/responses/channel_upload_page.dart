@@ -16,14 +16,10 @@ class ChannelUploadPage {
   final String channelId;
   final Document _root;
 
-  _InitialData _initialData;
+  late final _InitialData _initialData = _getInitialData();
 
   ///
-  _InitialData get initialData {
-    if (_initialData != null) {
-      return _initialData;
-    }
-
+  _InitialData _getInitialData() {
     final scriptText = _root
         .querySelectorAll('script')
         .map((e) => e.text)
@@ -31,17 +27,17 @@ class ChannelUploadPage {
 
     var initialDataText = scriptText.firstWhere(
         (e) => e.contains('window["ytInitialData"] ='),
-        orElse: () => null);
-    if (initialDataText != null) {
-      return _initialData = _InitialData(ChannelUploadPageId.fromRawJson(
+        orElse: () => '');
+    if (initialDataText.isNotEmpty) {
+      return _InitialData(ChannelUploadPageId.fromRawJson(
           _extractJson(initialDataText, 'window["ytInitialData"] =')));
     }
 
     initialDataText = scriptText.firstWhere(
         (e) => e.contains('var ytInitialData = '),
-        orElse: () => null);
-    if (initialDataText != null) {
-      return _initialData = _InitialData(ChannelUploadPageId.fromRawJson(
+        orElse: () => '');
+    if (initialDataText.isNotEmpty) {
+      return _InitialData(ChannelUploadPageId.fromRawJson(
           _extractJson(initialDataText, 'var ytInitialData = ')));
     }
 
@@ -56,7 +52,7 @@ class ChannelUploadPage {
 
   String _matchJson(String str) {
     var bracketCount = 0;
-    int lastI;
+    late int lastI;
     for (var i = 0; i < str.length; i++) {
       lastI = i;
       if (str[i] == '{') {

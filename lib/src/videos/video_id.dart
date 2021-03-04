@@ -12,8 +12,8 @@ class VideoId with EquatableMixin {
   final String value;
 
   /// Initializes an instance of [VideoId] with a url or video id.
-  VideoId(String idOrUrl) : value = parseVideoId(idOrUrl) {
-    if (value == null) {
+  VideoId(String idOrUrl) : value = parseVideoId(idOrUrl) ?? '' {
+    if (value.isEmpty) {
       throw ArgumentError.value(
           idOrUrl, 'urlOrUrl', 'Invalid YouTube video ID or URL');
     }
@@ -40,7 +40,7 @@ class VideoId with EquatableMixin {
 
   /// Parses a video id from url or if given a valid id as url returns itself.
   /// Returns null if the id couldn't be extracted.
-  static String parseVideoId(String url) {
+  static String? parseVideoId(String url) {
     if (url.isNullOrWhiteSpace) {
       return null;
     }
@@ -51,19 +51,19 @@ class VideoId with EquatableMixin {
 
     // https://www.youtube.com/watch?v=yIVRs6YSbOM
     var regMatch = _regMatchExp.firstMatch(url)?.group(1);
-    if (!regMatch.isNullOrWhiteSpace && validateVideoId(regMatch)) {
+    if (!regMatch.isNullOrWhiteSpace && validateVideoId(regMatch!)) {
       return regMatch;
     }
 
     // https://youtu.be/yIVRs6YSbOM
     var shortMatch = _shortMatchExp.firstMatch(url)?.group(1);
-    if (!shortMatch.isNullOrWhiteSpace && validateVideoId(shortMatch)) {
+    if (!shortMatch.isNullOrWhiteSpace && validateVideoId(shortMatch!)) {
       return shortMatch;
     }
 
     // https://www.youtube.com/embed/yIVRs6YSbOM
     var embedMatch = _embedMatchExp.firstMatch(url)?.group(1);
-    if (!embedMatch.isNullOrWhiteSpace && validateVideoId(embedMatch)) {
+    if (!embedMatch.isNullOrWhiteSpace && validateVideoId(embedMatch!)) {
       return embedMatch;
     }
     return null;
