@@ -1,3 +1,6 @@
+## 1.8.0-beta.3
+- Fixed playlists
+
 ## 1.8.0-beta.2
 - `search.getVideos` now returns a `Video` instance.
 

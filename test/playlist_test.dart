@@ -21,8 +21,8 @@ void main() {
     expect(playlist.author, 'Tyrrrz');
     expect(playlist.description, 'My best osu! plays');
     expect(playlist.engagement.viewCount, greaterThanOrEqualTo(133));
-    expect(playlist.engagement.likeCount, greaterThanOrEqualTo(0));
-    expect(playlist.engagement.dislikeCount, greaterThanOrEqualTo(0));
+    expect(playlist.engagement.likeCount, isNull);
+    expect(playlist.engagement.dislikeCount, isNull);
     expect(playlist.thumbnails.lowResUrl, isNotEmpty);
     expect(playlist.thumbnails.mediumResUrl, isNotEmpty);
     expect(playlist.thumbnails.highResUrl, isNotEmpty);
@@ -65,16 +65,13 @@ void main() {
 
   group('Get videos in any playlist', () {
     for (var val in {
-      PlaylistId('PL601B2E69B03FAB9D'),
       PlaylistId('PLI5YfMzCfRtZ8eV576YoY3vIYrHjyVm_e'),
       PlaylistId('PLWwAypAcFRgKFlxtLbn_u14zddtDJj3mk'),
       PlaylistId('OLAK5uy_mtOdjCW76nDvf5yOzgcAVMYpJ5gcW5uKU'),
-      PlaylistId('RD1hu8-y6fKg0'),
-      PlaylistId('RDMMU-ty-2B02VY'),
       PlaylistId('RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs'),
-      PlaylistId('ULl6WWX-BgIiE'),
       PlaylistId('UUTMt7iMWa7jy0fNXIktwyLA'),
-      PlaylistId('FLEnBXANsKmyj2r9xVyKoDiQ')
+      PlaylistId('OLAK5uy_lLeonUugocG5J0EUAEDmbskX4emejKwcM'),
+      PlaylistId('PL601B2E69B03FAB9D'),
     }) {
       test('PlaylistID - ${val.value}', () async {
         expect(yt.playlists.getVideos(val), emits(isNotNull));

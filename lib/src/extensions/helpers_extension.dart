@@ -4,6 +4,10 @@ import '../reverse_engineering/cipher/cipher_operations.dart';
 
 /// Utility for Strings.
 extension StringUtility on String {
+  /// Parses this value as int stripping the non digit characters,
+  /// returns null if this fails.
+  int parseInt() => int.tryParse(this?.stripNonDigits());
+
   /// Returns null if this string is whitespace.
   String get nullIfWhitespace => trim().isEmpty ? null : this;
 
@@ -68,13 +72,22 @@ extension ListDecipher on Iterable<CipherOperation> {
 }
 
 /// List Utility.
-extension ListFirst<E> on Iterable<E> {
+extension ListUtil<E> on Iterable<E> {
   /// Returns the first element of a list or null if empty.
   E get firstOrNull {
     if (length == 0) {
       return null;
     }
     return first;
+  }
+
+  /// Same as [elementAt] but if the index is higher than the length returns
+  /// null
+  E elementAtSafe(int index) {
+    if (index >= length) {
+      return null;
+    }
+    return elementAt(index);
   }
 }
 
@@ -112,6 +125,32 @@ extension GetOrNullMap on Map {
     }
     return v;
   }
+
+  /// Get a value inside a map.
+  /// If it is null this returns null, if of another type this throws.
+  T getT<T>(String key) {
+    var v = this[key];
+    if (v == null) {
+      return null;
+    }
+    if (v is! T) {
+      throw Exception('Invalid type: ${v.runtimeType} should be $T');
+    }
+    return v;
+  }
+
+  /// Get a List<Map<String, dynamic>>> from a map.
+  List<Map<String, dynamic>> getList(String key) {
+    var v = this[key];
+    if (v == null) {
+      return null;
+    }
+    if (v is! List<dynamic>) {
+      throw Exception('Invalid type: ${v.runtimeType} should be of type List');
+    }
+
+    return (v.toList() as List<dynamic>).cast<Map<String, dynamic>>();
+  }
 }
 
 ///
@@ -123,4 +162,9 @@ extension UriUtils on Uri {
 
     return replace(queryParameters: query);
   }
+}
+
+/// Parse properties with `runs` method.
+extension RunsParser on List<dynamic> {
+  String parseRuns() => this?.map((e) => e['text'])?.join() ?? '';
 }

@@ -1,5 +1,7 @@
+import 'package:youtube_explode_dart/src/channels/channel_id.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/responses/playlist_page.dart';
+
 import '../common/common.dart';
-import '../reverse_engineering/responses/responses.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
 import '../videos/video_id.dart';
@@ -17,28 +19,28 @@ class PlaylistClient {
   Future<Playlist> get(dynamic id) async {
     id = PlaylistId.fromString(id);
 
-    var response = await PlaylistResponse.get(_httpClient, id.value);
+    var response = await PlaylistPage.get(_httpClient, id.value);
     return Playlist(
         id,
-        response.title,
-        response.author,
-        response.description ?? '',
-        response.thumbnails,
-        Engagement(response.viewCount ?? 0, response.likeCount ?? 0,
-            response.dislikeCount ?? 0));
+        response.initialData.title,
+        response.initialData.author,
+        response.initialData.description,
+        ThumbnailSet(id.value),
+        Engagement(response.initialData.viewCount ?? 0, null, null));
   }
 
   /// Enumerates videos included in the specified playlist.
   Stream<Video> getVideos(dynamic id) async* {
     id = PlaylistId.fromString(id);
     var encounteredVideoIds = <String>{};
-    var index = 0;
+    var continuationToken = '';
+
     // ignore: literal_only_boolean_expressions
     while (true) {
-      var response =
-          await PlaylistResponse.get(_httpClient, id.value, index: index);
-      var countDelta = 0;
-      for (var video in response.videos) {
+      var response = await PlaylistPage.get(_httpClient, id.value,
+          token: continuationToken);
+
+      for (var video in response.initialData.playlistVideos) {
         var videoId = video.id;
 
         // Already added
@@ -46,26 +48,27 @@ class PlaylistClient {
           continue;
         }
 
+        if (video.channelId.isEmpty) {
+          continue;
+        }
+
         yield Video(
             VideoId(videoId),
             video.title,
             video.author,
-            video.channelId,
-            video.uploadDate,
+            ChannelId(video.channelId),
+            null,
             video.description,
             video.duration,
             ThumbnailSet(videoId),
-            video.keywords,
-            Engagement(video.viewCount, video.likes, video.dislikes),
+            null,
+            Engagement(video.viewCount, null, null),
             null);
-        countDelta++;
       }
-
-      // Videos loop around, so break when we stop seeing new videos
-      if (countDelta <= 0) {
+      continuationToken = response.initialData.continuationToken;
+      if (response.initialData.continuationToken?.isEmpty ?? true) {
         break;
       }
-      index += countDelta;
     }
   }
 }

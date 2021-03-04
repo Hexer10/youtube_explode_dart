@@ -78,7 +78,7 @@ class SearchList extends DelegatingList<Video> {
     return DateTime.now().subtract(time);
   }
 
-  /// Format: HH:MM:SS (5 years ago)
+  /// Format: HH:MM:SS
   static Duration _stringToDuration(String string) {
     if (string == null || string.trim().isEmpty) {
       return null;
@@ -100,7 +100,7 @@ class SearchList extends DelegatingList<Video> {
           minutes: int.parse(parts[1]),
           seconds: int.parse(parts[0]));
     }
-    // Should reach here.
+    // Shouldn't reach here.
     throw Error();
   }
 }

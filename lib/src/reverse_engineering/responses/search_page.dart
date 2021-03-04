@@ -105,17 +105,16 @@ class SearchPage {
         initialData.estimatedResults == 0) {
       return null;
     }
-    return get(httpClient, queryString,
-        token: initialData.continuationToken, key: apiKey);
+    return get(httpClient, queryString, token: initialData.continuationToken);
   }
 
   ///
   static Future<SearchPage> get(
       YoutubeHttpClient httpClient, String queryString,
-      {String token, String key}) {
+      {String token}) {
     if (token != null) {
-      assert(key != null, 'A key must be supplied along with a token');
-      var url = 'https://www.youtube.com/youtubei/v1/search?key=$key';
+      var url =
+          'https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
 
       return retry(() async {
         var body = {
@@ -131,7 +130,7 @@ class SearchPage {
 
         var raw = await httpClient.post(url, body: json.encode(body));
         return SearchPage(null, queryString,
-            _InitialData(SearchPageId.fromJson(json.decode(raw.body))), key);
+            _InitialData(SearchPageId.fromJson(json.decode(raw.body))));
       });
       // Ask for next page,
 

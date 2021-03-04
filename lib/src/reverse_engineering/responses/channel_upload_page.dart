@@ -142,24 +142,24 @@ class _InitialData {
 
   NextContinuationData getContinuationContext() {
     if (root.contents != null) {
-      return root.contents.twoColumnBrowseResultsRenderer.tabs
-          .map((e) => e.tabRenderer)
-          .firstWhere((e) => e.selected)
-          .content
-          .sectionListRenderer
-          .contents
-          .first
-          .itemSectionRenderer
-          .contents
-          .first
-          .gridRenderer
-          .continuations
-          .first
-          .nextContinuationData;
+      return root.contents?.twoColumnBrowseResultsRenderer?.tabs
+          ?.map((e) => e.tabRenderer)
+          ?.firstWhere((e) => e.selected)
+          ?.content
+          ?.sectionListRenderer
+          ?.contents
+          ?.first
+          ?.itemSectionRenderer
+          ?.contents
+          ?.first
+          ?.gridRenderer
+          ?.continuations
+          ?.first
+          ?.nextContinuationData;
     }
     if (root.response != null) {
-      return root.response.continuationContents.gridContinuation.continuations
-          .first.nextContinuationData;
+      return root?.response?.continuationContents?.gridContinuation
+          ?.continuations?.first?.nextContinuationData;
     }
     return null;
   }
@@ -170,7 +170,7 @@ class _InitialData {
       ?.toList();
 
   String get continuation =>
-      _continuation ??= getContinuationContext().continuation ?? '';
+      _continuation ??= getContinuationContext()?.continuation ?? '';
 
   String get clickTrackingParams => _clickTrackingParams ??=
       getContinuationContext()?.clickTrackingParams ?? '';
