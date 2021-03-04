@@ -95,13 +95,13 @@ class SearchList extends DelegatingList<Video> {
     }
     if (parts.length == 2) {
       return Duration(
-          minutes: int.parse(parts[1]), seconds: int.parse(parts.first));
+          minutes: int.parse(parts[0]), seconds: int.parse(parts[1]));
     }
     if (parts.length == 3) {
       return Duration(
-          hours: int.parse(parts[2]),
+          hours: int.parse(parts[0]),
           minutes: int.parse(parts[1]),
-          seconds: int.parse(parts[0]));
+          seconds: int.parse(parts[2]));
     }
     // Shouldn't reach here.
     throw Error();
