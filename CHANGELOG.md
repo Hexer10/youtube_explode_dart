@@ -1,3 +1,6 @@
+## 1.8.0-beta.4
+- Removed debug message
+
 ## 1.8.0-beta.3
 - Fixed playlists
 

@@ -143,7 +143,7 @@ class YoutubeHttpClient extends http.BaseClient {
         request.headers[key] = _defaultHeaders[key];
       }
     });
-    print('Request: $request');
+    // print('Request: $request');
 //    print('Stack:\n${StackTrace.current}');
     return _httpClient.send(request);
   }
