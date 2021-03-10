@@ -1,3 +1,9 @@
+## 1.8.0
+- Fixed playlist client.
+- Fixed search client.
+- `search.getVideos` now returns a `Video` instance.
+- Implemented `SearchList`.
+
 ## 1.8.0-beta.4
 - Removed debug message
 
