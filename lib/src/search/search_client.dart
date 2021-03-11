@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../youtube_explode_dart.dart';
 import '../retry.dart';
 import '../reverse_engineering/responses/search_page.dart';
@@ -50,6 +52,18 @@ class SearchClient {
         yield* Stream.fromIterable(page.initialData.searchContent);
       }
     }
+  }
+
+  /// Returns the suggestions youtube provide while search on the page.
+  Future<List<String>> getQuerySuggestions(String query) async {
+    final request = await _httpClient.get(
+        'https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=en&gl=en&q=${Uri.encodeComponent(query)}&callback=func');
+    final body = request.body;
+    final startIndex = body.indexOf('func(');
+    final jsonStr = body.substring(startIndex + 5, body.length - 1);
+    final data = json.decode(jsonStr) as List<dynamic>;
+    final suggestions = data[1] as List<dynamic>;
+    return suggestions.map((e) => e[0]).toList().cast<String>();
   }
 
   /// Queries to YouTube to get the results.
