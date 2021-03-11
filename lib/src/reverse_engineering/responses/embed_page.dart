@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
@@ -14,16 +15,16 @@ class EmbedPage {
       RegExp('[\'""]PLAYER_CONFIG[\'""]\\s*:\\s*(\\{.*\\})');
   static final _playerConfigExp2 = RegExp(r'yt.setConfig\((\{.*\})');
 
-  final Document _root;
-  EmbedPlayerConfig _playerConfig;
+  final Document root;
+  late final EmbedPlayerConfig? playerConfig = getPlayerConfig();
 
   ///
-  String get sourceUrl {
-    var url = _root
+  String? get sourceUrl {
+    var url = root
         .querySelectorAll('*[name="player_ias/base"]')
         .map((e) => e.attributes['src'])
         .where((e) => !e.isNullOrWhiteSpace)
-        .firstWhere((e) => e.contains('player_ias') && e.endsWith('.js'),
+        .firstWhere((e) => e!.contains('player_ias') && e.endsWith('.js'),
             orElse: () => null);
     // _root.querySelector('*[name="player_ias/base"]').attributes['src'];
     if (url == null) {
@@ -33,35 +34,31 @@ class EmbedPage {
   }
 
   ///
-  EmbedPlayerConfig get playerConfig {
-    if (_playerConfig != null) {
-      return _playerConfig;
-    }
+  EmbedPlayerConfig? getPlayerConfig() {
     var playerConfigJson = _playerConfigJson ?? _playerConfigJson2;
     if (playerConfigJson == null) {
       return null;
     }
-    return _playerConfig =
-        EmbedPlayerConfig(json.decode(playerConfigJson.extractJson()));
+    return EmbedPlayerConfig(json.decode(playerConfigJson.extractJson()));
   }
 
-  String get _playerConfigJson => _root
+  String? get _playerConfigJson => root
       .getElementsByTagName('script')
       .map((e) => e.text)
       .map((e) => _playerConfigExp.firstMatch(e)?.group(1))
-      .firstWhere((e) => !e.isNullOrWhiteSpace, orElse: () => null);
+      .firstWhereOrNull((e) => !e.isNullOrWhiteSpace);
 
-  String get _playerConfigJson2 => _root
+  String? get _playerConfigJson2 => root
       .getElementsByTagName('script')
       .map((e) => e.text)
       .map((e) => _playerConfigExp2.firstMatch(e)?.group(1))
-      .firstWhere((e) => !e.isNullOrWhiteSpace, orElse: () => null);
+      .firstWhereOrNull((e) => !e.isNullOrWhiteSpace);
 
   ///
-  EmbedPage(this._root);
+  EmbedPage(this.root);
 
   ///
-  EmbedPage.parse(String raw) : _root = parser.parse(raw);
+  EmbedPage.parse(String raw) : root = parser.parse(raw);
 
   ///
   static Future<EmbedPage> get(YoutubeHttpClient httpClient, String videoId) {

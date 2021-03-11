@@ -52,11 +52,11 @@ class CommentsClient {
       return;
     }
     yield* _getComments(
-        video.watchPage.initialData.continuation,
-        video.watchPage.initialData.clickTrackingParams,
-        video.watchPage.xsfrToken,
-        video.watchPage.visitorInfoLive,
-        video.watchPage.ysc);
+        video.watchPage!.initialData.continuation,
+        video.watchPage!.initialData.clickTrackingParams,
+        video.watchPage!.xsfrToken,
+        video.watchPage!.visitorInfoLive,
+        video.watchPage!.ysc);
   }
 
   Stream<Comment> _getComments(String continuation, String clickTrackingParams,
@@ -67,14 +67,14 @@ class CommentsClient {
             ['itemSectionContinuation']['contents']
         ?.map((e) => e['commentThreadRenderer'])
         ?.toList()
-        ?.cast<Map<String, dynamic>>() as List<Map<String, dynamic>>;
+        ?.cast<Map<String, dynamic>>() as List<Map<String, dynamic>>?;
     if (contentRoot == null) {
       return;
     }
-    for (var content in contentRoot) {
+    for (final content in contentRoot) {
       var commentRaw = content['comment']['commentRenderer'];
-      String continuation;
-      String clickTrackingParams;
+      String? continuation;
+      String? clickTrackingParams;
       if (content['replies'] != null) {
         continuation = content['replies']['commentRepliesRenderer']
                 ['continuations']
@@ -96,12 +96,12 @@ class CommentsClient {
       yield comment;
     }
     var continuationRoot = (data
-            ?.get('response')
+            .get('response')
             ?.get('continuationContents')
             ?.get('itemSectionContinuation')
             ?.getValue('continuations')
             ?.first as Map<String, dynamic>)
-        ?.get('nextContinuationData');
+        .get('nextContinuationData');
     if (continuationRoot != null) {
       yield* _getComments(
           continuationRoot['continuation'],
@@ -113,7 +113,7 @@ class CommentsClient {
   }
 
   String _parseRuns(Map<dynamic, dynamic> runs) =>
-      runs?.getValue('runs')?.map((e) => e['text'])?.join() ?? '';
+      runs.getValue('runs')?.map((e) => e['text'])?.join() ?? '';
 
 //TODO: Implement replies
 /*  Stream<Comment> getReplies(Video video, Comment comment) async* {

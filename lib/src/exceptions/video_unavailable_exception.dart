@@ -22,5 +22,6 @@ class VideoUnavailableException implements VideoUnplayableException {
             'Please report this issue on GitHub in that case.';
 
   @override
-  String toString() => '$runtimeType: $message';
+  String toString() =>
+      '$runtimeType: $message'; // ignore: no_runtimetype_tostring
 }

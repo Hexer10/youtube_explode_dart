@@ -9,15 +9,14 @@ class DashManifest {
   static final _urlSignatureExp = RegExp(r'/s/(.*?)(?:/|$)');
 
   final xml.XmlDocument _root;
-  Iterable<_StreamInfo> _streams;
 
   ///
-  Iterable<_StreamInfo> get streams => _streams ??= _root
+  late final Iterable<_StreamInfo> streams = _root
       .findElements('Representation')
       .where((e) => e
           .findElements('Initialization')
           .first
-          .getAttribute('sourceURL')
+          .getAttribute('sourceURL')!
           .contains('sq/'))
       .map((e) => _StreamInfo(e));
 
@@ -37,50 +36,53 @@ class DashManifest {
   }
 
   ///
-  static String getSignatureFromUrl(String url) =>
+  static String? getSignatureFromUrl(String url) =>
       _urlSignatureExp.firstMatch(url)?.group(1);
 }
 
 class _StreamInfo extends StreamInfoProvider {
   static final _contentLenExp = RegExp(r'[/\?]clen[/=](\d+)');
-  static final _containerExp = RegExp(r'mime[/=]\w*%2F([\w\d]*)');
 
-  final xml.XmlElement _root;
+  final xml.XmlElement root;
 
-  _StreamInfo(this._root);
-
-  @override
-  int get tag => int.parse(_root.getAttribute('id'));
+  _StreamInfo(this.root);
 
   @override
-  String get url => _root.getAttribute('BaseURL');
+  late final int tag = int.parse(root.getAttribute('id')!);
 
   @override
-  int get contentLength => int.parse(_root.getAttribute('contentLength') ??
-      _contentLenExp.firstMatch(url).group(1));
+  late final String url = root.getAttribute('BaseURL')!;
 
   @override
-  int get bitrate => int.parse(_root.getAttribute('bandwidth'));
+  late final int contentLength = int.parse(
+      (root.getAttribute('contentLength') ??
+          _contentLenExp.firstMatch(url)?.group(1))!);
 
   @override
-  String get container =>
-      Uri.decodeFull(_containerExp.firstMatch(url).group(1));
-
-  bool get isAudioOnly =>
-      _root.findElements('AudioChannelConfiguration').isNotEmpty;
+  late final int bitrate = int.parse(root.getAttribute('bandwidth')!);
 
   @override
-  String get audioCodec => isAudioOnly ? null : _root.getAttribute('codecs');
+  late final String? container = '';
+  /*
+      Uri.decodeFull((_containerExp.firstMatch(url)?.group(1))!);*/
+
+  late final bool isAudioOnly =
+      root.findElements('AudioChannelConfiguration').isNotEmpty;
 
   @override
-  String get videoCodec => isAudioOnly ? _root.getAttribute('codecs') : null;
+  late final String? audioCodec =
+      isAudioOnly ? null : root.getAttribute('codecs');
 
   @override
-  int get videoWidth => int.parse(_root.getAttribute('width'));
+  late final String? videoCodec =
+      isAudioOnly ? root.getAttribute('codecs') : null;
 
   @override
-  int get videoHeight => int.parse(_root.getAttribute('height'));
+  late final int videoWidth = int.parse(root.getAttribute('width')!);
 
   @override
-  int get framerate => int.parse(_root.getAttribute('framerate'));
+  late final int videoHeight = int.parse(root.getAttribute('height')!);
+
+  @override
+  late final int framerate = int.parse(root.getAttribute('framerate')!);
 }

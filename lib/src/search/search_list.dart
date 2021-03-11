@@ -43,13 +43,14 @@ class SearchList extends DelegatingList<Video> {
   }
 
   /// Format: <quantity> <unit> ago (5 years ago)
-  static DateTime _stringToDateTime(String string) {
+  static DateTime? _stringToDateTime(String? string) {
     if (string == null) {
       return null;
     }
 
     var parts = string.split(' ');
-    if (parts.length == 4) { // Streamed x y ago
+    if (parts.length == 4) {
+      // Streamed x y ago
       parts = parts.skip(1).toList();
     }
     assert(parts.length == 3);
@@ -82,8 +83,8 @@ class SearchList extends DelegatingList<Video> {
   }
 
   /// Format: HH:MM:SS
-  static Duration _stringToDuration(String string) {
-    if (string == null || string.trim().isEmpty) {
+  static Duration? _stringToDuration(String string) {
+    if (/*string == null ||*/ string.trim().isEmpty) {
       return null;
     }
 

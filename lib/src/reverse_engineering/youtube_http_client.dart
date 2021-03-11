@@ -63,6 +63,10 @@ class YoutubeHttpClient extends http.BaseClient {
   @override
   Future<http.Response> get(dynamic url,
       {Map<String, String>? headers = const {}, bool validate = false}) async {
+    assert(url is String || url is Uri);
+    if (url is String) {
+      url = Uri.parse(url);
+    }
     var response = await super.get(url, headers: headers);
     if (validate) {
       _validateResponse(response, response.statusCode);

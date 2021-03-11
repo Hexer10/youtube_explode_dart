@@ -23,7 +23,7 @@ class Video with EquatableMixin {
 
   /// Video author Id.
   /// Note: null if the video is from a search query.
-  final ChannelId channelId;
+  final ChannelId? channelId;
 
   /// Video upload date.
   /// Note: For search queries it is calculated with:
@@ -34,7 +34,7 @@ class Video with EquatableMixin {
   final String description;
 
   /// Duration of the video.
-  final Duration duration;
+  final Duration? duration;
 
   /// Available thumbnails for this video.
   final ThumbnailSet thumbnails;
@@ -76,34 +76,4 @@ class Video with EquatableMixin {
 
   @override
   List<Object> get props => [id];
-}
-
-/// See [Video].
-/// This class has no nullable values.
-class SafeVideo extends Video {
-  @override
-  final DateTime uploadDate;
-
-  @override
-  final SafeEngagement engagement;
-
-  @override
-  final bool isLive;
-
-  ///
-  SafeVideo(
-      VideoId id,
-      String title,
-      String author,
-      ChannelId channelId,
-      this.uploadDate,
-      String description,
-      Duration duration,
-      ThumbnailSet thumbnails,
-      Iterable<String>? keywords,
-      this.engagement,
-      this.isLive, // ignore: avoid_positional_boolean_parameters
-      [WatchPage? watchPage])
-      : super(id, title, author, channelId, uploadDate, description, duration,
-            thumbnails, keywords, engagement, isLive, watchPage);
 }

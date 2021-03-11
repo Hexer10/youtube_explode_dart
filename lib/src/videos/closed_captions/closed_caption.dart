@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'closed_caption_part.dart';
@@ -35,8 +36,8 @@ class ClosedCaption {
   /// relative to this caption's offset.
   /// Returns null if not found.
   /// Note that some captions may not have any parts at all.
-  ClosedCaptionPart getPartByTime(Duration offset) =>
-      parts.firstWhere((e) => e.offset >= offset, orElse: () => null));
+  ClosedCaptionPart? getPartByTime(Duration offset) =>
+      parts.firstWhereOrNull((e) => e.offset >= offset);
 
   @override
   String toString() => 'Text: $text';

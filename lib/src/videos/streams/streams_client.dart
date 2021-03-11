@@ -26,7 +26,7 @@ class StreamsClient {
     var signature =
         DashManifest.getSignatureFromUrl(dashManifestUrl.toString());
     if (!signature.isNullOrWhiteSpace) {
-      signature = cipherOperations.decipher(signature);
+      signature = cipherOperations.decipher(signature!);
       dashManifestUrl = dashManifestUrl.setQueryParam('signature', signature);
     }
     return DashManifest.get(_httpClient, dashManifestUrl);
@@ -41,7 +41,7 @@ class StreamsClient {
 
     var playerSource = await PlayerSource.get(
         _httpClient, embedPage.sourceUrl ?? playerConfig.sourceUrl);
-    var cipherOperations = playerSource.getCiperOperations();
+    var cipherOperations = playerSource.getCipherOperations();
 
     var videoInfoResponse = await VideoInfoResponse.get(
         _httpClient, videoId.toString(), playerSource.sts);
@@ -50,12 +50,12 @@ class StreamsClient {
     var previewVideoId = playerResponse.previewVideoId;
     if (!previewVideoId.isNullOrWhiteSpace) {
       throw VideoRequiresPurchaseException.preview(
-          videoId, VideoId(previewVideoId));
+          videoId, VideoId(previewVideoId!));
     }
 
     if (!playerResponse.isVideoPlayable) {
       throw VideoUnplayableException.unplayable(videoId,
-          reason: playerResponse.getVideoPlayabilityError());
+          reason: playerResponse.videoPlayabilityError ?? '');
     }
 
     if (playerResponse.isLive) {
@@ -70,7 +70,7 @@ class StreamsClient {
     var dashManifestUrl = playerResponse.dashManifestUrl;
     if (!dashManifestUrl.isNullOrWhiteSpace) {
       var dashManifest =
-          await _getDashManifest(Uri.parse(dashManifestUrl), cipherOperations);
+          await _getDashManifest(Uri.parse(dashManifestUrl!), cipherOperations);
       streamInfoProviders.addAll(dashManifest.streams);
     }
     return StreamContext(streamInfoProviders, cipherOperations);
@@ -79,7 +79,7 @@ class StreamsClient {
   Future<StreamContext> _getStreamContextFromWatchPage(VideoId videoId) async {
     var watchPage = await WatchPage.get(_httpClient, videoId.toString());
 
-    WatchPlayerConfig playerConfig;
+    WatchPlayerConfig? playerConfig;
     try {
       playerConfig = watchPage.playerConfig;
     } on FormatException {
@@ -92,21 +92,21 @@ class StreamsClient {
     }
 
     var previewVideoId = playerResponse.previewVideoId;
-    if (!(previewVideoId.isNullOrWhiteSpace ?? true)) {
+    if (!previewVideoId.isNullOrWhiteSpace) {
       throw VideoRequiresPurchaseException.preview(
-          videoId, VideoId(previewVideoId));
+          videoId, VideoId(previewVideoId!));
     }
 
     var playerSourceUrl = watchPage.sourceUrl ?? playerConfig?.sourceUrl;
     var playerSource = !playerSourceUrl.isNullOrWhiteSpace
-        ? await PlayerSource.get(_httpClient, playerSourceUrl)
+        ? await PlayerSource.get(_httpClient, playerSourceUrl!)
         : null;
     var cipherOperations =
-        playerSource?.getCiperOperations() ?? const <CipherOperation>[];
+        playerSource?.getCipherOperations() ?? const <CipherOperation>[];
 
     if (!playerResponse.isVideoPlayable) {
       throw VideoUnplayableException.unplayable(videoId,
-          reason: playerResponse.getVideoPlayabilityError());
+          reason: playerResponse.videoPlayabilityError ?? '');
     }
 
     if (playerResponse.isLive) {
@@ -120,7 +120,7 @@ class StreamsClient {
     var dashManifestUrl = playerResponse.dashManifestUrl;
     if (!(dashManifestUrl?.isNullOrWhiteSpace ?? true)) {
       var dashManifest =
-          await _getDashManifest(Uri.parse(dashManifestUrl), cipherOperations);
+          await _getDashManifest(Uri.parse(dashManifestUrl!), cipherOperations);
       streamInfoProviders.addAll(dashManifest.streams);
     }
     return StreamContext(streamInfoProviders, cipherOperations);
@@ -130,7 +130,7 @@ class StreamsClient {
     // To make sure there are no duplicates streams, group them by tag
     var streams = <int, StreamInfo>{};
 
-    for (var streamInfo in streamContext.streamInfoProviders) {
+    for (final streamInfo in streamContext.streamInfoProviders) {
       var tag = streamInfo.tag;
       var url = Uri.parse(streamInfo.url);
 
@@ -139,7 +139,7 @@ class StreamsClient {
       var signatureParameter = streamInfo.signatureParameter ?? 'signature';
 
       if (!signature.isNullOrWhiteSpace) {
-        signature = streamContext.cipherOperations.decipher(signature);
+        signature = streamContext.cipherOperations.decipher(signature!);
         url = url.setQueryParam(signatureParameter, signature);
       }
 
@@ -153,9 +153,9 @@ class StreamsClient {
       }
 
       // Common
-      var container = StreamContainer.parse(streamInfo.container);
+      var container = StreamContainer.parse(streamInfo.container!);
       var fileSize = FileSize(contentLength);
-      var bitrate = Bitrate(streamInfo.bitrate);
+      var bitrate = Bitrate(streamInfo.bitrate!);
 
       var audioCodec = streamInfo.audioCodec;
       var videoCodec = streamInfo.videoCodec;
@@ -165,14 +165,14 @@ class StreamsClient {
         var framerate = Framerate(streamInfo.framerate ?? 24);
         var videoQualityLabel = streamInfo.videoQualityLabel ??
             VideoQualityUtil.getLabelFromTagWithFramerate(
-                tag, framerate.framesPerSecond);
+                tag, framerate.framesPerSecond.toDouble());
 
         var videoQuality = VideoQualityUtil.fromLabel(videoQualityLabel);
 
         var videoWidth = streamInfo.videoWidth;
         var videoHeight = streamInfo.videoHeight;
         var videoResolution = videoWidth != -1 && videoHeight != -1
-            ? VideoResolution(videoWidth, videoHeight)
+            ? VideoResolution(videoWidth ?? 0, videoHeight ?? 0)
             : videoQuality.toVideoResolution();
 
         // Muxed
@@ -183,8 +183,8 @@ class StreamsClient {
               container,
               fileSize,
               bitrate,
-              audioCodec,
-              videoCodec,
+              audioCodec!,
+              videoCodec!,
               videoQualityLabel,
               videoQuality,
               videoResolution,
@@ -199,7 +199,7 @@ class StreamsClient {
             container,
             fileSize,
             bitrate,
-            videoCodec,
+            videoCodec!,
             videoQualityLabel,
             videoQuality,
             videoResolution,
@@ -209,7 +209,7 @@ class StreamsClient {
       // Audio-only
       if (!audioCodec.isNullOrWhiteSpace) {
         streams[tag] = AudioOnlyStreamInfo(
-            tag, url, container, fileSize, bitrate, audioCodec);
+            tag, url, container, fileSize, bitrate, audioCodec!);
       }
 
       // #if DEBUG
@@ -244,7 +244,7 @@ class StreamsClient {
     var playerResponse = videoInfoResponse.playerResponse;
     if (!playerResponse.isVideoPlayable) {
       throw VideoUnplayableException.unplayable(videoId,
-          reason: playerResponse.getVideoPlayabilityError());
+          reason: playerResponse.videoPlayabilityError ?? '');
     }
 
     var hlsManifest = playerResponse.hlsManifestUrl;

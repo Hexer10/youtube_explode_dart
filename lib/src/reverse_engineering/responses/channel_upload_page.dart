@@ -1,26 +1,31 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
 import '../../channels/channel_video.dart';
 import '../../exceptions/exceptions.dart';
+import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../../videos/videos.dart';
 import '../youtube_http_client.dart';
-import 'generated/channel_upload_page_id.g.dart';
 
 ///
 class ChannelUploadPage {
   ///
   final String channelId;
-  final Document _root;
+  final Document? _root;
 
-  late final _InitialData _initialData = _getInitialData();
+  late final _InitialData initialData = _getInitialData();
+  _InitialData? _initialData;
 
   ///
   _InitialData _getInitialData() {
-    final scriptText = _root
+    if (_initialData != null) {
+      return _initialData!;
+    }
+    final scriptText = _root!
         .querySelectorAll('script')
         .map((e) => e.text)
         .toList(growable: false);
@@ -29,16 +34,16 @@ class ChannelUploadPage {
         (e) => e.contains('window["ytInitialData"] ='),
         orElse: () => '');
     if (initialDataText.isNotEmpty) {
-      return _InitialData(ChannelUploadPageId.fromRawJson(
-          _extractJson(initialDataText, 'window["ytInitialData"] =')));
+      return _InitialData(json
+          .decode(_extractJson(initialDataText, 'window["ytInitialData"] =')));
     }
 
     initialDataText = scriptText.firstWhere(
         (e) => e.contains('var ytInitialData = '),
         orElse: () => '');
     if (initialDataText.isNotEmpty) {
-      return _InitialData(ChannelUploadPageId.fromRawJson(
-          _extractJson(initialDataText, 'var ytInitialData = ')));
+      return _InitialData(
+          json.decode(_extractJson(initialDataText, 'var ytInitialData = ')));
     }
 
     throw TransientFailureException(
@@ -69,11 +74,11 @@ class ChannelUploadPage {
   }
 
   ///
-  ChannelUploadPage(this._root, this.channelId, [_InitialData initialData])
+  ChannelUploadPage(this._root, this.channelId, [_InitialData? initialData])
       : _initialData = initialData;
 
   ///
-  Future<ChannelUploadPage> nextPage(YoutubeHttpClient httpClient) {
+  Future<ChannelUploadPage?> nextPage(YoutubeHttpClient httpClient) {
     if (initialData.continuation.isEmpty) {
       return Future.value(null);
     }
@@ -81,15 +86,14 @@ class ChannelUploadPage {
         'https://www.youtube.com/browse_ajax?ctoken=${initialData.continuation}&continuation=${initialData.continuation}&itct=${initialData.clickTrackingParams}';
     return retry(() async {
       var raw = await httpClient.getString(url);
-      return ChannelUploadPage(null, channelId,
-          _InitialData(ChannelUploadPageId.fromJson(json.decode(raw)[1])));
+      return ChannelUploadPage(
+          null, channelId, _InitialData(json.decode(raw)[1]));
     });
   }
 
   ///
   static Future<ChannelUploadPage> get(
       YoutubeHttpClient httpClient, String channelId, String sorting) {
-    assert(sorting != null);
     var url =
         'https://www.youtube.com/channel/$channelId/videos?view=0&sort=$sorting&flow=grid';
     return retry(() async {
@@ -105,81 +109,100 @@ class ChannelUploadPage {
 
 class _InitialData {
   // Json parsed map
-  final ChannelUploadPageId root;
+  final Map<String, dynamic> root;
 
   _InitialData(this.root);
 
-  /* Cache results */
+  late final Map<String, dynamic>? continuationContext =
+      getContinuationContext();
 
-  List<ChannelVideo> _uploads;
-  String _continuation;
-  String _clickTrackingParams;
+  late final String clickTrackingParams =
+      continuationContext?.getT<String>('continuationContext') ?? '';
 
-  List<GridRendererItem> getContentContext() {
-    if (root.contents != null) {
-      return root.contents.twoColumnBrowseResultsRenderer.tabs
-          .map((e) => e.tabRenderer)
-          .firstWhere((e) => e.selected)
-          .content
-          .sectionListRenderer
-          .contents
-          .first
-          .itemSectionRenderer
-          .contents
-          .first
-          .gridRenderer
-          .items;
+  late final List<ChannelVideo> uploads =
+      getContentContext().map(_parseContent).whereNotNull().toList();
+
+  late final String continuation =
+      continuationContext?.getT<String>('continuation') ?? '';
+
+  List<Map<String, dynamic>> getContentContext() {
+    List<Map<String, dynamic>>? context;
+    if (root.containsKey('contents')) {
+      context = root
+          .get('contents')
+          ?.get('twoColumnBrowseResultsRenderer')
+          ?.getList('tabs')
+          ?.map((e) => e['tabRenderer'])
+          .cast<Map<String, dynamic>>()
+          .firstWhereOrNull((e) => e['selected'] as bool)
+          ?.get('content')
+          ?.get('sectionListRenderer')
+          ?.getList('contents')
+          ?.firstOrNull
+          ?.get('itemSectionRenderer')
+          ?.getList('contents')
+          ?.firstOrNull
+          ?.get('gridRenderer')
+          ?.getList('items')
+          ?.cast<Map<String, dynamic>>();
     }
-    if (root.response != null) {
-      return root.response.continuationContents.gridContinuation.items;
+    if (context == null && root.containsKey('response')) {
+      context = root
+          .get('response')
+          ?.get('continuationContents')
+          ?.get('gridContinuation')
+          ?.getList('items')
+          ?.cast<Map<String, dynamic>>();
     }
-    throw FatalFailureException('Failed to get initial data context.');
+    if (context == null) {
+      throw FatalFailureException('Failed to get initial data context.');
+    }
+    return context;
   }
 
-  NextContinuationData getContinuationContext() {
-    if (root.contents != null) {
-      return root.contents?.twoColumnBrowseResultsRenderer?.tabs
-          ?.map((e) => e.tabRenderer)
-          ?.firstWhere((e) => e.selected)
-          ?.content
-          ?.sectionListRenderer
-          ?.contents
-          ?.first
-          ?.itemSectionRenderer
-          ?.contents
-          ?.first
-          ?.gridRenderer
-          ?.continuations
-          ?.first
-          ?.nextContinuationData;
+  Map<String, dynamic>? getContinuationContext() {
+    if (root.containsKey('contents')) {
+      return root
+          .get('contents')
+          ?.get('twoColumnBrowseResultsRenderer')
+          ?.getList('tabs')
+          ?.map((e) => e['tabRenderer'])
+          .cast<Map<String, dynamic>>()
+          .firstWhereOrNull((e) => e['selected'] as bool)
+          ?.get('content')
+          ?.get('sectionListRenderer')
+          ?.getList('contents')
+          ?.firstOrNull
+          ?.get('itemSectionRenderer')
+          ?.getList('contents')
+          ?.firstOrNull
+          ?.get('gridRenderer')
+          ?.getList('continuations')
+          ?.firstOrNull
+          ?.get('nextContinuationData');
     }
-    if (root.response != null) {
-      return root?.response?.continuationContents?.gridContinuation
-          ?.continuations?.first?.nextContinuationData;
+    if (root.containsKey('response')) {
+      return root
+          .get('response')
+          ?.get('continuationContents')
+          ?.get('gridContinuation')
+          ?.getList('continuations')
+          ?.firstOrNull
+          ?.get('nextContinuationData');
     }
     return null;
   }
 
-  List<ChannelVideo> get uploads => _uploads ??= getContentContext()
-      ?.map(_parseContent)
-      ?.where((e) => e != null)
-      ?.toList();
-
-  String get continuation =>
-      _continuation ??= getContinuationContext()?.continuation ?? '';
-
-  String get clickTrackingParams => _clickTrackingParams ??=
-      getContinuationContext()?.clickTrackingParams ?? '';
-
-  ChannelVideo _parseContent(GridRendererItem content) {
-    if (content == null || content.gridVideoRenderer == null) {
+  ChannelVideo? _parseContent(Map<String, dynamic>? content) {
+    if (content == null || !content.containsKey('gridVideoRenderer')) {
       return null;
     }
-    var video = content.gridVideoRenderer;
+
+    var video = content.get('gridVideoRenderer')!;
     return ChannelVideo(
-        VideoId(video.videoId),
-        video.title?.simpleText ??
-            video.title?.runs?.map((e) => e.text)?.join() ??
+        VideoId(video.getT<String>('videoId')!),
+        video.get('title')?.getT<String>('simpleText') ??
+            video.get('title')?.getList('runs')?.map((e) => e['text']).join() ??
             '');
   }
 }

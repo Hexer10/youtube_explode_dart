@@ -12,7 +12,7 @@ final yt = YoutubeExplode();
 Future<void> main() async {
   stdout.writeln('Type the video id or url: ');
 
-  var url = stdin.readLineSync().trim();
+  var url = stdin.readLineSync()!.trim();
 
   // Save the video to the download directory.
   Directory('downloads').createSync();
@@ -66,7 +66,7 @@ Future<void> download(String id) async {
 
   // Listen for data received.
   var progressBar = ProgressBar();
-  await for (var data in audioStream) {
+  await for (final data in audioStream) {
     // Keep track of the current downloaded data.
     count += data.length;
 

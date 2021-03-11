@@ -49,9 +49,6 @@ class ChannelClient {
   Future<ChannelAbout> getAboutPage(dynamic id) async {
     id = ChannelId.fromString(id);
 
-    var channelAboutPage = await ChannelAboutPage.get(_httpClient, id.value);
-    var iData = channelAboutPage.initialData;
-    assert(iData != null);
     return ChannelAbout(
         id.description,
         id.viewCount,
@@ -74,7 +71,6 @@ class ChannelClient {
     var channelAboutPage =
         await ChannelAboutPage.getByUsername(_httpClient, username.value);
     var id = channelAboutPage.initialData;
-    assert(id != null);
     return ChannelAbout(
         id.description,
         id.viewCount,
@@ -82,7 +78,7 @@ class ChannelClient {
         id.title,
         [
           for (var e in id.avatar)
-            Thumbnail(Uri.parse(e.url), e.height, e.width)
+            Thumbnail(Uri.parse(e['url']), e['height'], e['width'])
         ],
         id.country,
         id.channelLinks);
@@ -118,13 +114,13 @@ class ChannelClient {
   Stream<ChannelVideo> getUploadsFromPage(dynamic channelId,
       [VideoSorting videoSorting = VideoSorting.newest]) async* {
     channelId = ChannelId.fromString(channelId);
-    var page = await ChannelUploadPage.get(
-        _httpClient, channelId.value, videoSorting.code);
+    ChannelUploadPage? page = await ChannelUploadPage.get(
+        _httpClient, (channelId as ChannelId).value, videoSorting.code);
     yield* Stream.fromIterable(page.initialData.uploads);
 
     // ignore: literal_only_boolean_expressions
     while (true) {
-      page = await page.nextPage(_httpClient);
+      page = await page!.nextPage(_httpClient);
       if (page == null) {
         return;
       }

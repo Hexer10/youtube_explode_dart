@@ -1,6 +1,7 @@
 import 'package:http_parser/http_parser.dart';
 
 import '../../exceptions/exceptions.dart';
+import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
 import 'player_response.dart';
@@ -8,56 +9,49 @@ import 'stream_info_provider.dart';
 
 ///
 class VideoInfoResponse {
-  final Map<String, String> _root;
-
-  String _status;
-  bool _isVideoAvailable;
-  PlayerResponse _playerResponse;
-  Iterable<_StreamInfo> _muxedStreams;
-  Iterable<_StreamInfo> _adaptiveStreams;
-  Iterable<_StreamInfo> _streams;
+  final Map<String, String> root;
 
   ///
-  String get status => _status ??= _root['status'];
+  late final String status = root['status']!;
 
   ///
-  bool get isVideoAvailable =>
-      _isVideoAvailable ??= status.toLowerCase() != 'fail';
+  late final bool isVideoAvailable = status.toLowerCase() != 'fail';
 
   ///
-  PlayerResponse get playerResponse =>
-      _playerResponse ??= PlayerResponse.parse(_root['player_response']);
+  late final PlayerResponse playerResponse =
+      PlayerResponse.parse(root['player_response']!);
 
   ///
-  Iterable<_StreamInfo> get muxedStreams =>
-      _muxedStreams ??= _root['url_encoded_fmt_stream_map']
+  late final Iterable<_StreamInfo> muxedStreams =
+      root['url_encoded_fmt_stream_map']
               ?.split(',')
-              ?.map(Uri.splitQueryString)
-              ?.map((e) => _StreamInfo(e)) ??
+              .map(Uri.splitQueryString)
+              .map((e) => _StreamInfo(e)) ??
           const [];
 
   ///
-  Iterable<_StreamInfo> get adaptiveStreams =>
-      _adaptiveStreams ??= _root['adaptive_fmts']
-              ?.split(',')
-              ?.map(Uri.splitQueryString)
-              ?.map((e) => _StreamInfo(e)) ??
-          const [];
+  late final Iterable<_StreamInfo> adaptiveStreams = root['adaptive_fmts']
+          ?.split(',')
+          .map(Uri.splitQueryString)
+          .map((e) => _StreamInfo(e)) ??
+      const [];
 
   ///
-  Iterable<_StreamInfo> get streams =>
-      _streams ??= [...muxedStreams, ...adaptiveStreams];
+  late final Iterable<_StreamInfo> streams = [
+    ...muxedStreams,
+    ...adaptiveStreams
+  ];
 
   ///
-  VideoInfoResponse(this._root);
+  VideoInfoResponse(this.root);
 
   ///
-  VideoInfoResponse.parse(String raw) : _root = Uri.splitQueryString(raw);
+  VideoInfoResponse.parse(String raw) : root = Uri.splitQueryString(raw);
 
   ///
   static Future<VideoInfoResponse> get(
       YoutubeHttpClient httpClient, String videoId,
-      [String sts]) {
+      [String? sts]) {
     var eurl = Uri.encodeFull('https://youtube.googleapis.com/v/$videoId');
     var url =
         'https://youtube.com/get_video_info?video_id=$videoId&el=embedded&eurl=$eurl&hl=en${sts != null ? '&sts=$sts' : ''}';
@@ -74,75 +68,65 @@ class VideoInfoResponse {
 }
 
 class _StreamInfo extends StreamInfoProvider {
-  final Map<String, String> _root;
-
-  int _tag;
-  String _url;
-  String _signature;
-  String _signatureParameter;
-  int _contentLength;
-  int _bitrate;
-  MediaType _mimeType;
-  String _container;
-  List<String> _codecs;
-  String _audioCodec;
-  String _videoCodec;
-  bool _isAudioOnly;
-  String _videoQualityLabel;
-  List<int> __size;
-  int _videoWidth;
-  int _videoHeight;
-  int _framerate;
+  final Map<String, String> root;
 
   @override
-  int get tag => _tag ??= int.parse(_root['itag']);
+  late final int tag = int.parse(root['itag']!);
 
   @override
-  String get url => _url ??= _root['url'];
+  late final String url = root['url']!;
 
   @override
-  String get signature => _signature ??= _root['s'];
+  late final String? signature = root['s'];
 
   @override
-  String get signatureParameter => _signatureParameter ??= _root['sp'];
+  late final String? signatureParameter = root['sp'];
 
   @override
-  int get contentLength => _contentLength ??= int.tryParse(_root['clen'] ??
-      StreamInfoProvider.contentLenExp.firstMatch(url).group(1));
+  late final int? contentLength = int.tryParse(root['clen'] ??
+      StreamInfoProvider.contentLenExp.firstMatch(url)?.group(1) ??
+      '');
 
   @override
-  int get bitrate => _bitrate ??= int.parse(_root['bitrate']);
+  late final int? bitrate = int.tryParse(root['bitrate'] ?? '');
 
-  MediaType get mimeType => _mimeType ??= MediaType.parse(_root['type']);
-
-  @override
-  String get container => _container ??= mimeType.subtype;
-
-  List<String> get codecs =>
-      _codecs ??= mimeType.parameters['codecs'].split(',').map((e) => e.trim());
+  late final MediaType mimeType = MediaType.parse(root['type']!);
 
   @override
-  String get audioCodec => _audioCodec ??= codecs.last;
+  late final String container = mimeType.subtype;
+
+  late final List<String> codecs = mimeType.parameters['codecs']!
+      .split(',')
+      .map((e) => e.trim())
+      .toList()
+      .cast<String>();
 
   @override
-  String get videoCodec => _videoCodec ??= isAudioOnly ? null : codecs.first;
-
-  bool get isAudioOnly => _isAudioOnly ??= mimeType.type == 'audio';
+  late final String audioCodec = codecs.last;
 
   @override
-  String get videoQualityLabel => _videoQualityLabel ??= _root['quality_label'];
+  late final String? videoCodec = isAudioOnly ? null : codecs.first;
 
-  List<int> get _size =>
-      __size ??= _root['size'].split(',').map((e) => int.tryParse(e ?? ''));
-
-  @override
-  int get videoWidth => _videoWidth ??= _size.first;
+  late final bool isAudioOnly = mimeType.type == 'audio';
 
   @override
-  int get videoHeight => _videoHeight ??= _size.last;
+  late final String? videoQualityLabel = root['quality_label'];
+
+  late final List<int>? _size = root
+      .getT<String>('size')
+      ?.split(',')
+      .map((e) => int.tryParse(e))
+      .toList()
+      .cast<int>();
 
   @override
-  int get framerate => _framerate ??= int.tryParse(_root['fps'] ?? '');
+  late final int? videoWidth = _size?.first;
 
-  _StreamInfo(this._root);
+  @override
+  late final int? videoHeight = _size?.last;
+
+  @override
+  late final int? framerate = int.tryParse(root['fps'] ?? '');
+
+  _StreamInfo(this.root);
 }

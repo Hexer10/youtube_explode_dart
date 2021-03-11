@@ -22,5 +22,6 @@ Response: (${response.statusCode})
 ''';
 
   @override
-  String toString() => '$runtimeType: $message';
+  String toString() =>
+      '$runtimeType: $message'; // ignore: no_runtimetype_tostring
 }

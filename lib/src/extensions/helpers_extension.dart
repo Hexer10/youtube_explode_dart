@@ -42,6 +42,8 @@ extension StringUtility on String {
     }
     return buffer.toString();
   }
+
+  DateTime parseDateTime() => DateTime.parse(this);
 }
 
 /// Utility for Strings.
@@ -66,7 +68,7 @@ extension StringUtility2 on String? {
 extension ListDecipher on Iterable<CipherOperation> {
   /// Apply every CipherOperation on the [signature]
   String decipher(String signature) {
-    for (var operation in this) {
+    for (final operation in this) {
       signature = operation.decipher(signature);
     }
 
@@ -76,14 +78,6 @@ extension ListDecipher on Iterable<CipherOperation> {
 
 /// List Utility.
 extension ListUtil<E> on Iterable<E> {
-  /// Returns the first element of a list or null if empty.
-  E? get firstOrNull {
-    if (length == 0) {
-      return null;
-    }
-    return first;
-  }
-
   /// Same as [elementAt] but if the index is higher than the length returns
   /// null
   E? elementAtSafe(int index) {
@@ -91,16 +85,6 @@ extension ListUtil<E> on Iterable<E> {
       return null;
     }
     return elementAt(index);
-  }
-
-  /// Same as [firstWhere] but returns null if no found
-  E? firstWhereNull(bool Function(E element) test) {
-    for (final element in this) {
-      if (test(element)) {
-        return element;
-      }
-    }
-    return null;
   }
 }
 
@@ -180,5 +164,5 @@ extension UriUtils on Uri {
 /// Parse properties with `text` method.
 extension RunsParser on List<dynamic> {
   ///
-  String parseRuns() => map((e) => e['text']).join() ?? '';
+  String parseRuns() => map((e) => e['text']).join();
 }

@@ -27,11 +27,11 @@ class Comment with EquatableMixin {
 
   /// Used internally.
   /// Shouldn't be used in the code.
-  final String continuation;
+  final String? continuation;
 
   /// Used internally.
   /// Shouldn't be used in the code.
-  final String clicktrackingParams;
+  final String? clicktrackingParams;
 
   /// Initializes an instance of [Comment]
   Comment(

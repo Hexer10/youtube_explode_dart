@@ -9,7 +9,7 @@ class ChannelId with EquatableMixin {
 
   /// Initializes an instance of [ChannelId]
   ChannelId(String value) : value = parseChannelId(value) ?? '' {
-    if (value.isEmpty) {
+    if (this.value.isEmpty) {
       throw ArgumentError.value(value);
     }
   }

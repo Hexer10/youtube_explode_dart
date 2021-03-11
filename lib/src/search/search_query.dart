@@ -23,7 +23,7 @@ class SearchQuery {
 
   /// Get the data of the next page.
   /// Returns null if there is no next page.
-  Future<SearchQuery> nextPage() async {
+  Future<SearchQuery?> nextPage() async {
     var page = await _page.nextPage(_httpClient);
     if (page == null) {
       return null;

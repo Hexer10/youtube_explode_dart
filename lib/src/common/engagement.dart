@@ -33,23 +33,3 @@ class Engagement extends Equatable {
   @override
   List<Object?> get props => [viewCount, likeCount, dislikeCount];
 }
-
-/// User activity statistics.
-/// No null types
-class SafeEngagement extends Engagement {
-  @override
-  final int viewCount;
-
-  @override
-  final int likeCount;
-
-  @override
-  final int dislikeCount;
-
-  /// Initializes an instance of [Engagement]
-  const SafeEngagement(this.viewCount, this.likeCount, this.dislikeCount)
-      : super(viewCount, likeCount, dislikeCount);
-
-  @override
-  List<Object> get props => [viewCount, likeCount, dislikeCount];
-}

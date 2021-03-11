@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'closed_caption.dart';
@@ -18,8 +19,8 @@ class ClosedCaptionTrack {
 
   /// Gets the caption displayed at the specified point in time.
   /// Returns null if not found.
-  ClosedCaption getByTime(Duration time) => captions
-      .firstWhere((e) => time >= e.offset && time <= e.end, orElse: () => null);
+  ClosedCaption? getByTime(Duration time) =>
+      captions.firstWhereOrNull((e) => time >= e.offset && time <= e.end);
 
   ///
   factory ClosedCaptionTrack.fromJson(Map<String, dynamic> json) =>

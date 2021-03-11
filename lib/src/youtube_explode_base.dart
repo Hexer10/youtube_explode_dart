@@ -11,30 +11,25 @@ class YoutubeExplode {
   final YoutubeHttpClient _httpClient;
 
   /// Queries related to YouTube videos.
-  VideoClient get videos => _videos;
+  late final VideoClient videos;
 
   /// Queries related to YouTube playlists.
-  PlaylistClient get playlists => _playlists;
+  late final PlaylistClient playlists;
 
   /// Queries related to YouTube channels.
-  ChannelClient get channels => _channels;
+  late final ChannelClient channels;
 
   /// YouTube search queries.
-  SearchClient get search => _search;
+  late final SearchClient search;
 
   /// Initializes an instance of [YoutubeClient].
-  YoutubeExplode([YoutubeHttpClient httpClient])
+  YoutubeExplode([YoutubeHttpClient? httpClient])
       : _httpClient = httpClient ?? YoutubeHttpClient() {
-    _videos = VideoClient(_httpClient);
-    _playlists = PlaylistClient(_httpClient);
-    _channels = ChannelClient(_httpClient);
-    _search = SearchClient(_httpClient);
+    videos = VideoClient(_httpClient);
+    playlists = PlaylistClient(_httpClient);
+    channels = ChannelClient(_httpClient);
+    search = SearchClient(_httpClient);
   }
-
-  VideoClient _videos;
-  PlaylistClient _playlists;
-  ChannelClient _channels;
-  SearchClient _search;
 
   /// Closes the HttpClient assigned to this [YoutubeHttpClient].
   /// Should be called after this is not used anymore.

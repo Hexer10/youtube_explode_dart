@@ -26,7 +26,7 @@ class SearchVideo extends BaseSearchContent {
   final List<Thumbnail> thumbnails;
 
   /// Video upload date - As string: 5 years ago.
-  final String uploadDate;
+  final String? uploadDate;
 
   /// True if this video is a live stream.
   final bool isLive;

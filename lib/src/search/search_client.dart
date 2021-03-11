@@ -18,8 +18,7 @@ class SearchClient {
   /// The videos are sent in batch of 20 videos.
   /// You [SearchList.nextPage] to get the next batch of videos.
   Future<SearchList> getVideos(String searchQuery) {
-    var stream =
-        getVideosFromPage(searchQuery, onlyVideos: true).cast<SearchVideo>();
+    var stream = getVideosFromPage(searchQuery).cast<SearchVideo>();
     return SearchList.create(stream);
   }
 
@@ -28,18 +27,18 @@ class SearchClient {
   /// Contains only instances of [SearchVideo] or [SearchPlaylist]
   Stream<BaseSearchContent> getVideosFromPage(String searchQuery,
       {bool onlyVideos = true}) async* {
-    var page =
+    SearchPage? page =
         await retry(() async => SearchPage.get(_httpClient, searchQuery));
     if (onlyVideos) {
       yield* Stream.fromIterable(
-          page.initialData.searchContent.whereType<SearchVideo>());
+          page!.initialData.searchContent.whereType<SearchVideo>());
     } else {
-      yield* Stream.fromIterable(page.initialData.searchContent);
+      yield* Stream.fromIterable(page!.initialData.searchContent);
     }
 
     // ignore: literal_only_boolean_expressions
     while (true) {
-      page = await page.nextPage(_httpClient);
+      page = await page!.nextPage(_httpClient);
       if (page == null) {
         return;
       }
