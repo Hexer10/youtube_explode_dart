@@ -123,6 +123,8 @@ class PlayerResponse {
   late final String? videoPlayabilityError =
       root.get('playabilityStatus')?.getT<String>('reason');
 
+  PlayerResponse(this.root);
+
   ///
   PlayerResponse.parse(String raw) : root = json.decode(raw);
 }

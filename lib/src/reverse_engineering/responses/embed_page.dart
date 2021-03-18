@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
@@ -11,8 +9,7 @@ import 'player_config_base.dart';
 
 ///
 class EmbedPage {
-  static final _playerConfigExp =
-      RegExp('[\'""]PLAYER_CONFIG[\'""]\\s*:\\s*(\\{.*\\})');
+  static final _playerConfigExp = RegExp('[\'""]PLAYER_CONFIG[\'""]\\s*:\\s*(\\{.*\\})');
   static final _playerConfigExp2 = RegExp(r'yt.setConfig\((\{.*\})');
 
   final Document root;
@@ -24,8 +21,7 @@ class EmbedPage {
         .querySelectorAll('*[name="player_ias/base"]')
         .map((e) => e.attributes['src'])
         .where((e) => !e.isNullOrWhiteSpace)
-        .firstWhere((e) => e!.contains('player_ias') && e.endsWith('.js'),
-            orElse: () => null);
+        .firstWhere((e) => e!.contains('player_ias') && e.endsWith('.js'), orElse: () => null);
     // _root.querySelector('*[name="player_ias/base"]').attributes['src'];
     if (url == null) {
       return null;
@@ -35,11 +31,11 @@ class EmbedPage {
 
   ///
   EmbedPlayerConfig? getPlayerConfig() {
-    var playerConfigJson = _playerConfigJson ?? _playerConfigJson2;
+    var playerConfigJson = (_playerConfigJson ?? _playerConfigJson2)?.extractJson();
     if (playerConfigJson == null) {
       return null;
     }
-    return EmbedPlayerConfig(json.decode(playerConfigJson.extractJson()));
+    return EmbedPlayerConfig(playerConfigJson);
   }
 
   String? get _playerConfigJson => root

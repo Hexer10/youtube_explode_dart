@@ -28,98 +28,43 @@ class SearchPage {
       return _initialData!;
     }
 
-    final scriptText = root!
-        .querySelectorAll('script')
-        .map((e) => e.text)
-        .toList(growable: false);
-
-    var initialDataText = scriptText
-        .firstWhereOrNull((e) => e.contains('window["ytInitialData"] ='));
-    if (initialDataText != null) {
-      return _initialData = _InitialData(json
-          .decode(_extractJson(initialDataText, 'window["ytInitialData"] =')));
-    }
-
-    initialDataText =
-        scriptText.firstWhereOrNull((e) => e.contains('var ytInitialData = '));
-    if (initialDataText != null) {
-      return _initialData = _InitialData(
-          json.decode(_extractJson(initialDataText, 'var ytInitialData = ')));
-    }
-
-    throw TransientFailureException(
-        'Failed to retrieve initial data from the search page, please report this to the project GitHub page.'); // ignore: lines_longer_than_80_chars
-  }
-
-  String _extractJson(String html, String separator) {
-    var index = html.indexOf(separator) + separator.length;
-    if (index > html.length) {
-      throw TransientFailureException(
-          'Failed to retrieve initial data from the search page, please report this to the project GitHub page. Couldn\'t extract json: $html');
-    }
-    return _matchJson(html.substring(index));
-  }
-
-  String _matchJson(String str) {
-    var bracketCount = 0;
-    var lastI = 0;
-    for (var i = 0; i < str.length; i++) {
-      lastI = i;
-      if (str[i] == '{') {
-        bracketCount++;
-      } else if (str[i] == '}') {
-        bracketCount--;
-      } else if (str[i] == ';') {
-        if (bracketCount == 0) {
-          return str.substring(0, i);
-        }
-      }
-    }
-    return str.substring(0, lastI + 1);
+    final scriptText = root!.querySelectorAll('script').map((e) => e.text).toList(growable: false);
+    return scriptText.extractGenericData(
+        (obj) => _InitialData(obj),
+        () => TransientFailureException(
+            'Failed to retrieve initial data from the search page, please report this to the project GitHub page.'));
   }
 
   ///
-  SearchPage(this.root, this.queryString, [_InitialData? initialData])
-      : _initialData = initialData;
+  SearchPage(this.root, this.queryString, [_InitialData? initialData]) : _initialData = initialData;
 
   Future<SearchPage?> nextPage(YoutubeHttpClient httpClient) async {
-    if (initialData.continuationToken == '' ||
-        initialData.estimatedResults == 0) {
+    if (initialData.continuationToken == '' || initialData.estimatedResults == 0) {
       return null;
     }
     return get(httpClient, queryString, token: initialData.continuationToken);
   }
 
   ///
-  static Future<SearchPage> get(
-      YoutubeHttpClient httpClient, String queryString,
-      {String? token}) {
+  static Future<SearchPage> get(YoutubeHttpClient httpClient, String queryString, {String? token}) {
     if (token != null) {
-      var url =
-          'https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
+      var url = 'https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
 
       return retry(() async {
         var body = {
           'context': const {
-            'client': {
-              'hl': 'en',
-              'clientName': 'WEB',
-              'clientVersion': '2.20200911.04.00'
-            }
+            'client': {'hl': 'en', 'clientName': 'WEB', 'clientVersion': '2.20200911.04.00'}
           },
           'continuation': token
         };
 
-        var raw =
-            await httpClient.post(Uri.parse(url), body: json.encode(body));
-        return SearchPage(
-            null, queryString, _InitialData(json.decode(raw.body)));
+        var raw = await httpClient.post(Uri.parse(url), body: json.encode(body));
+        return SearchPage(null, queryString, _InitialData(json.decode(raw.body)));
       });
       // Ask for next page,
 
     }
-    var url =
-        'https://www.youtube.com/results?search_query=${Uri.encodeQueryComponent(queryString)}';
+    var url = 'https://www.youtube.com/results?search_query=${Uri.encodeQueryComponent(queryString)}';
     return retry(() async {
       var raw = await httpClient.getString(url);
       return SearchPage.parse(raw, queryString);
@@ -197,9 +142,7 @@ class _InitialData {
   }
 
   // Contains only [SearchVideo] or [SearchPlaylist]
-  late final List<BaseSearchContent> searchContent =
-      getContentContext()?.map(_parseContent).whereNotNull().toList() ??
-          const [];
+  late final List<BaseSearchContent> searchContent = getContentContext()?.map(_parseContent).whereNotNull().toList() ?? const [];
 
   List<RelatedQuery> get relatedQueries =>
       getContentContext()
@@ -207,10 +150,8 @@ class _InitialData {
           .map((e) => e.get('horizontalCardListRenderer')?.getList('cards'))
           .firstOrNull
           ?.map((e) => e['searchRefinementCardRenderer'])
-          .map((e) => RelatedQuery(
-              e.searchEndpoint.searchEndpoint.query,
-              VideoId(
-                  Uri.parse(e.thumbnail.thumbnails.first.url).pathSegments[1])))
+          .map((e) =>
+              RelatedQuery(e.searchEndpoint.searchEndpoint.query, VideoId(Uri.parse(e.thumbnail.thumbnails.first.url).pathSegments[1])))
           .toList()
           .cast<RelatedQuery>() ??
       const [];
@@ -218,11 +159,7 @@ class _InitialData {
   List<dynamic> get relatedVideos =>
       getContentContext()
           ?.where((e) => e['shelfRenderer'] != null)
-          .map((e) => e
-              .get('shelfRenderer')
-              ?.get('content')
-              ?.get('verticalListRenderer')
-              ?.getList('items'))
+          .map((e) => e.get('shelfRenderer')?.get('content')?.get('verticalListRenderer')?.getList('items'))
           .firstOrNull
           ?.map(_parseContent)
           .whereNotNull()
@@ -231,8 +168,7 @@ class _InitialData {
 
   late final String? continuationToken = _getContinuationToken();
 
-  late final int estimatedResults =
-      int.parse(root.getT<String>('estimatedResults') ?? '0');
+  late final int estimatedResults = int.parse(root.getT<String>('estimatedResults') ?? '0');
 
   BaseSearchContent? _parseContent(Map<String, dynamic>? content) {
     if (content == null) {
@@ -247,47 +183,24 @@ class _InitialData {
           _parseRuns(renderer.get('ownerText')?.getList('runs')),
           _parseRuns(renderer.get('descriptionSnippet')?.getList('runs')),
           renderer.get('lengthText')?.getT<String>('simpleText') ?? '',
-          int.parse(renderer
-                  .get('viewCountText')
-                  ?.getT<String>('simpleText')
-                  ?.stripNonDigits()
-                  .nullIfWhitespace ??
-              renderer
-                  .get('viewCountText')
-                  ?.getList('runs')
-                  ?.firstOrNull
-                  ?.getT<String>('text')
-                  ?.stripNonDigits()
-                  .nullIfWhitespace ??
+          int.parse(renderer.get('viewCountText')?.getT<String>('simpleText')?.stripNonDigits().nullIfWhitespace ??
+              renderer.get('viewCountText')?.getList('runs')?.firstOrNull?.getT<String>('text')?.stripNonDigits().nullIfWhitespace ??
               '0'),
           (renderer.get('thumbnail')?.getList('thumbnails') ?? const [])
-              .map((e) =>
-                  Thumbnail(Uri.parse(e['url']), e['height'], e['width']))
+              .map((e) => Thumbnail(Uri.parse(e['url']), e['height'], e['width']))
               .toList(),
           renderer.get('publishedTimeText')?.getT<String>('simpleText'),
-          renderer
-                  .get('viewCountText')
-                  ?.getList('runs')
-                  ?.elementAtSafe(1)
-                  ?.getT<String>('text')
-                  ?.trim() ==
-              'watching');
+          renderer.get('viewCountText')?.getList('runs')?.elementAtSafe(1)?.getT<String>('text')?.trim() == 'watching');
     }
     if (content['radioRenderer'] != null) {
       var renderer = content.get('radioRenderer')!;
 
-      return SearchPlaylist(
-          PlaylistId(renderer.getT<String>('playlistId')!),
-          renderer.get('title')!.getT<String>('simpleText')!,
-          int.parse(_parseRuns(renderer.get('videoCountText')?.getList('runs'))
-                  .stripNonDigits()
-                  .nullIfWhitespace ??
-              '0'));
+      return SearchPlaylist(PlaylistId(renderer.getT<String>('playlistId')!), renderer.get('title')!.getT<String>('simpleText')!,
+          int.parse(_parseRuns(renderer.get('videoCountText')?.getList('runs')).stripNonDigits().nullIfWhitespace ?? '0'));
     }
     // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
     return null;
   }
 
-  String _parseRuns(List<dynamic>? runs) =>
-      runs?.map((e) => e['text']).join() ?? '';
+  String _parseRuns(List<dynamic>? runs) => runs?.map((e) => e['text']).join() ?? '';
 }

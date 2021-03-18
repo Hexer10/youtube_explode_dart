@@ -1,5 +1,8 @@
 library _youtube_explode.extensions;
 
+import 'dart:convert';
+import 'package:collection/collection.dart';
+
 import '../reverse_engineering/cipher/cipher_operations.dart';
 
 /// Utility for Strings.
@@ -11,36 +14,35 @@ extension StringUtility on String {
   String substringUntil(String separator) => substring(0, indexOf(separator));
 
   ///
-  String substringAfter(String separator) =>
-      substring(indexOf(separator) + separator.length);
+  String substringAfter(String separator) => substring(indexOf(separator) + separator.length);
 
   static final _exp = RegExp(r'\D');
 
   /// Strips out all non digit characters.
   String stripNonDigits() => replaceAll(_exp, '');
 
-  ///
-  String extractJson() {
-    var buffer = StringBuffer();
-    var depth = 0;
+  /// Extract and decode json from a string
+  Map<String, dynamic>? extractJson([String separator = '']) {
+    final index = indexOf(separator) + separator.length;
+    if (index > length) {
+      return null;
+    }
 
-    for (var i = 0; i < length; i++) {
-      var ch = this[i];
-      var chPrv = i > 0 ? this[i - 1] : '';
+    final str = substring(index);
 
-      buffer.write(ch);
+    final startIdx = str.indexOf('{');
+    var endIdx = str.lastIndexOf('}');
 
-      if (ch == '{' && chPrv != '\\') {
-        depth++;
-      } else if (ch == '}' && chPrv != '\\') {
-        depth--;
-      }
-
-      if (depth == 0) {
-        break;
+    while (true) {
+      try {
+        return json.decode(str.substring(startIdx, endIdx + 1)) as Map<String, dynamic>;
+      } on FormatException {
+        endIdx = str.lastIndexOf(str.substring(0, endIdx));
+        if (endIdx == 0) {
+          return null;
+        }
       }
     }
-    return buffer.toString();
   }
 
   DateTime parseDateTime() => DateTime.parse(this);
@@ -165,4 +167,17 @@ extension UriUtils on Uri {
 extension RunsParser on List<dynamic> {
   ///
   String parseRuns() => map((e) => e['text']).join();
+}
+
+extension GenericExtract on List<String> {
+  /// Used to extract initial data that start with `var ytInitialData = ` or 'window["ytInitialData"] ='.
+  T extractGenericData<T>(T Function(Map<String, dynamic>) builder, Exception Function() orThrow) {
+    var initialData = firstWhereOrNull((e) => e.contains('var ytInitialData = '))?.extractJson('var ytInitialData = ');
+    initialData ??= firstWhereOrNull((e) => e.contains('window["ytInitialData"] ='))?.extractJson('window["ytInitialData"] =');
+
+    if (initialData != null) {
+      return builder(initialData);
+    }
+    throw orThrow();
+  }
 }
