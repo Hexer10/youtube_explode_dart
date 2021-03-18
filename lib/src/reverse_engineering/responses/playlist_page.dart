@@ -91,7 +91,7 @@ class PlaylistPage {
       {String? token}) {
     if (token != null && token.isNotEmpty) {
       var url =
-          'https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
+          'https://www.youtube.com/youtubei/v1/guide?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
 
       return retry(() async {
         var body = {
