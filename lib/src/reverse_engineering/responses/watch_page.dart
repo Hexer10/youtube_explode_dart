@@ -12,11 +12,15 @@ import 'player_response.dart';
 
 ///
 class WatchPage {
-  static final RegExp _videoLikeExp = RegExp(r'"label"\s*:\s*"([\d,\.]+) likes"');
-  static final RegExp _videoDislikeExp = RegExp(r'"label"\s*:\s*"([\d,\.]+) dislikes"');
-  static final RegExp _visitorInfoLiveExp = RegExp('VISITOR_INFO1_LIVE=([^;]+)');
+  static final RegExp _videoLikeExp =
+      RegExp(r'"label"\s*:\s*"([\d,\.]+) likes"');
+  static final RegExp _videoDislikeExp =
+      RegExp(r'"label"\s*:\s*"([\d,\.]+) dislikes"');
+  static final RegExp _visitorInfoLiveExp =
+      RegExp('VISITOR_INFO1_LIVE=([^;]+)');
   static final RegExp _yscExp = RegExp('YSC=([^;]+)');
-  static final RegExp _playerResponseExp = RegExp(r'var\s+ytInitialPlayerResponse\s*=\s*(\{.*\})');
+  static final RegExp _playerResponseExp =
+      RegExp(r'var\s+ytInitialPlayerResponse\s*=\s*(\{.*\})');
 
   static final _xsfrTokenExp = RegExp(r'"XSRF_TOKEN"\s*:\s*"(.+?)"');
 
@@ -51,7 +55,10 @@ class WatchPage {
       return _initialData!;
     }
 
-    final scriptText = root.querySelectorAll('script').map((e) => e.text).toList(growable: false);
+    final scriptText = root
+        .querySelectorAll('script')
+        .map((e) => e.text)
+        .toList(growable: false);
     return scriptText.extractGenericData(
         (obj) => _InitialData(obj),
         () => TransientFailureException(
@@ -62,23 +69,45 @@ class WatchPage {
 
   ///
   String? getXsfrToken() {
-    return _xsfrTokenExp.firstMatch(root.querySelectorAll('script').firstWhere((e) => _xsfrTokenExp.hasMatch(e.text)).text)?.group(1);
+    return _xsfrTokenExp
+        .firstMatch(root
+            .querySelectorAll('script')
+            .firstWhere((e) => _xsfrTokenExp.hasMatch(e.text))
+            .text)
+        ?.group(1);
   }
 
   ///
   bool get isOk => root.body?.querySelector('#player') != null;
 
   ///
-  bool get isVideoAvailable => root.querySelector('meta[property="og:url"]') != null;
+  bool get isVideoAvailable =>
+      root.querySelector('meta[property="og:url"]') != null;
 
   ///
-  int get videoLikeCount => int.parse(_videoLikeExp.firstMatch(root.outerHtml)?.group(1)?.stripNonDigits().nullIfWhitespace ??
-      root.querySelector('.like-button-renderer-like-button')?.text.stripNonDigits().nullIfWhitespace ??
+  int get videoLikeCount => int.parse(_videoLikeExp
+          .firstMatch(root.outerHtml)
+          ?.group(1)
+          ?.stripNonDigits()
+          .nullIfWhitespace ??
+      root
+          .querySelector('.like-button-renderer-like-button')
+          ?.text
+          .stripNonDigits()
+          .nullIfWhitespace ??
       '0');
 
   ///
-  int get videoDislikeCount => int.parse(_videoDislikeExp.firstMatch(root.outerHtml)?.group(1)?.stripNonDigits().nullIfWhitespace ??
-      root.querySelector('.like-button-renderer-dislike-button')?.text.stripNonDigits().nullIfWhitespace ??
+  int get videoDislikeCount => int.parse(_videoDislikeExp
+          .firstMatch(root.outerHtml)
+          ?.group(1)
+          ?.stripNonDigits()
+          .nullIfWhitespace ??
+      root
+          .querySelector('.like-button-renderer-dislike-button')
+          ?.text
+          .stripNonDigits()
+          .nullIfWhitespace ??
       '0');
 
   static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\})');
@@ -89,7 +118,10 @@ class WatchPage {
 
   ///
   WatchPlayerConfig? getPlayerConfig() {
-    final jsonMap = _playerConfigExp.firstMatch(root.getElementsByTagName('html').first.text)?.group(1)?.extractJson();
+    final jsonMap = _playerConfigExp
+        .firstMatch(root.getElementsByTagName('html').first.text)
+        ?.group(1)
+        ?.extractJson();
     if (jsonMap == null) {
       return null;
     }
@@ -114,7 +146,8 @@ class WatchPage {
   WatchPage(this.root, this.visitorInfoLive, this.ysc);
 
   ///
-  WatchPage.parse(String raw, this.visitorInfoLive, this.ysc) : root = parser.parse(raw);
+  WatchPage.parse(String raw, this.visitorInfoLive, this.ysc)
+      : root = parser.parse(raw);
 
   ///
   static Future<WatchPage> get(YoutubeHttpClient httpClient, String videoId) {
@@ -148,10 +181,12 @@ class WatchPlayerConfig implements PlayerConfigBase<Map<String, dynamic>> {
   WatchPlayerConfig(this.root);
 
   @override
-  late final String sourceUrl = 'https://youtube.com${root.get('assets')!.getT<String>('js')}';
+  late final String sourceUrl =
+      'https://youtube.com${root.get('assets')!.getT<String>('js')}';
 
   ///
-  late final PlayerResponse playerResponse = PlayerResponse.parse(root.get('args')!.getT<String>('playerResponse')!);
+  late final PlayerResponse playerResponse =
+      PlayerResponse.parse(root.get('args')!.getT<String>('playerResponse')!);
 }
 
 class _InitialData {
@@ -177,7 +212,9 @@ class _InitialData {
     return null;
   }
 
-  late final String continuation = getContinuationContext()?.getT<String>('continuation') ?? '';
+  late final String continuation =
+      getContinuationContext()?.getT<String>('continuation') ?? '';
 
-  late final String clickTrackingParams = getContinuationContext()?.getT<String>('clickTrackingParams') ?? '';
+  late final String clickTrackingParams =
+      getContinuationContext()?.getT<String>('clickTrackingParams') ?? '';
 }

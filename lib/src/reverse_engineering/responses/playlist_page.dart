@@ -24,7 +24,10 @@ class PlaylistPage {
       return _initialData!;
     }
 
-    final scriptText = root!.querySelectorAll('script').map((e) => e.text).toList(growable: false);
+    final scriptText = root!
+        .querySelectorAll('script')
+        .map((e) => e.text)
+        .toList(growable: false);
 
     return scriptText.extractGenericData(
         (obj) => _InitialData(obj),
@@ -33,7 +36,8 @@ class PlaylistPage {
   }
 
   ///
-  PlaylistPage(this.root, this.playlistId, [_InitialData? initialData]) : _initialData = initialData;
+  PlaylistPage(this.root, this.playlistId, [_InitialData? initialData])
+      : _initialData = initialData;
 
   ///
   Future<PlaylistPage?> nextPage(YoutubeHttpClient httpClient) async {
@@ -44,19 +48,26 @@ class PlaylistPage {
   }
 
   ///
-  static Future<PlaylistPage> get(YoutubeHttpClient httpClient, String id, {String? token}) {
+  static Future<PlaylistPage> get(YoutubeHttpClient httpClient, String id,
+      {String? token}) {
     if (token != null && token.isNotEmpty) {
-      var url = 'https://www.youtube.com/youtubei/v1/guide?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
+      var url =
+          'https://www.youtube.com/youtubei/v1/guide?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
 
       return retry(() async {
         var body = {
           'context': const {
-            'client': {'hl': 'en', 'clientName': 'WEB', 'clientVersion': '2.20200911.04.00'}
+            'client': {
+              'hl': 'en',
+              'clientName': 'WEB',
+              'clientVersion': '2.20200911.04.00'
+            }
           },
           'continuation': token
         };
 
-        var raw = await httpClient.post(Uri.parse(url), body: json.encode(body));
+        var raw =
+            await httpClient.post(Uri.parse(url), body: json.encode(body));
         return PlaylistPage(null, id, _InitialData(json.decode(raw.body)));
       });
       // Ask for next page,
@@ -80,7 +91,10 @@ class _InitialData {
 
   _InitialData(this.root);
 
-  late final String? title = root.get('metadata')?.get('playlistMetadataRenderer')?.getT<String>('title');
+  late final String? title = root
+      .get('metadata')
+      ?.get('playlistMetadataRenderer')
+      ?.getT<String>('title');
 
   late final String? author = root
       .get('sidebar')
@@ -94,7 +108,10 @@ class _InitialData {
       ?.getT<List<dynamic>>('runs')
       ?.parseRuns();
 
-  late final String? description = root.get('metadata')?.get('playlistMetadataRenderer')?.getT<String>('description');
+  late final String? description = root
+      .get('metadata')
+      ?.get('playlistMetadataRenderer')
+      ?.getT<String>('description');
 
   late final int? viewCount = root
       .get('sidebar')
@@ -107,12 +124,13 @@ class _InitialData {
       ?.getT<String>('simpleText')
       ?.parseInt();
 
-  late final String? continuationToken = (videosContent ?? playlistVideosContent)
-      ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
-      ?.get('continuationItemRenderer')
-      ?.get('continuationEndpoint')
-      ?.get('continuationCommand')
-      ?.getT<String>('token');
+  late final String? continuationToken =
+      (videosContent ?? playlistVideosContent)
+          ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+          ?.get('continuationItemRenderer')
+          ?.get('continuationEndpoint')
+          ?.get('continuationCommand')
+          ?.getT<String>('token');
 
   List<Map<String, dynamic>>? get playlistVideosContent =>
       root
@@ -130,7 +148,11 @@ class _InitialData {
           ?.firstOrNull
           ?.get('playlistVideoListRenderer')
           ?.getList('contents') ??
-      root.getList('onResponseReceivedActions')?.firstOrNull?.get('appendContinuationItemsAction')?.getList('continuationItems');
+      root
+          .getList('onResponseReceivedActions')
+          ?.firstOrNull
+          ?.get('appendContinuationItemsAction')
+          ?.getList('continuationItems');
 
   late final List<Map<String, dynamic>>? videosContent = root
           .get('contents')
@@ -138,10 +160,17 @@ class _InitialData {
           ?.get('primaryContents')
           ?.get('sectionListRenderer')
           ?.getList('contents') ??
-      root.getList('onResponseReceivedCommands')?.firstOrNull?.get('appendContinuationItemsAction')?.getList('continuationItems');
+      root
+          .getList('onResponseReceivedCommands')
+          ?.firstOrNull
+          ?.get('appendContinuationItemsAction')
+          ?.getList('continuationItems');
 
   List<_Video> get playlistVideos =>
-      playlistVideosContent?.where((e) => e['playlistVideoRenderer'] != null).map((e) => _Video(e['playlistVideoRenderer'])).toList() ??
+      playlistVideosContent
+          ?.where((e) => e['playlistVideoRenderer'] != null)
+          .map((e) => _Video(e['playlistVideoRenderer']))
+          .toList() ??
       const [];
 
   List<_Video> get videos =>
@@ -168,7 +197,13 @@ class _Video {
       '';
 
   String get channelId =>
-      root.get('ownerText')?.getList('runs')?.firstOrNull?.get('navigationEndpoint')?.get('browseEndpoint')?.getT<String>('browseId') ??
+      root
+          .get('ownerText')
+          ?.getList('runs')
+          ?.firstOrNull
+          ?.get('navigationEndpoint')
+          ?.get('browseEndpoint')
+          ?.getT<String>('browseId') ??
       root
           .get('shortBylineText')
           ?.getList('runs')
@@ -180,11 +215,14 @@ class _Video {
 
   String get title => root.get('title')?.getList('runs')?.parseRuns() ?? '';
 
-  String get description => root.getList('descriptionSnippet')?.parseRuns() ?? '';
+  String get description =>
+      root.getList('descriptionSnippet')?.parseRuns() ?? '';
 
-  Duration? get duration => _stringToDuration(root.get('lengthText')?.getT<String>('simpleText'));
+  Duration? get duration =>
+      _stringToDuration(root.get('lengthText')?.getT<String>('simpleText'));
 
-  int get viewCount => root.get('viewCountText')?.getT<String>('simpleText')?.parseInt() ?? 0;
+  int get viewCount =>
+      root.get('viewCountText')?.getT<String>('simpleText')?.parseInt() ?? 0;
 
   /// Format: HH:MM:SS
   static Duration? _stringToDuration(String? string) {
@@ -199,10 +237,14 @@ class _Video {
       return Duration(seconds: int.parse(parts.first));
     }
     if (parts.length == 2) {
-      return Duration(minutes: int.parse(parts.first), seconds: int.parse(parts[1]));
+      return Duration(
+          minutes: int.parse(parts.first), seconds: int.parse(parts[1]));
     }
     if (parts.length == 3) {
-      return Duration(hours: int.parse(parts[0]), minutes: int.parse(parts[1]), seconds: int.parse(parts[2]));
+      return Duration(
+          hours: int.parse(parts[0]),
+          minutes: int.parse(parts[1]),
+          seconds: int.parse(parts[2]));
     }
     throw Error();
   }

@@ -14,7 +14,8 @@ extension StringUtility on String {
   String substringUntil(String separator) => substring(0, indexOf(separator));
 
   ///
-  String substringAfter(String separator) => substring(indexOf(separator) + separator.length);
+  String substringAfter(String separator) =>
+      substring(indexOf(separator) + separator.length);
 
   static final _exp = RegExp(r'\D');
 
@@ -35,7 +36,8 @@ extension StringUtility on String {
 
     while (true) {
       try {
-        return json.decode(str.substring(startIdx, endIdx + 1)) as Map<String, dynamic>;
+        return json.decode(str.substring(startIdx, endIdx + 1))
+            as Map<String, dynamic>;
       } on FormatException {
         endIdx = str.lastIndexOf(str.substring(0, endIdx));
         if (endIdx == 0) {
@@ -171,9 +173,14 @@ extension RunsParser on List<dynamic> {
 
 extension GenericExtract on List<String> {
   /// Used to extract initial data that start with `var ytInitialData = ` or 'window["ytInitialData"] ='.
-  T extractGenericData<T>(T Function(Map<String, dynamic>) builder, Exception Function() orThrow) {
-    var initialData = firstWhereOrNull((e) => e.contains('var ytInitialData = '))?.extractJson('var ytInitialData = ');
-    initialData ??= firstWhereOrNull((e) => e.contains('window["ytInitialData"] ='))?.extractJson('window["ytInitialData"] =');
+  T extractGenericData<T>(
+      T Function(Map<String, dynamic>) builder, Exception Function() orThrow) {
+    var initialData =
+        firstWhereOrNull((e) => e.contains('var ytInitialData = '))
+            ?.extractJson('var ytInitialData = ');
+    initialData ??=
+        firstWhereOrNull((e) => e.contains('window["ytInitialData"] ='))
+            ?.extractJson('window["ytInitialData"] =');
 
     if (initialData != null) {
       return builder(initialData);

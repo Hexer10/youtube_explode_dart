@@ -16,7 +16,10 @@ class ChannelAboutPage {
   late final _InitialData initialData = _getInitialData();
 
   _InitialData _getInitialData() {
-    final scriptText = _root.querySelectorAll('script').map((e) => e.text).toList(growable: false);
+    final scriptText = _root
+        .querySelectorAll('script')
+        .map((e) => e.text)
+        .toList(growable: false);
     return scriptText.extractGenericData(
         (obj) => _InitialData(obj),
         () => TransientFailureException(
@@ -45,7 +48,8 @@ class ChannelAboutPage {
   }
 
   ///
-  static Future<ChannelAboutPage> getByUsername(YoutubeHttpClient httpClient, String username) {
+  static Future<ChannelAboutPage> getByUsername(
+      YoutubeHttpClient httpClient, String username) {
     var url = 'https://www.youtube.com/user/$username/about?hl=en';
 
     return retry(() async {
@@ -84,29 +88,49 @@ class _InitialData {
         .get('channelAboutFullMetadataRenderer')!;
   }
 
-  late final String description = content.get('description')!.getT<String>('simpleText')!;
+  late final String description =
+      content.get('description')!.getT<String>('simpleText')!;
 
   late final List<ChannelLink> channelLinks = content
       .getList('primaryLinks')!
       .map((e) => ChannelLink(
           e.get('title')?.getT<String>('simpleText') ?? '',
-          extractUrl(e.get('navigationEndpoint')?.get('commandMetadata')?.get('webCommandMetadata')?.getT<String>('url') ??
-              e.get('navigationEndpoint')?.get('urlEndpoint')?.getT<String>('url') ??
+          extractUrl(e
+                  .get('navigationEndpoint')
+                  ?.get('commandMetadata')
+                  ?.get('webCommandMetadata')
+                  ?.getT<String>('url') ??
+              e
+                  .get('navigationEndpoint')
+                  ?.get('urlEndpoint')
+                  ?.getT<String>('url') ??
               ''),
-          Uri.parse(e.get('icon')?.getList('thumbnails')?.firstOrNull?.getT<String>('url') ?? '')))
+          Uri.parse(e
+                  .get('icon')
+                  ?.getList('thumbnails')
+                  ?.firstOrNull
+                  ?.getT<String>('url') ??
+              '')))
       .toList();
 
-  late final int viewCount = int.parse(content.get('viewCountText')!.getT<String>('simpleText')!.stripNonDigits());
+  late final int viewCount = int.parse(content
+      .get('viewCountText')!
+      .getT<String>('simpleText')!
+      .stripNonDigits());
 
-  late final String joinDate = content.get('joinedDateText')!.getList('runs')![1].getT<String>('text')!;
+  late final String joinDate =
+      content.get('joinedDateText')!.getList('runs')![1].getT<String>('text')!;
 
   late final String title = content.get('title')!.getT<String>('simpleText')!;
 
-  late final List<Map<String, dynamic>> avatar = content.get('avatar')!.getList('thumbnails')!;
+  late final List<Map<String, dynamic>> avatar =
+      content.get('avatar')!.getList('thumbnails')!;
 
   String get country => content.get('country')!.getT<String>('simpleText')!;
 
-  String parseRuns(List<dynamic>? runs) => runs?.map((e) => e.text).join() ?? '';
+  String parseRuns(List<dynamic>? runs) =>
+      runs?.map((e) => e.text).join() ?? '';
 
-  Uri extractUrl(String text) => Uri.parse(Uri.decodeFull(_urlExp.firstMatch(text)?.group(1) ?? ''));
+  Uri extractUrl(String text) =>
+      Uri.parse(Uri.decodeFull(_urlExp.firstMatch(text)?.group(1) ?? ''));
 }

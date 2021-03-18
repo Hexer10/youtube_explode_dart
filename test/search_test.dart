@@ -17,7 +17,6 @@ void main() {
   });
 
   test('Search a youtube video from the search page-2', () async {
-
     var videos = await yt!.search
         .getVideosFromPage('hello')
         .where((e) => e is SearchVideo) // Take only the videos.
