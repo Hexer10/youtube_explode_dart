@@ -63,6 +63,14 @@ void main() {
         ]));
   });
 
+  test('Get more than 100 videos in a playlist', () async {
+    var videos = await yt!.playlists
+        .getVideos(PlaylistId(
+        'https://www.youtube.com/playlist?list=PLCSusC_jlo14J0uBgFqfHsKu7gc5W2HyM'))
+        .toList();
+    expect(videos.length, greaterThan(100));
+  });
+
   group('Get videos in any playlist', () {
     for (final val in {
       PlaylistId('PLI5YfMzCfRtZ8eV576YoY3vIYrHjyVm_e'),
