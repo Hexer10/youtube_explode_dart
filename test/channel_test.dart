@@ -72,4 +72,16 @@ void main() {
         .toList();
     expect(videos, hasLength(30));
   });
+
+  test('Get about page of a youtube', () async {
+    var aboutPage = await yt!.channels.getAboutPageByUsername(
+        'PewDiePie'); // or yt.channels.getAboutPage(channelId)
+    expect(aboutPage.title, 'PewDiePie');
+    expect(aboutPage.viewCount, greaterThanOrEqualTo(27123740560));
+    expect(aboutPage.description, isNotEmpty);
+    expect(aboutPage.thumbnails, isNotEmpty); // Avatar list
+    expect(aboutPage.channelLinks, isNotEmpty);
+    expect(aboutPage.country, 'United States');
+    expect(aboutPage.joinDate, 'Apr 29, 2010');
+  });
 }

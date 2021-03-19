@@ -76,7 +76,7 @@ class _InitialData {
         .get('contents')!
         .get('twoColumnBrowseResultsRenderer')!
         .getList('tabs')!
-        .elementAtSafe(5)!
+        .firstWhere((e) => e['tabRenderer']?['content'] != null)
         .get('tabRenderer')!
         .get('content')!
         .get('sectionListRenderer')!
@@ -126,7 +126,8 @@ class _InitialData {
   late final List<Map<String, dynamic>> avatar =
       content.get('avatar')!.getList('thumbnails')!;
 
-  String get country => content.get('country')!.getT<String>('simpleText')!;
+  late final String country =
+      content.get('country')!.getT<String>('simpleText')!;
 
   String parseRuns(List<dynamic>? runs) =>
       runs?.map((e) => e.text).join() ?? '';

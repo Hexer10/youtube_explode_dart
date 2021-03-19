@@ -46,9 +46,11 @@ class ChannelClient {
   /// Gets the info found on a YouTube Channel About page.
   /// [id] must be either a [ChannelId] or a string
   /// which is parsed to a [ChannelId]
-  Future<ChannelAbout> getAboutPage(dynamic id) async {
-    id = ChannelId.fromString(id);
+  Future<ChannelAbout> getAboutPage(dynamic channelId) async {
+    channelId = ChannelId.fromString(channelId);
 
+    final aboutPage = await ChannelAboutPage.get(_httpClient, channelId.value);
+    final id = aboutPage.initialData;
     return ChannelAbout(
         id.description,
         id.viewCount,
@@ -56,7 +58,7 @@ class ChannelClient {
         id.title,
         [
           for (var e in id.avatar)
-            Thumbnail(Uri.parse(e.url), e.height, e.width)
+            Thumbnail(Uri.parse(e['url']), e['height'], e['width'])
         ],
         id.country,
         id.channelLinks);
