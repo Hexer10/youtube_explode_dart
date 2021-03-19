@@ -1,5 +1,8 @@
 ## 1.9.0
 - Support nnbd (dart 1.12)
+- New api: `getQuerySuggestions`: Returns the suggestions youtube provides while making a video search.
+- Now playlists with more than 100 videos return all the videos. Thanks to @ATiltedTree.
+- Implemented `ChannelAboutPage`, check the tests their usage.
 
 ## 1.8.0
 - Fixed playlist client.
