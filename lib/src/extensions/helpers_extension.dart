@@ -14,8 +14,7 @@ extension StringUtility on String {
   String substringUntil(String separator) => substring(0, indexOf(separator));
 
   ///
-  String substringAfter(String separator) =>
-      substring(indexOf(separator) + separator.length);
+  String substringAfter(String separator) => substring(indexOf(separator) + separator.length);
 
   static final _exp = RegExp(r'\D');
 
@@ -36,8 +35,7 @@ extension StringUtility on String {
 
     while (true) {
       try {
-        return json.decode(str.substring(startIdx, endIdx + 1))
-            as Map<String, dynamic>;
+        return json.decode(str.substring(startIdx, endIdx + 1)) as Map<String, dynamic>;
       } on FormatException {
         endIdx = str.lastIndexOf(str.substring(0, endIdx));
         if (endIdx == 0) {
@@ -45,6 +43,28 @@ extension StringUtility on String {
         }
       }
     }
+  }
+
+  /// Format: HH:MM:SS
+  Duration? toDuration() {
+    if (/*string == null ||*/ trim().isEmpty) {
+      return null;
+    }
+
+    var parts = split(':');
+    assert(parts.length <= 3);
+
+    if (parts.length == 1) {
+      return Duration(seconds: int.parse(parts.first));
+    }
+    if (parts.length == 2) {
+      return Duration(minutes: int.parse(parts[0]), seconds: int.parse(parts[1]));
+    }
+    if (parts.length == 3) {
+      return Duration(hours: int.parse(parts[0]), minutes: int.parse(parts[1]), seconds: int.parse(parts[2]));
+    }
+    // Shouldn't reach here.
+    throw Error();
   }
 
   DateTime parseDateTime() => DateTime.parse(this);
@@ -65,6 +85,46 @@ extension StringUtility2 on String? {
       return true;
     }
     return false;
+  }
+
+  /// Format: <quantity> <unit> ago (5 years ago)
+  DateTime? toDateTime() {
+    if (this == null) {
+      return null;
+    }
+
+    var parts = this!.split(' ');
+    if (parts.length == 4) {
+      // Streamed x y ago
+      parts = parts.skip(1).toList();
+    }
+    assert(parts.length == 3);
+
+    var qty = int.parse(parts.first);
+
+    // Try to get the unit
+    var unit = parts[1];
+    Duration time;
+    if (unit.startsWith('second')) {
+      time = Duration(seconds: qty);
+    } else if (unit.startsWith('minute')) {
+      time = Duration(minutes: qty);
+    } else if (unit.startsWith('hour')) {
+      time = Duration(hours: qty);
+    } else if (unit.startsWith('day')) {
+      time = Duration(days: qty);
+    } else if (unit.startsWith('week')) {
+      time = Duration(days: qty * 7);
+    } else if (unit.startsWith('month')) {
+      time = Duration(days: qty * 30);
+    } else if (unit.startsWith('year')) {
+      time = Duration(days: qty * 365);
+    } else {
+      throw StateError('Couldn\'t parse $unit unit of time. '
+          'Please report this to the project page!');
+    }
+
+    return DateTime.now().subtract(time);
   }
 }
 
@@ -173,14 +233,9 @@ extension RunsParser on List<dynamic> {
 
 extension GenericExtract on List<String> {
   /// Used to extract initial data that start with `var ytInitialData = ` or 'window["ytInitialData"] ='.
-  T extractGenericData<T>(
-      T Function(Map<String, dynamic>) builder, Exception Function() orThrow) {
-    var initialData =
-        firstWhereOrNull((e) => e.contains('var ytInitialData = '))
-            ?.extractJson('var ytInitialData = ');
-    initialData ??=
-        firstWhereOrNull((e) => e.contains('window["ytInitialData"] ='))
-            ?.extractJson('window["ytInitialData"] =');
+  T extractGenericData<T>(T Function(Map<String, dynamic>) builder, Exception Function() orThrow) {
+    var initialData = firstWhereOrNull((e) => e.contains('var ytInitialData = '))?.extractJson('var ytInitialData = ');
+    initialData ??= firstWhereOrNull((e) => e.contains('window["ytInitialData"] ='))?.extractJson('window["ytInitialData"] =');
 
     if (initialData != null) {
       return builder(initialData);

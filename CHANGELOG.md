@@ -3,6 +3,7 @@
 - New api: `getQuerySuggestions`: Returns the suggestions youtube provides while making a video search.
 - Now playlists with more than 100 videos return all the videos. Thanks to @ATiltedTree.
 - Implemented `ChannelAboutPage`, check the tests their usage.
+- Implement filters for `search.getVideos`. See `filter` getter.
 
 ## 1.8.0
 - Fixed playlist client.

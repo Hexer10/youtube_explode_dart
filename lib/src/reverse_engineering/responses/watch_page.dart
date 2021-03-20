@@ -156,7 +156,7 @@ class WatchPage {
       var req = await httpClient.get(url, validate: true);
 
       var cookies = req.headers['set-cookie']!;
-      var visitorInfoLive = _visitorInfoLiveExp.firstMatch(cookies)?.group(1)!;
+      var visitorInfoLive = _visitorInfoLiveExp.firstMatch(cookies)?.group(1);
       var ysc = _yscExp.firstMatch(cookies)!.group(1)!;
       var result = WatchPage.parse(req.body, visitorInfoLive ?? '', ysc);
 
