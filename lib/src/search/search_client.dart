@@ -21,14 +21,26 @@ class SearchClient {
   /// (from the video search page).
   /// The videos are sent in batch of 20 videos.
   /// You [SearchList.nextPage] to get the next batch of videos.
-  Future<SearchList> getVideos(String searchQuery, {SearchFilter filter = const SearchFilter('')}) async {
+  Future<SearchList> getVideos(String searchQuery,
+      {SearchFilter filter = const SearchFilter('')}) async {
     final page = await SearchPage.get(_httpClient, searchQuery, filter: filter);
 
     return SearchList(
         page.initialData.searchContent
             .whereType<SearchVideo>()
-            .map((e) => Video(e.id, e.title, e.author, null, e.uploadDate?.toDateTime(), null, e.description, e.duration.toDuration(),
-                ThumbnailSet(e.id.value), null, Engagement(e.viewCount, null, null), e.isLive))
+            .map((e) => Video(
+                e.id,
+                e.title,
+                e.author,
+                ChannelId(e.channelId),
+                e.uploadDate?.toDateTime(),
+                null,
+                e.description,
+                e.duration.toDuration(),
+                ThumbnailSet(e.id.value),
+                null,
+                Engagement(e.viewCount, null, null),
+                e.isLive))
             .toList(),
         page,
         _httpClient);
@@ -37,13 +49,17 @@ class SearchClient {
   /// Enumerates videos returned by the specified search query
   /// (from the video search page).
   /// Contains only instances of [SearchVideo] or [SearchPlaylist]
+  @Deprecated(
+      'Since version 1.9.0 this is the same as [SearchClient.getVideos].')
   Stream<BaseSearchContent> getVideosFromPage(String searchQuery,
-      {bool onlyVideos = true, SearchFilter filter = const SearchFilter('')}) async* {
+      {bool onlyVideos = true,
+      SearchFilter filter = const SearchFilter('')}) async* {
     SearchPage? page;
     // ignore: literal_only_boolean_expressions
     for (;;) {
       if (page == null) {
-        page = await retry(() async => SearchPage.get(_httpClient, searchQuery, filter: filter));
+        page = await retry(() async =>
+            SearchPage.get(_httpClient, searchQuery, filter: filter));
       } else {
         page = await page.nextPage(_httpClient);
         if (page == null) {
@@ -52,7 +68,8 @@ class SearchClient {
       }
 
       if (onlyVideos) {
-        yield* Stream.fromIterable(page!.initialData.searchContent.whereType<SearchVideo>());
+        yield* Stream.fromIterable(
+            page!.initialData.searchContent.whereType<SearchVideo>());
       } else {
         yield* Stream.fromIterable(page!.initialData.searchContent);
       }
@@ -74,7 +91,8 @@ class SearchClient {
   /// Queries to YouTube to get the results.
   @Deprecated('Use getVideosFromPage instead - '
       'Should be used only to get related videos')
-  Future<SearchQuery> queryFromPage(String searchQuery) => SearchQuery.search(_httpClient, searchQuery);
+  Future<SearchQuery> queryFromPage(String searchQuery) =>
+      SearchQuery.search(_httpClient, searchQuery);
 }
 
 /*

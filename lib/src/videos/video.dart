@@ -22,8 +22,7 @@ class Video with EquatableMixin {
   final String author;
 
   /// Video author Id.
-  /// Note: null if the video is from a search query.
-  final ChannelId? channelId;
+  final ChannelId channelId;
 
   /// Video upload date.
   /// Note: For search queries it is calculated with:
@@ -49,7 +48,7 @@ class Video with EquatableMixin {
   final Engagement engagement;
 
   /// Returns true if this is a live stream.
-  final bool? isLive;
+  final bool isLive;
 
   /// Used internally.
   /// Shouldn't be used in the code.

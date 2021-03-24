@@ -31,6 +31,9 @@ class SearchVideo extends BaseSearchContent {
   /// True if this video is a live stream.
   final bool isLive;
 
+  /// Channel id
+  final String channelId;
+
   /// Initialize a [SearchVideo] instance.
   const SearchVideo(
       this.id,
@@ -41,8 +44,8 @@ class SearchVideo extends BaseSearchContent {
       this.viewCount,
       this.thumbnails,
       this.uploadDate,
-      this.isLive // ignore: avoid_positional_boolean_parameters
-      );
+      this.isLive, // ignore: avoid_positional_boolean_parameters
+      this.channelId);
 
   @override
   String toString() => '(Video) $title ($id)';

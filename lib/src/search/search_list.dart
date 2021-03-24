@@ -27,7 +27,7 @@ class SearchList extends DelegatingList<Video> {
                 e.id,
                 e.title,
                 e.author,
-                null,
+                ChannelId(e.channelId),
                 e.uploadDate.toDateTime(),
                 null,
                 e.description,

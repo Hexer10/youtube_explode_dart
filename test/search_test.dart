@@ -18,6 +18,7 @@ void main() {
 
   test('Search a youtube video from the search page-2', () async {
     var videos = await yt!.search
+        // ignore: deprecated_member_use_from_same_package
         .getVideosFromPage('hello')
         .where((e) => e is SearchVideo) // Take only the videos.
         .cast<SearchVideo>()
@@ -34,14 +35,6 @@ void main() {
     expect(video.viewCount, greaterThan(0));
     expect(video.thumbnails, isNotEmpty);
   });
-
-  test('Search a youtube videos from the search page - old', () async {
-    // ignore: deprecated_member_use_from_same_package
-    var searchQuery = await yt!.search.queryFromPage('hello');
-    expect(searchQuery.content, isNotEmpty);
-    expect(searchQuery.relatedVideos, isNotEmpty);
-    expect(searchQuery.relatedQueries, isNotEmpty);
-  }, skip: 'Not supported anymore');
 
   test('Search with no results - old', () async {
     var query =
@@ -61,10 +54,5 @@ void main() {
 
     var video = searchQuery.content.first as SearchVideo;
     expect(video.thumbnails, isNotEmpty);
-  });
-
-  test('Search youtube videos from search page (stream) - old', () async {
-    var query = await yt!.search.getVideosFromPage('hello').take(30).toList();
-    expect(query, hasLength(30));
   });
 }

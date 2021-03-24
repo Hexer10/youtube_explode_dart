@@ -64,7 +64,7 @@ class PlaylistClient {
             ThumbnailSet(videoId),
             null,
             Engagement(video.viewCount, null, null),
-            null);
+            false);
       }
       continuationToken = response.initialData.continuationToken;
       if (response.initialData.continuationToken?.isEmpty ?? true) {

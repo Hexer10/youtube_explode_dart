@@ -17,11 +17,13 @@ void main() {
     expect(video.id.value, 'AI7ULzgf8RU');
     expect(video.url, videoUrl);
     expect(video.title, 'Aka no Ha [Another] +HDHR');
-    expect(video.channelId!.value, 'UCEnBXANsKmyj2r9xVyKoDiQ');
+    expect(video.channelId.value, 'UCEnBXANsKmyj2r9xVyKoDiQ');
     expect(video.author, 'Tyrrrz');
     var rangeMs = DateTime(2017, 09, 30, 17, 15, 26).millisecondsSinceEpoch;
     // 1day margin since the uploadDate could differ from timezones
     expect(video.uploadDate!.millisecondsSinceEpoch,
+        inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
+    expect(video.publishDate!.millisecondsSinceEpoch,
         inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
     expect(video.description, contains('246pp'));
     // Should be 1:38 but sometimes it differs
