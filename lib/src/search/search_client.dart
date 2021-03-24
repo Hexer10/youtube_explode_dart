@@ -27,7 +27,7 @@ class SearchClient {
     return SearchList(
         page.initialData.searchContent
             .whereType<SearchVideo>()
-            .map((e) => Video(e.id, e.title, e.author, null, e.uploadDate?.toDateTime(), e.description, e.duration.toDuration(),
+            .map((e) => Video(e.id, e.title, e.author, null, e.uploadDate?.toDateTime(), null, e.description, e.duration.toDuration(),
                 ThumbnailSet(e.id.value), null, Engagement(e.viewCount, null, null), e.isLive))
             .toList(),
         page,
