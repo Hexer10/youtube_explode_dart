@@ -58,6 +58,7 @@ class PlaylistClient {
             video.author,
             ChannelId(video.channelId),
             null,
+            null,
             video.description,
             video.duration,
             ThumbnailSet(videoId),

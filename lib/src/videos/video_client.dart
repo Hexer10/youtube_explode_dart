@@ -38,6 +38,7 @@ class VideoClient {
         playerResponse.videoAuthor,
         ChannelId(playerResponse.videoChannelId),
         playerResponse.videoUploadDate,
+        playerResponse.videoPublishDate,
         playerResponse.videoDescription,
         playerResponse.videoDuration,
         ThumbnailSet(videoId.value),
