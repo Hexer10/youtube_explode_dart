@@ -1,14 +1,15 @@
 // ignore_for_file: avoid_print
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
+import 'package:youtube_explode_dart/src/youtube_explode_base.dart';
+
 Future<void> main() async {
-  final yt = YoutubeExplode();
+  var yt = YoutubeExplode();
+  var video =
+      await yt.videos.get('https://www.youtube.com/watch?v=AI7ULzgf8RU');
 
-  var manifest = await yt.videos.closedCaptions.getManifest('Pxgvgh9IFqA');
-  print(manifest.tracks);
-  print('\n\n---------------------\n\n');
+  print('Title: ${video.title}');
 
-  manifest = await yt.videos.closedCaptions.getManifest('Pxgvgh9IFqA');
-  print(manifest.tracks);
+  // Close the YoutubeExplode's http client.
   yt.close();
 }
