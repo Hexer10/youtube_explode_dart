@@ -5,7 +5,7 @@
 - Implemented `ChannelAboutPage`, check the tests their usage.
 - Implement filters for `search.getVideos`. See `filter` getter.
 - Now video's from search queries return the channel id.
-- Implemented publishDate for videos. Thanks to @mymikemiller , PR: #115.
+- Implemented publishDate for videos. Thanks to @mymikemiller , PR: #115.I t
 
 ## 1.8.0
 - Fixed playlist client.
