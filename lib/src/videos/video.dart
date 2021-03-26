@@ -22,19 +22,21 @@ class Video with EquatableMixin {
   final String author;
 
   /// Video author Id.
-  /// Note: null if the video is from a search query.
   final ChannelId channelId;
 
   /// Video upload date.
   /// Note: For search queries it is calculated with:
   ///   DateTime.now() - how much time is was published.
-  final DateTime uploadDate;
+  final DateTime? uploadDate;
+
+  /// Video publish date.
+  final DateTime? publishDate;
 
   /// Video description.
   final String description;
 
   /// Duration of the video.
-  final Duration duration;
+  final Duration? duration;
 
   /// Available thumbnails for this video.
   final ThumbnailSet thumbnails;
@@ -50,7 +52,7 @@ class Video with EquatableMixin {
 
   /// Used internally.
   /// Shouldn't be used in the code.
-  final WatchPage watchPage;
+  final WatchPage? watchPage;
 
   /// Returns true if the watch page is available for this video.
   bool get hasWatchPage => watchPage != null;
@@ -62,14 +64,15 @@ class Video with EquatableMixin {
       this.author,
       this.channelId,
       this.uploadDate,
+      this.publishDate,
       this.description,
       this.duration,
       this.thumbnails,
-      Iterable<String> keywords,
+      Iterable<String>? keywords,
       this.engagement,
       this.isLive, // ignore: avoid_positional_boolean_parameters
       [this.watchPage])
-      : keywords = UnmodifiableListView(keywords);
+      : keywords = UnmodifiableListView(keywords ?? []);
 
   @override
   String toString() => 'Video ($title)';

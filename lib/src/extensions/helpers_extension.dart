@@ -1,26 +1,14 @@
 library _youtube_explode.extensions;
 
+import 'dart:convert';
+import 'package:collection/collection.dart';
+
 import '../reverse_engineering/cipher/cipher_operations.dart';
 
 /// Utility for Strings.
 extension StringUtility on String {
-  /// Parses this value as int stripping the non digit characters,
-  /// returns null if this fails.
-  int parseInt() => int.tryParse(this?.stripNonDigits());
-
   /// Returns null if this string is whitespace.
-  String get nullIfWhitespace => trim().isEmpty ? null : this;
-
-  /// Returns true if the string is null or empty.
-  bool get isNullOrWhiteSpace {
-    if (this == null) {
-      return true;
-    }
-    if (trim().isEmpty) {
-      return true;
-    }
-    return false;
-  }
+  String? get nullIfWhitespace => trim().isEmpty ? null : this;
 
   /// Returns null if this string is a whitespace.
   String substringUntil(String separator) => substring(0, indexOf(separator));
@@ -34,28 +22,115 @@ extension StringUtility on String {
   /// Strips out all non digit characters.
   String stripNonDigits() => replaceAll(_exp, '');
 
-  ///
-  String extractJson() {
-    var buffer = StringBuffer();
-    var depth = 0;
+  /// Extract and decode json from a string
+  Map<String, dynamic>? extractJson([String separator = '']) {
+    final index = indexOf(separator) + separator.length;
+    if (index > length) {
+      return null;
+    }
 
-    for (var i = 0; i < length; i++) {
-      var ch = this[i];
-      var chPrv = i > 0 ? this[i - 1] : '';
+    final str = substring(index);
 
-      buffer.write(ch);
+    final startIdx = str.indexOf('{');
+    var endIdx = str.lastIndexOf('}');
 
-      if (ch == '{' && chPrv != '\\') {
-        depth++;
-      } else if (ch == '}' && chPrv != '\\') {
-        depth--;
-      }
-
-      if (depth == 0) {
-        break;
+    while (true) {
+      try {
+        return json.decode(str.substring(startIdx, endIdx + 1))
+            as Map<String, dynamic>;
+      } on FormatException {
+        endIdx = str.lastIndexOf(str.substring(0, endIdx));
+        if (endIdx == 0) {
+          return null;
+        }
       }
     }
-    return buffer.toString();
+  }
+
+  /// Format: HH:MM:SS
+  Duration? toDuration() {
+    if (/*string == null ||*/ trim().isEmpty) {
+      return null;
+    }
+
+    var parts = split(':');
+    assert(parts.length <= 3);
+
+    if (parts.length == 1) {
+      return Duration(seconds: int.parse(parts.first));
+    }
+    if (parts.length == 2) {
+      return Duration(
+          minutes: int.parse(parts[0]), seconds: int.parse(parts[1]));
+    }
+    if (parts.length == 3) {
+      return Duration(
+          hours: int.parse(parts[0]),
+          minutes: int.parse(parts[1]),
+          seconds: int.parse(parts[2]));
+    }
+    // Shouldn't reach here.
+    throw Error();
+  }
+
+  DateTime parseDateTime() => DateTime.parse(this);
+}
+
+/// Utility for Strings.
+extension StringUtility2 on String? {
+  /// Parses this value as int stripping the non digit characters,
+  /// returns null if this fails.
+  int? parseInt() => int.tryParse(this?.stripNonDigits() ?? '');
+
+  /// Returns true if the string is null or empty.
+  bool get isNullOrWhiteSpace {
+    if (this == null) {
+      return true;
+    }
+    if (this!.trim().isEmpty) {
+      return true;
+    }
+    return false;
+  }
+
+  /// Format: <quantity> <unit> ago (5 years ago)
+  DateTime? toDateTime() {
+    if (this == null) {
+      return null;
+    }
+
+    var parts = this!.split(' ');
+    if (parts.length == 4) {
+      // Streamed x y ago
+      parts = parts.skip(1).toList();
+    }
+    assert(parts.length == 3);
+
+    var qty = int.parse(parts.first);
+
+    // Try to get the unit
+    var unit = parts[1];
+    Duration time;
+    if (unit.startsWith('second')) {
+      time = Duration(seconds: qty);
+    } else if (unit.startsWith('minute')) {
+      time = Duration(minutes: qty);
+    } else if (unit.startsWith('hour')) {
+      time = Duration(hours: qty);
+    } else if (unit.startsWith('day')) {
+      time = Duration(days: qty);
+    } else if (unit.startsWith('week')) {
+      time = Duration(days: qty * 7);
+    } else if (unit.startsWith('month')) {
+      time = Duration(days: qty * 30);
+    } else if (unit.startsWith('year')) {
+      time = Duration(days: qty * 365);
+    } else {
+      throw StateError('Couldn\'t parse $unit unit of time. '
+          'Please report this to the project page!');
+    }
+
+    return DateTime.now().subtract(time);
   }
 }
 
@@ -63,7 +138,7 @@ extension StringUtility on String {
 extension ListDecipher on Iterable<CipherOperation> {
   /// Apply every CipherOperation on the [signature]
   String decipher(String signature) {
-    for (var operation in this) {
+    for (final operation in this) {
       signature = operation.decipher(signature);
     }
 
@@ -73,17 +148,9 @@ extension ListDecipher on Iterable<CipherOperation> {
 
 /// List Utility.
 extension ListUtil<E> on Iterable<E> {
-  /// Returns the first element of a list or null if empty.
-  E get firstOrNull {
-    if (length == 0) {
-      return null;
-    }
-    return first;
-  }
-
   /// Same as [elementAt] but if the index is higher than the length returns
   /// null
-  E elementAtSafe(int index) {
+  E? elementAtSafe(int index) {
     if (index >= length) {
       return null;
     }
@@ -106,7 +173,7 @@ extension UriUtility on Uri {
 ///
 extension GetOrNull<K, V> on Map<K, V> {
   /// Get a value from a map
-  V getValue(K key) {
+  V? getValue(K key) {
     var v = this[key];
     if (v == null) {
       return null;
@@ -118,7 +185,7 @@ extension GetOrNull<K, V> on Map<K, V> {
 ///
 extension GetOrNullMap on Map {
   /// Get a map inside a map
-  Map<String, dynamic> get(String key) {
+  Map<String, dynamic>? get(String key) {
     var v = this[key];
     if (v == null) {
       return null;
@@ -128,7 +195,7 @@ extension GetOrNullMap on Map {
 
   /// Get a value inside a map.
   /// If it is null this returns null, if of another type this throws.
-  T getT<T>(String key) {
+  T? getT<T>(String key) {
     var v = this[key];
     if (v == null) {
       return null;
@@ -140,7 +207,7 @@ extension GetOrNullMap on Map {
   }
 
   /// Get a List<Map<String, dynamic>>> from a map.
-  List<Map<String, dynamic>> getList(String key) {
+  List<Map<String, dynamic>>? getList(String key) {
     var v = this[key];
     if (v == null) {
       return null;
@@ -149,7 +216,7 @@ extension GetOrNullMap on Map {
       throw Exception('Invalid type: ${v.runtimeType} should be of type List');
     }
 
-    return (v.toList() as List<dynamic>).cast<Map<String, dynamic>>();
+    return (v.toList()).cast<Map<String, dynamic>>();
   }
 }
 
@@ -164,7 +231,26 @@ extension UriUtils on Uri {
   }
 }
 
-/// Parse properties with `runs` method.
+/// Parse properties with `text` method.
 extension RunsParser on List<dynamic> {
-  String parseRuns() => this?.map((e) => e['text'])?.join() ?? '';
+  ///
+  String parseRuns() => map((e) => e['text']).join();
+}
+
+extension GenericExtract on List<String> {
+  /// Used to extract initial data that start with `var ytInitialData = ` or 'window["ytInitialData"] ='.
+  T extractGenericData<T>(
+      T Function(Map<String, dynamic>) builder, Exception Function() orThrow) {
+    var initialData =
+        firstWhereOrNull((e) => e.contains('var ytInitialData = '))
+            ?.extractJson('var ytInitialData = ');
+    initialData ??=
+        firstWhereOrNull((e) => e.contains('window["ytInitialData"] ='))
+            ?.extractJson('window["ytInitialData"] =');
+
+    if (initialData != null) {
+      return builder(initialData);
+    }
+    throw orThrow();
+  }
 }

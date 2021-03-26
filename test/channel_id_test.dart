@@ -3,7 +3,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
   group('These are valid channel ids', () {
-    for (var val in <dynamic>{
+    for (final val in <dynamic>{
       [ChannelId('UCEnBXANsKmyj2r9xVyKoDiQ'), 'UCEnBXANsKmyj2r9xVyKoDiQ'],
       [ChannelId('UC46807r_RiRjH8IU-h_DrDQ'), 'UC46807r_RiRjH8IU-h_DrDQ'],
     }) {
@@ -13,7 +13,7 @@ void main() {
     }
   });
   group('These are valid channel urls', () {
-    for (var val in <dynamic>{
+    for (final val in <dynamic>{
       [
         ChannelId('youtube.com/channel/UC3xnGqlcL3y-GXz5N3wiTJQ'),
         'UC3xnGqlcL3y-GXz5N3wiTJQ'
@@ -34,7 +34,7 @@ void main() {
   });
 
   group('These are not valid channel ids', () {
-    for (var val in {
+    for (final val in {
       '',
       'UC3xnGqlcL3y-GXz5N3wiTJ',
       'UC3xnGqlcL y-GXz5N3wiTJQ'
@@ -46,7 +46,7 @@ void main() {
   });
 
   group('These are not valid channel urls', () {
-    for (var val in {
+    for (final val in {
       'youtube.com/?channel=UCUC3xnGqlcL3y-GXz5N3wiTJQ',
       'youtube.com/channel/asd',
       'youtube.com/'

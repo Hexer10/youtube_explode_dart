@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
@@ -10,91 +11,36 @@ import '../youtube_http_client.dart';
 
 ///
 class PlaylistPage {
-  final _apiKeyExp = RegExp(r'"INNERTUBE_API_KEY":"(\w+?)"');
-
   ///
   final String playlistId;
-  final Document _root;
+  final Document? root;
 
-  String _apiKey;
-
-  ///
-  String get apiKey => _apiKey ??= _apiKeyExp
-      .firstMatch(_root
-          .querySelectorAll('script')
-          .firstWhere((e) => e.text.contains('INNERTUBE_API_KEY'))
-          .text)
-      .group(1);
-
-  _InitialData _initialData;
+  late final _InitialData initialData = getInitialData();
+  _InitialData? _initialData;
 
   ///
-  _InitialData get initialData {
+  _InitialData getInitialData() {
     if (_initialData != null) {
-      return _initialData;
+      return _initialData!;
     }
 
-    final scriptText = _root
+    final scriptText = root!
         .querySelectorAll('script')
         .map((e) => e.text)
         .toList(growable: false);
 
-    var initialDataText = scriptText.firstWhere(
-        (e) => e.contains('window["ytInitialData"] ='),
-        orElse: () => null);
-    if (initialDataText != null) {
-      return _initialData = _InitialData(json
-          .decode(_extractJson(initialDataText, 'window["ytInitialData"] =')));
-    }
-
-    initialDataText = scriptText.firstWhere(
-        (e) => e.contains('var ytInitialData = '),
-        orElse: () => null);
-    if (initialDataText != null) {
-      return _initialData = _InitialData(
-          json.decode(_extractJson(initialDataText, 'var ytInitialData = ')));
-    }
-
-    throw TransientFailureException(
-        'Failed to retrieve initial data from the search page, please report this to the project GitHub page.'); // ignore: lines_longer_than_80_chars
-  }
-
-  String _extractJson(String html, String separator) {
-    if (html == null || separator == null) {
-      return null;
-    }
-    var index = html.indexOf(separator) + separator.length;
-    if (index > html.length) {
-      return null;
-    }
-    return _matchJson(html.substring(index));
-  }
-
-  String _matchJson(String str) {
-    var bracketCount = 0;
-    int lastI;
-    for (var i = 0; i < str.length; i++) {
-      lastI = i;
-      if (str[i] == '{') {
-        bracketCount++;
-      } else if (str[i] == '}') {
-        bracketCount--;
-      } else if (str[i] == ';') {
-        if (bracketCount == 0) {
-          return str.substring(0, i);
-        }
-      }
-    }
-    return str.substring(0, lastI + 1);
+    return scriptText.extractGenericData(
+        (obj) => _InitialData(obj),
+        () => TransientFailureException(
+            'Failed to retrieve initial data from the search page, please report this to the project GitHub page.'));
   }
 
   ///
-  PlaylistPage(this._root, this.playlistId,
-      [_InitialData initialData, this._apiKey])
+  PlaylistPage(this.root, this.playlistId, [_InitialData? initialData])
       : _initialData = initialData;
 
   ///
-  Future<PlaylistPage> nextPage(YoutubeHttpClient httpClient) async {
+  Future<PlaylistPage?> nextPage(YoutubeHttpClient httpClient) async {
     if (initialData.continuationToken == null) {
       return null;
     }
@@ -103,10 +49,10 @@ class PlaylistPage {
 
   ///
   static Future<PlaylistPage> get(YoutubeHttpClient httpClient, String id,
-      {String token}) {
+      {String? token}) {
     if (token != null && token.isNotEmpty) {
       var url =
-          'https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
+          'https://www.youtube.com/youtubei/v1/browse?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
 
       return retry(() async {
         var body = {
@@ -120,7 +66,8 @@ class PlaylistPage {
           'continuation': token
         };
 
-        var raw = await httpClient.post(url, body: json.encode(body));
+        var raw =
+            await httpClient.post(Uri.parse(url), body: json.encode(body));
         return PlaylistPage(null, id, _InitialData(json.decode(raw.body)));
       });
       // Ask for next page,
@@ -135,7 +82,7 @@ class PlaylistPage {
   }
 
   ///
-  PlaylistPage.parse(String raw, this.playlistId) : _root = parser.parse(raw);
+  PlaylistPage.parse(String raw, this.playlistId) : root = parser.parse(raw);
 }
 
 class _InitialData {
@@ -144,12 +91,12 @@ class _InitialData {
 
   _InitialData(this.root);
 
-  String get title => root
-      ?.get('metadata')
+  late final String? title = root
+      .get('metadata')
       ?.get('playlistMetadataRenderer')
       ?.getT<String>('title');
 
-  String get author => root
+  late final String? author = root
       .get('sidebar')
       ?.get('playlistSidebarRenderer')
       ?.getList('items')
@@ -161,13 +108,13 @@ class _InitialData {
       ?.getT<List<dynamic>>('runs')
       ?.parseRuns();
 
-  String get description => root
-      ?.get('metadata')
+  late final String? description = root
+      .get('metadata')
       ?.get('playlistMetadataRenderer')
       ?.getT<String>('description');
 
-  int get viewCount => root
-      ?.get('sidebar')
+  late final int? viewCount = root
+      .get('sidebar')
       ?.get('playlistSidebarRenderer')
       ?.getList('items')
       ?.firstOrNull
@@ -177,15 +124,15 @@ class _InitialData {
       ?.getT<String>('simpleText')
       ?.parseInt();
 
-  String get continuationToken => (videosContent ?? playlistVideosContent)
-      ?.firstWhere((e) => e['continuationItemRenderer'] != null,
-          orElse: () => null)
-      ?.get('continuationItemRenderer')
-      ?.get('continuationEndpoint')
-      ?.get('continuationCommand')
-      ?.getT<String>('token');
+  late final String? continuationToken =
+      (videosContent ?? playlistVideosContent)
+          ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+          ?.get('continuationItemRenderer')
+          ?.get('continuationEndpoint')
+          ?.get('continuationCommand')
+          ?.getT<String>('token');
 
-  List<Map<String, dynamic>> get playlistVideosContent =>
+  List<Map<String, dynamic>>? get playlistVideosContent =>
       root
           .get('contents')
           ?.get('twoColumnBrowseResultsRenderer')
@@ -205,26 +152,25 @@ class _InitialData {
           .getList('onResponseReceivedActions')
           ?.firstOrNull
           ?.get('appendContinuationItemsAction')
-          ?.get('continuationItems');
+          ?.getList('continuationItems');
 
-  List<Map<String, dynamic>> get videosContent =>
-      root
+  late final List<Map<String, dynamic>>? videosContent = root
           .get('contents')
           ?.get('twoColumnSearchResultsRenderer')
           ?.get('primaryContents')
           ?.get('sectionListRenderer')
           ?.getList('contents') ??
       root
-          ?.getList('onResponseReceivedCommands')
+          .getList('onResponseReceivedCommands')
           ?.firstOrNull
           ?.get('appendContinuationItemsAction')
-          ?.get('continuationItems');
+          ?.getList('continuationItems');
 
   List<_Video> get playlistVideos =>
       playlistVideosContent
           ?.where((e) => e['playlistVideoRenderer'] != null)
-          ?.map((e) => _Video(e['playlistVideoRenderer']))
-          ?.toList() ??
+          .map((e) => _Video(e['playlistVideoRenderer']))
+          .toList() ??
       const [];
 
   List<_Video> get videos =>
@@ -232,8 +178,8 @@ class _InitialData {
           ?.get('itemSectionRenderer')
           ?.getList('contents')
           ?.where((e) => e['videoRenderer'] != null)
-          ?.map((e) => _Video(e))
-          ?.toList() ??
+          .map((e) => _Video(e))
+          .toList() ??
       const [];
 }
 
@@ -243,11 +189,11 @@ class _Video {
 
   _Video(this.root);
 
-  String get id => root?.getT<String>('videoId');
+  String get id => root.getT<String>('videoId')!;
 
   String get author =>
-      root?.get('ownerText')?.getT<List<dynamic>>('runs')?.parseRuns() ??
-      root?.get('shortBylineText')?.getT<List<dynamic>>('runs')?.parseRuns() ??
+      root.get('ownerText')?.getT<List<dynamic>>('runs')?.parseRuns() ??
+      root.get('shortBylineText')?.getT<List<dynamic>>('runs')?.parseRuns() ??
       '';
 
   String get channelId =>
@@ -272,14 +218,14 @@ class _Video {
   String get description =>
       root.getList('descriptionSnippet')?.parseRuns() ?? '';
 
-  Duration get duration =>
+  Duration? get duration =>
       _stringToDuration(root.get('lengthText')?.getT<String>('simpleText'));
 
   int get viewCount =>
       root.get('viewCountText')?.getT<String>('simpleText')?.parseInt() ?? 0;
 
   /// Format: HH:MM:SS
-  static Duration _stringToDuration(String string) {
+  static Duration? _stringToDuration(String? string) {
     if (string == null || string.trim().isEmpty) {
       return null;
     }

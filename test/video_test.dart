@@ -2,18 +2,18 @@ import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
-  YoutubeExplode yt;
+  YoutubeExplode? yt;
   setUpAll(() {
     yt = YoutubeExplode();
   });
 
   tearDownAll(() {
-    yt.close();
+    yt?.close();
   });
 
   test('Get metadata of a video', () async {
     var videoUrl = 'https://www.youtube.com/watch?v=AI7ULzgf8RU';
-    var video = await yt.videos.get(VideoId(videoUrl));
+    var video = await yt!.videos.get(VideoId(videoUrl));
     expect(video.id.value, 'AI7ULzgf8RU');
     expect(video.url, videoUrl);
     expect(video.title, 'Aka no Ha [Another] +HDHR');
@@ -21,12 +21,14 @@ void main() {
     expect(video.author, 'Tyrrrz');
     var rangeMs = DateTime(2017, 09, 30, 17, 15, 26).millisecondsSinceEpoch;
     // 1day margin since the uploadDate could differ from timezones
-    expect(video.uploadDate.millisecondsSinceEpoch,
+    expect(video.uploadDate!.millisecondsSinceEpoch,
+        inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
+    expect(video.publishDate!.millisecondsSinceEpoch,
         inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
     expect(video.description, contains('246pp'));
     // Should be 1:38 but sometimes it differs
-    // so where using a 10 seconds range from it.
-    expect(video.duration.inSeconds, inInclusiveRange(108, 118));
+    // so we're using a 10 seconds range from it.
+    expect(video.duration!.inSeconds, inInclusiveRange(108, 118));
     expect(video.thumbnails.lowResUrl, isNotEmpty);
     expect(video.thumbnails.mediumResUrl, isNotEmpty);
     expect(video.thumbnails.highResUrl, isNotEmpty);
@@ -44,7 +46,7 @@ void main() {
   });
 
   group('Get metadata of any video', () {
-    for (var val in {
+    for (final val in {
       VideoId('9bZkp7q19f0'),
       VideoId('SkRSXFQerZs'),
       VideoId('5VGm0dczmHc'),
@@ -52,16 +54,16 @@ void main() {
       VideoId('5qap5aO4i9A')
     }) {
       test('VideoId - ${val.value}', () async {
-        var video = await yt.videos.get(val);
+        var video = await yt!.videos.get(val);
         expect(video.id.value, val.value);
       });
     }
   });
 
   group('Get metadata of invalid videos throws VideoUnplayableException', () {
-    for (var val in {VideoId('qld9w0b-1ao'), VideoId('pb_hHv3fByo')}) {
+    for (final val in {VideoId('qld9w0b-1ao'), VideoId('pb_hHv3fByo')}) {
       test('VideoId - $val', () {
-        expect(() async => yt.videos.get(val),
+        expect(() async => yt!.videos.get(val),
             throwsA(const TypeMatcher<VideoUnplayableException>()));
       });
     }

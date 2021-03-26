@@ -2,18 +2,18 @@ import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
-  YoutubeExplode yt;
+  YoutubeExplode? yt;
   setUpAll(() {
     yt = YoutubeExplode();
   });
 
   tearDownAll(() {
-    yt.close();
+    yt?.close();
   });
 
   test('Get a channel about page', () async {
     var channelUrl = 'https://www.youtube.com/user/FavijTV';
-    var channel = await yt.channels.getAboutPageByUsername(channelUrl);
+    var channel = await yt!.channels.getAboutPageByUsername(channelUrl);
     expect(channel.country, 'Italy');
     expect(channel.thumbnails, isNotEmpty);
     expect(channel.channelLinks, isNotEmpty);

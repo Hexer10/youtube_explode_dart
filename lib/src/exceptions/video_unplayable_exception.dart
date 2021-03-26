@@ -30,5 +30,7 @@ class VideoUnplayableException implements YoutubeExplodeException {
             'Live stream manifest is not available for this video';
 
   @override
-  String toString() => '$runtimeType: $message';
+  // ignore:
+  String toString() =>
+      '$runtimeType: $message'; // ignore: no_runtimetype_tostring
 }

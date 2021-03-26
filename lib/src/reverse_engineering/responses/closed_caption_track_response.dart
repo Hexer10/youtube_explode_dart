@@ -6,20 +6,18 @@ import '../youtube_http_client.dart';
 
 ///
 class ClosedCaptionTrackResponse {
-  final xml.XmlDocument _root;
-
-  Iterable<ClosedCaption> _closedCaptions;
+  final xml.XmlDocument root;
 
   ///
-  Iterable<ClosedCaption> get closedCaptions => _closedCaptions ??=
-      _root.findAllElements('p').map((e) => ClosedCaption._(e));
+  late final Iterable<ClosedCaption> closedCaptions =
+      root.findAllElements('p').map((e) => ClosedCaption._(e));
 
   ///
-  ClosedCaptionTrackResponse(this._root);
+  ClosedCaptionTrackResponse(this.root);
 
   ///
   // ignore: deprecated_member_use
-  ClosedCaptionTrackResponse.parse(String raw) : _root = xml.parse(raw);
+  ClosedCaptionTrackResponse.parse(String raw) : root = xml.parse(raw);
 
   ///
   static Future<ClosedCaptionTrackResponse> get(
@@ -34,46 +32,39 @@ class ClosedCaptionTrackResponse {
 
 ///
 class ClosedCaption {
-  final xml.XmlElement _root;
-
-  Duration _offset;
-  Duration _duration;
-  Duration _end;
-  List<ClosedCaptionPart> _parts;
+  final xml.XmlElement root;
 
   ///
-  String get text => _root.text;
+  String get text => root.text;
 
   ///
-  Duration get offset => _offset ??=
-      Duration(milliseconds: int.parse(_root.getAttribute('t') ?? 0));
+  late final Duration offset =
+      Duration(milliseconds: int.parse(root.getAttribute('t') ?? '0'));
 
   ///
-  Duration get duration => _duration ??=
-      Duration(milliseconds: int.parse(_root.getAttribute('d') ?? 0));
+  late final Duration duration =
+      Duration(milliseconds: int.parse(root.getAttribute('d') ?? '0'));
 
   ///
-  Duration get end => _end ??= offset + duration;
+  late final Duration end = offset + duration;
 
   ///
-  List<ClosedCaptionPart> getParts() => _parts ??=
-      _root.findAllElements('s').map((e) => ClosedCaptionPart._(e)).toList();
+  late final List<ClosedCaptionPart> parts =
+      root.findAllElements('s').map((e) => ClosedCaptionPart._(e)).toList();
 
-  ClosedCaption._(this._root);
+  ClosedCaption._(this.root);
 }
 
 ///
 class ClosedCaptionPart {
-  final xml.XmlElement _root;
-
-  Duration _offset;
+  final xml.XmlElement root;
 
   ///
-  String get text => _root.text;
+  String get text => root.text;
 
   ///
-  Duration get offset => _offset ??=
-      Duration(milliseconds: int.parse(_root.getAttribute('t') ?? '0'));
+  late final Duration offset =
+      Duration(milliseconds: int.parse(root.getAttribute('t') ?? '0'));
 
-  ClosedCaptionPart._(this._root);
+  ClosedCaptionPart._(this.root);
 }

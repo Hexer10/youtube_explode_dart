@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
@@ -6,8 +7,6 @@ import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../../videos/video_id.dart';
 import '../youtube_http_client.dart';
-import 'generated/player_response_json.g.dart';
-import 'generated/watch_page_id.g.dart';
 import 'player_config_base.dart';
 import 'player_response.dart';
 
@@ -25,7 +24,7 @@ class WatchPage {
 
   static final _xsfrTokenExp = RegExp(r'"XSRF_TOKEN"\s*:\s*"(.+?)"');
 
-  final Document _root;
+  final Document root;
 
   ///
   final String visitorInfoLive;
@@ -33,122 +32,122 @@ class WatchPage {
   ///
   final String ysc;
 
-  _InitialData _initialData;
-  String _xsfrToken;
-  WatchPlayerConfig _playerConfig;
+  _InitialData? _initialData;
 
   ///
-  String get sourceUrl {
-    var url = _root
+  String? get sourceUrl {
+    var url = root
         .querySelectorAll('script')
         .map((e) => e.attributes['src'])
-        .where((e) => !e.isNullOrWhiteSpace)
-        .firstWhere((e) => e.contains('player_ias') && e.endsWith('.js'),
-            orElse: () => null);
+        .whereNotNull()
+        .firstWhereOrNull((e) => e.contains('player_ias') && e.endsWith('.js'));
     if (url == null) {
       return null;
     }
     return 'https://youtube.com$url';
   }
 
+  late final _InitialData initialData = getInitialData();
+
   ///
-  _InitialData get initialData {
+  _InitialData getInitialData() {
     if (_initialData != null) {
-      return _initialData;
+      return _initialData!;
     }
 
-    final scriptText = _root
+    final scriptText = root
         .querySelectorAll('script')
         .map((e) => e.text)
         .toList(growable: false);
+    return scriptText.extractGenericData(
+        (obj) => _InitialData(obj),
+        () => TransientFailureException(
+            'Failed to retrieve initial data from the watch page, please report this to the project GitHub page.'));
+  }
 
-    var initialDataText = scriptText.firstWhere(
-        (e) => e.contains('window["ytInitialData"] ='),
-        orElse: () => null);
-    if (initialDataText != null) {
-      return _initialData = _InitialData(WatchPageId.fromRawJson(
-          _extractJson(initialDataText, 'window["ytInitialData"] =')));
-    }
+  late final String xsfrToken = getXsfrToken()!;
 
-    initialDataText = scriptText.firstWhere(
-        (e) => e.contains('var ytInitialData = '),
-        orElse: () => null);
-    if (initialDataText != null) {
-      return _initialData = _InitialData(WatchPageId.fromRawJson(
-          _extractJson(initialDataText, 'var ytInitialData = ')));
-    }
-
-    throw TransientFailureException(
-        'Failed to retrieve initial data from the watch page, please report this to the project GitHub page.'); // ignore: lines_longer_than_80_chars
+  ///
+  String? getXsfrToken() {
+    return _xsfrTokenExp
+        .firstMatch(root
+            .querySelectorAll('script')
+            .firstWhere((e) => _xsfrTokenExp.hasMatch(e.text))
+            .text)
+        ?.group(1);
   }
 
   ///
-  String get xsfrToken => _xsfrToken ??= _xsfrTokenExp
-      .firstMatch(_root
-          .querySelectorAll('script')
-          .firstWhere((e) => _xsfrTokenExp.hasMatch(e.text))
-          .text)
-      .group(1);
-
-  ///
-  bool get isOk => _root.body.querySelector('#player') != null;
+  bool get isOk => root.body?.querySelector('#player') != null;
 
   ///
   bool get isVideoAvailable =>
-      _root.querySelector('meta[property="og:url"]') != null;
+      root.querySelector('meta[property="og:url"]') != null;
 
   ///
   int get videoLikeCount => int.parse(_videoLikeExp
-          .firstMatch(_root.outerHtml)
+          .firstMatch(root.outerHtml)
           ?.group(1)
           ?.stripNonDigits()
-          ?.nullIfWhitespace ??
-      _root
+          .nullIfWhitespace ??
+      root
           .querySelector('.like-button-renderer-like-button')
           ?.text
-          ?.stripNonDigits()
-          ?.nullIfWhitespace ??
+          .stripNonDigits()
+          .nullIfWhitespace ??
       '0');
 
   ///
   int get videoDislikeCount => int.parse(_videoDislikeExp
-          .firstMatch(_root.outerHtml)
+          .firstMatch(root.outerHtml)
           ?.group(1)
           ?.stripNonDigits()
-          ?.nullIfWhitespace ??
-      _root
+          .nullIfWhitespace ??
+      root
           .querySelector('.like-button-renderer-dislike-button')
           ?.text
-          ?.stripNonDigits()
-          ?.nullIfWhitespace ??
+          .stripNonDigits()
+          .nullIfWhitespace ??
       '0');
 
   static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\})');
 
-  ///
-  WatchPlayerConfig get playerConfig => _playerConfig ??= WatchPlayerConfig(
-      PlayerConfigJson.fromRawJson(_playerConfigExp
-          .firstMatch(_root.getElementsByTagName('html').first.text)
-          ?.group(1)
-          ?.extractJson()));
+  late final WatchPlayerConfig? playerConfig = getPlayerConfig();
+
+  late final PlayerResponse? playerResponse = getPlayerResponse();
 
   ///
-  PlayerResponse get playerResponse => PlayerResponse.parse(_root
-      .querySelectorAll('script')
-      .map((e) => e.text)
-      .map((e) => _playerResponseExp.firstMatch(e)?.group(1))
-      .firstWhere((e) => !e.isNullOrWhiteSpace)
-      .extractJson());
-
-  String _extractJson(String html, String separator) =>
-      html.substring(html.indexOf(separator) + separator.length).extractJson();
+  WatchPlayerConfig? getPlayerConfig() {
+    final jsonMap = _playerConfigExp
+        .firstMatch(root.getElementsByTagName('html').first.text)
+        ?.group(1)
+        ?.extractJson();
+    if (jsonMap == null) {
+      return null;
+    }
+    return WatchPlayerConfig(jsonMap);
+  }
 
   ///
-  WatchPage(this._root, this.visitorInfoLive, this.ysc);
+  PlayerResponse? getPlayerResponse() {
+    final val = root
+        .querySelectorAll('script')
+        .map((e) => e.text)
+        .map((e) => _playerResponseExp.firstMatch(e)?.group(1))
+        .firstWhereOrNull((e) => !e.isNullOrWhiteSpace)
+        ?.extractJson();
+    if (val == null) {
+      return null;
+    }
+    return PlayerResponse(val);
+  }
+
+  ///
+  WatchPage(this.root, this.visitorInfoLive, this.ysc);
 
   ///
   WatchPage.parse(String raw, this.visitorInfoLive, this.ysc)
-      : _root = parser.parse(raw);
+      : root = parser.parse(raw);
 
   ///
   static Future<WatchPage> get(YoutubeHttpClient httpClient, String videoId) {
@@ -156,10 +155,10 @@ class WatchPage {
     return retry(() async {
       var req = await httpClient.get(url, validate: true);
 
-      var cookies = req.headers['set-cookie'];
-      var visitorInfoLive = _visitorInfoLiveExp.firstMatch(cookies).group(1);
-      var ysc = _yscExp.firstMatch(cookies).group(1);
-      var result = WatchPage.parse(req.body, visitorInfoLive, ysc);
+      var cookies = req.headers['set-cookie']!;
+      var visitorInfoLive = _visitorInfoLiveExp.firstMatch(cookies)?.group(1);
+      var ysc = _yscExp.firstMatch(cookies)!.group(1)!;
+      var result = WatchPage.parse(req.body, visitorInfoLive ?? '', ysc);
 
       if (!result.isOk) {
         throw TransientFailureException('Video watch page is broken.');
@@ -174,47 +173,48 @@ class WatchPage {
 }
 
 /// Used internally
-class WatchPlayerConfig implements PlayerConfigBase<PlayerConfigJson> {
+class WatchPlayerConfig implements PlayerConfigBase<Map<String, dynamic>> {
   @override
-  final PlayerConfigJson root;
+  final Map<String, dynamic> root;
 
   ///
   WatchPlayerConfig(this.root);
 
   @override
-  String get sourceUrl => 'https://youtube.com${root.assets.js}';
+  late final String sourceUrl =
+      'https://youtube.com${root.get('assets')!.getT<String>('js')}';
 
   ///
-  PlayerResponse get playerResponse =>
-      PlayerResponse.parse(root.args.playerResponse);
+  late final PlayerResponse playerResponse =
+      PlayerResponse.parse(root.get('args')!.getT<String>('playerResponse')!);
 }
 
 class _InitialData {
   // Json parsed map
-  final WatchPageId root;
+  final Map<String, dynamic> root;
 
   _InitialData(this.root);
 
-  /* Cache results */
-
-  String _continuation;
-  String _clickTrackingParams;
-
-  NextContinuationData getContinuationContext() {
-    if (root.contents != null) {
-      return root.contents.twoColumnWatchNextResults.results.results.contents
-          .firstWhere((e) => e.itemSectionRenderer != null)
-          .itemSectionRenderer
-          .continuations
-          .first
-          .nextContinuationData;
+  Map<String, dynamic>? getContinuationContext() {
+    if (root['contents'] != null) {
+      return root
+          .get('contents')
+          ?.get('twoColumnWatchNextResults')
+          ?.get('results')
+          ?.get('results')
+          ?.getList('contents')
+          ?.firstWhere((e) => e['itemSectionRenderer'] != null)
+          .get('itemSectionRenderer')
+          ?.getList('continuations')
+          ?.firstOrNull
+          ?.get('nextContinuationData');
     }
     return null;
   }
 
-  String get continuation =>
-      _continuation ??= getContinuationContext()?.continuation ?? '';
+  late final String continuation =
+      getContinuationContext()?.getT<String>('continuation') ?? '';
 
-  String get clickTrackingParams => _clickTrackingParams ??=
-      getContinuationContext()?.clickTrackingParams ?? '';
+  late final String clickTrackingParams =
+      getContinuationContext()?.getT<String>('clickTrackingParams') ?? '';
 }

@@ -22,9 +22,9 @@ class PlaylistClient {
     var response = await PlaylistPage.get(_httpClient, id.value);
     return Playlist(
         id,
-        response.initialData.title,
-        response.initialData.author,
-        response.initialData.description,
+        response.initialData.title ?? '',
+        response.initialData.author ?? '',
+        response.initialData.description ?? '',
         ThumbnailSet(id.value),
         Engagement(response.initialData.viewCount ?? 0, null, null));
   }
@@ -33,14 +33,14 @@ class PlaylistClient {
   Stream<Video> getVideos(dynamic id) async* {
     id = PlaylistId.fromString(id);
     var encounteredVideoIds = <String>{};
-    var continuationToken = '';
+    String? continuationToken = '';
 
     // ignore: literal_only_boolean_expressions
     while (true) {
       var response = await PlaylistPage.get(_httpClient, id.value,
           token: continuationToken);
 
-      for (var video in response.initialData.playlistVideos) {
+      for (final video in response.initialData.playlistVideos) {
         var videoId = video.id;
 
         // Already added
@@ -58,12 +58,13 @@ class PlaylistClient {
             video.author,
             ChannelId(video.channelId),
             null,
+            null,
             video.description,
             video.duration,
             ThumbnailSet(videoId),
             null,
             Engagement(video.viewCount, null, null),
-            null);
+            false);
       }
       continuationToken = response.initialData.continuationToken;
       if (response.initialData.continuationToken?.isEmpty ?? true) {

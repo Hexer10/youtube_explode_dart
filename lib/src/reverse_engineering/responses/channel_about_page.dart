@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 
@@ -6,73 +7,27 @@ import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
-import 'generated/channel_about_page_id.g.dart';
 
 ///
 class ChannelAboutPage {
   final Document _root;
 
-  _InitialData _initialData;
-
   ///
-  _InitialData get initialData {
-    if (_initialData != null) {
-      return _initialData;
-    }
+  late final _InitialData initialData = _getInitialData();
 
+  _InitialData _getInitialData() {
     final scriptText = _root
         .querySelectorAll('script')
         .map((e) => e.text)
         .toList(growable: false);
-
-    var initialDataText = scriptText.firstWhere(
-        (e) => e.contains('window["ytInitialData"] ='),
-        orElse: () => null);
-    if (initialDataText != null) {
-      return _initialData = _InitialData(ChannelAboutPageId.fromRawJson(
-          _extractJson(initialDataText, 'window["ytInitialData"] =')));
-    }
-
-    initialDataText = scriptText.firstWhere(
-        (e) => e.contains('var ytInitialData = '),
-        orElse: () => null);
-    if (initialDataText != null) {
-      return _initialData = _InitialData(ChannelAboutPageId.fromRawJson(
-          _extractJson(initialDataText, 'var ytInitialData = ')));
-    }
-
-    throw TransientFailureException(
-        'Failed to retrieve initial data from the channel about page, please report this to the project GitHub page.'); // ignore: lines_longer_than_80_chars
+    return scriptText.extractGenericData(
+        (obj) => _InitialData(obj),
+        () => TransientFailureException(
+            'Failed to retrieve initial data from the channel about page, please report this to the project GitHub page.'));
   }
-
-  ///
-  bool get isOk => initialData != null;
 
   ///
   String get description => initialData.description;
-
-  String _extractJson(String html, String separator) {
-    return _matchJson(
-        html.substring(html.indexOf(separator) + separator.length));
-  }
-
-  String _matchJson(String str) {
-    var bracketCount = 0;
-    int lastI;
-    for (var i = 0; i < str.length; i++) {
-      lastI = i;
-      if (str[i] == '{') {
-        bracketCount++;
-      } else if (str[i] == '}') {
-        bracketCount--;
-      } else if (str[i] == ';') {
-        if (bracketCount == 0) {
-          return str.substring(0, i);
-        }
-      }
-    }
-    return str.substring(0, lastI + 1);
-  }
 
   ///
   ChannelAboutPage(this._root);
@@ -88,9 +43,6 @@ class ChannelAboutPage {
       var raw = await httpClient.getString(url);
       var result = ChannelAboutPage.parse(raw);
 
-      if (!result.isOk) {
-        throw TransientFailureException('Channel about page is broken');
-      }
       return result;
     });
   }
@@ -104,9 +56,6 @@ class ChannelAboutPage {
       var raw = await httpClient.getString(url);
       var result = ChannelAboutPage.parse(raw);
 
-      if (!result.isOk) {
-        throw TransientFailureException('Channel about page is broken');
-      }
       return result;
     });
   }
@@ -115,59 +64,73 @@ class ChannelAboutPage {
 final _urlExp = RegExp(r'q=([^=]*)$');
 
 class _InitialData {
-  // Json parsed class
-  final ChannelAboutPageId root;
+  // Json parsed map
+  final Map<String, dynamic> root;
 
   _InitialData(this.root);
 
-  /* Cache results */
-  ChannelAboutFullMetadataRenderer _content;
+  late final Map<String, dynamic> content = _getContentContext();
 
-  ChannelAboutFullMetadataRenderer get content =>
-      _content ??= getContentContext();
-
-  ChannelAboutFullMetadataRenderer getContentContext() {
+  Map<String, dynamic> _getContentContext() {
     return root
-        .contents
-        .twoColumnBrowseResultsRenderer
-        .tabs[5]
-        .tabRenderer
-        .content
-        .sectionListRenderer
-        .contents
-        .first
-        .itemSectionRenderer
-        .contents
-        .first
-        .channelAboutFullMetadataRenderer;
+        .get('contents')!
+        .get('twoColumnBrowseResultsRenderer')!
+        .getList('tabs')!
+        .firstWhere((e) => e['tabRenderer']?['content'] != null)
+        .get('tabRenderer')!
+        .get('content')!
+        .get('sectionListRenderer')!
+        .getList('contents')!
+        .firstOrNull!
+        .get('itemSectionRenderer')!
+        .getList('contents')!
+        .firstOrNull!
+        .get('channelAboutFullMetadataRenderer')!;
   }
 
-  String get description => content.description.simpleText;
+  late final String description =
+      content.get('description')!.getT<String>('simpleText')!;
 
-  List<ChannelLink> get channelLinks {
-    return content.primaryLinks
-        .map((e) => ChannelLink(
-            e.title.simpleText,
-            extractUrl(e.navigationEndpoint?.commandMetadata?.webCommandMetadata
-                    ?.url ??
-                e.navigationEndpoint.urlEndpoint.url),
-            Uri.parse(e.icon.thumbnails.first.url)))
-        .toList();
-  }
+  late final List<ChannelLink> channelLinks = content
+      .getList('primaryLinks')!
+      .map((e) => ChannelLink(
+          e.get('title')?.getT<String>('simpleText') ?? '',
+          extractUrl(e
+                  .get('navigationEndpoint')
+                  ?.get('commandMetadata')
+                  ?.get('webCommandMetadata')
+                  ?.getT<String>('url') ??
+              e
+                  .get('navigationEndpoint')
+                  ?.get('urlEndpoint')
+                  ?.getT<String>('url') ??
+              ''),
+          Uri.parse(e
+                  .get('icon')
+                  ?.getList('thumbnails')
+                  ?.firstOrNull
+                  ?.getT<String>('url') ??
+              '')))
+      .toList();
 
-  int get viewCount =>
-      int.parse(content.viewCountText.simpleText.stripNonDigits());
+  late final int viewCount = int.parse(content
+      .get('viewCountText')!
+      .getT<String>('simpleText')!
+      .stripNonDigits());
 
-  String get joinDate => content.joinedDateText.runs[1].text;
+  late final String joinDate =
+      content.get('joinedDateText')!.getList('runs')![1].getT<String>('text')!;
 
-  String get title => content.title.simpleText;
+  late final String title = content.get('title')!.getT<String>('simpleText')!;
 
-  List<AvatarThumbnail> get avatar => content.avatar.thumbnails;
+  late final List<Map<String, dynamic>> avatar =
+      content.get('avatar')!.getList('thumbnails')!;
 
-  String get country => content.country.simpleText;
+  late final String country =
+      content.get('country')!.getT<String>('simpleText')!;
 
-  String parseRuns(List<dynamic> runs) =>
-      runs?.map((e) => e.text)?.join() ?? '';
+  String parseRuns(List<dynamic>? runs) =>
+      runs?.map((e) => e.text).join() ?? '';
 
   Uri extractUrl(String text) =>
       Uri.parse(Uri.decodeFull(_urlExp.firstMatch(text)?.group(1) ?? ''));

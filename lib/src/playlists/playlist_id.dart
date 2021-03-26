@@ -17,8 +17,8 @@ class PlaylistId with EquatableMixin {
   final String value;
 
   /// Initializes an instance of [PlaylistId]
-  PlaylistId(String idOrUrl) : value = parsePlaylistId(idOrUrl) {
-    if (value == null) {
+  PlaylistId(String idOrUrl) : value = parsePlaylistId(idOrUrl) ?? '' {
+    if (value.isEmpty) {
       throw ArgumentError.value(idOrUrl, 'idOrUrl', 'Invalid url');
     }
   }
@@ -61,7 +61,7 @@ class PlaylistId with EquatableMixin {
 
   /// Parses a playlist [url] returning its id.
   /// If the [url] is a valid it is returned itself.
-  static String parsePlaylistId(String url) {
+  static String? parsePlaylistId(String url) {
     if (url.isNullOrWhiteSpace) {
       return null;
     }
@@ -71,25 +71,25 @@ class PlaylistId with EquatableMixin {
     }
 
     var regMatch = _regMatchExp.firstMatch(url)?.group(1);
-    if (!regMatch.isNullOrWhiteSpace && validatePlaylistId(regMatch)) {
+    if (!regMatch.isNullOrWhiteSpace && validatePlaylistId(regMatch!)) {
       return regMatch;
     }
 
     var compositeMatch = _compositeMatchExp.firstMatch(url)?.group(1);
     if (!compositeMatch.isNullOrWhiteSpace &&
-        validatePlaylistId(compositeMatch)) {
+        validatePlaylistId(compositeMatch!)) {
       return compositeMatch;
     }
 
     var shortCompositeMatch = _shortCompositeMatchExp.firstMatch(url)?.group(1);
     if (!shortCompositeMatch.isNullOrWhiteSpace &&
-        validatePlaylistId(shortCompositeMatch)) {
+        validatePlaylistId(shortCompositeMatch!)) {
       return shortCompositeMatch;
     }
 
     var embedCompositeMatch = _embedCompositeMatchExp.firstMatch(url)?.group(1);
     if (!embedCompositeMatch.isNullOrWhiteSpace &&
-        validatePlaylistId(embedCompositeMatch)) {
+        validatePlaylistId(embedCompositeMatch!)) {
       return embedCompositeMatch;
     }
     return null;

@@ -38,11 +38,12 @@ class VideoClient {
         playerResponse.videoAuthor,
         ChannelId(playerResponse.videoChannelId),
         playerResponse.videoUploadDate,
+        playerResponse.videoPublishDate,
         playerResponse.videoDescription,
         playerResponse.videoDuration,
         ThumbnailSet(videoId.value),
         playerResponse.videoKeywords,
-        Engagement(playerResponse.videoViewCount ?? 0, watchPage.videoLikeCount,
+        Engagement(playerResponse.videoViewCount, watchPage.videoLikeCount,
             watchPage.videoDislikeCount),
         playerResponse.isLive,
         watchPage);

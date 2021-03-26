@@ -1,72 +1,67 @@
 import 'dart:async';
 
 import '../../exceptions/exceptions.dart';
+import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../cipher/cipher_operations.dart';
 import '../youtube_http_client.dart';
 
 ///
 class PlayerSource {
-  final RegExp _statIndexExp = RegExp(r'\(\w+,(\d+)\)');
+  static final RegExp _statIndexExp = RegExp(r'\(\w+,(\d+)\)');
 
-  final RegExp _funcBodyExp = RegExp(
+  static final RegExp _funcBodyExp = RegExp(
       r'(\w+)=function\(\w+\){(\w+)=\2\.split\(\x22{2}\);.*?return\s+\2\.join\(\x22{2}\)}');
 
-  final RegExp _objNameExp = RegExp(r'([\$_\w]+).\w+\(\w+,\d+\);');
+  static final RegExp _objNameExp = RegExp(r'([\$_\w]+).\w+\(\w+,\d+\);');
 
-  final RegExp _calledFuncNameExp = RegExp(r'\w+(?:.|\[)(\"?\w+(?:\")?)\]?\(');
+  static final RegExp _calledFuncNameExp =
+      RegExp(r'\w+(?:.|\[)(\"?\w+(?:\")?)\]?\(');
 
-  final String _root;
+  final String root;
 
-  String _sts;
-  String _deciphererDefinitionBody;
+  late final String sts = getSts();
 
   ///
-  String get sts {
-    if (_sts != null) {
-      return _sts;
-    }
-
+  String getSts() {
     var val = RegExp(r'(?<=invalid namespace.*?;[\w\s]+=)\d+')
-            .stringMatch(_root)
+            .stringMatch(root)
             ?.nullIfWhitespace ??
         RegExp(r'(?<=signatureTimestamp[=\:])\d+')
-            .stringMatch(_root)
+            .stringMatch(root)
             ?.nullIfWhitespace;
     if (val == null) {
       throw FatalFailureException('Could not find sts in player source.');
     }
-    return _sts ??= val;
+    return val;
   }
 
   ///
-  Iterable<CipherOperation> getCiperOperations() sync* {
-    var funcBody = _getDeciphererFuncBody();
-
-    if (funcBody == null) {
+  Iterable<CipherOperation> getCipherOperations() sync* {
+    if (deciphererFuncBody == null) {
       throw FatalFailureException(
           'Could not find signature decipherer function body.');
     }
 
-    var definitionBody = _getDeciphererDefinitionBody(funcBody);
+    var definitionBody = _getDeciphererDefinitionBody(deciphererFuncBody!);
     if (definitionBody == null) {
       throw FatalFailureException(
           'Could not find signature decipherer definition body.');
     }
 
-    for (var statement in funcBody.split(';')) {
+    for (final statement in deciphererFuncBody!.split(';')) {
       var calledFuncName = _calledFuncNameExp.firstMatch(statement)?.group(1);
       if (calledFuncName.isNullOrWhiteSpace) {
         continue;
       }
 
-      var escapedFuncName = RegExp.escape(calledFuncName);
+      var escapedFuncName = RegExp.escape(calledFuncName!);
       // Slice
       var exp = RegExp('$escapedFuncName'
           r':\bfunction\b\([a],b\).(\breturn\b)?.?\w+\.');
 
       if (exp.hasMatch(definitionBody)) {
-        var index = int.parse(_statIndexExp.firstMatch(statement).group(1));
+        var index = int.parse(_statIndexExp.firstMatch(statement)!.group(1)!);
         yield SliceCipherOperation(index);
       }
 
@@ -74,7 +69,7 @@ class PlayerSource {
       exp = RegExp(
           '$escapedFuncName' r':\bfunction\b\(\w+\,\w\).\bvar\b.\bc=a\b');
       if (exp.hasMatch(definitionBody)) {
-        var index = int.parse(_statIndexExp.firstMatch(statement).group(1));
+        var index = int.parse(_statIndexExp.firstMatch(statement)!.group(1)!);
         yield SwapCipherOperation(index);
       }
 
@@ -86,28 +81,28 @@ class PlayerSource {
     }
   }
 
-  String _getDeciphererFuncBody() {
-    return _deciphererDefinitionBody ??=
-        _funcBodyExp.firstMatch(_root).group(0);
-  }
+  late final String? deciphererFuncBody =
+      _funcBodyExp.firstMatch(root)?.group(0);
 
-  String _getDeciphererDefinitionBody(String deciphererFuncBody) {
-    var objName = _objNameExp.firstMatch(deciphererFuncBody).group(1);
+  String? _getDeciphererDefinitionBody(String deciphererFuncBody) {
+    final objName = _objNameExp.firstMatch(deciphererFuncBody)?.group(1);
+    if (objName == null) {
+      return null;
+    }
 
-    var exp = RegExp(
+    final exp = RegExp(
         r'var\s+'
         '${RegExp.escape(objName)}'
         r'=\{(\w+:function\(\w+(,\w+)?\)\{(.*?)\}),?\};',
         dotAll: true);
-    return exp.firstMatch(_root)?.group(0)?.nullIfWhitespace;
+    return exp.firstMatch(root)?.group(0)?.nullIfWhitespace;
   }
 
   ///
-  PlayerSource(this._root);
+  PlayerSource(this.root);
 
-  ///
-  // Same as default constructor
-  PlayerSource.parse(this._root);
+  /// Same as default constructor
+  PlayerSource.parse(this.root);
 
   ///
   static Future<PlayerSource> get(
@@ -120,10 +115,10 @@ class PlayerSource {
       if (_cache[url] == null) {
         _cache[url] = _CachedValue(val);
       } else {
-        _cache[url].update(val);
+        _cache[url]!.update(val);
       }
     }
-    return _cache[url].value;
+    return _cache[url]!.value;
   }
 
   static final Map<String, _CachedValue<PlayerSource>> _cache = {};
@@ -148,27 +143,12 @@ class _CachedValue<T> {
 
   set value(T other) => _value = other;
 
-  _CachedValue(this._value, [this.expireTime, this.cacheTime = 600000]) {
-    expireTime ??= DateTime.now().millisecondsSinceEpoch + cacheTime;
-  }
+  _CachedValue(this._value, [this.cacheTime = 600000])
+      : expireTime = DateTime.now().millisecondsSinceEpoch + cacheTime;
 
   void update(T newValue) {
     var now = DateTime.now().millisecondsSinceEpoch;
     expireTime = now + cacheTime;
     value = newValue;
-  }
-}
-
-extension on String {
-  String get nullIfWhitespace => trim().isEmpty ? null : this;
-
-  bool get isNullOrWhiteSpace {
-    if (this == null) {
-      return true;
-    }
-    if (trim().isEmpty) {
-      return true;
-    }
-    return false;
   }
 }

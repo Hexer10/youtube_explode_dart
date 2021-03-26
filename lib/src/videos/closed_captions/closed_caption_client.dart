@@ -1,5 +1,3 @@
-import 'package:xml/xml.dart' as xml;
-
 import '../../extensions/helpers_extension.dart';
 import '../../reverse_engineering/responses/responses.dart'
     hide ClosedCaption, ClosedCaptionPart, ClosedCaptionTrack;
@@ -39,8 +37,8 @@ class ClosedCaptionClient {
         await VideoInfoResponse.get(_httpClient, videoId.value);
     var playerResponse = videoInfoResponse.playerResponse;
 
-    for (var track in playerResponse.closedCaptionTrack) {
-      for (var ext in formats) {
+    for (final track in playerResponse.closedCaptionTrack) {
+      for (final ext in formats) {
         tracks.add(ClosedCaptionTrackInfo(
             Uri.parse(track.url)
                 .replaceQueryParameters({'fmt': ext.formatCode}),
@@ -61,7 +59,7 @@ class ClosedCaptionClient {
     var captions = response.closedCaptions
         .where((e) => !e.text.isNullOrWhiteSpace)
         .map((e) => ClosedCaption(e.text, e.offset, e.duration,
-            e.getParts().map((f) => ClosedCaptionPart(f.text, f.offset))));
+            e.parts.map((f) => ClosedCaptionPart(f.text, f.offset))));
     return ClosedCaptionTrack(captions);
   }
 

@@ -2,22 +2,23 @@ import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
-  YoutubeExplode yt;
+  YoutubeExplode? yt;
   setUp(() {
     yt = YoutubeExplode();
   });
 
   tearDown(() {
-    yt.close();
-  });
-
-  test('Search a youtube video from the api', () async {
-    var videos = await yt.search.getVideos('undead corporation megalomania');
-    expect(videos, isNotEmpty);
+    yt?.close();
   });
 
   test('Search a youtube video from the search page', () async {
-    var videos = await yt.search
+    var videos = await yt!.search.getVideos('undead corporation megalomania');
+    expect(videos, isNotEmpty);
+  });
+
+  test('Search a youtube video from the search page-2', () async {
+    var videos = await yt!.search
+        // ignore: deprecated_member_use_from_same_package
         .getVideosFromPage('hello')
         .where((e) => e is SearchVideo) // Take only the videos.
         .cast<SearchVideo>()
@@ -35,18 +36,10 @@ void main() {
     expect(video.thumbnails, isNotEmpty);
   });
 
-  test('Search a youtube videos from the search page - old', () async {
-    // ignore: deprecated_member_use_from_same_package
-    var searchQuery = await yt.search.queryFromPage('hello');
-    expect(searchQuery.content, isNotEmpty);
-    expect(searchQuery.relatedVideos, isNotEmpty);
-    expect(searchQuery.relatedQueries, isNotEmpty);
-  }, skip: 'Not supported anymore');
-
   test('Search with no results - old', () async {
     var query =
         // ignore: deprecated_member_use_from_same_package
-        await yt.search.queryFromPage('g;jghEOGHJeguEPOUIhjegoUEHGOGHPSASG');
+        await yt!.search.queryFromPage('g;jghEOGHJeguEPOUIhjegoUEHGOGHPSASG');
     expect(query.content, isEmpty);
     expect(query.relatedQueries, isEmpty);
     expect(query.relatedVideos, isEmpty);
@@ -56,15 +49,10 @@ void main() {
 
   test('Search youtube videos have thumbnails - old', () async {
     // ignore: deprecated_member_use_from_same_package
-    var searchQuery = await yt.search.queryFromPage('hello');
+    var searchQuery = await yt!.search.queryFromPage('hello');
     expect(searchQuery.content.first, isA<SearchVideo>());
 
     var video = searchQuery.content.first as SearchVideo;
     expect(video.thumbnails, isNotEmpty);
-  });
-
-  test('Search youtube videos from search page (stream) - old', () async {
-    var query = await yt.search.getVideosFromPage('hello').take(30).toList();
-    expect(query, hasLength(30));
   });
 }

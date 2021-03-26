@@ -1,7 +1,7 @@
 import 'package:grinder/grinder.dart';
 
 final pub = sdkBin('pub');
-void main(args) => grind(args);
+void main(List<String> args) => grind(args);
 
 @Task('Run tests')
 void test() => TestRunner().testAsync();
@@ -11,11 +11,11 @@ void analysis() {}
 
 @DefaultTask()
 @Depends(test)
-build() {
+void build() {
   Pub.build();
   Pub.upgrade();
   Pub.version();
 }
 
 @Task()
-clean() => defaultClean();
+void clean() => defaultClean();

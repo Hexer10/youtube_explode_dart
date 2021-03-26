@@ -1,26 +1,28 @@
 name: youtube_explode_dart
 description: A port in dart of the youtube explode library. Supports several API functions without the need of Youtube API Key.
-version: 1.8.0
+version: 1.9.0
+
 homepage: https://github.com/Hexer10/youtube_explode_dart
 
 environment:
-  sdk: '>=2.6.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  html: ^0.14.0+3
-  http: ^0.12.0+4
-  http_parser: ^3.1.3
-  xml: '>=3.0.0 <5.0.0'
-  equatable: ^1.1.0
-  meta: ^1.1.8
-  json_annotation: ^3.1.0
-  collection: ^1.14.13
+  collection: ^1.15.0
+  equatable: ^2.0.0
+  html: ^0.15.0
+  http: ^0.13.0
+  http_parser: ^4.0.0
+  json_annotation: ^4.0.0
+  meta: ^1.3.0
+  xml: ^5.0.2
 
 dev_dependencies:
-  effective_dart: ^1.2.4
-  console: ^3.1.0
-  test: ^1.12.0
-  grinder: ^0.8.5
-  pedantic: ^1.9.2
-  json_serializable: ^3.5.0
-  build_runner: ^1.10.4
+#TODO: Add build_runner when is nnbd
+  build_runner: ^1.12.2
+  console: ^4.0.0
+  grinder: ^0.9.0-nullsafety.0
+  json_serializable: ^4.1.0
+  lint: ^1.5.3
+  pedantic: ^1.11.0
+  test: ^1.16.8

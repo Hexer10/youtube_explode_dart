@@ -3,7 +3,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
   group('These are valid playlist ids', () {
-    for (var val in {
+    for (final val in {
       'PL601B2E69B03FAB9D',
       'PLI5YfMzCfRtZ8eV576YoY3vIYrHjyVm_e',
       'PLWwAypAcFRgKFlxtLbn_u14zddtDJj3mk',
@@ -23,7 +23,7 @@ void main() {
   });
 
   group('These are valid playlist urls', () {
-    for (var val in <dynamic>{
+    for (final val in <dynamic>{
       [
         PlaylistId(
             'youtube.com/playlist?list=PLOU2XLYxmsIJGErt5rrCqaSGTMyyqNt2H'),
@@ -62,7 +62,7 @@ void main() {
   });
 
   group('These are not valid playlist ids', () {
-    for (var val in {
+    for (final val in {
       'PLm_3vnTS-pvmZFuF L1Pyhqf8kTTYVKjW',
       'PLm_3vnTS-pvmZFuF3L=Pyhqf8kTTYVKjW'
     }) {
@@ -73,7 +73,7 @@ void main() {
   });
 
   group('These are not valid playlist urls', () {
-    for (var val in {
+    for (final val in {
       'youtube.com/playlist?lisp=PLOU2XLYxmsIJGErt5rrCqaSGTMyyqNt2H',
       'youtube.com/playlist?list=asd'
           'youtube.com/'

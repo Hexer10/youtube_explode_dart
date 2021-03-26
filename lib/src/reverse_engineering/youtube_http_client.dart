@@ -24,12 +24,12 @@ class YoutubeHttpClient extends http.BaseClient {
   };
 
   /// Initialize an instance of [YoutubeHttpClient]
-  YoutubeHttpClient([http.Client httpClient])
+  YoutubeHttpClient([http.Client? httpClient])
       : _httpClient = httpClient ?? http.Client();
 
   /// Throws if something is wrong with the response.
   void _validateResponse(http.BaseResponse response, int statusCode) {
-    var request = response.request;
+    var request = response.request!;
     if (request.url.host.endsWith('.google.com') &&
         request.url.path.startsWith('/sorry/')) {
       throw RequestLimitExceededException.httpRequest(response);
@@ -50,7 +50,7 @@ class YoutubeHttpClient extends http.BaseClient {
 
   ///
   Future<String> getString(dynamic url,
-      {Map<String, String> headers, bool validate = true}) async {
+      {Map<String, String> headers = const {}, bool validate = true}) async {
     var response = await get(url, headers: headers);
 
     if (validate) {
@@ -62,7 +62,11 @@ class YoutubeHttpClient extends http.BaseClient {
 
   @override
   Future<http.Response> get(dynamic url,
-      {Map<String, String> headers, bool validate = false}) async {
+      {Map<String, String>? headers = const {}, bool validate = false}) async {
+    assert(url is String || url is Uri);
+    if (url is String) {
+      url = Uri.parse(url);
+    }
     var response = await super.get(url, headers: headers);
     if (validate) {
       _validateResponse(response, response.statusCode);
@@ -72,8 +76,8 @@ class YoutubeHttpClient extends http.BaseClient {
 
   ///
   Future<String> postString(dynamic url,
-      {Map<String, String> body,
-      Map<String, String> headers,
+      {Map<String, String>? body,
+      Map<String, String> headers = const {},
       bool validate = true}) async {
     var response = await post(url, headers: headers, body: body);
 
@@ -85,7 +89,7 @@ class YoutubeHttpClient extends http.BaseClient {
   }
 
   Stream<List<int>> getStream(StreamInfo streamInfo,
-      {Map<String, String> headers,
+      {Map<String, String> headers = const {},
       bool validate = true,
       int start = 0,
       int errorCount = 0}) async* {
@@ -122,8 +126,8 @@ class YoutubeHttpClient extends http.BaseClient {
   }
 
   ///
-  Future<int> getContentLength(dynamic url,
-      {Map<String, String> headers, bool validate = true}) async {
+  Future<int?> getContentLength(dynamic url,
+      {Map<String, String> headers = const {}, bool validate = true}) async {
     var response = await head(url, headers: headers);
 
     if (validate) {
@@ -140,7 +144,7 @@ class YoutubeHttpClient extends http.BaseClient {
   Future<http.StreamedResponse> send(http.BaseRequest request) {
     _defaultHeaders.forEach((key, value) {
       if (request.headers[key] == null) {
-        request.headers[key] = _defaultHeaders[key];
+        request.headers[key] = _defaultHeaders[key]!;
       }
     });
     // print('Request: $request');
