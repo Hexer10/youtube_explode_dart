@@ -73,11 +73,12 @@ void main() {
     expect(videos, hasLength(30));
   });
 
+  //TODO: Remove dupe test
   test('Get about page of a youtube', () async {
     var aboutPage = await yt!.channels.getAboutPageByUsername(
         'PewDiePie'); // or yt.channels.getAboutPage(channelId)
     expect(aboutPage.title, 'PewDiePie');
-    expect(aboutPage.viewCount, greaterThanOrEqualTo(27123740560));
+    expect(aboutPage.viewCount, greaterThanOrEqualTo(20000000000)); //Seems youtube likes to change and lower this number
     expect(aboutPage.description, isNotEmpty);
     expect(aboutPage.thumbnails, isNotEmpty); // Avatar list
     expect(aboutPage.channelLinks, isNotEmpty);
