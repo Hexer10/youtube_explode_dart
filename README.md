@@ -2,7 +2,7 @@
 This is a port of the [YoutubeExplode] library from C#, most of the functions, doc comments, readme information, is taken from YoutubeExplode repository.
 
 ![Pub Version](https://img.shields.io/pub/v/youtube_explode_dart)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Hexer10/youtube_explode_dart/Dart%20CI)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Hexer10/youtube_explode_dart/Dart%20CI?event=push)
 ![License](https://img.shields.io/github/license/Hexer10/youtube_explode_dart)
 ![Effective Dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)
 ---
