@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:http/http.dart' as http;
+import 'package:youtube_explode_dart/src/retry.dart';
 
 import '../exceptions/exceptions.dart';
 import '../videos/streams/streams.dart';
@@ -12,15 +13,16 @@ class YoutubeHttpClient extends http.BaseClient {
   final Map<String, String> _defaultHeaders = const {
     'user-agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
-    'accept-language': 'en-US,en;q=1.0',
-    'x-youtube-client-name': '1',
-    'x-youtube-client-version': '2.20200609.04.02',
-    'x-spf-previous': 'https://www.youtube.com/',
-    'x-spf-referer': 'https://www.youtube.com/',
-    'x-youtube-device':
-        'cbr=Chrome&cbrver=81.0.4044.138&ceng=WebKit&cengver=537.36'
-            '&cos=Windows&cosver=10.0',
-    'x-youtube-page-label': 'youtube.ytfe.desktop_20200617_1_RC1'
+    'cookie': 'CONSENT=YES+cb',
+    'accept':
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'accept-language': 'accept-language: en-US,en;q=0.9',
+    'sec-fetch-dest': 'document',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-site': 'none',
+    'sec-fetch-user': '?1',
+    'sec-gpc': '1',
+    'upgrade-insecure-requests': '1'
   };
 
   /// Initialize an instance of [YoutubeHttpClient]
@@ -99,7 +101,7 @@ class YoutubeHttpClient extends http.BaseClient {
       try {
         final request = http.Request('get', url);
         request.headers['range'] = 'bytes=$i-${i + 9898989 - 1}';
-        final response = await send(request);
+        final response = await retry(() => send(request));
         if (validate) {
           _validateResponse(response, response.statusCode);
         }
