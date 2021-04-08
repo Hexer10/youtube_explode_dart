@@ -39,7 +39,7 @@ YoutubeExplode is a library that provides an interface to query metadata of YouT
 
 Add the dependency to the pubspec.yaml (Check for the latest version)
 ```yaml
-youtube_explode_dart: ^1.3.0
+youtube_explode_dart: ^1.9.1
 ```
 
 Import the library
