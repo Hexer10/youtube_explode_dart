@@ -5,6 +5,9 @@ This is a port of the [YoutubeExplode] library from C#, most of the functions, d
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Hexer10/youtube_explode_dart/Dart%20CI?event=push)
 ![License](https://img.shields.io/github/license/Hexer10/youtube_explode_dart)
 ![Effective Dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)
+
+It used to build [Youtube Downloader Flutter](https://github.com/Hexer10/youtube_downloader_flutter) (An cross-platoform application to download video streams from youtube using this library & flutter)
+
 ---
 
 YoutubeExplode is a library that provides an interface to query metadata of YouTube videos, playlists and channels, as well as to resolve and download video streams and closed caption tracks. Behind a layer of abstraction, the library parses raw page content and uses reverse-engineered AJAX requests to retrieve information. As it doesn't use the official API, there's also no need for an API key and there are no usage quotas.
