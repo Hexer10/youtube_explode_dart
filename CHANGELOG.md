@@ -1,3 +1,6 @@
+## 1.9.1
+- Bug fixes (due to youtube changes)
+
 ## 1.9.0
 - Support nnbd (dart 1.12)
 - New api: `getQuerySuggestions`: Returns the suggestions youtube provides while making a video search.

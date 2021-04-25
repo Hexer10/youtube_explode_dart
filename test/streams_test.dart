@@ -14,7 +14,8 @@ void main() {
   group('Get streams manifest of any video', () {
     for (final val in {
       VideoId('9bZkp7q19f0'), // very popular
-      // VideoId('SkRSXFQerZs'), // age restricted (embed allowed) - This is unplayable
+      VideoId(
+          'SkRSXFQerZs'), // age restricted (embed allowed) - This is unplayable
       VideoId('hySoCSoH-g8'), // age restricted (embed not allowed)
       VideoId('_kmeFXjjGfk'), // embed not allowed (type 1)
       VideoId('MeJVWBSsPAY'), // embed not allowed (type 2)
