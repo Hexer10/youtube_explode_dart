@@ -65,6 +65,7 @@ void main() {
     }
   });
 
+
   test('Get videos of a youtube channel from the uploads page', () async {
     var videos = await yt!.channels
         .getUploadsFromPage('UCEnBXANsKmyj2r9xVyKoDiQ')

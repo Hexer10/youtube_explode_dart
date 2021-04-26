@@ -166,6 +166,16 @@ class _InitialData {
         VideoId(video.getT<String>('videoId')!),
         video.get('title')?.getT<String>('simpleText') ??
             video.get('title')?.getList('runs')?.map((e) => e['text']).join() ??
-            '');
+            '',
+        video
+                .getList('thumbnailOverlays')
+                ?.firstOrNull
+                ?.get('thumbnailOverlayTimeStatusRenderer')
+                ?.get('text')
+                ?.getT<String>('simpleText')
+                ?.toDuration() ??
+            Duration.zero);
   }
 }
+
+// video['thumbnailOverlays'].first['thumbnailOverlayTimeStatusRenderer']['text']['simpleText']

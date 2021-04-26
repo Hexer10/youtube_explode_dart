@@ -219,33 +219,8 @@ class _Video {
       root.getList('descriptionSnippet')?.parseRuns() ?? '';
 
   Duration? get duration =>
-      _stringToDuration(root.get('lengthText')?.getT<String>('simpleText'));
+      root.get('lengthText')?.getT<String>('simpleText')?.toDuration();
 
   int get viewCount =>
       root.get('viewCountText')?.getT<String>('simpleText')?.parseInt() ?? 0;
-
-  /// Format: HH:MM:SS
-  static Duration? _stringToDuration(String? string) {
-    if (string == null || string.trim().isEmpty) {
-      return null;
-    }
-
-    var parts = string.split(':');
-    assert(parts.length <= 3);
-
-    if (parts.length == 1) {
-      return Duration(seconds: int.parse(parts.first));
-    }
-    if (parts.length == 2) {
-      return Duration(
-          minutes: int.parse(parts.first), seconds: int.parse(parts[1]));
-    }
-    if (parts.length == 3) {
-      return Duration(
-          hours: int.parse(parts[0]),
-          minutes: int.parse(parts[1]),
-          seconds: int.parse(parts[2]));
-    }
-    throw Error();
-  }
 }

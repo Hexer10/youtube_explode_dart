@@ -1,5 +1,8 @@
+## 1.9.2
+- Implement `videoDuration` in `ChannelVideo`.
+
 ## 1.9.1
-- Bug fixes (due to youtube changes)
+- Bug fixes (due to YouTube changes)
 
 ## 1.9.0
 - Support nnbd (dart 1.12)
