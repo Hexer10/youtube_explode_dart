@@ -1,3 +1,6 @@
+## 1.9.2+2
+- Fix `videoThumbnail` in `ChannelVideo`.
+
 ## 1.9.2+1
 - Implement `videoThumbnail` in `ChannelVideo`.
 
