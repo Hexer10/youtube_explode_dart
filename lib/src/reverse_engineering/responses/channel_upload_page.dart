@@ -174,7 +174,13 @@ class _InitialData {
                 ?.get('text')
                 ?.getT<String>('simpleText')
                 ?.toDuration() ??
-            Duration.zero);
+            Duration.zero,
+        video
+                .get('thubnail')
+                ?.getList('thumbnails')
+                ?.last
+                .getT<String>('url') ??
+            '');
   }
 }
 

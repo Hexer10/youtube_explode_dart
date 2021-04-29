@@ -12,8 +12,11 @@ class ChannelVideo with EquatableMixin {
   /// Video duration
   final Duration videoDuration;
 
+  /// Video thumbnail
+  final String videoThumbnail;
+
   /// Initialize an instance of [ChannelVideo]
-  ChannelVideo(this.videoId, this.videoTitle, this.videoDuration);
+  ChannelVideo(this.videoId, this.videoTitle, this.videoDuration, this.videoThumbnail);
 
   @override
   String toString() => '[ChannelVideo] $videoTitle ($videoId)';

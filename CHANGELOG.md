@@ -1,3 +1,6 @@
+## 1.9.2+1
+- Implement `videoThumbnail` in `ChannelVideo`.
+
 ## 1.9.2
 - Implement `videoDuration` in `ChannelVideo`.
 
