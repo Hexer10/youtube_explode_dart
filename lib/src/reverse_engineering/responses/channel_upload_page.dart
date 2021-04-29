@@ -176,7 +176,7 @@ class _InitialData {
                 ?.toDuration() ??
             Duration.zero,
         video
-                .get('thubnail')
+                .get('thumbnail')
                 ?.getList('thumbnails')
                 ?.last
                 .getT<String>('url') ??
