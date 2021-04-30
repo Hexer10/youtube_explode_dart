@@ -42,15 +42,27 @@ class ChannelUploadPage {
 
   ///
   Future<ChannelUploadPage?> nextPage(YoutubeHttpClient httpClient) {
-    if (initialData.continuation.isEmpty) {
+    if (initialData.token.isEmpty) {
       return Future.value(null);
     }
-    var url =
-        'https://www.youtube.com/browse_ajax?ctoken=${initialData.continuation}&continuation=${initialData.continuation}&itct=${initialData.clickTrackingParams}';
+
+    final url = Uri.parse(
+        'https://www.youtube.com/youtubei/v1/browse?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8');
+
+    final body = {
+      'context': const {
+        'client': {
+          'hl': 'en',
+          'clientName': 'WEB',
+          'clientVersion': '2.20200911.04.00'
+        }
+      },
+      'continuation': initialData.token
+    };
     return retry(() async {
-      var raw = await httpClient.getString(url);
+      var raw = await httpClient.post(url, body: json.encode(body));
       return ChannelUploadPage(
-          null, channelId, _InitialData(json.decode(raw)[1]));
+          null, channelId, _InitialData(json.decode(raw.body)));
     });
   }
 
@@ -79,14 +91,10 @@ class _InitialData {
   late final Map<String, dynamic>? continuationContext =
       getContinuationContext();
 
-  late final String clickTrackingParams =
-      continuationContext?.getT<String>('continuationContext') ?? '';
+  late final String token = continuationContext?.getT<String>('token') ?? '';
 
   late final List<ChannelVideo> uploads =
       getContentContext().map(_parseContent).whereNotNull().toList();
-
-  late final String continuation =
-      continuationContext?.getT<String>('continuation') ?? '';
 
   List<Map<String, dynamic>> getContentContext() {
     List<Map<String, dynamic>>? context;
@@ -109,12 +117,12 @@ class _InitialData {
           ?.getList('items')
           ?.cast<Map<String, dynamic>>();
     }
-    if (context == null && root.containsKey('response')) {
+    if (context == null && root.containsKey('onResponseReceivedActions')) {
       context = root
-          .get('response')
-          ?.get('continuationContents')
-          ?.get('gridContinuation')
-          ?.getList('items')
+          .getList('onResponseReceivedActions')
+          ?.firstOrNull
+          ?.get('appendContinuationItemsAction')
+          ?.getList('continuationItems')
           ?.cast<Map<String, dynamic>>();
     }
     if (context == null) {
@@ -140,18 +148,22 @@ class _InitialData {
           ?.getList('contents')
           ?.firstOrNull
           ?.get('gridRenderer')
-          ?.getList('continuations')
-          ?.firstOrNull
-          ?.get('nextContinuationData');
+          ?.getList('items')
+          ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+          ?.get('continuationItemRenderer')
+          ?.get('continuationEndpoint')
+          ?.get('continuationCommand');
     }
-    if (root.containsKey('response')) {
+    if (root.containsKey('onResponseReceivedActions')) {
       return root
-          .get('response')
-          ?.get('continuationContents')
-          ?.get('gridContinuation')
-          ?.getList('continuations')
+          .getList('onResponseReceivedActions')
           ?.firstOrNull
-          ?.get('nextContinuationData');
+          ?.get('appendContinuationItemsAction')
+          ?.getList('continuationItems')
+          ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+          ?.get('continuationItemRenderer')
+          ?.get('continuationEndpoint')
+          ?.get('continuationCommand');
     }
     return null;
   }
@@ -183,4 +195,4 @@ class _InitialData {
   }
 }
 
-// video['thumbnailOverlays'].first['thumbnailOverlayTimeStatusRenderer']['text']['simpleText']
+//

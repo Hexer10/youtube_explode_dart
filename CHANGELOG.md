@@ -1,5 +1,8 @@
+## 1.9.3+2
+- Fix `ChannelUploadsList`.
+
 ## 1.9.3+1
-- export `ChannelUploadsList`.
+- Export `ChannelUploadsList`.
 
 ## 1.9.3
 - `getUploadsFromPage` now returns an instance of `ChannelUploadsList`.
