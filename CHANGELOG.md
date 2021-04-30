@@ -1,3 +1,6 @@
+## 1.9.3+1
+- export `ChannelUploadsList`.
+
 ## 1.9.3
 - `getUploadsFromPage` now returns an instance of `ChannelUploadsList`.
 
