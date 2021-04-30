@@ -52,6 +52,7 @@ class Video with EquatableMixin {
 
   /// Used internally.
   /// Shouldn't be used in the code.
+  /// TODO: Deprecate this method
   final WatchPage? watchPage;
 
   /// Returns true if the watch page is available for this video.

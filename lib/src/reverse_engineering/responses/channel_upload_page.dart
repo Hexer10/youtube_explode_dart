@@ -163,24 +163,23 @@ class _InitialData {
 
     var video = content.get('gridVideoRenderer')!;
     return ChannelVideo(
-        VideoId(video.getT<String>('videoId')!),
-        video.get('title')?.getT<String>('simpleText') ??
-            video.get('title')?.getList('runs')?.map((e) => e['text']).join() ??
-            '',
-        video
-                .getList('thumbnailOverlays')
-                ?.firstOrNull
-                ?.get('thumbnailOverlayTimeStatusRenderer')
-                ?.get('text')
-                ?.getT<String>('simpleText')
-                ?.toDuration() ??
-            Duration.zero,
-        video
-                .get('thumbnail')
-                ?.getList('thumbnails')
-                ?.last
-                .getT<String>('url') ??
-            '');
+      VideoId(video.getT<String>('videoId')!),
+      video.get('title')?.getT<String>('simpleText') ??
+          video.get('title')?.getList('runs')?.map((e) => e['text']).join() ??
+          '',
+      video
+              .getList('thumbnailOverlays')
+              ?.firstOrNull
+              ?.get('thumbnailOverlayTimeStatusRenderer')
+              ?.get('text')
+              ?.getT<String>('simpleText')
+              ?.toDuration() ??
+          Duration.zero,
+      video.get('thumbnail')?.getList('thumbnails')?.last.getT<String>('url') ??
+          '',
+      video.get('publishedTimeText')?.getT<String>('simpleText') ?? '',
+      video.get('viewCountText')?.getT<String>('simpleText')?.parseInt() ?? 0,
+    );
   }
 }
 

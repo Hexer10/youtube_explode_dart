@@ -65,12 +65,9 @@ void main() {
     }
   });
 
-
   test('Get videos of a youtube channel from the uploads page', () async {
-    var videos = await yt!.channels
-        .getUploadsFromPage('UCEnBXANsKmyj2r9xVyKoDiQ')
-        .take(30)
-        .toList();
+    var videos =
+        await yt!.channels.getUploadsFromPage('UCEnBXANsKmyj2r9xVyKoDiQ');
     expect(videos, hasLength(30));
   });
 
@@ -79,7 +76,10 @@ void main() {
     var aboutPage = await yt!.channels.getAboutPageByUsername(
         'PewDiePie'); // or yt.channels.getAboutPage(channelId)
     expect(aboutPage.title, 'PewDiePie');
-    expect(aboutPage.viewCount, greaterThanOrEqualTo(20000000000)); //Seems youtube likes to change and lower this number
+    expect(
+        aboutPage.viewCount,
+        greaterThanOrEqualTo(
+            20000000000)); //Seems youtube likes to change and lower this number
     expect(aboutPage.description, isNotEmpty);
     expect(aboutPage.thumbnails, isNotEmpty); // Avatar list
     expect(aboutPage.channelLinks, isNotEmpty);

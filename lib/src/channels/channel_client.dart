@@ -1,3 +1,5 @@
+import 'package:youtube_explode_dart/src/channels/channel_uploads_list.dart';
+
 import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';
@@ -9,7 +11,7 @@ import '../videos/video.dart';
 import '../videos/video_id.dart';
 import 'channel.dart';
 import 'channel_id.dart';
-import 'channel_video.dart';
+import 'channel_uploads_list.dart';
 import 'channels.dart';
 import 'username.dart';
 import 'video_sorting.dart';
@@ -113,20 +115,33 @@ class ChannelClient {
   ///
   /// Note that this endpoint provides less info about each video
   /// (only the Title and VideoId).
-  Stream<ChannelVideo> getUploadsFromPage(dynamic channelId,
-      [VideoSorting videoSorting = VideoSorting.newest]) async* {
+  Future<ChannelUploadsList> getUploadsFromPage(dynamic channelId,
+      [VideoSorting videoSorting = VideoSorting.newest]) async {
     channelId = ChannelId.fromString(channelId);
-    ChannelUploadPage? page = await ChannelUploadPage.get(
+    final page = await ChannelUploadPage.get(
         _httpClient, (channelId as ChannelId).value, videoSorting.code);
-    yield* Stream.fromIterable(page.initialData.uploads);
 
-    // ignore: literal_only_boolean_expressions
-    while (true) {
-      page = await page!.nextPage(_httpClient);
-      if (page == null) {
-        return;
-      }
-      yield* Stream.fromIterable(page.initialData.uploads);
-    }
+    final channel = await get(channelId);
+
+    return ChannelUploadsList(
+        page.initialData.uploads
+            .map((e) => Video(
+                e.videoId,
+                e.videoTitle,
+                channel.title,
+                channelId,
+                e.videoUploadDate.toDateTime(),
+                null,
+                '',
+                e.videoDuration,
+                ThumbnailSet(e.videoId.value),
+                null,
+                Engagement(e.videoViews, null, null),
+                false))
+            .toList(),
+        channel.title,
+        channelId,
+        page,
+        _httpClient);
   }
 }
