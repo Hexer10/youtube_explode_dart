@@ -54,7 +54,7 @@ class VideoInfoResponse {
       [String? sts]) {
     var eurl = Uri.encodeFull('https://youtube.googleapis.com/v/$videoId');
     var url =
-        'https://youtube.com/get_video_info?video_id=$videoId&el=embedded&eurl=$eurl&hl=en${sts != null ? '&sts=$sts' : ''}';
+        'https://youtube.com/get_video_info?video_id=$videoId&el=embedded&eurl=$eurl&hl=en${sts != null ? '&sts=$sts' : ''}&html5=1';
     return retry(() async {
       var raw = await httpClient.getString(url);
       var result = VideoInfoResponse.parse(raw);

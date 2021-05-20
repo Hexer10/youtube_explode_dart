@@ -48,23 +48,33 @@ void main() {
 
   group('Get specific stream of any playable video', () {
     for (final val in {
-      VideoId('9bZkp7q19f0'), // very popular
-      // VideoId('SkRSXFQerZs'), // age restricted (embed allowed) - This is unplayable
-      VideoId('hySoCSoH-g8'), // age restricted (embed not allowed)
-      VideoId('_kmeFXjjGfk'), // embed not allowed (type 1)
-      VideoId('MeJVWBSsPAY'), // embed not allowed (type 2)
-      VideoId('5VGm0dczmHc'), // rating not allowed
-      VideoId('ZGdLIwrGHG8'), // unlisted
-      VideoId('rsAAeyAr-9Y'), // recording of a live stream
-      VideoId('AI7ULzgf8RU'), // has DASH manifest TODO: Test timesout
-      VideoId('-xNN-bJQ4vI'), // 360° video
+      VideoId('9bZkp7q19f0'),
+      // very popular
+      VideoId(
+          'SkRSXFQerZs'), // age restricted (embed allowed) - This is unplayable
+      VideoId('hySoCSoH-g8'),
+      // age restricted (embed not allowed)
+      VideoId('_kmeFXjjGfk'),
+      // embed not allowed (type 1)
+      VideoId('MeJVWBSsPAY'),
+      // embed not allowed (type 2)
+      VideoId('5VGm0dczmHc'),
+      // rating not allowed
+      VideoId('ZGdLIwrGHG8'),
+      // unlisted
+      VideoId('rsAAeyAr-9Y'),
+      // recording of a live stream
+      VideoId('AI7ULzgf8RU'),
+      // has DASH manifest
+      VideoId('-xNN-bJQ4vI'),
+      // 360° video
     }) {
       test('VideoId - ${val.value}', () async {
         var manifest = await yt!.videos.streamsClient.getManifest(val);
         for (final streamInfo in manifest.streams) {
-          expect(yt!.videos.streamsClient.get(streamInfo), emits(isNotNull));
+          expect(yt!.videos.streamsClient.get(streamInfo).first, completes);
         }
-      });
+      }, timeout: const Timeout(Duration(minutes: 5)));
     }
   });
 }

@@ -1,3 +1,6 @@
+## 1.9.4
+- Fix issue #126
+
 ## 1.9.3+2
 - Fix `ChannelUploadsList`.
 
