@@ -28,18 +28,18 @@ class PlayerResponse {
   String get videoAuthor => root.get('videoDetails')!.getT<String>('author')!;
 
   ///
-  DateTime get videoUploadDate => root
-      .get('microformat')!
-      .get('playerMicroformatRenderer')!
-      .getT<String>('uploadDate')!
-      .parseDateTime();
+  DateTime? get videoUploadDate => root
+      .get('microformat')
+      ?.get('playerMicroformatRenderer')
+      ?.getT<String>('uploadDate')
+      ?.parseDateTime();
 
   ///
-  DateTime get videoPublishDate => root
-      .get('microformat')!
-      .get('playerMicroformatRenderer')!
-      .getT<String>('publishDate')!
-      .parseDateTime();
+  DateTime? get videoPublishDate => root
+      .get('microformat')
+      ?.get('playerMicroformatRenderer')
+      ?.getT<String>('publishDate')
+      ?.parseDateTime();
 
   ///
   String get videoChannelId =>
