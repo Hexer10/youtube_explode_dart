@@ -22,16 +22,25 @@ class CommentsClient {
       String xsfrToken,
       String visitorInfoLive,
       String ysc) async {
-    var url = 'https://www.youtube.com/comment_service_ajax?'
-        '$service=1&'
-        'pbj=1&'
-        'ctoken=$continuation&'
-        'continuation=$continuation&'
-        'itct=$clickTrackingParams';
+    final url = Uri(
+        scheme: 'https',
+        host: 'www.youtube.com',
+        path: '/comment_service_ajax',
+        queryParameters: {
+          service: '1',
+          'pbj': '1',
+          'ctoken': continuation,
+          'continuation': continuation,
+          'itct': clickTrackingParams,
+          'type': 'next',
+        });
+
     return retry(() async {
       var raw = await _httpClient.postString(url, headers: {
-        'cookie': 'YSC=$ysc; GPS=1; VISITOR_INFO1_LIVE=$visitorInfoLive;'
-            ' CONSENT=WP.288163; PREF=f4=4000000',
+        'x-youtube-client-namE': '1',
+        'x-youtube-client-version': '2.20210622.10.00',
+        'cookie':
+            'YSC=$ysc; CONSENT=YES+cb; GPS=1; VISITOR_INFO1_LIVE=$visitorInfoLive',
       }, body: {
         'session_token': xsfrToken
       });
@@ -63,34 +72,56 @@ class CommentsClient {
       String xsfrToken, String visitorInfoLive, String ysc) async* {
     var data = await _getCommentJson('action_get_comments', continuation,
         clickTrackingParams, xsfrToken, visitorInfoLive, ysc);
-    var contentRoot = data['response']['continuationContents']
-            ['itemSectionContinuation']['contents']
+    var contentRoot = data
+        .get('response')
+        ?.get('continuationContents')
+        ?.get('itemSectionContinuation')
+        ?.getT<List<dynamic>>('contents')
         ?.map((e) => e['commentThreadRenderer'])
-        ?.toList()
-        ?.cast<Map<String, dynamic>>() as List<Map<String, dynamic>>?;
+        .toList()
+        .cast<Map<String, dynamic>>();
     if (contentRoot == null) {
       return;
     }
     for (final content in contentRoot) {
-      var commentRaw = content['comment']['commentRenderer'];
+      var commentRaw = content.get('comment')!.get('commentRenderer')!;
       String? continuation;
       String? clickTrackingParams;
-      if (content['replies'] != null) {
-        continuation = content['replies']['commentRepliesRenderer']
-                ['continuations']
-            .first['nextContinuationData']['continuation'];
-        clickTrackingParams = content['replies']['commentRepliesRenderer']
-                ['continuations']
-            .first['nextContinuationData']['clickTrackingParams'];
+      final replies = content.get('replies');
+      if (replies != null) {
+        final continuationData = replies
+            .get('commentRepliesRenderer')!
+            .getList('continuations')!
+            .first
+            .get('nextContinuationData')!;
+
+        continuation = continuationData.getT<String>('continuation');
+        clickTrackingParams =
+            continuationData.getT<String>('clickTrackingParams');
       }
       var comment = Comment(
-          commentRaw['commentId'],
-          commentRaw['authorText']['simpleText'],
-          ChannelId(commentRaw['authorEndpoint']['browseEndpoint']['browseId']),
-          _parseRuns(commentRaw['contentText']),
-          commentRaw['likeCount'] ?? 0,
-          _parseRuns(commentRaw['publishedTimeText']),
-          commentRaw['replyCount'],
+          commentRaw.getT<String>('commentId')!,
+          commentRaw.get('authorText')!.getT<String>('simpleText')!,
+          ChannelId(commentRaw
+              .get('authorEndpoint')!
+              .get('browseEndpoint')!
+              .getT<String>('browseId')!),
+          commentRaw
+              .get('contentText')!
+              .getT<List<dynamic>>('runs')!
+              .parseRuns(),
+          commentRaw.get('voteCount')?.getT<String>('simpleText')?.parseInt() ??
+              commentRaw
+                  .get('voteCount')
+                  ?.getT<List<dynamic>>('runs')
+                  ?.parseRuns()
+                  .parseInt() ??
+              0,
+          commentRaw
+              .get('publishedTimeText')!
+              .getT<List<dynamic>>('runs')!
+              .parseRuns(),
+          commentRaw.getT<int>('replyCount') ?? 0,
           continuation,
           clickTrackingParams);
       yield comment;
@@ -99,9 +130,9 @@ class CommentsClient {
             .get('response')
             ?.get('continuationContents')
             ?.get('itemSectionContinuation')
-            ?.getValue('continuations')
-            ?.first as Map<String, dynamic>)
-        .get('nextContinuationData');
+            ?.getT<List<dynamic>>('continuations')
+            ?.first)
+        ?.get('nextContinuationData');
     if (continuationRoot != null) {
       yield* _getComments(
           continuationRoot['continuation'],
@@ -111,9 +142,6 @@ class CommentsClient {
           ysc);
     }
   }
-
-  String _parseRuns(Map<dynamic, dynamic> runs) =>
-      runs.getValue('runs')?.map((e) => e['text'])?.join() ?? '';
 
 //TODO: Implement replies
 /*  Stream<Comment> getReplies(Video video, Comment comment) async* {

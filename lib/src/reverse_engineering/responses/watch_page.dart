@@ -65,7 +65,7 @@ class WatchPage {
             'Failed to retrieve initial data from the watch page, please report this to the project GitHub page.'));
   }
 
-  late final String xsfrToken = getXsfrToken()!;
+  late final String xsfrToken = getXsfrToken()!.replaceAll(r'\u003d', '=');
 
   ///
   String? getXsfrToken() {

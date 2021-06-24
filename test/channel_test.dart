@@ -49,7 +49,7 @@ void main() {
         .getUploads(ChannelId(
             'https://www.youtube.com/channel/UCEnBXANsKmyj2r9xVyKoDiQ'))
         .toList();
-    expect(videos.length, greaterThanOrEqualTo(80));
+    expect(videos.length, greaterThanOrEqualTo(79));
   });
 
   group('Get the videos of any youtube channel', () {

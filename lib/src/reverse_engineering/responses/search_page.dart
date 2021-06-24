@@ -203,11 +203,18 @@ class _InitialData {
     if (content['videoRenderer'] != null) {
       var renderer = content.get('videoRenderer')!;
 
+      //       root.get('ownerText')?.getT<List<dynamic>>('runs')?.parseRuns() ??
       return SearchVideo(
           VideoId(renderer.getT<String>('videoId')!),
           _parseRuns(renderer.get('title')?.getList('runs')),
           _parseRuns(renderer.get('ownerText')?.getList('runs')),
-          _parseRuns(renderer.get('descriptionSnippet')?.getList('runs')),
+          renderer
+                  .getList('detailedMetadataSnippets')
+                  ?.firstOrNull
+                  ?.get('snippetText')
+                  ?.getT<List<dynamic>>('runs')
+                  ?.parseRuns() ??
+              '',
           renderer.get('lengthText')?.getT<String>('simpleText') ?? '',
           int.parse(renderer
                   .get('viewCountText')

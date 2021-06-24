@@ -44,25 +44,6 @@ void main() {
     }
   });
 
-  test('Get videos in a playlist', () async {
-    var videos = await yt!.playlists
-        .getVideos(PlaylistId(
-            'https://www.youtube.com/playlist?list=PLr-IftNTIujSF-8tlGbZBQyGIT6TCF6Yd'))
-        .toList();
-    expect(videos.length, greaterThanOrEqualTo(19));
-    expect(
-        videos.map((e) => e.id.value).toList(),
-        containsAll([
-          'B6N8-_rBTh8',
-          'F1bvjgTckMc',
-          'kMBzljXOb9g',
-          'LsNPjFXIPT8',
-          'fXYPMPglYTs',
-          'AI7ULzgf8RU',
-          'Qzu-fTdjeFY'
-        ]));
-  });
-
   test('Get more than 100 videos in a playlist', () async {
     var videos = await yt!.playlists
         .getVideos(PlaylistId(

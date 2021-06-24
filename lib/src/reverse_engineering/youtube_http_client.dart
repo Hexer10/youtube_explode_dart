@@ -81,6 +81,10 @@ class YoutubeHttpClient extends http.BaseClient {
       {Map<String, String>? body,
       Map<String, String> headers = const {},
       bool validate = true}) async {
+    assert(url is String || url is Uri);
+    if (url is String) {
+      url = Uri.parse(url);
+    }
     var response = await post(url, headers: headers, body: body);
 
     if (validate) {

@@ -1,5 +1,10 @@
+## 1.9.6
+- Fix comment client.
+- Fix issue #130 (ClosedCaptions)
+- Fix 
+
 ## 1.9.5
-- Temporary for for issue #
+- Temporary for issue #130
 
 ## 1.9.4
 - Fix issue #126
