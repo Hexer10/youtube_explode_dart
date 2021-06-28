@@ -1,7 +1,10 @@
+## 1.9.7
+- Fix issue #135 (Cannot use getUploadsFromPage on a channel with no uploads).
+
 ## 1.9.6
 - Fix comment client.
 - Fix issue #130 (ClosedCaptions)
-- Fix 
+ 
 
 ## 1.9.5
 - Temporary for issue #130

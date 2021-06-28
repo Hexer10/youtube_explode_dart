@@ -93,13 +93,20 @@ class _InitialData {
 
   late final String token = continuationContext?.getT<String>('token') ?? '';
 
-  late final List<ChannelVideo> uploads =
-      getContentContext().map(_parseContent).whereNotNull().toList();
+  late final List<ChannelVideo> uploads = _getUploads();
+
+  List<ChannelVideo> _getUploads() {
+    final content = getContentContext();
+    if (content.isEmpty) {
+      return const <ChannelVideo>[];
+    }
+    return content.map(_parseContent).whereNotNull().toList();
+  }
 
   List<Map<String, dynamic>> getContentContext() {
     List<Map<String, dynamic>>? context;
     if (root.containsKey('contents')) {
-      context = root
+      final render = root
           .get('contents')
           ?.get('twoColumnBrowseResultsRenderer')
           ?.getList('tabs')
@@ -112,10 +119,17 @@ class _InitialData {
           ?.firstOrNull
           ?.get('itemSectionRenderer')
           ?.getList('contents')
-          ?.firstOrNull
-          ?.get('gridRenderer')
-          ?.getList('items')
-          ?.cast<Map<String, dynamic>>();
+          ?.firstOrNull;
+
+      if (render?.containsKey('gridRenderer') ?? false) {
+        context = render
+            ?.get('gridRenderer')
+            ?.getList('items')
+            ?.cast<Map<String, dynamic>>();
+      } else if (render?.containsKey('messageRenderer') ?? false) {
+        // Workaround for no-videos.
+        context = const [];
+      }
     }
     if (context == null && root.containsKey('onResponseReceivedActions')) {
       context = root

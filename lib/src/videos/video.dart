@@ -73,7 +73,7 @@ class Video with EquatableMixin {
       this.engagement,
       this.isLive, // ignore: avoid_positional_boolean_parameters
       [this.watchPage])
-      : keywords = UnmodifiableListView(keywords ?? []);
+      : keywords = UnmodifiableListView(keywords ?? const []);
 
   @override
   String toString() => 'Video ($title)';
