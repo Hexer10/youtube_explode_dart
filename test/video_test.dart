@@ -19,13 +19,13 @@ void main() {
     expect(video.title, 'Aka no Ha [Another] +HDHR');
     expect(video.channelId.value, 'UCEnBXANsKmyj2r9xVyKoDiQ');
     expect(video.author, 'Tyrrrz');
-/*    var rangeMs = DateTime(2017, 09, 30, 17, 15, 26).millisecondsSinceEpoch;
+    var rangeMs = DateTime(2017, 09, 30, 17, 15, 26).millisecondsSinceEpoch;
     // 1day margin since the uploadDate could differ from timezones
     // YouTube now doesn't send the upload date/ publish date anymore.
     expect(video.uploadDate!.millisecondsSinceEpoch,
         inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
     expect(video.publishDate!.millisecondsSinceEpoch,
-        inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));*/
+        inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
     expect(video.description, contains('246pp'));
     // Should be 1:38 but sometimes it differs
     // so we're using a 10 seconds range from it.
@@ -48,15 +48,28 @@ void main() {
 
   group('Get metadata of any video', () {
     for (final val in {
-      VideoId('9bZkp7q19f0'),
-      VideoId('SkRSXFQerZs'),
-      VideoId('5VGm0dczmHc'),
-      VideoId('ZGdLIwrGHG8'),
-      VideoId('5qap5aO4i9A')
+      VideoId('9bZkp7q19f0'), //Normal
+      VideoId('ZGdLIwrGHG8'), //Unlisted
+      VideoId('5qap5aO4i9A'), //LiveStream
+      VideoId('rsAAeyAr-9Y'), //LiveStreamRecording
+      VideoId('V5Fsj_sCKdg'), //ContainsHighQualityStreams
+      VideoId('AI7ULzgf8RU'), //ContainsDashManifest
+      VideoId('-xNN-bJQ4vI'), //Omnidirectional
+      VideoId('vX2vsvdq8nw'), //HighDynamicRange
+      VideoId('YltHGKX80Y8'), //ContainsClosedCaptions
+      VideoId('_kmeFXjjGfk'), //EmbedRestrictedByYouTube
+      VideoId('MeJVWBSsPAY'), //EmbedRestrictedByAuthor
+      VideoId('SkRSXFQerZs'), //AgeRestricted
+      VideoId('hySoCSoH-g8'), //AgeRestrictedEmbedRestricted
+      VideoId('5VGm0dczmHc'), //RatingDisabled
+      VideoId('p3dDcKOFXQg'), //RequiresPurchase
     }) {
       test('VideoId - ${val.value}', () async {
         var video = await yt!.videos.get(val);
         expect(video.id.value, val.value);
+
+        expect(video.uploadDate, isNotNull);
+        expect(video.publishDate, isNotNull);
       });
     }
   });

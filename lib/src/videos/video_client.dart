@@ -1,5 +1,6 @@
 import '../channels/channel_id.dart';
 import '../common/common.dart';
+import '../extensions/helpers_extension.dart';
 import '../reverse_engineering/responses/responses.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import 'closed_captions/closed_caption_client.dart';
@@ -37,8 +38,16 @@ class VideoClient {
         playerResponse.videoTitle,
         playerResponse.videoAuthor,
         ChannelId(playerResponse.videoChannelId),
-        playerResponse.videoUploadDate,
-        playerResponse.videoPublishDate,
+        playerResponse.videoUploadDate ??
+            watchPage.root
+                .querySelector('meta[itemprop=uploadDate]')
+                ?.attributes['content']
+                ?.tryParseDateTime(),
+        playerResponse.videoPublishDate ??
+            watchPage.root
+                .querySelector('meta[itemprop=datePublished]')
+                ?.attributes['content']
+                ?.tryParseDateTime(),
         playerResponse.videoDescription,
         playerResponse.videoDuration,
         ThumbnailSet(videoId.value),

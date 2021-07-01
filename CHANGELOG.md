@@ -1,3 +1,6 @@
+## 1.9.8
+- Fix issue #131 (Cannot get publishDate or uploadDate)
+
 ## 1.9.7
 - Fix issue #135 (Cannot use getUploadsFromPage on a channel with no uploads).
 

@@ -132,6 +132,13 @@ extension StringUtility2 on String? {
 
     return DateTime.now().subtract(time);
   }
+
+  DateTime? tryParseDateTime() {
+    if (this == null) {
+      return null;
+    }
+    return DateTime.parse(this!);
+  }
 }
 
 /// List decipher utility.
