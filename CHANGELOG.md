@@ -1,3 +1,6 @@
+## 1.9.8+1
+- Fix example
+
 ## 1.9.8
 - Fix issue #131 (Cannot get publishDate or uploadDate)
 
