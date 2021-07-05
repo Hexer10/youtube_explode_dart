@@ -1,3 +1,6 @@
+## 1.9.9
+- Fix issue #134 (Error when getting the hls manifest from a livestream)
+
 ## 1.9.8+1
 - Fix example
 

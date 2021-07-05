@@ -82,7 +82,7 @@ class StreamsClient {
     final playerConfig = watchPage.playerConfig;
 
     var playerResponse =
-        playerConfig?.playerResponse ?? watchPage.playerResponse;
+        watchPage.playerResponse ?? playerConfig?.playerResponse;
     if (playerResponse == null) {
       throw VideoUnplayableException.unplayable(videoId);
     }
@@ -235,9 +235,15 @@ class StreamsClient {
   /// Gets the HTTP Live Stream (HLS) manifest URL
   /// for the specified video (if it's a live video stream).
   Future<String> getHttpLiveStreamUrl(VideoId videoId) async {
-    var videoInfoResponse =
-        await VideoInfoResponse.get(_httpClient, videoId.toString());
-    var playerResponse = videoInfoResponse.playerResponse;
+    final watchPage = await WatchPage.get(_httpClient, videoId.value);
+
+    final playerResponse = watchPage.playerResponse;
+
+    if (playerResponse == null) {
+      throw TransientFailureException(
+          'Couldn\'t extract the playerResponse from the Watch Page!');
+    }
+
     if (!playerResponse.isVideoPlayable) {
       throw VideoUnplayableException.unplayable(videoId,
           reason: playerResponse.videoPlayabilityError ?? '');
