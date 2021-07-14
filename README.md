@@ -26,6 +26,7 @@ YoutubeExplode is a library that provides an interface to query metadata of YouT
 - The entry point is `YoutubeExplode`, not `YoutubeClient`.
 - Download closed captions as `srt` is not supported yet.
 - Search queries can be fetched from the search page as well (thus fetch Videos, Channels and Playlists).
+- More APIs implemented.
 
 ## Usage
 - [Install](#install)
@@ -184,6 +185,7 @@ More examples available on [GitHub][Examples].
 
 
 Check the [api documentation][API] for additional information.
+You can find how most APIs can be used in the files inside the test/ folder. 
 
 ### Credits
 
