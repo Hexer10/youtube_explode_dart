@@ -1,3 +1,6 @@
+## 1.9.10
+- Close #139: Implement Channel.subscribersCount.
+
 ## 1.9.9
 - Fix issue #134 (Error when getting the hls manifest from a livestream)
 

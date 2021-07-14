@@ -16,8 +16,11 @@ class Channel with EquatableMixin {
   /// URL of the channel's logo image.
   final String logoUrl;
 
+  /// The (approximate) channel subscriber's count.
+  final int? subscribersCount;
+
   /// Initializes an instance of [Channel]
-  Channel(this.id, this.title, this.logoUrl);
+  Channel(this.id, this.title, this.logoUrl, this.subscribersCount);
 
   @override
   String toString() => 'Channel ($title)';

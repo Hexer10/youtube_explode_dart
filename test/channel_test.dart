@@ -18,6 +18,7 @@ void main() {
     expect(channel.title, 'Tyrrrz');
     expect(channel.logoUrl, isNotEmpty);
     expect(channel.logoUrl, isNot(equalsIgnoringWhitespace('')));
+    expect(channel.subscribersCount, greaterThanOrEqualTo(190));
   });
 
   group('Get metadata of any channel', () {
