@@ -226,9 +226,13 @@ class StreamsClient {
     try {
       var context = await _getStreamContextFromVideoInfo(videoId);
       return _getManifest(context);
-    } on YoutubeExplodeException {
-      var context = await _getStreamContextFromWatchPage(videoId);
-      return _getManifest(context);
+    } on YoutubeExplodeException catch (e) {
+      try {
+        var context = await _getStreamContextFromWatchPage(videoId);
+        return _getManifest(context);
+      } on YoutubeExplodeException catch (e1) {
+        throw e..combine(e1);
+      }
     }
   }
 
