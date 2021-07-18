@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 
 import '../channels/channel_id.dart';
@@ -8,77 +8,138 @@ import '../common/common.dart';
 import '../reverse_engineering/responses/responses.dart';
 import 'video_id.dart';
 
-/// YouTube video metadata.
-class Video with EquatableMixin {
-  /// Video ID.
-  final VideoId id;
+part 'video.freezed.dart';
 
+/// YouTube video metadata.
+@freezed
+class Video with _$Video {
   /// Video URL.
   String get url => 'https://www.youtube.com/watch?v=$id';
-
-  /// Video title.
-  final String title;
-
-  /// Video author.
-  final String author;
-
-  /// Video author Id.
-  final ChannelId channelId;
-
-  /// Video upload date.
-  /// Note: For search queries it is calculated with:
-  ///   DateTime.now() - how much time is was published.
-  final DateTime? uploadDate;
-
-  /// Video publish date.
-  final DateTime? publishDate;
-
-  /// Video description.
-  final String description;
-
-  /// Duration of the video.
-  final Duration? duration;
-
-  /// Available thumbnails for this video.
-  final ThumbnailSet thumbnails;
-
-  /// Search keywords used for this video.
-  final UnmodifiableListView<String> keywords;
-
-  /// Engagement statistics for this video.
-  final Engagement engagement;
-
-  /// Returns true if this is a live stream.
-  final bool isLive;
-
-  /// Used internally.
-  /// Shouldn't be used in the code.
-  @internal
-  final WatchPage? watchPage;
 
   /// Returns true if the watch page is available for this video.
   bool get hasWatchPage => watchPage != null;
 
-  /// Initializes an instance of [Video]
-  Video(
-      this.id,
-      this.title,
-      this.author,
-      this.channelId,
-      this.uploadDate,
-      this.publishDate,
-      this.description,
-      this.duration,
-      this.thumbnails,
+  factory Video(
+
+      /// Video ID.
+      VideoId id,
+
+      /// Video title.
+      String title,
+
+      /// Video author.
+      String author,
+
+      /// Video author Id.
+      ChannelId channelId,
+
+      /// Video upload date.
+      /// Note: For search queries it is calculated with:
+      ///   DateTime.now() - how much time is was published.
+      DateTime? uploadDate,
+
+      /// Video publish date.
+      DateTime? publishDate,
+
+      /// Video description.
+      String description,
+
+      /// Duration of the video.
+      Duration? duration,
+
+      /// Available thumbnails for this video.
+      ThumbnailSet thumbnails,
+
+      /// Search keywords used for this video.
       Iterable<String>? keywords,
-      this.engagement,
-      this.isLive, // ignore: avoid_positional_boolean_parameters
-      [this.watchPage])
-      : keywords = UnmodifiableListView(keywords ?? const []);
 
-  @override
-  String toString() => 'Video ($title)';
+      /// Engagement statistics for this video.
+      Engagement engagement,
 
-  @override
-  List<Object> get props => [id];
+      /// Returns true if this is a live stream.
+      //ignore: avoid_positional_boolean_parameters
+      bool isLive,
+      [
+
+      /// Used internally.
+      /// Shouldn't be used in the code.
+      @internal WatchPage? watchPage]) {
+    return Video._internal(
+
+        /// Video ID.
+        id,
+
+        /// Video title.
+        title,
+
+        /// Video author.
+        author,
+
+        /// Video author Id.
+        channelId,
+
+        /// Video upload date.
+        /// Note: For search queries it is calculated with:
+        ///   DateTime.now() - how much time is was published.
+        uploadDate,
+
+        /// Video publish date.
+        publishDate,
+        description,
+        duration,
+        thumbnails,
+        UnmodifiableListView(keywords ?? const Iterable.empty()),
+        engagement,
+        isLive,
+        watchPage);
+  }
+
+  /// Initializes an instance of [Video]
+  const factory Video._internal(
+
+      /// Video ID.
+      VideoId id,
+
+      /// Video title.
+      String title,
+
+      /// Video author.
+      String author,
+
+      /// Video author Id.
+      ChannelId channelId,
+
+      /// Video upload date.
+      /// Note: For search queries it is calculated with:
+      ///   DateTime.now() - how much time is was published.
+      DateTime? uploadDate,
+
+      /// Video publish date.
+      DateTime? publishDate,
+
+      /// Video description.
+      String description,
+
+      /// Duration of the video.
+      Duration? duration,
+
+      /// Available thumbnails for this video.
+      ThumbnailSet thumbnails,
+
+      /// Search keywords used for this video.
+      UnmodifiableListView<String> keywords,
+
+      /// Engagement statistics for this video.
+      Engagement engagement,
+
+      /// Returns true if this is a live stream.
+      //ignore: avoid_positional_boolean_parameters
+      bool isLive,
+      [
+
+      /// Used internally.
+      /// Shouldn't be used in the code.
+      @internal WatchPage? watchPage]) = _Video;
+
+  const Video._();
 }

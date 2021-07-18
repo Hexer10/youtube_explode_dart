@@ -1,29 +1,45 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../extensions/helpers_extension.dart';
 
+part 'video_id.freezed.dart';
+
 /// Encapsulates a valid YouTube video ID.
-class VideoId with EquatableMixin {
+@freezed
+class VideoId with _$VideoId {
   static final _regMatchExp = RegExp(r'youtube\..+?/watch.*?v=(.*?)(?:&|/|$)');
   static final _shortMatchExp = RegExp(r'youtu\.be/(.*?)(?:\?|&|/|$)');
   static final _embedMatchExp = RegExp(r'youtube\..+?/embed/(.*?)(?:\?|&|/|$)');
 
-  /// ID as string.
-  final String value;
+  const VideoId._();
+
+  const factory VideoId._internal(
+
+      /// ID as string.
+      String value) = _VideoId;
 
   /// Initializes an instance of [VideoId] with a url or video id.
-  VideoId(String idOrUrl) : value = parseVideoId(idOrUrl) ?? '' {
-    if (value.isEmpty) {
+  factory VideoId(String idOrUrl) {
+    final id = parseVideoId(idOrUrl);
+
+    if (id == null) {
       throw ArgumentError.value(
           idOrUrl, 'urlOrUrl', 'Invalid YouTube video ID or URL');
     }
+    return VideoId._internal(id);
+  }
+
+  ///  Converts [obj] to a [VideoId] by calling .toString on that object.
+  /// If it is already a [VideoId], [obj] is returned
+  factory VideoId.fromString(dynamic obj) {
+    if (obj is VideoId) {
+      return obj;
+    }
+    return VideoId(obj.toString());
   }
 
   @override
   String toString() => value;
-
-  @override
-  List<Object> get props => [value];
 
   /// Returns true if the given [videoId] is valid.
   static bool validateVideoId(String videoId) {
@@ -67,14 +83,5 @@ class VideoId with EquatableMixin {
       return embedMatch;
     }
     return null;
-  }
-
-  ///  Converts [obj] to a [VideoId] by calling .toString on that object.
-  /// If it is already a [VideoId], [obj] is returned
-  factory VideoId.fromString(dynamic obj) {
-    if (obj is VideoId) {
-      return obj;
-    }
-    return VideoId(obj.toString());
   }
 }

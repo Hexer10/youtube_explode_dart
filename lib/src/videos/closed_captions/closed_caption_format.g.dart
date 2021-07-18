@@ -6,11 +6,10 @@ part of 'closed_caption_format.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ClosedCaptionFormat _$ClosedCaptionFormatFromJson(Map<String, dynamic> json) {
-  return ClosedCaptionFormat(
-    json['formatCode'] as String,
-  );
-}
+ClosedCaptionFormat _$ClosedCaptionFormatFromJson(Map<String, dynamic> json) =>
+    ClosedCaptionFormat(
+      json['formatCode'] as String,
+    );
 
 Map<String, dynamic> _$ClosedCaptionFormatToJson(
         ClosedCaptionFormat instance) =>

@@ -1,17 +1,35 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../extensions/helpers_extension.dart';
 
-/// Encapsulates a valid YouTube user name.
-class Username {
-  /// User name as string.
-  final String value;
+part 'username.freezed.dart';
 
+/// Encapsulates a valid YouTube user name.
+@freezed
+class Username with _$Username {
   /// Initializes an instance of [Username].
-  Username(String urlOrUsername) : value = parseUsername(urlOrUsername) ?? '' {
-    if (value.isEmpty) {
+  factory Username(String urlOrUsername) {
+    final username = parseUsername(urlOrUsername);
+    if (username == null) {
       throw ArgumentError.value(
           urlOrUsername, 'urlOrUsername', 'Invalid username');
     }
+    return Username._(username);
   }
+
+  ///  Converts [obj] to a [Username] by calling .toString on that object.
+  /// If it is already a [Username], [obj] is returned
+  factory Username.fromString(dynamic obj) {
+    if (obj is Username) {
+      return obj;
+    }
+    return Username(obj.toString());
+  }
+
+  const factory Username._(
+    /// User name as string.
+    final String value,
+  ) = _Username;
 
   /// Returns true if the given username is a valid username.
   static bool validateUsername(String name) {
@@ -43,14 +61,5 @@ class Username {
       return regMatch;
     }
     return null;
-  }
-
-  ///  Converts [obj] to a [Username] by calling .toString on that object.
-  /// If it is already a [Username], [obj] is returned
-  factory Username.fromString(dynamic obj) {
-    if (obj is Username) {
-      return obj;
-    }
-    return Username(obj.toString());
   }
 }

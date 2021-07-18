@@ -1,9 +1,12 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../extensions/helpers_extension.dart';
 
+part 'playlist_id.freezed.dart';
+
 /// Encapsulates a valid YouTube playlist ID.
-class PlaylistId with EquatableMixin {
+@freezed
+class PlaylistId with _$PlaylistId {
   static final _regMatchExp =
       RegExp(r'youtube\..+?/playlist.*?list=(.*?)(?:&|/|$)');
   static final _compositeMatchExp =
@@ -13,14 +16,29 @@ class PlaylistId with EquatableMixin {
   static final _embedCompositeMatchExp =
       RegExp(r'youtube\..+?/embed/.*?/.*?list=(.*?)(?:&|/|$)');
 
-  /// The playlist id as string.
-  final String value;
+  const PlaylistId._();
+
+  const factory PlaylistId._internal(
+
+      /// The playlist id as string.
+      String value) = _PlaylistId;
 
   /// Initializes an instance of [PlaylistId]
-  PlaylistId(String idOrUrl) : value = parsePlaylistId(idOrUrl) ?? '' {
-    if (value.isEmpty) {
+  factory PlaylistId(String idOrUrl) {
+    final id = parsePlaylistId(idOrUrl);
+    if (id == null) {
       throw ArgumentError.value(idOrUrl, 'idOrUrl', 'Invalid url');
     }
+    return PlaylistId._internal(id);
+  }
+
+  ///  Converts [obj] to a [PlaylistId] by calling .toString on that object.
+  /// If it is already a [PlaylistId], [obj] is returned
+  factory PlaylistId.fromString(dynamic obj) {
+    if (obj is PlaylistId) {
+      return obj;
+    }
+    return PlaylistId(obj.toString());
   }
 
   /// Returns true if the given [playlistId] is valid.
@@ -97,16 +115,4 @@ class PlaylistId with EquatableMixin {
 
   @override
   String toString() => value;
-
-  ///  Converts [obj] to a [PlaylistId] by calling .toString on that object.
-  /// If it is already a [PlaylistId], [obj] is returned
-  factory PlaylistId.fromString(dynamic obj) {
-    if (obj is PlaylistId) {
-      return obj;
-    }
-    return PlaylistId(obj.toString());
-  }
-
-  @override
-  List<Object> get props => [value];
 }

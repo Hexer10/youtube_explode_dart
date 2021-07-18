@@ -11,3 +11,4 @@ linter:
     parameter_assignments: false
     no_runtimetype_tostring: false
     avoid_escaping_inner_quotes: false
+    prefer_const_constructors: true

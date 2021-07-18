@@ -1,23 +1,20 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'channel_link.freezed.dart';
 
 /// Represents a channel link.
-class ChannelLink with EquatableMixin {
-  /// Link title.
-  final String title;
-
-  /// Link URL.
-  /// Already decoded with the YouTube shortener already taken out.
-  final Uri url;
-
-  /// Link Icon URL.
-  final Uri icon;
-
+@freezed
+class ChannelLink with _$ChannelLink {
   /// Initialize an instance of [ChannelLink]
-  ChannelLink(this.title, this.url, this.icon);
+  const factory ChannelLink(
+    /// Link title.
+    String title,
 
-  @override
-  List<Object> get props => [title, url, icon];
+    /// Link URL.
+    /// Already decoded with the YouTube shortener already taken out.
+    Uri url,
 
-  @override
-  String toString() => 'Link: $title ($url): $icon';
+    /// Link Icon URL.
+    Uri icon,
+  ) = _ChannelLink;
 }

@@ -1,10 +1,10 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'bitrate.freezed.dart';
 
 /// Encapsulates bitrate.
-class Bitrate extends Comparable<Bitrate> with EquatableMixin {
-  /// Bits per second.
-  final int bitsPerSecond;
-
+@freezed
+class Bitrate with Comparable<Bitrate>, _$Bitrate {
   /// Kilobits per second.
   double get kiloBitsPerSecond => bitsPerSecond / 1024;
 
@@ -15,7 +15,13 @@ class Bitrate extends Comparable<Bitrate> with EquatableMixin {
   double get gigaBitsPerSecond => megaBitsPerSecond / 1024;
 
   /// Initializes an instance of [Bitrate]
-  Bitrate(this.bitsPerSecond);
+  @With.fromString('Comparable<Bitrate>')
+  const factory Bitrate(
+
+      /// Bits per second.
+      int bitsPerSecond) = _Bitrate;
+
+  const Bitrate._();
 
   @override
   int compareTo(Bitrate other) => bitsPerSecond.compareTo(other.bitsPerSecond);

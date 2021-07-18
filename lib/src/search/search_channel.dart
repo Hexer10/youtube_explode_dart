@@ -1,29 +1,28 @@
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../channels/channel_id.dart';
 import 'base_search_content.dart';
 
+part 'search_channel.freezed.dart';
+
 /// Metadata related to a search query result (channel)
-class SearchChannel extends BaseSearchContent with EquatableMixin {
-  /// Channel id.
-  final ChannelId id;
-
-  /// Channel name.
-  final String name;
-
-  /// Description snippet.
-  /// Can be empty.
-  final String description;
-
-  /// Channel uploaded videos.
-  final int videoCount;
-
+@freezed
+class SearchChannel with _$SearchChannel, BaseSearchContent {
   /// Initialize a [SearchChannel] instance.
-  SearchChannel(this.id, this.name, this.description, this.videoCount);
+  @With(BaseSearchContent)
+  const factory SearchChannel(
 
-  @override
-  String toString() => '(Channel) $name ($id)';
+      /// Channel id.
+      ChannelId id,
 
-  @override
-  List<Object?> get props => [id, name, description, videoCount];
+      /// Channel name.
+      String name,
+
+      /// Description snippet.
+      /// Can be empty.
+      String description,
+
+      /// Channel uploaded videos.
+      int videoCount) = _SearchChannel;
 }

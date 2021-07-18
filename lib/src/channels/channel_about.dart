@@ -1,37 +1,34 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../common/thumbnail.dart';
 import 'channel_link.dart';
 
+part 'channel_about.freezed.dart';
+
 /// YouTube channel's about page metadata.
-class ChannelAbout with EquatableMixin {
-  /// Full channel description.
-  final String description;
+@freezed
+class ChannelAbout with _$ChannelAbout {
+  const factory ChannelAbout(
+    /// Full channel description.
+    String description,
 
-  /// Channel view count.
-  final int viewCount;
+    /// Channel view count.
+    int viewCount,
 
-  /// Channel join date.
-  /// Formatted as: Gen 01, 2000
-  final String joinDate;
+    /// Channel join date.
+    /// Formatted as: Gen 01, 2000
+    String joinDate,
 
-  /// Channel title.
-  final String title;
+    /// Channel title.
+    String title,
 
-  /// Channel thumbnails.
-  final List<Thumbnail> thumbnails;
+    /// Channel thumbnails.
+    List<Thumbnail> thumbnails,
 
-  /// Channel country.
-  final String country;
+    /// Channel country.
+    String country,
 
-  /// Channel links.
-  final List<ChannelLink> channelLinks;
-
-  /// Initialize an instance of [ChannelAbout]
-  ChannelAbout(this.description, this.viewCount, this.joinDate, this.title,
-      this.thumbnails, this.country, this.channelLinks);
-
-  @override
-  List<Object> get props =>
-      [description, viewCount, joinDate, title, thumbnails];
+    /// Channel links.
+    List<ChannelLink> channelLinks,
+  ) = _ChannelAbout;
 }

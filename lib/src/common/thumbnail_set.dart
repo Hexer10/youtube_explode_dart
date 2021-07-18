@@ -1,12 +1,17 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'thumbnail_set.freezed.dart';
 
 /// Set of thumbnails for a video.
-class ThumbnailSet extends Equatable {
-  /// Video id.
-  final String videoId;
-
+@freezed
+class ThumbnailSet with _$ThumbnailSet {
   /// Initializes an instance of [ThumbnailSet]
-  const ThumbnailSet(this.videoId);
+  const factory ThumbnailSet(
+
+      /// Video id.
+      String videoId) = _ThumbnailSet;
+
+  const ThumbnailSet._();
 
   /// Low resolution thumbnail URL.
   String get lowResUrl => 'https://img.youtube.com/vi/$videoId/default.jpg';

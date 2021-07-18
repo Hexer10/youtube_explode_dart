@@ -1,10 +1,10 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'filesize.freezed.dart';
 
 /// Encapsulates file size.
-class FileSize extends Comparable<FileSize> with EquatableMixin {
-  /// Total bytes.
-  final int totalBytes;
-
+@freezed
+class FileSize with Comparable<FileSize>, _$FileSize {
   /// Total kilobytes.
   double get totalKiloBytes => totalBytes / 1024;
 
@@ -15,7 +15,13 @@ class FileSize extends Comparable<FileSize> with EquatableMixin {
   double get totalGigaBytes => totalMegaBytes / 1024;
 
   /// Initializes an instance of [FileSize]
-  FileSize(this.totalBytes);
+  @With.fromString('Comparable<FileSize>')
+  const factory FileSize(
+
+      /// Total bytes.
+      int totalBytes) = _FileSize;
+
+  const FileSize._();
 
   @override
   int compareTo(FileSize other) => totalBytes.compareTo(other.totalBytes);
@@ -48,7 +54,4 @@ class FileSize extends Comparable<FileSize> with EquatableMixin {
 
   @override
   String toString() => '${_getLargestValue()} ${_getLargestSymbol()}';
-
-  @override
-  List<Object> get props => [totalBytes];
 }

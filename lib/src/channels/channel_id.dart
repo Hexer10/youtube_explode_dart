@@ -1,18 +1,41 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../extensions/helpers_extension.dart';
 
-/// Encapsulates a valid YouTube channel ID.
-class ChannelId with EquatableMixin {
-  /// ID as a string.
-  final String value;
+part 'channel_id.freezed.dart';
 
+/// Encapsulates a valid YouTube channel ID.
+@freezed
+class ChannelId with _$ChannelId {
   /// Initializes an instance of [ChannelId]
-  ChannelId(String value) : value = parseChannelId(value) ?? '' {
+  factory ChannelId(String value) {
+    final id = parseChannelId(value);
+    if (id == null) {
+      throw ArgumentError.value(value, 'value', 'Invalid channel id');
+    }
+    return ChannelId._internal(id);
+  }
+
+  const factory ChannelId._internal(
+
+      /// ID as a string.
+      String value) = _ChannelId;
+
+  const ChannelId._();
+
+  ///  Converts [obj] to a [ChannelId] by calling .toString on that object.
+  /// If it is already a [ChannelId], [obj] is returned
+  factory ChannelId.fromString(dynamic obj) {
+    if (obj is ChannelId) {
+      return obj;
+    }
+    return ChannelId(obj.toString());
+  }
+
+/*  ChannelId(String value) : value = parseChannelId(value) ?? '' {
     if (this.value.isEmpty) {
       throw ArgumentError.value(value);
-    }
-  }
+    }*/
 
   /// Returns true if the given id is a valid channel id.
   static bool validateChannelId(String id) {
@@ -51,18 +74,6 @@ class ChannelId with EquatableMixin {
     return null;
   }
 
-  ///  Converts [obj] to a [ChannelId] by calling .toString on that object.
-  /// If it is already a [ChannelId], [obj] is returned
-  factory ChannelId.fromString(dynamic obj) {
-    if (obj is ChannelId) {
-      return obj;
-    }
-    return ChannelId(obj.toString());
-  }
-
   @override
   String toString() => value;
-
-  @override
-  List<Object> get props => [value];
 }

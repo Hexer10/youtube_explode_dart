@@ -1,21 +1,18 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../videos/video_id.dart';
 
+part 'related_query.freezed.dart';
+
 ///
-class RelatedQuery with EquatableMixin {
-  /// Query related to a search query.
-  final String query;
-
-  /// Video related to a search query.
-  final VideoId videoId;
-
+@freezed
+class RelatedQuery with _$RelatedQuery {
   /// Initialize a [RelatedQuery] instance.
-  RelatedQuery(this.query, this.videoId);
+  const factory RelatedQuery(
 
-  @override
-  String toString() => 'RelatedQuery($videoId): $query';
+      /// Query related to a search query.
+      String query,
 
-  @override
-  List<Object> get props => [query, videoId];
+      /// Video related to a search query.
+      VideoId videoId) = _RelatedQuery;
 }

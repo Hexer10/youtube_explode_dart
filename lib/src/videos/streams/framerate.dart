@@ -1,12 +1,17 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'framerate.freezed.dart';
 
 /// Encapsulates framerate.
-class Framerate extends Comparable<Framerate> with EquatableMixin {
-  /// Framerate as frames per second
-  final num framesPerSecond;
-
+@freezed
+class Framerate with Comparable<Framerate>, _$Framerate {
   /// Initialize an instance of [Framerate]
-  Framerate(this.framesPerSecond);
+  const factory Framerate(
+
+      /// Framerate as frames per second
+      num framesPerSecond) = _Framerate;
+
+  const Framerate._();
 
   ///
   bool operator >(Framerate other) => framesPerSecond > other.framesPerSecond;
@@ -16,9 +21,6 @@ class Framerate extends Comparable<Framerate> with EquatableMixin {
 
   @override
   String toString() => '$framesPerSecond FPS';
-
-  @override
-  List<Object> get props => [framesPerSecond];
 
   @override
   int compareTo(Framerate other) =>

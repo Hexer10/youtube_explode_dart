@@ -1,30 +1,28 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'channel_id.dart';
 
+part 'channel.freezed.dart';
+
 /// YouTube channel metadata.
-class Channel with EquatableMixin {
-  /// Channel ID.
-  final ChannelId id;
+@Freezed()
+class Channel with _$Channel {
+  const Channel._();
+
+  const factory Channel(
+    /// Channel ID.
+    ChannelId id,
+
+    /// Channel title.
+    String title,
+
+    /// URL of the channel's logo image.
+    String logoUrl,
+
+    /// The (approximate) channel subscriber's count.
+    int? subscribersCount,
+  ) = _Channel;
 
   /// Channel URL.
   String get url => 'https://www.youtube.com/channel/$id';
-
-  /// Channel title.
-  final String title;
-
-  /// URL of the channel's logo image.
-  final String logoUrl;
-
-  /// The (approximate) channel subscriber's count.
-  final int? subscribersCount;
-
-  /// Initializes an instance of [Channel]
-  Channel(this.id, this.title, this.logoUrl, this.subscribersCount);
-
-  @override
-  String toString() => 'Channel ($title)';
-
-  @override
-  List<Object> get props => [id];
 }

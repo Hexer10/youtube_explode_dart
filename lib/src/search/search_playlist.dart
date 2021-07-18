@@ -1,25 +1,23 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../playlists/playlist_id.dart';
 import 'base_search_content.dart';
 
+part 'search_playlist.freezed.dart';
+
 /// Metadata related to a search query result (playlist)
-class SearchPlaylist extends BaseSearchContent with EquatableMixin {
-  /// PlaylistId.
-  final PlaylistId playlistId;
+@freezed
+class SearchPlaylist with _$SearchPlaylist, BaseSearchContent {
+  /// Initialize a [SearchPlaylist] instance.
+  @With(BaseSearchContent)
+  const factory SearchPlaylist(
 
-  /// Playlist title.
-  final String playlistTitle;
+      /// PlaylistId.
+      PlaylistId playlistId,
 
-  /// Playlist video count, cannot be greater than 50.
-  final int playlistVideoCount;
+      /// Playlist title.
+      String playlistTitle,
 
-  /// Initialize an instance of [SearchPlaylist]
-  SearchPlaylist(this.playlistId, this.playlistTitle, this.playlistVideoCount);
-
-  @override
-  String toString() => '[Playlist] $playlistTitle ($playlistId)';
-
-  @override
-  List<Object> get props => [playlistId];
+      /// Playlist video count, cannot be greater than 50.
+      int playlistVideoCount) = _SearchChannel;
 }

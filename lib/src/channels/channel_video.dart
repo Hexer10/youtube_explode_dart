@@ -1,35 +1,30 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../videos/video_id.dart';
 
+part 'channel_video.freezed.dart';
+
 /// Metadata related to a search query result (playlist)
-class ChannelVideo with EquatableMixin {
-  /// Video ID.
-  final VideoId videoId;
+@freezed
+class ChannelVideo with _$ChannelVideo {
+  const factory ChannelVideo(
+    /// Video ID.
+    VideoId videoId,
 
-  /// Video title.
-  final String videoTitle;
+    /// Video title.
+    String videoTitle,
 
-  /// Video duration
-  final Duration videoDuration;
+    /// Video duration
+    Duration videoDuration,
 
-  /// Video thumbnail
-  final String videoThumbnail;
+    /// Video thumbnail
+    String videoThumbnail,
 
-  /// Video upload date.
-  /// Formatted like 10 hours ago
-  final String videoUploadDate;
+    /// Video upload date.
+    /// Formatted like 10 hours ago
+    String videoUploadDate,
 
-  /// Video view count.
-  final int videoViews;
-
-  /// Initialize an instance of [ChannelVideo]
-  ChannelVideo(this.videoId, this.videoTitle, this.videoDuration,
-      this.videoThumbnail, this.videoUploadDate, this.videoViews);
-
-  @override
-  String toString() => '[ChannelVideo] $videoTitle ($videoId)';
-
-  @override
-  List<Object> get props => [videoId];
+    /// Video view count.
+    int videoViews,
+  ) = _ChannelVideo;
 }

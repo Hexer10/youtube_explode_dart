@@ -1,18 +1,22 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'engagement.freezed.dart';
 
 /// User activity statistics.
-class Engagement extends Equatable {
-  /// View count.
-  final int viewCount;
+@freezed
+class Engagement with _$Engagement {
+  const Engagement._();
 
-  /// Like count.
-  final int? likeCount;
+  const factory Engagement(
+    /// View count.
+    int viewCount,
 
-  /// Dislike count.
-  final int? dislikeCount;
+    /// Like count.
+    int? likeCount,
 
-  /// Initializes an instance of [Engagement]
-  const Engagement(this.viewCount, this.likeCount, this.dislikeCount);
+    /// Dislike count.
+    int? dislikeCount,
+  ) = _Engagement;
 
   /// Average user rating in stars (1 star to 5 stars).
   /// Returns -1 if likeCount or dislikeCount is null.
@@ -25,11 +29,4 @@ class Engagement extends Equatable {
     }
     return 1 + 4.0 * likeCount! / (likeCount! + dislikeCount!);
   }
-
-  @override
-  String toString() =>
-      '$viewCount views, $likeCount likes, $dislikeCount dislikes';
-
-  @override
-  List<Object?> get props => [viewCount, likeCount, dislikeCount];
 }

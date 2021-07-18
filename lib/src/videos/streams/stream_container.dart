@@ -1,25 +1,30 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'stream_container.freezed.dart';
 
 /// Stream container.
-class StreamContainer with EquatableMixin {
-  /// Container name.
-  /// Can be used as file extension
-  final String name;
-
+@freezed
+class StreamContainer with _$StreamContainer {
   /// Initializes an instance of [StreamContainer]
-  StreamContainer._(this.name);
+  const factory StreamContainer._internal(
+
+      /// Container name.
+      /// Can be used as file extension
+      String name) = _StreamContainer;
+
+  const StreamContainer._();
 
   /// MPEG-4 Part 14 (.mp4).
-  static final StreamContainer mp4 = StreamContainer._('mp4');
+  static const StreamContainer mp4 = StreamContainer._internal('mp4');
 
   /// Web Media (.webm).
-  static final StreamContainer webM = StreamContainer._('webm');
+  static const StreamContainer webM = StreamContainer._internal('webm');
 
   /// 3rd Generation Partnership Project (.3gpp).
-  static final StreamContainer tgpp = StreamContainer._('3gpp');
+  static const StreamContainer tgpp = StreamContainer._internal('3gpp');
 
   /// Parse a container from name.
-  static StreamContainer parse(String name) {
+  factory StreamContainer.parse(String name) {
     if (name.toLowerCase() == 'mp4') {
       return StreamContainer.mp4;
     }
@@ -32,9 +37,6 @@ class StreamContainer with EquatableMixin {
 
     throw ArgumentError.value(name, 'name', 'Valid values: mp4, webm, 3gpp');
   }
-
-  @override
-  List<Object> get props => [name];
 
   @override
   String toString() => name;

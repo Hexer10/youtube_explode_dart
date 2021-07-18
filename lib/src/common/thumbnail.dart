@@ -1,19 +1,18 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'thumbnail.freezed.dart';
 
 /// Represent a channel thumbnail
-class Thumbnail with EquatableMixin {
-  /// Image url.
-  final Uri url;
+@freezed
+class Thumbnail with _$Thumbnail {
+  const factory Thumbnail(
+    /// Image url.
+    Uri url,
 
-  /// Image height.
-  final int height;
+    /// Image height.
+    int height,
 
-  /// Image width.
-  final int width;
-
-  /// Initialize an instance of [Thumbnail].
-  Thumbnail(this.url, this.height, this.width);
-
-  @override
-  List<Object> get props => [url, height, width];
+    /// Image width.
+    int width,
+  ) = _Thumbnail;
 }

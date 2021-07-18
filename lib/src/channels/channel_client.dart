@@ -21,7 +21,7 @@ class ChannelClient {
   final YoutubeHttpClient _httpClient;
 
   /// Initializes an instance of [ChannelClient]
-  ChannelClient(this._httpClient);
+  const ChannelClient(this._httpClient);
 
   /// Gets the metadata associated with the specified channel.
   /// [id] must be either a [ChannelId] or a string
