@@ -37,7 +37,7 @@ class CommentsClient {
 
     return retry(() async {
       var raw = await _httpClient.postString(url, headers: {
-        'x-youtube-client-namE': '1',
+        'x-youtube-client-name': '1',
         'x-youtube-client-version': '2.20210622.10.00',
         'cookie':
             'YSC=$ysc; CONSENT=YES+cb; GPS=1; VISITOR_INFO1_LIVE=$visitorInfoLive',
@@ -99,7 +99,7 @@ class CommentsClient {
         clickTrackingParams =
             continuationData.getT<String>('clickTrackingParams');
       }
-      var comment = Comment(
+      yield Comment(
           commentRaw.getT<String>('commentId')!,
           commentRaw.get('authorText')!.getT<String>('simpleText')!,
           ChannelId(commentRaw
@@ -124,7 +124,6 @@ class CommentsClient {
           commentRaw.getT<int>('replyCount') ?? 0,
           continuation,
           clickTrackingParams);
-      yield comment;
     }
     var continuationRoot = (data
             .get('response')

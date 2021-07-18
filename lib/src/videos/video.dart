@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 import '../channels/channel_id.dart';
 import '../common/common.dart';
@@ -52,6 +53,7 @@ class Video with EquatableMixin {
 
   /// Used internally.
   /// Shouldn't be used in the code.
+  @internal
   final WatchPage? watchPage;
 
   /// Returns true if the watch page is available for this video.
