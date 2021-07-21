@@ -1,95 +1,63 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
-import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:youtube_explode_dart/src/reverse_engineering/models/youtube_page.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
+import '../models/initial_data.dart';
 
 ///
-class PlaylistPage {
+class PlaylistPage extends YoutubePage<_InitialData> {
   ///
   final String playlistId;
-  final Document? root;
 
-  late final _InitialData initialData = getInitialData();
-  _InitialData? _initialData;
+  late final List<_Video> videos = initialData.playlistVideos;
 
-  ///
-  _InitialData getInitialData() {
-    if (_initialData != null) {
-      return _initialData!;
-    }
+  late final String? title = initialData.title;
 
-    final scriptText = root!
-        .querySelectorAll('script')
-        .map((e) => e.text)
-        .toList(growable: false);
+  late final String? description = initialData.description;
 
-    return scriptText.extractGenericData(
-        (obj) => _InitialData(obj),
-        () => TransientFailureException(
-            'Failed to retrieve initial data from the search page, please report this to the project GitHub page.'));
-  }
+  late final String? author = initialData.author;
 
-  ///
-  PlaylistPage(this.root, this.playlistId, [_InitialData? initialData])
-      : _initialData = initialData;
+  late final int? viewCount = initialData.viewCount;
+
+  /// InitialData
+  PlaylistPage.id(this.playlistId, _InitialData initialData)
+      : super(null, null, initialData);
 
   ///
   Future<PlaylistPage?> nextPage(YoutubeHttpClient httpClient) async {
-    if (initialData.continuationToken == null) {
+    if (initialData.continuationToken?.isEmpty == null) {
       return null;
     }
-    return get(httpClient, playlistId, token: initialData.continuationToken);
+
+    final data =
+        await httpClient.sendPost('browse', initialData.continuationToken!);
+
+    return PlaylistPage.id(playlistId, _InitialData(data));
   }
 
   ///
-  static Future<PlaylistPage> get(YoutubeHttpClient httpClient, String id,
-      {String? token}) {
-    if (token != null && token.isNotEmpty) {
-      var url =
-          'https://www.youtube.com/youtubei/v1/browse?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
-
-      return retry(() async {
-        var body = {
-          'context': const {
-            'client': {
-              'hl': 'en',
-              'clientName': 'WEB',
-              'clientVersion': '2.20200911.04.00'
-            }
-          },
-          'continuation': token
-        };
-
-        var raw =
-            await httpClient.post(Uri.parse(url), body: json.encode(body));
-        return PlaylistPage(null, id, _InitialData(json.decode(raw.body)));
-      });
-      // Ask for next page,
-
-    }
+  static Future<PlaylistPage> get(
+    YoutubeHttpClient httpClient,
+    String id,
+  ) async {
     var url = 'https://www.youtube.com/playlist?list=$id&hl=en&persist_hl=1';
     return retry(() async {
       var raw = await httpClient.getString(url);
       return PlaylistPage.parse(raw, id);
     });
-    // ask for next page
   }
 
   ///
-  PlaylistPage.parse(String raw, this.playlistId) : root = parser.parse(raw);
+  PlaylistPage.parse(String raw, this.playlistId)
+      : super(parser.parse(raw), (root) => _InitialData(root));
 }
 
-class _InitialData {
-  // Json parsed map
-  final Map<String, dynamic> root;
-
-  _InitialData(this.root);
+class _InitialData extends InitialData {
+  _InitialData(JsonMap root) : super(root);
 
   late final String? title = root
       .get('metadata')
@@ -132,7 +100,7 @@ class _InitialData {
           ?.get('continuationCommand')
           ?.getT<String>('token');
 
-  List<Map<String, dynamic>>? get playlistVideosContent =>
+  List<JsonMap>? get playlistVideosContent =>
       root
           .get('contents')
           ?.get('twoColumnBrowseResultsRenderer')
@@ -154,7 +122,7 @@ class _InitialData {
           ?.get('appendContinuationItemsAction')
           ?.getList('continuationItems');
 
-  late final List<Map<String, dynamic>>? videosContent = root
+  late final List<JsonMap>? videosContent = root
           .get('contents')
           ?.get('twoColumnSearchResultsRenderer')
           ?.get('primaryContents')
@@ -173,19 +141,19 @@ class _InitialData {
           .toList() ??
       const [];
 
-  List<_Video> get videos =>
+/*  List<_Video> get videos =>
       videosContent?.firstOrNull
           ?.get('itemSectionRenderer')
           ?.getList('contents')
           ?.where((e) => e['videoRenderer'] != null)
           .map((e) => _Video(e))
           .toList() ??
-      const [];
+      const [];*/
 }
 
 class _Video {
   // Json parsed map
-  final Map<String, dynamic> root;
+  final JsonMap root;
 
   _Video(this.root);
 

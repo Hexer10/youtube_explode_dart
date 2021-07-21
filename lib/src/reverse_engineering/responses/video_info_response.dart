@@ -4,8 +4,8 @@ import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
-import 'player_response.dart';
-import 'stream_info_provider.dart';
+import '../player/player_response.dart';
+import '../models/stream_info_provider.dart';
 
 ///
 class VideoInfoResponse {

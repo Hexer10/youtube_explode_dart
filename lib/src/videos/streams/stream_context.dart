@@ -1,5 +1,5 @@
 import '../../reverse_engineering/cipher/cipher_operations.dart';
-import '../../reverse_engineering/responses/responses.dart';
+import '../../reverse_engineering/models/stream_info_provider.dart';
 
 ///
 class StreamContext {

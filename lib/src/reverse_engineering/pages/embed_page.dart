@@ -79,9 +79,9 @@ class EmbedPage {
 }
 
 /// Used internally
-class EmbedPlayerConfig implements PlayerConfigBase<Map<String, dynamic>> {
+class EmbedPlayerConfig implements PlayerConfigBase {
   @override
-  final Map<String, dynamic> root;
+  final JsonMap root;
 
   ///
   EmbedPlayerConfig(this.root);

@@ -1,7 +1,9 @@
+import '../../extensions/helpers_extension.dart';
+
 /// Base class for PlayerConfig.
-abstract class PlayerConfigBase<T> {
+abstract class PlayerConfigBase {
   /// Root node.
-  final T root;
+  final JsonMap root;
 
   ///
   PlayerConfigBase(this.root);

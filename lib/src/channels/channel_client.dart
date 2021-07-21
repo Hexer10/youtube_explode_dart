@@ -1,11 +1,12 @@
 import 'package:youtube_explode_dart/src/channels/channel_uploads_list.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/pages/channel_page.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/responses/video_info_response.dart';
 
 import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';
-import '../reverse_engineering/responses/channel_about_page.dart';
-import '../reverse_engineering/responses/channel_upload_page.dart';
-import '../reverse_engineering/responses/responses.dart';
+import '../reverse_engineering/pages/channel_about_page.dart';
+import '../reverse_engineering/pages/channel_upload_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
 import '../videos/video_id.dart';
@@ -55,16 +56,16 @@ class ChannelClient {
     final aboutPage = await ChannelAboutPage.get(_httpClient, channelId.value);
     final id = aboutPage.initialData;
     return ChannelAbout(
-        id.description,
-        id.viewCount,
-        id.joinDate,
-        id.title,
+        aboutPage.description,
+        aboutPage.viewCount,
+        aboutPage.joinDate,
+        aboutPage.title,
         [
-          for (var e in id.avatar)
+          for (var e in aboutPage.avatar)
             Thumbnail(Uri.parse(e['url']), e['height'], e['width'])
         ],
-        id.country,
-        id.channelLinks);
+        aboutPage.country,
+        aboutPage.channelLinks);
   }
 
   /// Gets the info found on a YouTube Channel About page.
@@ -125,7 +126,7 @@ class ChannelClient {
     final channel = await get(channelId);
 
     return ChannelUploadsList(
-        page.initialData.uploads
+        page.uploads
             .map((e) => Video(
                 e.videoId,
                 e.videoTitle,

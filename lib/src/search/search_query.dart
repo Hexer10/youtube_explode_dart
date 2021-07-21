@@ -1,4 +1,4 @@
-import '../reverse_engineering/responses/search_page.dart';
+import '../reverse_engineering/pages/search_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import 'related_query.dart';
 

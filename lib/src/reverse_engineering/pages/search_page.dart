@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
-import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:youtube_explode_dart/src/reverse_engineering/models/youtube_page.dart';
 import 'package:youtube_explode_dart/src/search/search_channel.dart';
 
 import '../../../youtube_explode_dart.dart';
@@ -14,72 +12,32 @@ import '../../search/search_filter.dart';
 import '../../search/search_video.dart';
 import '../../videos/videos.dart';
 import '../youtube_http_client.dart';
+import '../models/initial_data.dart';
 
 ///
-class SearchPage {
+class SearchPage extends YoutubePage<_InitialData> {
   ///
   final String queryString;
-  final Document? root;
 
-  late final _InitialData initialData = getInitialData();
-  _InitialData? _initialData;
-
-  ///
-  _InitialData getInitialData() {
-    if (_initialData != null) {
-      return _initialData!;
-    }
-
-    final scriptText = root!
-        .querySelectorAll('script')
-        .map((e) => e.text)
-        .toList(growable: false);
-    return scriptText.extractGenericData(
-        (obj) => _InitialData(obj),
-        () => TransientFailureException(
-            'Failed to retrieve initial data from the search page, please report this to the project GitHub page.'));
-  }
-
-  ///
-  SearchPage(this.root, this.queryString, [_InitialData? initialData])
-      : _initialData = initialData;
+  /// InitialData
+  SearchPage.id(this.queryString, _InitialData initialData)
+      : super(null, null, initialData);
 
   Future<SearchPage?> nextPage(YoutubeHttpClient httpClient) async {
-    if (initialData.continuationToken == '' ||
+    if (initialData.continuationToken?.isEmpty == null ||
         initialData.estimatedResults == 0) {
       return null;
     }
-    return get(httpClient, queryString, token: initialData.continuationToken);
+
+    var data =
+        await httpClient.sendPost('search', initialData.continuationToken!);
+    return SearchPage.id(queryString, _InitialData(data));
   }
 
   ///
   static Future<SearchPage> get(
       YoutubeHttpClient httpClient, String queryString,
-      {String? token, SearchFilter filter = const SearchFilter('')}) {
-    if (token != null) {
-      var url =
-          'https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
-
-      return retry(() async {
-        var body = {
-          'context': const {
-            'client': {
-              'hl': 'en',
-              'clientName': 'WEB',
-              'clientVersion': '2.20200911.04.00'
-            }
-          },
-          'continuation': token
-        };
-
-        var raw =
-            await httpClient.post(Uri.parse(url), body: json.encode(body));
-        return SearchPage(
-            null, queryString, _InitialData(json.decode(raw.body)));
-      });
-      // Ask for next page,
-
-    }
+      {SearchFilter filter = const SearchFilter('')}) {
     var url =
         'https://www.youtube.com/results?search_query=${Uri.encodeQueryComponent(queryString)}&sp=${filter.value}';
     return retry(() async {
@@ -90,16 +48,14 @@ class SearchPage {
   }
 
   ///
-  SearchPage.parse(String raw, this.queryString) : root = parser.parse(raw);
+  SearchPage.parse(String raw, this.queryString)
+      : super(parser.parse(raw), (root) => _InitialData(root));
 }
 
-class _InitialData {
-  // Json parsed map
-  final Map<String, dynamic> root;
+class _InitialData extends InitialData {
+  _InitialData(JsonMap root) : super(root);
 
-  _InitialData(this.root);
-
-  List<Map<String, dynamic>>? getContentContext() {
+  List<JsonMap>? getContentContext() {
     if (root['contents'] != null) {
       return root
           .get('contents')
@@ -196,7 +152,7 @@ class _InitialData {
   late final int estimatedResults =
       int.parse(root.getT<String>('estimatedResults') ?? '0');
 
-  BaseSearchContent? _parseContent(Map<String, dynamic>? content) {
+  BaseSearchContent? _parseContent(JsonMap? content) {
     if (content == null) {
       return null;
     }

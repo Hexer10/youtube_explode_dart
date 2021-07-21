@@ -1,8 +1,8 @@
 import 'package:xml/xml.dart' as xml;
 
-import '../../retry.dart';
-import '../youtube_http_client.dart';
-import 'stream_info_provider.dart';
+import '../retry.dart';
+import 'youtube_http_client.dart';
+import 'models/stream_info_provider.dart';
 
 ///
 class DashManifest {

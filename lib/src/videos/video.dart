@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 
 import '../channels/channel_id.dart';
 import '../common/common.dart';
-import '../reverse_engineering/responses/responses.dart';
+import '../reverse_engineering/pages/watch_page.dart';
 import 'video_id.dart';
 
 part 'video.freezed.dart';

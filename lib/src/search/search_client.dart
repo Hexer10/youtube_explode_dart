@@ -3,7 +3,7 @@ import 'dart:convert';
 import '../../youtube_explode_dart.dart';
 import '../extensions/helpers_extension.dart';
 import '../retry.dart';
-import '../reverse_engineering/responses/search_page.dart';
+import '../reverse_engineering/pages/search_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import 'base_search_content.dart';
 import 'search_filter.dart';

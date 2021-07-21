@@ -16,7 +16,6 @@ class CommentsClient {
 
   /// Returns the json parsed comments map.
   Future<Map<String, dynamic>> _getCommentJson(
-      String service,
       String continuation,
       String clickTrackingParams,
       String xsfrToken,
@@ -25,14 +24,9 @@ class CommentsClient {
     final url = Uri(
         scheme: 'https',
         host: 'www.youtube.com',
-        path: '/comment_service_ajax',
+        path: '/next',
         queryParameters: {
-          service: '1',
-          'pbj': '1',
-          'ctoken': continuation,
-          'continuation': continuation,
-          'itct': clickTrackingParams,
-          'type': 'next',
+          'key': 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8',
         });
 
     return retry(() async {
@@ -70,8 +64,9 @@ class CommentsClient {
 
   Stream<Comment> _getComments(String continuation, String clickTrackingParams,
       String xsfrToken, String visitorInfoLive, String ysc) async* {
-    var data = await _getCommentJson('action_get_comments', continuation,
-        clickTrackingParams, xsfrToken, visitorInfoLive, ysc);
+    // contents.twoColumnWatchNextResults.results.results.contents[2](firstWhere itemSectionRenderer != null).itemSectionRenderer.contents[0].continuationItemRenderer
+    var data = await _getCommentJson(
+        continuation, clickTrackingParams, xsfrToken, visitorInfoLive, ysc);
     var contentRoot = data
         .get('response')
         ?.get('continuationContents')
@@ -142,24 +137,11 @@ class CommentsClient {
     }
   }
 
-//TODO: Implement replies
-/*  Stream<Comment> getReplies(Video video, Comment comment) async* {
-    if (video.watchPage == null || comment.continuation == null
-    || comment.clicktrackingParams == null) {
+  Stream<Comment> getReplies(Video video, Comment comment) async* {
+    if (video.watchPage == null ||
+        comment.continuation == null ||
+        comment.clicktrackingParams == null) {
       return;
     }
-    yield* _getReplies(
-        video.watchPage.initialData.continuation,
-        video.watchPage.initialData.clickTrackingParams,
-        video.watchPage.xsfrToken,
-        video.watchPage.visitorInfoLive,
-        video.watchPage.ysc);
   }
-
-  Stream<Comment> _getReplies(String continuation, String clickTrackingParams,
-      String xsfrToken, String visitorInfoLive, String ysc) async* {
-    var data = await _getCommentJson('action_get_comment_replies', continuation,
-        clickTrackingParams, xsfrToken, visitorInfoLive, ysc);
-    print(data);
-  }*/
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/search_page.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/pages/search_page.dart';
 
 import '../../youtube_explode_dart.dart';
 import '../extensions/helpers_extension.dart';

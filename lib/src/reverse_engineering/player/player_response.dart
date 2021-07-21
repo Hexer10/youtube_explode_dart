@@ -4,12 +4,12 @@ import 'package:collection/collection.dart';
 import 'package:http_parser/http_parser.dart';
 
 import '../../extensions/helpers_extension.dart';
-import 'stream_info_provider.dart';
+import '../models/stream_info_provider.dart';
 
 ///
 class PlayerResponse {
   // Json parsed map
-  Map<String, dynamic> root;
+  JsonMap root;
 
   ///
   late final String playabilityStatus =
@@ -139,7 +139,7 @@ class PlayerResponse {
 ///
 class ClosedCaptionTrack {
   // Json parsed class
-  final Map<String, dynamic> root;
+  final JsonMap root;
 
   ///
   String get url => root.getT<String>('baseUrl')!;
@@ -163,7 +163,7 @@ class _StreamInfo extends StreamInfoProvider {
   static final _contentLenExp = RegExp(r'[\?&]clen=(\d+)');
 
   /// Json parsed map
-  final Map<String, dynamic> root;
+  final JsonMap root;
 
   @override
   late final int? bitrate = root.getT<int>('bitrate');

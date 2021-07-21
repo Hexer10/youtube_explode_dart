@@ -1,6 +1,7 @@
 import '../../extensions/helpers_extension.dart';
-import '../../reverse_engineering/responses/responses.dart'
-    hide ClosedCaption, ClosedCaptionPart, ClosedCaptionTrack;
+import '../../reverse_engineering/responses/closed_caption_track_response.dart'
+    show ClosedCaptionTrackResponse;
+import '../../reverse_engineering/responses/video_info_response.dart';
 import '../../reverse_engineering/youtube_http_client.dart';
 import '../videos.dart';
 import 'closed_caption.dart';

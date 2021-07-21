@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:youtube_explode_dart/src/reverse_engineering/models/youtube_page.dart';
 
 import '../../channels/channel_video.dart';
 import '../../exceptions/exceptions.dart';
@@ -10,60 +9,27 @@ import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../../videos/videos.dart';
 import '../youtube_http_client.dart';
+import '../models/initial_data.dart';
 
 ///
-class ChannelUploadPage {
+class ChannelUploadPage extends YoutubePage<_InitialData> {
   ///
   final String channelId;
-  final Document? _root;
 
-  late final _InitialData initialData = _getInitialData();
-  _InitialData? _initialData;
+  late final List<ChannelVideo> uploads = initialData.uploads;
 
-  ///
-  _InitialData _getInitialData() {
-    if (_initialData != null) {
-      return _initialData!;
-    }
-    final scriptText = _root!
-        .querySelectorAll('script')
-        .map((e) => e.text)
-        .toList(growable: false);
-
-    return scriptText.extractGenericData(
-        (obj) => _InitialData(obj),
-        () => TransientFailureException(
-            'Failed to retrieve initial data from the channel upload page, please report this to the project GitHub page.'));
-  }
+  /// InitialData
+  ChannelUploadPage.id(this.channelId, _InitialData? initialData)
+      : super(null, null, initialData);
 
   ///
-  ChannelUploadPage(this._root, this.channelId, [_InitialData? initialData])
-      : _initialData = initialData;
-
-  ///
-  Future<ChannelUploadPage?> nextPage(YoutubeHttpClient httpClient) {
+  Future<ChannelUploadPage?> nextPage(YoutubeHttpClient httpClient) async {
     if (initialData.token.isEmpty) {
-      return Future.value(null);
+      return null;
     }
 
-    final url = Uri.parse(
-        'https://www.youtube.com/youtubei/v1/browse?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8');
-
-    final body = {
-      'context': const {
-        'client': {
-          'hl': 'en',
-          'clientName': 'WEB',
-          'clientVersion': '2.20200911.04.00'
-        }
-      },
-      'continuation': initialData.token
-    };
-    return retry(() async {
-      var raw = await httpClient.post(url, body: json.encode(body));
-      return ChannelUploadPage(
-          null, channelId, _InitialData(json.decode(raw.body)));
-    });
+    final data = await httpClient.sendPost('browse', initialData.token);
+    return ChannelUploadPage.id(channelId, _InitialData(data));
   }
 
   ///
@@ -79,17 +45,13 @@ class ChannelUploadPage {
 
   ///
   ChannelUploadPage.parse(String raw, this.channelId)
-      : _root = parser.parse(raw);
+      : super(parser.parse(raw), (root) => _InitialData(root));
 }
 
-class _InitialData {
-  // Json parsed map
-  final Map<String, dynamic> root;
+class _InitialData extends InitialData {
+  _InitialData(JsonMap root) : super(root);
 
-  _InitialData(this.root);
-
-  late final Map<String, dynamic>? continuationContext =
-      getContinuationContext();
+  late final JsonMap? continuationContext = getContinuationContext();
 
   late final String token = continuationContext?.getT<String>('token') ?? '';
 
@@ -103,15 +65,15 @@ class _InitialData {
     return content.map(_parseContent).whereNotNull().toList();
   }
 
-  List<Map<String, dynamic>> getContentContext() {
-    List<Map<String, dynamic>>? context;
+  List<JsonMap> getContentContext() {
+    List<JsonMap>? context;
     if (root.containsKey('contents')) {
       final render = root
           .get('contents')
           ?.get('twoColumnBrowseResultsRenderer')
           ?.getList('tabs')
           ?.map((e) => e['tabRenderer'])
-          .cast<Map<String, dynamic>>()
+          .cast<JsonMap>()
           .firstWhereOrNull((e) => e['selected'] as bool)
           ?.get('content')
           ?.get('sectionListRenderer')
@@ -122,10 +84,8 @@ class _InitialData {
           ?.firstOrNull;
 
       if (render?.containsKey('gridRenderer') ?? false) {
-        context = render
-            ?.get('gridRenderer')
-            ?.getList('items')
-            ?.cast<Map<String, dynamic>>();
+        context =
+            render?.get('gridRenderer')?.getList('items')?.cast<JsonMap>();
       } else if (render?.containsKey('messageRenderer') ?? false) {
         // Workaround for no-videos.
         context = const [];
@@ -137,7 +97,7 @@ class _InitialData {
           ?.firstOrNull
           ?.get('appendContinuationItemsAction')
           ?.getList('continuationItems')
-          ?.cast<Map<String, dynamic>>();
+          ?.cast<JsonMap>();
     }
     if (context == null) {
       throw FatalFailureException('Failed to get initial data context.');
@@ -145,14 +105,14 @@ class _InitialData {
     return context;
   }
 
-  Map<String, dynamic>? getContinuationContext() {
+  JsonMap? getContinuationContext() {
     if (root.containsKey('contents')) {
       return root
           .get('contents')
           ?.get('twoColumnBrowseResultsRenderer')
           ?.getList('tabs')
           ?.map((e) => e['tabRenderer'])
-          .cast<Map<String, dynamic>>()
+          .cast<JsonMap>()
           .firstWhereOrNull((e) => e['selected'] as bool)
           ?.get('content')
           ?.get('sectionListRenderer')
@@ -182,7 +142,7 @@ class _InitialData {
     return null;
   }
 
-  ChannelVideo? _parseContent(Map<String, dynamic>? content) {
+  ChannelVideo? _parseContent(JsonMap? content) {
     if (content == null || !content.containsKey('gridVideoRenderer')) {
       return null;
     }

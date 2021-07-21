@@ -1,21 +1,20 @@
-import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:youtube_explode_dart/src/reverse_engineering/models/youtube_page.dart';
 
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../youtube_http_client.dart';
+import '../models/initial_data.dart';
 
 ///
-class ChannelPage {
-  final Document _root;
-
+class ChannelPage extends YoutubePage<_InitialData> {
   ///
-  bool get isOk => _root.querySelector('meta[property="og:url"]') != null;
+  bool get isOk => root!.querySelector('meta[property="og:url"]') != null;
 
   ///
   String get channelUrl =>
-      _root.querySelector('meta[property="og:url"]')?.attributes['content'] ??
+      root!.querySelector('meta[property="og:url"]')?.attributes['content'] ??
       '';
 
   ///
@@ -23,35 +22,19 @@ class ChannelPage {
 
   ///
   String get channelTitle =>
-      _root.querySelector('meta[property="og:title"]')?.attributes['content'] ??
+      root!.querySelector('meta[property="og:title"]')?.attributes['content'] ??
       '';
 
   ///
   String get channelLogoUrl =>
-      _root.querySelector('meta[property="og:image"]')?.attributes['content'] ??
+      root!.querySelector('meta[property="og:image"]')?.attributes['content'] ??
       '';
 
   int? get subscribersCount => initialData.subscribersCount;
 
   ///
-  late final _InitialData initialData = _getInitialData();
-
-  _InitialData _getInitialData() {
-    final scriptText = _root
-        .querySelectorAll('script')
-        .map((e) => e.text)
-        .toList(growable: false);
-    return scriptText.extractGenericData(
-        (obj) => _InitialData(obj),
-        () => TransientFailureException(
-            'Failed to retrieve initial data from the channel about page, please report this to the project GitHub page.'));
-  }
-
-  ///
-  ChannelPage(this._root);
-
-  ///
-  ChannelPage.parse(String raw) : _root = parser.parse(raw);
+  ChannelPage.parse(String raw)
+      : super(parser.parse(raw), (root) => _InitialData(root));
 
   ///
   static Future<ChannelPage> get(YoutubeHttpClient httpClient, String id) {
@@ -85,13 +68,10 @@ class ChannelPage {
   }
 }
 
-class _InitialData {
+class _InitialData extends InitialData {
   static final RegExp _subCountExp = RegExp(r'(\d+(?:\.\d+)?)(K|M|\s)');
 
-  // Json parsed map
-  final Map<String, dynamic> root;
-
-  _InitialData(this.root);
+  _InitialData(JsonMap root) : super(root);
 
   int? get subscribersCount {
     final renderer = root.get('header')?.get('c4TabbedHeaderRenderer');

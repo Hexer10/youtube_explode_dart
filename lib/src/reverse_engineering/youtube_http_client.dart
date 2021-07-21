@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:youtube_explode_dart/src/retry.dart';
 
 import '../exceptions/exceptions.dart';
+import '../extensions/helpers_extension.dart';
 import '../videos/streams/streams.dart';
 
 /// HttpClient wrapper for YouTube
@@ -141,6 +143,30 @@ class YoutubeHttpClient extends http.BaseClient {
     }
 
     return int.tryParse(response.headers['content-length'] ?? '');
+  }
+
+  /// Sends a call to the youtube api endpoint.
+  Future<JsonMap> sendPost(String action, String token) async {
+    assert(action == 'next' || action == 'browse' || action == 'search');
+
+    final body = {
+      'context': const {
+        'client': {
+          'hl': 'en',
+          'clientName': 'WEB',
+          'clientVersion': '2.20200911.04.00'
+        }
+      },
+      'continuation': token
+    };
+
+    final url = Uri.parse(
+        'https://www.youtube.com/youtubei/v1/$action?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8');
+
+    return retry<JsonMap>(() async {
+      final raw = await post(url, body: json.encode(body));
+      return json.decode(raw.body);
+    });
   }
 
   @override

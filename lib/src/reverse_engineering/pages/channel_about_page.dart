@@ -1,39 +1,39 @@
 import 'package:collection/collection.dart';
-import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:youtube_explode_dart/src/reverse_engineering/models/youtube_page.dart';
 
 import '../../../youtube_explode_dart.dart';
-import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
+import '../models/initial_data.dart';
 import '../youtube_http_client.dart';
 
 ///
-class ChannelAboutPage {
-  final Document _root;
-
-  ///
-  late final _InitialData initialData = _getInitialData();
-
-  _InitialData _getInitialData() {
-    final scriptText = _root
-        .querySelectorAll('script')
-        .map((e) => e.text)
-        .toList(growable: false);
-    return scriptText.extractGenericData(
-        (obj) => _InitialData(obj),
-        () => TransientFailureException(
-            'Failed to retrieve initial data from the channel about page, please report this to the project GitHub page.'));
-  }
-
+class ChannelAboutPage extends YoutubePage<_InitialData> {
   ///
   String get description => initialData.description;
 
   ///
-  ChannelAboutPage(this._root);
+  int get viewCount => initialData.viewCount;
 
   ///
-  ChannelAboutPage.parse(String raw) : _root = parser.parse(raw);
+  String get joinDate => initialData.joinDate;
+
+  ///
+  String get title => initialData.title;
+
+  ///
+  List<JsonMap> get avatar => initialData.avatar;
+
+  ///
+  String get country => initialData.country;
+
+  ///
+  List<ChannelLink> get channelLinks => initialData.channelLinks;
+
+  ///
+  ChannelAboutPage.parse(String raw)
+      : super(parser.parse(raw), (root) => _InitialData(root));
 
   ///
   static Future<ChannelAboutPage> get(YoutubeHttpClient httpClient, String id) {
@@ -63,15 +63,12 @@ class ChannelAboutPage {
 
 final _urlExp = RegExp(r'q=([^=]*)$');
 
-class _InitialData {
-  // Json parsed map
-  final Map<String, dynamic> root;
+class _InitialData extends InitialData {
+  late final JsonMap content = _getContentContext();
 
-  _InitialData(this.root);
+  _InitialData(JsonMap root) : super(root);
 
-  late final Map<String, dynamic> content = _getContentContext();
-
-  Map<String, dynamic> _getContentContext() {
+  JsonMap _getContentContext() {
     return root
         .get('contents')!
         .get('twoColumnBrowseResultsRenderer')!
@@ -123,7 +120,7 @@ class _InitialData {
 
   late final String title = content.get('title')!.getT<String>('simpleText')!;
 
-  late final List<Map<String, dynamic>> avatar =
+  late final List<JsonMap> avatar =
       content.get('avatar')!.getList('thumbnails')!;
 
   late final String country =

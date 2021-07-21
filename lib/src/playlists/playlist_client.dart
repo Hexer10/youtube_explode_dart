@@ -1,5 +1,5 @@
 import 'package:youtube_explode_dart/src/channels/channel_id.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/playlist_page.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/pages/playlist_page.dart';
 
 import '../common/common.dart';
 import '../reverse_engineering/youtube_http_client.dart';
@@ -22,25 +22,51 @@ class PlaylistClient {
     var response = await PlaylistPage.get(_httpClient, id.value);
     return Playlist(
         id,
-        response.initialData.title ?? '',
-        response.initialData.author ?? '',
-        response.initialData.description ?? '',
+        response.title ?? '',
+        response.author ?? '',
+        response.description ?? '',
         ThumbnailSet(id.value),
-        Engagement(response.initialData.viewCount ?? 0, null, null));
+        Engagement(response.viewCount ?? 0, null, null));
   }
 
   /// Enumerates videos included in the specified playlist.
   Stream<Video> getVideos(dynamic id) async* {
     id = PlaylistId.fromString(id);
-    var encounteredVideoIds = <String>{};
-    String? continuationToken = '';
+    final encounteredVideoIds = <String>{};
 
-    // ignore: literal_only_boolean_expressions
-    while (true) {
-      var response = await PlaylistPage.get(_httpClient, id.value,
-          token: continuationToken);
+    PlaylistPage? page = await PlaylistPage.get(_httpClient, id.value);
 
-      for (final video in response.initialData.playlistVideos) {
+    for (final video in page.videos) {
+      var videoId = video.id;
+
+      // Already added
+      if (!encounteredVideoIds.add(videoId)) {
+        continue;
+      }
+
+      if (video.channelId.isEmpty) {
+        continue;
+      }
+
+      yield Video(
+          VideoId(videoId),
+          video.title,
+          video.author,
+          ChannelId(video.channelId),
+          null,
+          null,
+          video.description,
+          video.duration,
+          ThumbnailSet(videoId),
+          null,
+          Engagement(video.viewCount, null, null),
+          false);
+    }
+
+    page = await page.nextPage(_httpClient);
+
+    while (page != null) {
+      for (final video in page.videos) {
         var videoId = video.id;
 
         // Already added
@@ -65,10 +91,6 @@ class PlaylistClient {
             null,
             Engagement(video.viewCount, null, null),
             false);
-      }
-      continuationToken = response.initialData.continuationToken;
-      if (response.initialData.continuationToken?.isEmpty ?? true) {
-        break;
       }
     }
   }

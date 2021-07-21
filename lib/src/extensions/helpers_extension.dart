@@ -5,6 +5,8 @@ import 'package:collection/collection.dart';
 
 import '../reverse_engineering/cipher/cipher_operations.dart';
 
+typedef JsonMap = Map<String, dynamic>;
+
 /// Utility for Strings.
 extension StringUtility on String {
   /// Returns null if this string is whitespace.

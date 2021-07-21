@@ -1,17 +1,19 @@
 import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:youtube_explode_dart/src/reverse_engineering/models/youtube_page.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../../videos/video_id.dart';
+import '../player/player_response.dart';
 import '../youtube_http_client.dart';
 import 'player_config_base.dart';
-import 'player_response.dart';
+import '../models/initial_data.dart';
 
 ///
-class WatchPage {
+class WatchPage extends YoutubePage<_InitialData> {
   static final RegExp _videoLikeExp =
       RegExp(r'"label"\s*:\s*"([\d,\.]+) likes"');
   static final RegExp _videoDislikeExp =
@@ -24,6 +26,7 @@ class WatchPage {
 
   static final _xsfrTokenExp = RegExp(r'"XSRF_TOKEN"\s*:\s*"(.+?)"');
 
+  @override
   final Document root;
 
   ///
@@ -31,8 +34,6 @@ class WatchPage {
 
   ///
   final String ysc;
-
-  _InitialData? _initialData;
 
   ///
   String? get sourceUrl {
@@ -45,24 +46,6 @@ class WatchPage {
       return null;
     }
     return 'https://youtube.com$url';
-  }
-
-  late final _InitialData initialData = getInitialData();
-
-  ///
-  _InitialData getInitialData() {
-    if (_initialData != null) {
-      return _initialData!;
-    }
-
-    final scriptText = root
-        .querySelectorAll('script')
-        .map((e) => e.text)
-        .toList(growable: false);
-    return scriptText.extractGenericData(
-        (obj) => _InitialData(obj),
-        () => TransientFailureException(
-            'Failed to retrieve initial data from the watch page, please report this to the project GitHub page.'));
   }
 
   late final String xsfrToken = getXsfrToken()!.replaceAll(r'\u003d', '=');
@@ -143,11 +126,9 @@ class WatchPage {
   }
 
   ///
-  WatchPage(this.root, this.visitorInfoLive, this.ysc);
-
-  ///
   WatchPage.parse(String raw, this.visitorInfoLive, this.ysc)
-      : root = parser.parse(raw);
+      : root = parser.parse(raw),
+        super(parser.parse(raw), (root) => _InitialData(root));
 
   ///
   static Future<WatchPage> get(YoutubeHttpClient httpClient, String videoId) {
@@ -173,9 +154,9 @@ class WatchPage {
 }
 
 /// Used internally
-class WatchPlayerConfig implements PlayerConfigBase<Map<String, dynamic>> {
+class WatchPlayerConfig implements PlayerConfigBase {
   @override
-  final Map<String, dynamic> root;
+  final JsonMap root;
 
   ///
   WatchPlayerConfig(this.root);
@@ -189,13 +170,10 @@ class WatchPlayerConfig implements PlayerConfigBase<Map<String, dynamic>> {
       PlayerResponse.parse(root.get('args')!.getT<String>('playerResponse')!);
 }
 
-class _InitialData {
-  // Json parsed map
-  final Map<String, dynamic> root;
+class _InitialData extends InitialData {
+  _InitialData(JsonMap root) : super(root);
 
-  _InitialData(this.root);
-
-  Map<String, dynamic>? getContinuationContext() {
+  JsonMap? getContinuationContext() {
     if (root['contents'] != null) {
       return root
           .get('contents')
