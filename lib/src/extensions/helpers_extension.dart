@@ -80,9 +80,43 @@ extension StringUtility on String {
 
 /// Utility for Strings.
 extension StringUtility2 on String? {
+  static final RegExp _unitSplit = RegExp(r'^(\d+(?:\.\d)?)(\w)');
+
   /// Parses this value as int stripping the non digit characters,
   /// returns null if this fails.
   int? parseInt() => int.tryParse(this?.stripNonDigits() ?? '');
+
+  int? parseIntWithUnits() {
+    if (this == null) {
+      return null;
+    }
+    final match = _unitSplit.firstMatch(this!.trim());
+    if (match == null) {
+      return null;
+    }
+    if (match.groupCount != 2) {
+      return null;
+    }
+
+    final count = double.tryParse(match.group(1) ?? '');
+    if (count == null) {
+      return null;
+    }
+
+    final multiplierText = match.group(2);
+    if (multiplierText == null) {
+      return null;
+    }
+
+    var multiplier = 1;
+    if (multiplierText == 'K') {
+      multiplier = 1000;
+    } else if (multiplierText == 'M') {
+      multiplier = 1000000;
+    }
+
+    return (count * multiplier).toInt();
+  }
 
   /// Returns true if the string is null or empty.
   bool get isNullOrWhiteSpace {
@@ -235,19 +269,18 @@ extension RunsParser on List<dynamic> {
 }
 
 extension GenericExtract on List<String> {
-  /// Used to extract initial data that start with `var ytInitialData = ` or 'window["ytInitialData"] ='.
-  T extractGenericData<T>(
+  /// Used to extract initial data.
+  T extractGenericData<T>(List<String> match,
       T Function(Map<String, dynamic>) builder, Exception Function() orThrow) {
-    var initialData =
-        firstWhereOrNull((e) => e.contains('var ytInitialData = '))
-            ?.extractJson('var ytInitialData = ');
-    initialData ??=
-        firstWhereOrNull((e) => e.contains('window["ytInitialData"] ='))
-            ?.extractJson('window["ytInitialData"] =');
+    JsonMap? initialData;
 
-    if (initialData != null) {
-      return builder(initialData);
+    for (final m in match) {
+      initialData = firstWhereOrNull((e) => e.contains(m))?.extractJson(m);
+      if (initialData != null) {
+        return builder(initialData);
+      }
     }
+
     throw orThrow();
   }
 }

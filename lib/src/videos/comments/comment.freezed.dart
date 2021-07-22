@@ -16,18 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$CommentTearOff {
   const _$CommentTearOff();
 
-  _Comment call(
-      String commentId,
-      String author,
-      ChannelId channelId,
-      String text,
-      int likeCount,
-      String publishedTime,
-      int replyCount,
-      @internal String? continuation,
-      @internal String? clicktrackingParams) {
+  _Comment call(String author, ChannelId channelId, String text, int likeCount,
+      String publishedTime, int replyCount, @internal String? continuation) {
     return _Comment(
-      commentId,
       author,
       channelId,
       text,
@@ -35,7 +26,6 @@ class _$CommentTearOff {
       publishedTime,
       replyCount,
       continuation,
-      clicktrackingParams,
     );
   }
 }
@@ -45,9 +35,6 @@ const $Comment = _$CommentTearOff();
 
 /// @nodoc
 mixin _$Comment {
-  /// Comment id.
-  String get commentId => throw _privateConstructorUsedError;
-
   /// Comment author name.
   String get author => throw _privateConstructorUsedError;
 
@@ -71,11 +58,6 @@ mixin _$Comment {
   @internal
   String? get continuation => throw _privateConstructorUsedError;
 
-  /// Used internally.
-  /// Shouldn't be used in the code.
-  @internal
-  String? get clicktrackingParams => throw _privateConstructorUsedError;
-
   @JsonKey(ignore: true)
   $CommentCopyWith<Comment> get copyWith => throw _privateConstructorUsedError;
 }
@@ -85,15 +67,13 @@ abstract class $CommentCopyWith<$Res> {
   factory $CommentCopyWith(Comment value, $Res Function(Comment) then) =
       _$CommentCopyWithImpl<$Res>;
   $Res call(
-      {String commentId,
-      String author,
+      {String author,
       ChannelId channelId,
       String text,
       int likeCount,
       String publishedTime,
       int replyCount,
-      @internal String? continuation,
-      @internal String? clicktrackingParams});
+      @internal String? continuation});
 
   $ChannelIdCopyWith<$Res> get channelId;
 }
@@ -108,7 +88,6 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? commentId = freezed,
     Object? author = freezed,
     Object? channelId = freezed,
     Object? text = freezed,
@@ -116,13 +95,8 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
     Object? publishedTime = freezed,
     Object? replyCount = freezed,
     Object? continuation = freezed,
-    Object? clicktrackingParams = freezed,
   }) {
     return _then(_value.copyWith(
-      commentId: commentId == freezed
-          ? _value.commentId
-          : commentId // ignore: cast_nullable_to_non_nullable
-              as String,
       author: author == freezed
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
@@ -151,10 +125,6 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
           ? _value.continuation
           : continuation // ignore: cast_nullable_to_non_nullable
               as String?,
-      clicktrackingParams: clicktrackingParams == freezed
-          ? _value.clicktrackingParams
-          : clicktrackingParams // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 
@@ -172,15 +142,13 @@ abstract class _$CommentCopyWith<$Res> implements $CommentCopyWith<$Res> {
       __$CommentCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String commentId,
-      String author,
+      {String author,
       ChannelId channelId,
       String text,
       int likeCount,
       String publishedTime,
       int replyCount,
-      @internal String? continuation,
-      @internal String? clicktrackingParams});
+      @internal String? continuation});
 
   @override
   $ChannelIdCopyWith<$Res> get channelId;
@@ -197,7 +165,6 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? commentId = freezed,
     Object? author = freezed,
     Object? channelId = freezed,
     Object? text = freezed,
@@ -205,13 +172,8 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
     Object? publishedTime = freezed,
     Object? replyCount = freezed,
     Object? continuation = freezed,
-    Object? clicktrackingParams = freezed,
   }) {
     return _then(_Comment(
-      commentId == freezed
-          ? _value.commentId
-          : commentId // ignore: cast_nullable_to_non_nullable
-              as String,
       author == freezed
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
@@ -240,10 +202,6 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
           ? _value.continuation
           : continuation // ignore: cast_nullable_to_non_nullable
               as String?,
-      clicktrackingParams == freezed
-          ? _value.clicktrackingParams
-          : clicktrackingParams // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -251,21 +209,9 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Comment implements _Comment {
-  const _$_Comment(
-      this.commentId,
-      this.author,
-      this.channelId,
-      this.text,
-      this.likeCount,
-      this.publishedTime,
-      this.replyCount,
-      @internal this.continuation,
-      @internal this.clicktrackingParams);
+  const _$_Comment(this.author, this.channelId, this.text, this.likeCount,
+      this.publishedTime, this.replyCount, @internal this.continuation);
 
-  @override
-
-  /// Comment id.
-  final String commentId;
   @override
 
   /// Comment author name.
@@ -296,25 +242,16 @@ class _$_Comment implements _Comment {
   /// Shouldn't be used in the code.
   @internal
   final String? continuation;
-  @override
-
-  /// Used internally.
-  /// Shouldn't be used in the code.
-  @internal
-  final String? clicktrackingParams;
 
   @override
   String toString() {
-    return 'Comment(commentId: $commentId, author: $author, channelId: $channelId, text: $text, likeCount: $likeCount, publishedTime: $publishedTime, replyCount: $replyCount, continuation: $continuation, clicktrackingParams: $clicktrackingParams)';
+    return 'Comment(author: $author, channelId: $channelId, text: $text, likeCount: $likeCount, publishedTime: $publishedTime, replyCount: $replyCount, continuation: $continuation)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Comment &&
-            (identical(other.commentId, commentId) ||
-                const DeepCollectionEquality()
-                    .equals(other.commentId, commentId)) &&
             (identical(other.author, author) ||
                 const DeepCollectionEquality().equals(other.author, author)) &&
             (identical(other.channelId, channelId) ||
@@ -333,24 +270,19 @@ class _$_Comment implements _Comment {
                     .equals(other.replyCount, replyCount)) &&
             (identical(other.continuation, continuation) ||
                 const DeepCollectionEquality()
-                    .equals(other.continuation, continuation)) &&
-            (identical(other.clicktrackingParams, clicktrackingParams) ||
-                const DeepCollectionEquality()
-                    .equals(other.clicktrackingParams, clicktrackingParams)));
+                    .equals(other.continuation, continuation)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(commentId) ^
       const DeepCollectionEquality().hash(author) ^
       const DeepCollectionEquality().hash(channelId) ^
       const DeepCollectionEquality().hash(text) ^
       const DeepCollectionEquality().hash(likeCount) ^
       const DeepCollectionEquality().hash(publishedTime) ^
       const DeepCollectionEquality().hash(replyCount) ^
-      const DeepCollectionEquality().hash(continuation) ^
-      const DeepCollectionEquality().hash(clicktrackingParams);
+      const DeepCollectionEquality().hash(continuation);
 
   @JsonKey(ignore: true)
   @override
@@ -360,20 +292,14 @@ class _$_Comment implements _Comment {
 
 abstract class _Comment implements Comment {
   const factory _Comment(
-      String commentId,
       String author,
       ChannelId channelId,
       String text,
       int likeCount,
       String publishedTime,
       int replyCount,
-      @internal String? continuation,
-      @internal String? clicktrackingParams) = _$_Comment;
+      @internal String? continuation) = _$_Comment;
 
-  @override
-
-  /// Comment id.
-  String get commentId => throw _privateConstructorUsedError;
   @override
 
   /// Comment author name.
@@ -404,12 +330,6 @@ abstract class _Comment implements Comment {
   /// Shouldn't be used in the code.
   @internal
   String? get continuation => throw _privateConstructorUsedError;
-  @override
-
-  /// Used internally.
-  /// Shouldn't be used in the code.
-  @internal
-  String? get clicktrackingParams => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CommentCopyWith<_Comment> get copyWith =>

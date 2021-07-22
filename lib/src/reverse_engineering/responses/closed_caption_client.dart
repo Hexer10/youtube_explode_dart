@@ -5,7 +5,7 @@ import '../../retry.dart';
 import '../youtube_http_client.dart';
 
 ///
-class ClosedCaptionTrackResponse {
+class ClosedCaptionClient {
   final xml.XmlDocument root;
 
   ///
@@ -13,19 +13,19 @@ class ClosedCaptionTrackResponse {
       root.findAllElements('p').map((e) => ClosedCaption._(e));
 
   ///
-  ClosedCaptionTrackResponse(this.root);
+  ClosedCaptionClient(this.root);
 
   ///
   // ignore: deprecated_member_use
-  ClosedCaptionTrackResponse.parse(String raw) : root = xml.parse(raw);
+  ClosedCaptionClient.parse(String raw) : root = xml.parse(raw);
 
   ///
-  static Future<ClosedCaptionTrackResponse> get(
+  static Future<ClosedCaptionClient> get(
       YoutubeHttpClient httpClient, Uri url) {
-    var formatUrl = url.replaceQueryParameters({'fmt': 'srv3'});
+    final formatUrl = url.replaceQueryParameters({'fmt': 'srv3'});
     return retry(() async {
       var raw = await httpClient.getString(formatUrl);
-      return ClosedCaptionTrackResponse.parse(raw);
+      return ClosedCaptionClient.parse(raw);
     });
   }
 }

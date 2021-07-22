@@ -93,6 +93,8 @@ class WatchPage extends YoutubePage<_InitialData> {
           .nullIfWhitespace ??
       '0');
 
+  String? get commentsContinuation => initialData.commentsContinuation;
+
   static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\})');
 
   late final WatchPlayerConfig? playerConfig = getPlayerConfig();
@@ -111,18 +113,16 @@ class WatchPage extends YoutubePage<_InitialData> {
     return WatchPlayerConfig(jsonMap);
   }
 
-  ///
   PlayerResponse? getPlayerResponse() {
-    final val = root
+    final scriptText = root
         .querySelectorAll('script')
         .map((e) => e.text)
-        .map((e) => _playerResponseExp.firstMatch(e)?.group(1))
-        .firstWhereOrNull((e) => !e.isNullOrWhiteSpace)
-        ?.extractJson();
-    if (val == null) {
-      return null;
-    }
-    return PlayerResponse(val);
+        .toList(growable: false);
+    return scriptText.extractGenericData(
+        ['var ytInitialPlayerResponse = '],
+        (root) => PlayerResponse(root),
+        () => TransientFailureException(
+            'Failed to retrieve initial player response, please report this to the project GitHub page.'));
   }
 
   ///
@@ -183,16 +183,15 @@ class _InitialData extends InitialData {
           ?.getList('contents')
           ?.firstWhere((e) => e['itemSectionRenderer'] != null)
           .get('itemSectionRenderer')
-          ?.getList('continuations')
+          ?.getList('contents')
           ?.firstOrNull
-          ?.get('nextContinuationData');
+          ?.get('continuationItemRenderer')
+          ?.get('continuationEndpoint')
+          ?.get('continuationCommand');
     }
     return null;
   }
 
-  late final String continuation =
-      getContinuationContext()?.getT<String>('continuation') ?? '';
-
-  late final String clickTrackingParams =
-      getContinuationContext()?.getT<String>('clickTrackingParams') ?? '';
+  late final String commentsContinuation =
+      getContinuationContext()?.getT<String>('token') ?? '';
 }

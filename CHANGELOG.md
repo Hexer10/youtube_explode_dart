@@ -1,3 +1,8 @@
+## 1.10.0
+- Fix issue #144: get_video_info was removed from yt.
+- Min sdk version now is 2.13.0 
+- BREAKING CHANGE: New comments API implementation.
+
 ## 1.9.10
 - Close #139: Implement Channel.subscribersCount.
 

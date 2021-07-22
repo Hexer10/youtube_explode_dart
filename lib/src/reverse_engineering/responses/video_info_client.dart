@@ -8,7 +8,9 @@ import '../player/player_response.dart';
 import '../models/stream_info_provider.dart';
 
 ///
-class VideoInfoResponse {
+///
+@deprecated
+class VideoInfoClient {
   final Map<String, String> root;
 
   ///
@@ -43,13 +45,13 @@ class VideoInfoResponse {
   ];
 
   ///
-  VideoInfoResponse(this.root);
+  VideoInfoClient(this.root);
 
   ///
-  VideoInfoResponse.parse(String raw) : root = Uri.splitQueryString(raw);
+  VideoInfoClient.parse(String raw) : root = Uri.splitQueryString(raw);
 
   ///
-  static Future<VideoInfoResponse> get(
+  static Future<VideoInfoClient> get(
       YoutubeHttpClient httpClient, String videoId,
       [String? sts]) {
     var eurl = Uri.encodeFull('https://youtube.googleapis.com/v/$videoId');
@@ -71,7 +73,7 @@ class VideoInfoResponse {
 
     return retry(() async {
       var raw = await httpClient.getString(url);
-      var result = VideoInfoResponse.parse(raw);
+      var result = VideoInfoClient.parse(raw);
 
       if (!result.isVideoAvailable || !result.playerResponse.isVideoAvailable) {
         throw VideoUnplayableException(videoId);

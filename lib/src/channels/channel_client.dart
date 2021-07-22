@@ -1,6 +1,6 @@
 import 'package:youtube_explode_dart/src/channels/channel_uploads_list.dart';
 import 'package:youtube_explode_dart/src/reverse_engineering/pages/channel_page.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/video_info_response.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/pages/watch_page.dart';
 
 import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
@@ -54,7 +54,7 @@ class ChannelClient {
     channelId = ChannelId.fromString(channelId);
 
     final aboutPage = await ChannelAboutPage.get(_httpClient, channelId.value);
-    final id = aboutPage.initialData;
+
     return ChannelAbout(
         aboutPage.description,
         aboutPage.viewCount,
@@ -76,6 +76,8 @@ class ChannelClient {
 
     var channelAboutPage =
         await ChannelAboutPage.getByUsername(_httpClient, username.value);
+
+    // TODO: Expose metadata from the [ChannelAboutPage] class.
     var id = channelAboutPage.initialData;
     return ChannelAbout(
         id.description,
@@ -94,9 +96,8 @@ class ChannelClient {
   /// that uploaded the specified video.
   Future<Channel> getByVideo(dynamic videoId) async {
     videoId = VideoId.fromString(videoId);
-    var videoInfoResponse =
-        await VideoInfoResponse.get(_httpClient, videoId.value);
-    var playerResponse = videoInfoResponse.playerResponse;
+    var videoInfoResponse = await WatchPage.get(_httpClient, videoId.value);
+    var playerResponse = videoInfoResponse.playerResponse!;
 
     var channelId = playerResponse.videoChannelId;
     return get(ChannelId(channelId));

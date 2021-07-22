@@ -1,7 +1,7 @@
 import '../../extensions/helpers_extension.dart';
-import '../../reverse_engineering/responses/closed_caption_track_response.dart'
-    show ClosedCaptionTrackResponse;
-import '../../reverse_engineering/responses/video_info_response.dart';
+import '../../reverse_engineering/responses/closed_caption_client.dart' as re
+    show ClosedCaptionClient;
+import '../../reverse_engineering/responses/video_info_client.dart';
 import '../../reverse_engineering/youtube_http_client.dart';
 import '../videos.dart';
 import 'closed_caption.dart';
@@ -35,7 +35,7 @@ class ClosedCaptionClient {
     videoId = VideoId.fromString(videoId);
     var tracks = <ClosedCaptionTrackInfo>{};
     var videoInfoResponse =
-        await VideoInfoResponse.get(_httpClient, videoId.value);
+        await VideoInfoClient.get(_httpClient, videoId.value);
     var playerResponse = videoInfoResponse.playerResponse;
 
     for (final track in playerResponse.closedCaptionTrack) {
@@ -54,8 +54,7 @@ class ClosedCaptionClient {
   /// Gets the actual closed caption track which is
   /// identified by the specified metadata.
   Future<ClosedCaptionTrack> get(ClosedCaptionTrackInfo trackInfo) async {
-    var response =
-        await ClosedCaptionTrackResponse.get(_httpClient, trackInfo.url);
+    var response = await re.ClosedCaptionClient.get(_httpClient, trackInfo.url);
 
     var captions = response.closedCaptions
         .where((e) => !e.text.isNullOrWhiteSpace)

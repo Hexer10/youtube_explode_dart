@@ -9,9 +9,6 @@ part 'comment.freezed.dart';
 class Comment with _$Comment {
   /// Initializes an instance of [Comment]
   const factory Comment(
-    /// Comment id.
-    String commentId,
-
     /// Comment author name.
     String author,
 
@@ -33,9 +30,5 @@ class Comment with _$Comment {
     /// Used internally.
     /// Shouldn't be used in the code.
     @internal String? continuation,
-
-    /// Used internally.
-    /// Shouldn't be used in the code.
-    @internal String? clicktrackingParams,
   ) = _Comment;
 }

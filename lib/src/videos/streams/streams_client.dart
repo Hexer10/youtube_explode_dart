@@ -1,13 +1,13 @@
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../reverse_engineering/cipher/cipher_operations.dart';
+import '../../reverse_engineering/dash_manifest.dart';
 import '../../reverse_engineering/heuristics.dart';
+import '../../reverse_engineering/models/stream_info_provider.dart';
 import '../../reverse_engineering/pages/embed_page.dart';
 import '../../reverse_engineering/pages/watch_page.dart';
-import '../../reverse_engineering/dash_manifest.dart';
 import '../../reverse_engineering/player/player_source.dart';
-import '../../reverse_engineering/models/stream_info_provider.dart';
-import '../../reverse_engineering/responses/video_info_response.dart';
+import '../../reverse_engineering/responses/video_info_client.dart';
 import '../../reverse_engineering/youtube_http_client.dart';
 import '../video_id.dart';
 import 'bitrate.dart';
@@ -48,7 +48,7 @@ class StreamsClient {
         _httpClient, embedPage.sourceUrl ?? playerConfig.sourceUrl);
     var cipherOperations = playerSource.getCipherOperations();
 
-    var videoInfoResponse = await VideoInfoResponse.get(
+    var videoInfoResponse = await VideoInfoClient.get(
         _httpClient, videoId.toString(), playerSource.sts);
     var playerResponse = videoInfoResponse.playerResponse;
 
@@ -224,21 +224,9 @@ class StreamsClient {
   /// about available streams in the specified video.
   Future<StreamManifest> getManifest(dynamic videoId) async {
     videoId = VideoId.fromString(videoId);
-    // We can try to extract the manifest from two sources:
-    //    get_video_info and the video watch page.
-    // In some cases one works, in some cases another does.
 
-    try {
-      var context = await _getStreamContextFromVideoInfo(videoId);
-      return _getManifest(context);
-    } on YoutubeExplodeException catch (e) {
-      try {
-        var context = await _getStreamContextFromWatchPage(videoId);
-        return _getManifest(context);
-      } on YoutubeExplodeException catch (e1) {
-        throw e..combine(e1);
-      }
-    }
+    var context = await _getStreamContextFromWatchPage(videoId);
+    return _getManifest(context);
   }
 
   /// Gets the HTTP Live Stream (HLS) manifest URL

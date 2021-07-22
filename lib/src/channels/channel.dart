@@ -5,10 +5,9 @@ import 'channel_id.dart';
 part 'channel.freezed.dart';
 
 /// YouTube channel metadata.
-@Freezed()
+@freezed
 class Channel with _$Channel {
-  const Channel._();
-
+  ///
   const factory Channel(
     /// Channel ID.
     ChannelId id,
@@ -25,4 +24,6 @@ class Channel with _$Channel {
 
   /// Channel URL.
   String get url => 'https://www.youtube.com/channel/$id';
+
+  const Channel._();
 }

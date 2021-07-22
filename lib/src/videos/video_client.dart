@@ -1,8 +1,9 @@
+import 'package:youtube_explode_dart/src/reverse_engineering/player/player_response.dart';
+
 import '../channels/channel_id.dart';
 import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
 import '../reverse_engineering/pages/watch_page.dart';
-import '../reverse_engineering/responses/video_info_response.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import 'closed_captions/closed_caption_client.dart';
 import 'comments/comments_client.dart';
@@ -29,11 +30,9 @@ class VideoClient {
 
   /// Gets the metadata associated with the specified video.
   Future<Video> _getVideoFromWatchPage(VideoId videoId) async {
-    var videoInfoResponse =
-        await VideoInfoResponse.get(_httpClient, videoId.value);
-    var playerResponse = videoInfoResponse.playerResponse;
-
     var watchPage = await WatchPage.get(_httpClient, videoId.value);
+    final playerResponse = watchPage.playerResponse!;
+
     return Video(
         videoId,
         playerResponse.videoTitle,
