@@ -23,7 +23,6 @@ void main() {
       VideoId('YltHGKX80Y8'), //ContainsClosedCaptions
       VideoId('_kmeFXjjGfk'), //EmbedRestrictedByYouTube
       VideoId('MeJVWBSsPAY'), //EmbedRestrictedByAuthor
-      VideoId('SkRSXFQerZs'), //AgeRestricted
       VideoId('hySoCSoH-g8'), //AgeRestrictedEmbedRestricted
       VideoId('5VGm0dczmHc'), //RatingDisabled
       VideoId('-xNN-bJQ4vI'), // 360° video
@@ -31,7 +30,7 @@ void main() {
       test('VideoId - ${val.value}', () async {
         var manifest = await yt!.videos.streamsClient.getManifest(val);
         expect(manifest.streams, isNotEmpty);
-      });
+      }, timeout: const Timeout(Duration(seconds: 90)));
     }
   });
 
@@ -40,6 +39,10 @@ void main() {
         throwsA(const TypeMatcher<VideoRequiresPurchaseException>()));
   });
 
+  test('Stream of age-limited video throws VideoUnplayableException', () {
+    expect(yt!.videos.streamsClient.getManifest(VideoId('SkRSXFQerZs')),
+        throwsA(const TypeMatcher<VideoUnplayableException>()));
+  });
   test('Get the hls manifest of a live stream', () async {
     expect(
         await yt!.videos.streamsClient
@@ -68,7 +71,6 @@ void main() {
       VideoId('YltHGKX80Y8'), //ContainsClosedCaptions
       VideoId('_kmeFXjjGfk'), //EmbedRestrictedByYouTube
       VideoId('MeJVWBSsPAY'), //EmbedRestrictedByAuthor
-      VideoId('SkRSXFQerZs'), //AgeRestricted
       VideoId('hySoCSoH-g8'), //AgeRestrictedEmbedRestricted
       VideoId('5VGm0dczmHc'), //RatingDisabled
     }) {

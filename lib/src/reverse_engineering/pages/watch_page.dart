@@ -22,7 +22,6 @@ class WatchPage extends YoutubePage<_InitialData> {
       RegExp('VISITOR_INFO1_LIVE=([^;]+)');
   static final RegExp _yscExp = RegExp('YSC=([^;]+)');
 
-
   @override
   // Overridden to be non-nullable.
   // ignore: overridden_fields

@@ -7,7 +7,7 @@ import '../../youtube_explode_dart.dart';
 import '../extensions/helpers_extension.dart';
 
 /// This list contains search videos.
-/// /// This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.
+///This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.
 class SearchList extends DelegatingList<Video> {
   final SearchPage _page;
   final YoutubeHttpClient _httpClient;

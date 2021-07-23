@@ -14,6 +14,8 @@ class CommentsClient {
   late final List<_Comment> comments =
       _commentRenderers.map((e) => _Comment(e)).toList(growable: false);
 
+  late final String? _continuationToken = _getContinuationToken();
+
   CommentsClient(this.root);
 
   ///
@@ -32,21 +34,82 @@ class CommentsClient {
     return CommentsClient(data);
   }
 
+  ///
+  static Future<CommentsClient?> getReplies(
+      YoutubeHttpClient httpClient, String token) async {
+    final data = await httpClient.sendPost('next', token);
+    return CommentsClient(data);
+  }
+
   List<JsonMap> _getCommentRenderers() {
     return root
-        .getList('onResponseReceivedEndpoints')![1]
-        .get('reloadContinuationItemsCommand')!
-        .getList('continuationItems')!
-        .where((e) => e['commentThreadRenderer'] != null)
-        .map((e) => e.get('commentThreadRenderer')!)
-        .toList(growable: false);
+            .getList('onResponseReceivedEndpoints')!
+            .last
+            .get('appendContinuationItemsAction')
+            ?.getList('continuationItems')
+            ?.where((e) => e['commentRenderer'] != null)
+            .toList(growable: false) /* Used for the replies */ ??
+        root
+            .getList('onResponseReceivedEndpoints')!
+            .last
+            .get('reloadContinuationItemsCommand')!
+            .getList('continuationItems', 'appendContinuationItemsAction')!
+            .where((e) => e['commentThreadRenderer'] != null)
+            .map((e) => e.get('commentThreadRenderer')!)
+            .toList(growable: false);
+  }
+
+  String? _getContinuationToken() {
+    return root
+            .getList('onResponseReceivedEndpoints')!
+            .last
+            .get('appendContinuationItemsAction')
+            ?.getList('continuationItems')
+            ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+            ?.get('continuationItemRenderer')
+            ?.get('button')
+            ?.get('buttonRenderer')
+            ?.get('command')
+            ?.get('continuationCommand')
+            ?.getT<String>('token') /* Used for the replies */ ??
+        root
+            .getList('onResponseReceivedEndpoints')!
+            .last
+            .get('reloadContinuationItemsCommand')!
+            .getList('continuationItems', 'appendContinuationItemsAction')!
+            .firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+            ?.get('continuationItemRenderer')
+            ?.get('continuationEndpoint')
+            ?.get('continuationCommand')
+            ?.getT<String>('token');
+  }
+
+  int getCommentsCount() => root
+      .getList('onResponseReceivedEndpoints')![1]
+      .get('reloadContinuationItemsCommand')!
+      .getList('continuationItems')!
+      .first
+      .get('commentsHeaderRenderer')!
+      .get('commentsCount')!
+      .getList('runs')!
+      .first
+      .getT<String>('text')
+      .parseIntWithUnits()!;
+
+  Future<CommentsClient?> nextPage(YoutubeHttpClient httpClient) async {
+    if (_continuationToken == null) {
+      return null;
+    }
+
+    final data = await httpClient.sendPost('next', _continuationToken!);
+    return CommentsClient(data);
   }
 }
 
 class _Comment {
   final JsonMap root;
 
-  late final JsonMap _commentRenderer =
+  late final JsonMap _commentRenderer = root.get('commentRenderer') ??
       root.get('comment')!.get('commentRenderer')!;
 
   late final JsonMap? _commentRepliesRenderer =
@@ -61,14 +124,7 @@ class _Comment {
       ?.get('continuationCommand')
       ?.getT<String>('token');
 
-  late final int? repliesCount = _commentRepliesRenderer
-      ?.get('viewReplies')
-      ?.get('buttonRenderer')
-      ?.get('text')
-      ?.getList('runs')
-      ?.elementAtSafe(2)
-      ?.getT<String>('text')
-      ?.parseIntWithUnits();
+  late final int? repliesCount = _commentRenderer.getT<int>('replyCount');
 
   late final String author =
       _commentRenderer.get('authorText')!.getT<String>('simpleText')!;
@@ -95,18 +151,8 @@ class _Comment {
       .first
       .getT<String>('text')!;
 
-  /// Needs to be parsed as an int current is like: 1.2K
   late final int? likeCount = _commentRenderer
-      .get('actionButtons')
-      ?.get('commentActionButtonsRenderer')
-      ?.get('likeButton')
-      ?.get('toggleButtonRenderer')
-      ?.get('defaultServiceEndpoint')
-      ?.get('performCommentActionEndpoint')
-      ?.getList('clientActions')
-      ?.first
-      .get('updateCommentVoteAction')
-      ?.get('voteCount')
+      .get('voteCount')
       ?.getT<String>('simpleText')
       ?.parseIntWithUnits();
 

@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 /// Parent class for domain exceptions thrown by [YoutubeExplode]
 abstract class YoutubeExplodeException implements Exception {
   /// Generic message.
@@ -13,6 +15,7 @@ abstract class YoutubeExplodeException implements Exception {
   YoutubeExplodeException(this.message);
 
   @override
+  @nonVirtual
   String toString() {
     if (_others.isEmpty) {
       return '$runtimeType: $message';

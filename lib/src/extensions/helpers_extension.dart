@@ -80,7 +80,7 @@ extension StringUtility on String {
 
 /// Utility for Strings.
 extension StringUtility2 on String? {
-  static final RegExp _unitSplit = RegExp(r'^(\d+(?:\.\d)?)(\w)');
+  static final RegExp _unitSplit = RegExp(r'^(\d+(?:\.\d+)?)(\w)?');
 
   /// Parses this value as int stripping the non digit characters,
   /// returns null if this fails.
@@ -104,9 +104,6 @@ extension StringUtility2 on String? {
     }
 
     final multiplierText = match.group(2);
-    if (multiplierText == null) {
-      return null;
-    }
 
     var multiplier = 1;
     if (multiplierText == 'K') {
@@ -238,10 +235,17 @@ extension GetOrNullMap on Map {
   }
 
   /// Get a List<Map<String, dynamic>>> from a map.
-  List<Map<String, dynamic>>? getList(String key) {
+  List<Map<String, dynamic>>? getList(String key, [String? orKey]) {
     var v = this[key];
     if (v == null) {
-      return null;
+      if (orKey != null) {
+        v = this[orKey];
+        if (v == null) {
+          return null;
+        }
+      } else {
+        return null;
+      }
     }
     if (v is! List<dynamic>) {
       throw Exception('Invalid type: ${v.runtimeType} should be of type List');

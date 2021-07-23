@@ -35,8 +35,7 @@ class ClosedCaptionClient {
       ]}) async {
     videoId = VideoId.fromString(videoId);
     var tracks = <ClosedCaptionTrackInfo>{};
-    var watchPage =
-        await WatchPage.get(_httpClient, videoId.value);
+    var watchPage = await WatchPage.get(_httpClient, videoId.value);
     var playerResponse = watchPage.playerResponse!;
 
     for (final track in playerResponse.closedCaptionTrack) {

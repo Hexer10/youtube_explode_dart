@@ -105,9 +105,11 @@ class YoutubeHttpClient extends http.BaseClient {
     var bytesCount = start;
     for (var i = start; i < streamInfo.size.totalBytes; i += 9898989) {
       try {
-        final request = http.Request('get', url);
-        request.headers['range'] = 'bytes=$i-${i + 9898989 - 1}';
-        final response = await retry(() => send(request));
+        final response = await retry(() {
+          final request = http.Request('get', url);
+          request.headers['range'] = 'bytes=$i-${i + 9898989 - 1}';
+          return send(request);
+        });
         if (validate) {
           _validateResponse(response, response.statusCode);
         }
