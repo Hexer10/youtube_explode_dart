@@ -1,6 +1,5 @@
 import '../reverse_engineering/pages/search_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
-import 'related_query.dart';
 
 ///
 class SearchQuery {
@@ -38,9 +37,6 @@ class SearchQuery {
   /// Videos related to this search.
   /// Contains either [SearchVideo] or [SearchPlaylist]
   List<dynamic> get relatedVideos => _page.initialData.relatedVideos;
-
-  /// Returns the queries related to this search.
-  List<RelatedQuery> get relatedQueries => _page.initialData.relatedQueries;
 
   /// Returns the estimated search result count.
   int get estimatedResults => _page.initialData.estimatedResults;

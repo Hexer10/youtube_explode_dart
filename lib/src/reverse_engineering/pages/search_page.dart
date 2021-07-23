@@ -7,7 +7,6 @@ import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../../search/base_search_content.dart';
-import '../../search/related_query.dart';
 import '../../search/search_filter.dart';
 import '../../search/search_video.dart';
 import '../../videos/videos.dart';
@@ -118,20 +117,6 @@ class _InitialData extends InitialData {
   late final List<BaseSearchContent> searchContent =
       getContentContext()?.map(_parseContent).whereNotNull().toList() ??
           const [];
-
-  List<RelatedQuery> get relatedQueries =>
-      getContentContext()
-          ?.where((e) => e['horizontalCardListRenderer'] != null)
-          .map((e) => e.get('horizontalCardListRenderer')?.getList('cards'))
-          .firstOrNull
-          ?.map((e) => e['searchRefinementCardRenderer'])
-          .map((e) => RelatedQuery(
-              e.searchEndpoint.searchEndpoint.query,
-              VideoId(
-                  Uri.parse(e.thumbnail.thumbnails.first.url).pathSegments[1])))
-          .toList()
-          .cast<RelatedQuery>() ??
-      const [];
 
   List<dynamic> get relatedVideos =>
       getContentContext()

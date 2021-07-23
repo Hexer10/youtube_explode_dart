@@ -41,7 +41,6 @@ void main() {
         // ignore: deprecated_member_use_from_same_package
         await yt!.search.queryFromPage('g;jghEOGHJeguEPOUIhjegoUEHGOGHPSASG');
     expect(query.content, isEmpty);
-    expect(query.relatedQueries, isEmpty);
     expect(query.relatedVideos, isEmpty);
     var nextPage = await query.nextPage();
     expect(nextPage, isNull);
