@@ -1,5 +1,3 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import '../../channels/channel_id.dart';
 import '../../reverse_engineering/responses/comments_client.dart' as re;
 import '../../reverse_engineering/youtube_http_client.dart';

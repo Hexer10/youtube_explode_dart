@@ -16,13 +16,6 @@ class PlaylistId with _$PlaylistId {
   static final _embedCompositeMatchExp =
       RegExp(r'youtube\..+?/embed/.*?/.*?list=(.*?)(?:&|/|$)');
 
-  const PlaylistId._();
-
-  const factory PlaylistId._internal(
-
-      /// The playlist id as string.
-      String value) = _PlaylistId;
-
   /// Initializes an instance of [PlaylistId]
   factory PlaylistId(String idOrUrl) {
     final id = parsePlaylistId(idOrUrl);
@@ -31,6 +24,13 @@ class PlaylistId with _$PlaylistId {
     }
     return PlaylistId._internal(id);
   }
+
+  const PlaylistId._();
+
+  const factory PlaylistId._internal(
+
+      /// The playlist id as string.
+      String value) = _PlaylistId;
 
   ///  Converts [obj] to a [PlaylistId] by calling .toString on that object.
   /// If it is already a [PlaylistId], [obj] is returned

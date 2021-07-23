@@ -1,8 +1,8 @@
 import 'package:xml/xml.dart' as xml;
 
 import '../retry.dart';
-import 'youtube_http_client.dart';
 import 'models/stream_info_provider.dart';
+import 'youtube_http_client.dart';
 
 ///
 class DashManifest {
@@ -63,6 +63,7 @@ class _StreamInfo extends StreamInfoProvider {
 
   @override
   late final String? container = '';
+
   /*
       Uri.decodeFull((_containerExp.firstMatch(url)?.group(1))!);*/
 

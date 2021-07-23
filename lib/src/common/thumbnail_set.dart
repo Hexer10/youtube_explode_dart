@@ -32,7 +32,4 @@ class ThumbnailSet with _$ThumbnailSet {
   /// Not always available.
   String get maxResUrl =>
       'https://img.youtube.com/vi/$videoId/maxresdefault.jpg';
-
-  @override
-  List<Object> get props => [videoId];
 }
