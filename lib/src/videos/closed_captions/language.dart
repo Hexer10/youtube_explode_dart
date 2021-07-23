@@ -13,13 +13,10 @@ class Language with _$Language {
       /// ISO 639-1 code of this language.
       String code,
 
-      /// Full English name of this language.
+      /// Full English name of this language. This could be an empty string.
       String name) = _Language;
 
   const Language._();
-
-  @override
-  String toString() => 'Language: $name';
 
   ///
   factory Language.fromJson(Map<String, dynamic> json) =>

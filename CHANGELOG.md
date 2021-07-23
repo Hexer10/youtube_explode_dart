@@ -1,3 +1,8 @@
+## 1.10.1
+- Fix issue #146: Closed Captions couldn't be extracted anymore.
+- Code cleanup.
+- 
+
 ## 1.10.0
 - Fix issue #144: get_video_info was removed from yt.
 - Min sdk version now is 2.13.0 

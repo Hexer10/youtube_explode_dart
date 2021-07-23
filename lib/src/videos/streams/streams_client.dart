@@ -4,10 +4,8 @@ import '../../reverse_engineering/cipher/cipher_operations.dart';
 import '../../reverse_engineering/dash_manifest.dart';
 import '../../reverse_engineering/heuristics.dart';
 import '../../reverse_engineering/models/stream_info_provider.dart';
-import '../../reverse_engineering/pages/embed_page.dart';
 import '../../reverse_engineering/pages/watch_page.dart';
 import '../../reverse_engineering/player/player_source.dart';
-import '../../reverse_engineering/responses/video_info_client.dart';
 import '../../reverse_engineering/youtube_http_client.dart';
 import '../video_id.dart';
 import 'bitrate.dart';
@@ -37,7 +35,8 @@ class StreamsClient {
     return DashManifest.get(_httpClient, dashManifestUrl);
   }
 
-  Future<StreamContext> _getStreamContextFromVideoInfo(VideoId videoId) async {
+  // Not used anymore since Youtube removed the `video_info` endpoint.
+/*  Future<StreamContext> _getStreamContextFromVideoInfo(VideoId videoId) async {
     var embedPage = await EmbedPage.get(_httpClient, videoId.toString());
     var playerConfig = embedPage.playerConfig;
     if (playerConfig == null) {
@@ -79,7 +78,7 @@ class StreamsClient {
       streamInfoProviders.addAll(dashManifest.streams);
     }
     return StreamContext(streamInfoProviders, cipherOperations);
-  }
+  }*/
 
   Future<StreamContext> _getStreamContextFromWatchPage(VideoId videoId) async {
     final watchPage = await WatchPage.get(_httpClient, videoId.toString());

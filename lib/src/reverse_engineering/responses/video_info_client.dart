@@ -1,15 +1,16 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http_parser/http_parser.dart';
 
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
-import '../youtube_http_client.dart';
-import '../player/player_response.dart';
 import '../models/stream_info_provider.dart';
+import '../player/player_response.dart';
+import '../youtube_http_client.dart';
 
 ///
 ///
-@deprecated
+@Deprecated('This endpoint is not supported anymore.')
 class VideoInfoClient {
   final Map<String, String> root;
 
@@ -51,6 +52,7 @@ class VideoInfoClient {
   VideoInfoClient.parse(String raw) : root = Uri.splitQueryString(raw);
 
   ///
+  @alwaysThrows
   static Future<VideoInfoClient> get(
       YoutubeHttpClient httpClient, String videoId,
       [String? sts]) {

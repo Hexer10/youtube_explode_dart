@@ -11,13 +11,6 @@ class VideoId with _$VideoId {
   static final _shortMatchExp = RegExp(r'youtu\.be/(.*?)(?:\?|&|/|$)');
   static final _embedMatchExp = RegExp(r'youtube\..+?/embed/(.*?)(?:\?|&|/|$)');
 
-  const VideoId._();
-
-  const factory VideoId._internal(
-
-      /// ID as string.
-      String value) = _VideoId;
-
   /// Initializes an instance of [VideoId] with a url or video id.
   factory VideoId(String idOrUrl) {
     final id = parseVideoId(idOrUrl);
@@ -28,6 +21,13 @@ class VideoId with _$VideoId {
     }
     return VideoId._internal(id);
   }
+
+  const VideoId._();
+
+  const factory VideoId._internal(
+
+      /// ID as string.
+      String value) = _VideoId;
 
   ///  Converts [obj] to a [VideoId] by calling .toString on that object.
   /// If it is already a [VideoId], [obj] is returned

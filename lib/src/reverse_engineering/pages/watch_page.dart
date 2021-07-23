@@ -1,16 +1,16 @@
 import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
-import 'package:youtube_explode_dart/src/reverse_engineering/models/youtube_page.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../../videos/video_id.dart';
+import '../models/initial_data.dart';
+import '../models/youtube_page.dart';
 import '../player/player_response.dart';
 import '../youtube_http_client.dart';
 import 'player_config_base.dart';
-import '../models/initial_data.dart';
 
 ///
 class WatchPage extends YoutubePage<_InitialData> {
@@ -21,12 +21,11 @@ class WatchPage extends YoutubePage<_InitialData> {
   static final RegExp _visitorInfoLiveExp =
       RegExp('VISITOR_INFO1_LIVE=([^;]+)');
   static final RegExp _yscExp = RegExp('YSC=([^;]+)');
-  static final RegExp _playerResponseExp =
-      RegExp(r'var\s+ytInitialPlayerResponse\s*=\s*(\{.*\})');
 
-  static final _xsfrTokenExp = RegExp(r'"XSRF_TOKEN"\s*:\s*"(.+?)"');
 
   @override
+  // Overridden to be non-nullable.
+  // ignore: overridden_fields
   final Document root;
 
   ///
@@ -46,18 +45,6 @@ class WatchPage extends YoutubePage<_InitialData> {
       return null;
     }
     return 'https://youtube.com$url';
-  }
-
-  late final String xsfrToken = getXsfrToken()!.replaceAll(r'\u003d', '=');
-
-  ///
-  String? getXsfrToken() {
-    return _xsfrTokenExp
-        .firstMatch(root
-            .querySelectorAll('script')
-            .firstWhere((e) => _xsfrTokenExp.hasMatch(e.text))
-            .text)
-        ?.group(1);
   }
 
   ///

@@ -40,7 +40,7 @@ mixin _$Language {
   /// ISO 639-1 code of this language.
   String get code => throw _privateConstructorUsedError;
 
-  /// Full English name of this language.
+  /// Full English name of this language. This could be an empty string.
   String get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -131,8 +131,13 @@ class _$_Language extends _Language {
   final String code;
   @override
 
-  /// Full English name of this language.
+  /// Full English name of this language. This could be an empty string.
   final String name;
+
+  @override
+  String toString() {
+    return 'Language(code: $code, name: $name)';
+  }
 
   @override
   bool operator ==(dynamic other) {
@@ -173,7 +178,7 @@ abstract class _Language extends Language {
   String get code => throw _privateConstructorUsedError;
   @override
 
-  /// Full English name of this language.
+  /// Full English name of this language. This could be an empty string.
   String get name => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)

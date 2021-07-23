@@ -72,6 +72,7 @@ mixin _$SearchVideo {
   String? get uploadDate => throw _privateConstructorUsedError;
 
   /// True if this video is a live stream.
+// ignore: avoid_positional_boolean_parameters
   bool get isLive => throw _privateConstructorUsedError;
 
   /// Channel id
@@ -317,6 +318,7 @@ class _$_SearchVideo with BaseSearchContent implements _SearchVideo {
   @override
 
   /// True if this video is a live stream.
+// ignore: avoid_positional_boolean_parameters
   final bool isLive;
   @override
 
@@ -428,6 +430,7 @@ abstract class _SearchVideo implements SearchVideo, BaseSearchContent {
   @override
 
   /// True if this video is a live stream.
+// ignore: avoid_positional_boolean_parameters
   bool get isLive => throw _privateConstructorUsedError;
   @override
 

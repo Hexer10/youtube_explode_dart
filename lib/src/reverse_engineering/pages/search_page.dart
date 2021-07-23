@@ -11,8 +11,8 @@ import '../../search/related_query.dart';
 import '../../search/search_filter.dart';
 import '../../search/search_video.dart';
 import '../../videos/videos.dart';
-import '../youtube_http_client.dart';
 import '../models/initial_data.dart';
+import '../youtube_http_client.dart';
 
 ///
 class SearchPage extends YoutubePage<_InitialData> {

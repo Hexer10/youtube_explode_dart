@@ -5,7 +5,6 @@ part 'engagement.freezed.dart';
 /// User activity statistics.
 @freezed
 class Engagement with _$Engagement {
-  const Engagement._();
 
   const factory Engagement(
     /// View count.
@@ -17,6 +16,8 @@ class Engagement with _$Engagement {
     /// Dislike count.
     int? dislikeCount,
   ) = _Engagement;
+
+  const Engagement._();
 
   /// Average user rating in stars (1 star to 5 stars).
   /// Returns -1 if likeCount or dislikeCount is null.

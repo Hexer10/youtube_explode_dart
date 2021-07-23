@@ -37,6 +37,7 @@ class SearchVideo with _$SearchVideo, BaseSearchContent {
     String? uploadDate,
 
     /// True if this video is a live stream.
+    // ignore: avoid_positional_boolean_parameters
     bool isLive,
 
     /// Channel id

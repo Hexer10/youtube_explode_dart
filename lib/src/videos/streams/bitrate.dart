@@ -26,9 +26,6 @@ class Bitrate with Comparable<Bitrate>, _$Bitrate {
   @override
   int compareTo(Bitrate other) => bitsPerSecond.compareTo(other.bitsPerSecond);
 
-  @override
-  List<Object> get props => [bitsPerSecond];
-
   String _getLargestSymbol() {
     if (gigaBitsPerSecond.abs() >= 1) {
       return 'Gbit/s';

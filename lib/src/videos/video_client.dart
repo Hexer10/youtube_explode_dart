@@ -1,5 +1,3 @@
-import 'package:youtube_explode_dart/src/reverse_engineering/player/player_response.dart';
-
 import '../channels/channel_id.dart';
 import '../common/common.dart';
 import '../extensions/helpers_extension.dart';

@@ -1,12 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:html/parser.dart' as parser;
-import 'package:youtube_explode_dart/src/reverse_engineering/models/youtube_page.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
-import '../youtube_http_client.dart';
 import '../models/initial_data.dart';
+import '../models/youtube_page.dart';
+import '../youtube_http_client.dart';
 
 ///
 class PlaylistPage extends YoutubePage<_InitialData> {
