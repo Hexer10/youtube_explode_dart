@@ -4,7 +4,7 @@ This is a port of the [YoutubeExplode] library from C#, most of the functions, d
 ![Pub Version](https://img.shields.io/pub/v/youtube_explode_dart)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Hexer10/youtube_explode_dart/Dart%20CI?event=push)
 ![License](https://img.shields.io/github/license/Hexer10/youtube_explode_dart)
-![Effective Dart](https://img.shields.io/badge/style-effective_dart-40c4ff.svg)
+![Lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)
 
 It used to build [Youtube Downloader Flutter](https://github.com/Hexer10/youtube_downloader_flutter) (An cross-platoform application to download video streams from youtube using this library & flutter)
 
@@ -158,16 +158,14 @@ Similarly, to streams, you can extract closed captions by getting the manifest a
 ```
 
 ### Getting comments
-You can easily get the video comments of a given video, the comment pages are fetched automatically, and every page has
-20 videos (that means that there is no point to take 25 comments to save some resources, but you could just take 40)
+You can easily get the video comments of a given video, the return value of `commentsClient.getComments(video)` is a list-like object which behaves exactly like a `List` but has an additional method `nextPage()` which is used in order to get the next comments, it returns null when there are no comments to be fetched anymore.
 
-```
-// Here we are getting the first 20 comments of the video.
-// The stream wont close until all the video comments are fetched.
-var comments = await yt.videos.commentsClient.getComments(video).take(20).toList()
+```dart
+var comments = await yt.videos.commentsClient.getComments(video);
+
+var replies = await yt.videos.commentsClient.getReplies(comment); // Fetch the comment replies 
 ```
 
-Currently getting comment replies is not supported.
 
 ### Cleanup
 You need to close `YoutubeExplode`'s http client, when done otherwise this could halt the dart process.
