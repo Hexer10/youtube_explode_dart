@@ -36,35 +36,6 @@ class PlaylistClient {
 
     PlaylistPage? page = await PlaylistPage.get(_httpClient, id.value);
 
-    for (final video in page.videos) {
-      var videoId = video.id;
-
-      // Already added
-      if (!encounteredVideoIds.add(videoId)) {
-        continue;
-      }
-
-      if (video.channelId.isEmpty) {
-        continue;
-      }
-
-      yield Video(
-          VideoId(videoId),
-          video.title,
-          video.author,
-          ChannelId(video.channelId),
-          null,
-          null,
-          video.description,
-          video.duration,
-          ThumbnailSet(videoId),
-          null,
-          Engagement(video.viewCount, null, null),
-          false);
-    }
-
-    page = await page.nextPage(_httpClient);
-
     while (page != null) {
       for (final video in page.videos) {
         var videoId = video.id;
@@ -92,6 +63,7 @@ class PlaylistClient {
             Engagement(video.viewCount, null, null),
             false);
       }
+      page = await page.nextPage(_httpClient);
     }
   }
 }

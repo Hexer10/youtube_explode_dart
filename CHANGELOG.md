@@ -1,3 +1,6 @@
+## 1.10.4
+- Fix infinite loop when getting channel uploads.
+
 ## 1.10.3
 - Implement Embedded client. Thanks to @89z
 
