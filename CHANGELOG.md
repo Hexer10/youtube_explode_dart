@@ -1,3 +1,6 @@
+## 1.10.3
+- Implement Embedded client. Thanks to @89z
+
 ## 1.10.2
 - Better comments API: Implemented API to fetch more comments & replies.
 
