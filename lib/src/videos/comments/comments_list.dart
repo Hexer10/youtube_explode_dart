@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/responses/comments_client.dart'
-    as re;
+import '../../reverse_engineering/clients/comments_client.dart' as re;
 
 import '../../../youtube_explode_dart.dart';
 

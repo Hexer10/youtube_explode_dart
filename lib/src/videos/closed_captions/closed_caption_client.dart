@@ -1,7 +1,7 @@
 import 'package:youtube_explode_dart/src/reverse_engineering/pages/watch_page.dart';
 
 import '../../extensions/helpers_extension.dart';
-import '../../reverse_engineering/responses/closed_caption_client.dart' as re
+import '../../reverse_engineering/clients/closed_caption_client.dart' as re
     show ClosedCaptionClient;
 import '../../reverse_engineering/youtube_http_client.dart';
 import '../videos.dart';

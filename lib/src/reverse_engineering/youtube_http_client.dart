@@ -78,6 +78,20 @@ class YoutubeHttpClient extends http.BaseClient {
     return response;
   }
 
+  @override
+  Future<http.Response> post(Uri url,
+      {Map<String, String>? headers,
+      Object? body,
+      Encoding? encoding,
+      bool validate = false}) async {
+    final response =
+        await super.post(url, headers: headers, body: body, encoding: encoding);
+    if (validate) {
+      _validateResponse(response, response.statusCode);
+    }
+    return response;
+  }
+
   ///
   Future<String> postString(dynamic url,
       {Map<String, String>? body,

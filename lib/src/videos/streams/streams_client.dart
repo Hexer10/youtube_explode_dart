@@ -1,6 +1,7 @@
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../reverse_engineering/cipher/cipher_operations.dart';
+import '../../reverse_engineering/clients/embedded_player_client.dart';
 import '../../reverse_engineering/dash_manifest.dart';
 import '../../reverse_engineering/heuristics.dart';
 import '../../reverse_engineering/models/stream_info_provider.dart';
@@ -79,6 +80,13 @@ class StreamsClient {
     }
     return StreamContext(streamInfoProviders, cipherOperations);
   }*/
+
+  Future<StreamContext> _getStreamContextFromEmbeddedClient(
+      VideoId videoId) async {
+    final page = await EmbeddedPlayerClient.get(_httpClient, videoId.value);
+
+    return StreamContext(page.streams.toList(), const []);
+  }
 
   Future<StreamContext> _getStreamContextFromWatchPage(VideoId videoId) async {
     final watchPage = await WatchPage.get(_httpClient, videoId.toString());
@@ -224,7 +232,14 @@ class StreamsClient {
   Future<StreamManifest> getManifest(dynamic videoId) async {
     videoId = VideoId.fromString(videoId);
 
-    var context = await _getStreamContextFromWatchPage(videoId);
+    try {
+      final context = await _getStreamContextFromEmbeddedClient(videoId);
+      return _getManifest(context);
+    } on YoutubeExplodeException {
+      //TODO: ignore
+    }
+
+    final context = await _getStreamContextFromWatchPage(videoId);
     return _getManifest(context);
   }
 
