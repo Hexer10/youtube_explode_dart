@@ -6,7 +6,7 @@ This is a port of the [YoutubeExplode] library from C#, most of the functions, d
 ![License](https://img.shields.io/github/license/Hexer10/youtube_explode_dart)
 ![Lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)
 
-It used to build [Youtube Downloader Flutter](https://github.com/Hexer10/youtube_downloader_flutter) (An cross-platoform application to download video streams from youtube using this library & flutter)
+It used to build [Youtube Downloader Flutter](https://github.com/Hexer10/youtube_downloader_flutter) (A cross-platoform application to download video streams from youtube using this library & flutter)
 
 ---
 
