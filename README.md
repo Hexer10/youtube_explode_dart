@@ -40,7 +40,7 @@ YoutubeExplode is a library that provides an interface to query metadata of YouT
 
 Add the dependency to the pubspec.yaml (Check for the latest version)
 ```yaml
-youtube_explode_dart: ^1.9.1
+youtube_explode_dart: ^1.10.4
 ```
 
 Import the library
@@ -52,7 +52,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
  The following example shows how you can extract various metadata from a YouTube video:
 
 ```dart
-// You can provider either a video ID or URL as String or an instance of `VideoId`.
+// You can provide either a video ID or URL as String or an instance of `VideoId`.
 var video = yt.videos.get('https://youtube.com/watch?v=Dpp1sIL1m5Q'); // Returns a Video instance.
 
 var title = video.title; // "Scamazon Prime"
