@@ -34,8 +34,10 @@ class CommentsClient {
                 e.likeCount ?? 0,
                 e.publishTime,
                 e.repliesCount ?? 0,
+                e.isHearted,
                 e.continuation))
             .toList(growable: false),
+        page.getCommentsCount(),
         page,
         _httpClient);
   }
@@ -61,8 +63,10 @@ class CommentsClient {
                 e.likeCount ?? 0,
                 e.publishTime,
                 e.repliesCount ?? 0,
+                e.isHearted,
                 e.continuation))
             .toList(growable: false),
+        0,
         page,
         _httpClient);
   }

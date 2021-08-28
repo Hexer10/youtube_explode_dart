@@ -10,10 +10,12 @@ import '../../../youtube_explode_dart.dart';
 class CommentsList extends DelegatingList<Comment> {
   final re.CommentsClient _client;
   final YoutubeHttpClient _httpClient;
+  final int totalLength;
 
   /// Construct an instance of [SearchList]
   /// See [SearchList]
-  CommentsList(List<Comment> base, this._client, this._httpClient)
+  CommentsList(
+      List<Comment> base, this.totalLength, this._client, this._httpClient)
       : super(base);
 
   /// Fetches the next batch of videos or returns null if there are no more
@@ -33,8 +35,10 @@ class CommentsList extends DelegatingList<Comment> {
                 e.likeCount ?? 0,
                 e.publishTime,
                 e.repliesCount ?? 0,
+                e.isHearted,
                 e.continuation))
             .toList(growable: false),
+        totalLength,
         page,
         _httpClient);
   }

@@ -49,7 +49,6 @@ void main() {
   group('Get metadata of any video', () {
     for (final val in {
       VideoId('9bZkp7q19f0'), //Normal
-      VideoId('ZGdLIwrGHG8'), //Unlisted
       VideoId('5qap5aO4i9A'), //LiveStream
       VideoId('rsAAeyAr-9Y'), //LiveStreamRecording
       VideoId('V5Fsj_sCKdg'), //ContainsHighQualityStreams

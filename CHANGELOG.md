@@ -1,3 +1,6 @@
+## 1.10.5
+- Implement: `CommentsList.totalCount` (#150), `Comment.isHearted` (#151).
+
 ## 1.10.4
 - Fix infinite loop when getting channel uploads.
 

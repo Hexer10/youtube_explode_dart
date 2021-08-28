@@ -84,8 +84,10 @@ class CommentsClient {
             ?.getT<String>('token');
   }
 
+  // onResponseReceivedEndpoints[0].reloadContinuationItemsCommand.continuationItems[0].commentsHeaderRenderer
   int getCommentsCount() => root
-      .getList('onResponseReceivedEndpoints')![1]
+      .getList('onResponseReceivedEndpoints')!
+      .first
       .get('reloadContinuationItemsCommand')!
       .getList('continuationItems')!
       .first
@@ -155,6 +157,12 @@ class _Comment {
       .get('voteCount')
       ?.getT<String>('simpleText')
       ?.parseIntWithUnits();
+
+  late final bool isHearted = _commentRenderer
+          .get('actionButtons')
+          ?.get('commentActionButtonsRenderer')
+          ?.get('creatorHeart') !=
+      null;
 
   _Comment(this.root);
 

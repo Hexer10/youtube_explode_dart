@@ -14,7 +14,6 @@ void main() {
   group('Get streams manifest of any video', () {
     for (final val in {
       VideoId('9bZkp7q19f0'), //Normal
-      VideoId('ZGdLIwrGHG8'), //Unlisted
       VideoId('rsAAeyAr-9Y'), //LiveStreamRecording
       VideoId('V5Fsj_sCKdg'), //ContainsHighQualityStreams
       VideoId('AI7ULzgf8RU'), //ContainsDashManifest
@@ -62,7 +61,6 @@ void main() {
   group('Get specific stream of any playable video', () {
     for (final val in {
       VideoId('9bZkp7q19f0'), //Normal
-      VideoId('ZGdLIwrGHG8'), //Unlisted
       VideoId('rsAAeyAr-9Y'), //LiveStreamRecording
       VideoId('V5Fsj_sCKdg'), //ContainsHighQualityStreams
       VideoId('AI7ULzgf8RU'), //ContainsDashManifest

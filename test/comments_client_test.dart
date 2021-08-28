@@ -14,7 +14,9 @@ void main() {
   test('Get comments of a video', () async {
     var videoUrl = 'https://www.youtube.com/watch?v=AI7ULzgf8RU';
     var video = await yt!.videos.get(VideoId(videoUrl));
-    var comments = await yt!.videos.commentsClient.getComments(video);
-    expect(comments!.length, greaterThanOrEqualTo(1));
+    var comments = (await yt!.videos.commentsClient.getComments(video))!;
+    expect(comments.length, greaterThanOrEqualTo(1));
+    expect(comments.totalLength, greaterThanOrEqualTo(3));
+    expect(comments.first.isHearted, false);
   });
 }
