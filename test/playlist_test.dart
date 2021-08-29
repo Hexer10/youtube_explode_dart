@@ -28,6 +28,7 @@ void main() {
     expect(playlist.thumbnails.highResUrl, isNotEmpty);
     expect(playlist.thumbnails.standardResUrl, isNotEmpty);
     expect(playlist.thumbnails.maxResUrl, isNotEmpty);
+    expect(playlist.videoCount, greaterThanOrEqualTo(20));
   });
   group('Get metadata of any playlist', () {
     for (final val in {

@@ -1,3 +1,6 @@
+## 1.10.6
+- Implement `Playlist.videoCount`.
+
 ## 1.10.5+1
 - Export `CommentsList` class.
 

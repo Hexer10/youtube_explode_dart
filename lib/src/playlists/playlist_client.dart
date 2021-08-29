@@ -26,7 +26,8 @@ class PlaylistClient {
         response.author ?? '',
         response.description ?? '',
         ThumbnailSet(id.value),
-        Engagement(response.viewCount ?? 0, null, null));
+        Engagement(response.viewCount ?? 0, null, null),
+        response.videoCount);
   }
 
   /// Enumerates videos included in the specified playlist.

@@ -17,7 +17,7 @@ class _$PlaylistTearOff {
   const _$PlaylistTearOff();
 
   _Playlist call(PlaylistId id, String title, String author, String description,
-      ThumbnailSet thumbnails, Engagement engagement) {
+      ThumbnailSet thumbnails, Engagement engagement, int? videoCount) {
     return _Playlist(
       id,
       title,
@@ -25,6 +25,7 @@ class _$PlaylistTearOff {
       description,
       thumbnails,
       engagement,
+      videoCount,
     );
   }
 }
@@ -54,6 +55,9 @@ mixin _$Playlist {
   /// Engagement statistics.
   Engagement get engagement => throw _privateConstructorUsedError;
 
+  /// Total videos in this playlist.
+  int? get videoCount => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $PlaylistCopyWith<Playlist> get copyWith =>
       throw _privateConstructorUsedError;
@@ -69,7 +73,8 @@ abstract class $PlaylistCopyWith<$Res> {
       String author,
       String description,
       ThumbnailSet thumbnails,
-      Engagement engagement});
+      Engagement engagement,
+      int? videoCount});
 
   $PlaylistIdCopyWith<$Res> get id;
   $ThumbnailSetCopyWith<$Res> get thumbnails;
@@ -92,6 +97,7 @@ class _$PlaylistCopyWithImpl<$Res> implements $PlaylistCopyWith<$Res> {
     Object? description = freezed,
     Object? thumbnails = freezed,
     Object? engagement = freezed,
+    Object? videoCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -118,6 +124,10 @@ class _$PlaylistCopyWithImpl<$Res> implements $PlaylistCopyWith<$Res> {
           ? _value.engagement
           : engagement // ignore: cast_nullable_to_non_nullable
               as Engagement,
+      videoCount: videoCount == freezed
+          ? _value.videoCount
+          : videoCount // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 
@@ -154,7 +164,8 @@ abstract class _$PlaylistCopyWith<$Res> implements $PlaylistCopyWith<$Res> {
       String author,
       String description,
       ThumbnailSet thumbnails,
-      Engagement engagement});
+      Engagement engagement,
+      int? videoCount});
 
   @override
   $PlaylistIdCopyWith<$Res> get id;
@@ -181,6 +192,7 @@ class __$PlaylistCopyWithImpl<$Res> extends _$PlaylistCopyWithImpl<$Res>
     Object? description = freezed,
     Object? thumbnails = freezed,
     Object? engagement = freezed,
+    Object? videoCount = freezed,
   }) {
     return _then(_Playlist(
       id == freezed
@@ -207,6 +219,10 @@ class __$PlaylistCopyWithImpl<$Res> extends _$PlaylistCopyWithImpl<$Res>
           ? _value.engagement
           : engagement // ignore: cast_nullable_to_non_nullable
               as Engagement,
+      videoCount == freezed
+          ? _value.videoCount
+          : videoCount // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -215,7 +231,7 @@ class __$PlaylistCopyWithImpl<$Res> extends _$PlaylistCopyWithImpl<$Res>
 
 class _$_Playlist extends _Playlist {
   const _$_Playlist(this.id, this.title, this.author, this.description,
-      this.thumbnails, this.engagement)
+      this.thumbnails, this.engagement, this.videoCount)
       : super._();
 
   @override
@@ -244,10 +260,14 @@ class _$_Playlist extends _Playlist {
 
   /// Engagement statistics.
   final Engagement engagement;
+  @override
+
+  /// Total videos in this playlist.
+  final int? videoCount;
 
   @override
   String toString() {
-    return 'Playlist(id: $id, title: $title, author: $author, description: $description, thumbnails: $thumbnails, engagement: $engagement)';
+    return 'Playlist(id: $id, title: $title, author: $author, description: $description, thumbnails: $thumbnails, engagement: $engagement, videoCount: $videoCount)';
   }
 
   @override
@@ -268,7 +288,10 @@ class _$_Playlist extends _Playlist {
                     .equals(other.thumbnails, thumbnails)) &&
             (identical(other.engagement, engagement) ||
                 const DeepCollectionEquality()
-                    .equals(other.engagement, engagement)));
+                    .equals(other.engagement, engagement)) &&
+            (identical(other.videoCount, videoCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.videoCount, videoCount)));
   }
 
   @override
@@ -279,7 +302,8 @@ class _$_Playlist extends _Playlist {
       const DeepCollectionEquality().hash(author) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(thumbnails) ^
-      const DeepCollectionEquality().hash(engagement);
+      const DeepCollectionEquality().hash(engagement) ^
+      const DeepCollectionEquality().hash(videoCount);
 
   @JsonKey(ignore: true)
   @override
@@ -294,7 +318,8 @@ abstract class _Playlist extends Playlist {
       String author,
       String description,
       ThumbnailSet thumbnails,
-      Engagement engagement) = _$_Playlist;
+      Engagement engagement,
+      int? videoCount) = _$_Playlist;
   const _Playlist._() : super._();
 
   @override
@@ -323,6 +348,10 @@ abstract class _Playlist extends Playlist {
 
   /// Engagement statistics.
   Engagement get engagement => throw _privateConstructorUsedError;
+  @override
+
+  /// Total videos in this playlist.
+  int? get videoCount => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$PlaylistCopyWith<_Playlist> get copyWith =>

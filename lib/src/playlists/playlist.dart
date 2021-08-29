@@ -29,6 +29,9 @@ class Playlist with _$Playlist {
 
     /// Engagement statistics.
     Engagement engagement,
+
+    /// Total videos in this playlist.
+    int? videoCount,
   ) = _Playlist;
 
   const Playlist._();

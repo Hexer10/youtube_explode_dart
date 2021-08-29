@@ -23,6 +23,8 @@ class PlaylistPage extends YoutubePage<_InitialData> {
 
   late final int? viewCount = initialData.viewCount;
 
+  late final int? videoCount = initialData.videoCount;
+
   /// InitialData
   PlaylistPage.id(this.playlistId, _InitialData initialData)
       : super(null, null, initialData);
@@ -90,6 +92,20 @@ class _InitialData extends InitialData {
       ?.getList('stats')
       ?.elementAtSafe(1)
       ?.getT<String>('simpleText')
+      ?.parseInt();
+
+  // sidebar.playlistSidebarRenderer.items[0].playlistSidebarPrimaryInfoRenderer.stats
+  late final int? videoCount = root
+      .get('sidebar')
+      ?.get('playlistSidebarRenderer')
+      ?.getList('items')
+      ?.firstOrNull
+      ?.get('playlistSidebarPrimaryInfoRenderer')
+      ?.getList('stats')
+      ?.elementAtSafe(0)
+      ?.getList('runs')
+      ?.firstOrNull
+      ?.getT<String>('text')
       ?.parseInt();
 
   late final String? continuationToken =
