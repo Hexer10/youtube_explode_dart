@@ -74,22 +74,20 @@ class ChannelClient {
   Future<ChannelAbout> getAboutPageByUsername(dynamic username) async {
     username = Username.fromString(username);
 
-    var channelAboutPage =
+    var page =
         await ChannelAboutPage.getByUsername(_httpClient, username.value);
 
-    // TODO: Expose metadata from the [ChannelAboutPage] class.
-    var id = channelAboutPage.initialData;
     return ChannelAbout(
-        id.description,
-        id.viewCount,
-        id.joinDate,
-        id.title,
+        page.description,
+        page.viewCount,
+        page.joinDate,
+        page.title,
         [
-          for (var e in id.avatar)
+          for (var e in page.avatar)
             Thumbnail(Uri.parse(e['url']), e['height'], e['width'])
         ],
-        id.country,
-        id.channelLinks);
+        page.country,
+        page.channelLinks);
   }
 
   /// Gets the metadata associated with the channel

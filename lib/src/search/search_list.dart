@@ -24,7 +24,7 @@ class SearchList extends DelegatingList<Video> {
       return null;
     }
     return SearchList(
-        page.initialData.searchContent
+        page.searchContent
             .whereType<SearchVideo>()
             .map((e) => Video(
                 e.id,

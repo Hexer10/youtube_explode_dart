@@ -26,7 +26,7 @@ class SearchClient {
     final page = await SearchPage.get(_httpClient, searchQuery, filter: filter);
 
     return SearchList(
-        page.initialData.searchContent
+        page.searchContent
             .whereType<SearchVideo>()
             .map((e) => Video(
                 e.id,
@@ -69,9 +69,9 @@ class SearchClient {
 
       if (onlyVideos) {
         yield* Stream.fromIterable(
-            page!.initialData.searchContent.whereType<SearchVideo>());
+            page!.searchContent.whereType<SearchVideo>());
       } else {
-        yield* Stream.fromIterable(page!.initialData.searchContent);
+        yield* Stream.fromIterable(page!.searchContent);
       }
     }
   }

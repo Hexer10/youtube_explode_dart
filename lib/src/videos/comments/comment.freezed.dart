@@ -1,3 +1,4 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
@@ -62,6 +63,7 @@ mixin _$Comment {
   int get replyCount => throw _privateConstructorUsedError;
 
   /// True if the comment is hearted by the creator.
+//ignore: avoid_positional_boolean_parameters
   bool get isHearted => throw _privateConstructorUsedError;
 
   /// Used internally.
@@ -269,6 +271,7 @@ class _$_Comment implements _Comment {
   @override
 
   /// True if the comment is hearted by the creator.
+//ignore: avoid_positional_boolean_parameters
   final bool isHearted;
   @override
 
@@ -366,6 +369,7 @@ abstract class _Comment implements Comment {
   @override
 
   /// True if the comment is hearted by the creator.
+//ignore: avoid_positional_boolean_parameters
   bool get isHearted => throw _privateConstructorUsedError;
   @override
 

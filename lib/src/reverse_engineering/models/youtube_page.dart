@@ -5,6 +5,7 @@ import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import 'initial_data.dart';
 
+/// Generic class to handle the various youtube pages.
 abstract class YoutubePage<T extends InitialData> {
   @protected
   final Document? root;

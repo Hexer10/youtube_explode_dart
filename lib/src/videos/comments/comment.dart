@@ -28,6 +28,7 @@ class Comment with _$Comment {
     int replyCount,
 
     /// True if the comment is hearted by the creator.
+    //ignore: avoid_positional_boolean_parameters
     bool isHearted,
 
     /// Used internally.

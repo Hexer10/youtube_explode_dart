@@ -18,6 +18,12 @@ class SearchPage extends YoutubePage<_InitialData> {
   ///
   final String queryString;
 
+  late final List<BaseSearchContent> searchContent = initialData.searchContent;
+
+  late final List<dynamic> relatedVideos = initialData.relatedVideos;
+
+  late final int estimatedResults = initialData.estimatedResults;
+
   /// InitialData
   SearchPage.id(this.queryString, _InitialData initialData)
       : super(null, null, initialData);

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import '../../reverse_engineering/clients/comments_client.dart' as re;
 
 import '../../../youtube_explode_dart.dart';
+import '../../reverse_engineering/clients/comments_client.dart' as re;
 
 /// This list contains search videos.
 ///This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.

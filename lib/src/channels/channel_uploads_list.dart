@@ -29,7 +29,7 @@ class ChannelUploadsList extends DelegatingList<Video> {
       return null;
     }
     return ChannelUploadsList(
-        page.initialData.uploads
+        page.uploads
             .map((e) => Video(
                 e.videoId,
                 e.videoTitle,
