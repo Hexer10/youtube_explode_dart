@@ -37,10 +37,7 @@ class EmbeddedPlayerClient {
       const [];
 
   ///
-  late final Iterable<_StreamInfo> streams = [
-    ...muxedStreams,
-    ...adaptiveStreams
-  ];
+  late final List<_StreamInfo> streams = [...muxedStreams, ...adaptiveStreams];
 
   ///
   EmbeddedPlayerClient(this.root);
@@ -56,8 +53,9 @@ class EmbeddedPlayerClient {
       'context': const {
         'client': {
           'hl': 'en',
-          'clientName': 'ANDROID_EMBEDDED_PLAYER',
-          'clientVersion': '16.05'
+          'clientName': 'WEB',
+          'clientVersion': '2.20210721.00.00',
+          "clientScreen": "EMBED"
         }
       },
       'videoId': videoId
@@ -121,7 +119,8 @@ class _StreamInfo extends StreamInfoProvider {
   late final bool isAudioOnly = mimeType.type == 'audio';
 
   @override
-  late final String? videoQualityLabel = root['quality_label'];
+  late final String videoQualityLabel =
+      root['qualityLabel'] ?? root['quality_label'];
 
   @override
   late final int? videoWidth = root['width'];

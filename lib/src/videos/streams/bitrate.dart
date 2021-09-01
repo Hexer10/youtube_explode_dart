@@ -53,5 +53,6 @@ class Bitrate with Comparable<Bitrate>, _$Bitrate {
   }
 
   @override
-  String toString() => '${_getLargestValue()} ${_getLargestSymbol()}';
+  String toString() =>
+      '${_getLargestValue().toStringAsFixed(2)} ${_getLargestSymbol()}';
 }

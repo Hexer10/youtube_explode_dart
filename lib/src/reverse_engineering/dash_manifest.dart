@@ -89,4 +89,8 @@ class _StreamInfo extends StreamInfoProvider {
 
   @override
   late final int framerate = int.parse(root.getAttribute('framerate')!);
+
+  // TODO: Implement this
+  @override
+  late final String? videoQualityLabel = null;
 }

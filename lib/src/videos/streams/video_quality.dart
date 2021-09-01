@@ -1,5 +1,9 @@
 /// Video quality.
 enum VideoQuality {
+  /// Unknown video quality.
+  /// (This should be reported to the project's repo.)
+  unknown,
+
   /// Low quality (144p).
   low144,
 

@@ -156,10 +156,6 @@ class StreamsClient {
           await _httpClient.getContentLength(url, validate: false) ??
           0;
 
-      // if (contentLength <= 0) {
-      //   continue;
-      // }
-
       // Common
       var container = StreamContainer.parse(streamInfo.container!);
       var fileSize = FileSize(contentLength);
@@ -171,9 +167,7 @@ class StreamsClient {
       // Muxed or Video-only
       if (!videoCodec.isNullOrWhiteSpace) {
         var framerate = Framerate(streamInfo.framerate ?? 24);
-        var videoQualityLabel = streamInfo.videoQualityLabel ??
-            VideoQualityUtil.getLabelFromTagWithFramerate(
-                tag, framerate.framesPerSecond.toDouble());
+        var videoQualityLabel = streamInfo.videoQualityLabel!;
 
         var videoQuality = VideoQualityUtil.fromLabel(videoQualityLabel);
 

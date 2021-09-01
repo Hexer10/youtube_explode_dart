@@ -36,7 +36,7 @@ abstract class StreamInfoProvider {
   String? get videoCodec => null;
 
   ///
-  String? get videoQualityLabel => null;
+  String? get videoQualityLabel;
 
   ///
   int? get videoWidth => null;

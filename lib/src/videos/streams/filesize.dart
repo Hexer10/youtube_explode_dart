@@ -53,5 +53,6 @@ class FileSize with Comparable<FileSize>, _$FileSize {
   }
 
   @override
-  String toString() => '${_getLargestValue()} ${_getLargestSymbol()}';
+  String toString() =>
+      '${_getLargestValue().toStringAsFixed(2)} ${_getLargestSymbol()}';
 }
