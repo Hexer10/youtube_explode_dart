@@ -1,7 +1,12 @@
+enum StreamSource { muxed, adaptive, dash }
+
 ///
 abstract class StreamInfoProvider {
   ///
   static final RegExp contentLenExp = RegExp(r'clen=(\d+)');
+
+  ///
+  StreamSource get source;
 
   ///
   int get tag;

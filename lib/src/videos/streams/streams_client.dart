@@ -156,9 +156,9 @@ class StreamsClient {
           await _httpClient.getContentLength(url, validate: false) ??
           0;
 
-      if (contentLength <= 0) {
-        continue;
-      }
+      // if (contentLength <= 0) {
+      //   continue;
+      // }
 
       // Common
       var container = StreamContainer.parse(streamInfo.container!);
@@ -184,7 +184,8 @@ class StreamsClient {
             : videoQuality.toVideoResolution();
 
         // Muxed
-        if (!audioCodec.isNullOrWhiteSpace) {
+        if (!audioCodec.isNullOrWhiteSpace &&
+            streamInfo.source != StreamSource.adaptive) {
           streams[tag] = MuxedStreamInfo(
               tag,
               url,
