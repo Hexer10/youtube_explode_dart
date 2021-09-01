@@ -26,14 +26,14 @@ class EmbeddedPlayerClient {
   late final Iterable<_StreamInfo> muxedStreams = root
           .get('streamingData')
           ?.getList('formats')
-          ?.map((e) => _StreamInfo(e)) ??
+          ?.map((e) => _StreamInfo(e, StreamSource.muxed)) ??
       const [];
 
   ///
   late final Iterable<_StreamInfo> adaptiveStreams = root
           .get('streamingData')
           ?.getList('adaptiveFormats')
-          ?.map((e) => _StreamInfo(e)) ??
+          ?.map((e) => _StreamInfo(e, StreamSource.adaptive)) ??
       const [];
 
   ///
@@ -131,5 +131,9 @@ class _StreamInfo extends StreamInfoProvider {
 
   @override
   late final int? framerate = root['fps'] ?? 0;
-  _StreamInfo(this.root);
+
+  @override
+  final StreamSource source;
+
+  _StreamInfo(this.root, this.source);
 }

@@ -96,7 +96,7 @@ class PlayerResponse {
   late final List<StreamInfoProvider> muxedStreams = root
           .get('streamingData')
           ?.getList('formats')
-          ?.map((e) => _StreamInfo(e))
+          ?.map((e) => _StreamInfo(e, StreamSource.muxed))
           .cast<StreamInfoProvider>()
           .toList() ??
       const <StreamInfoProvider>[];
@@ -105,7 +105,7 @@ class PlayerResponse {
   late final List<StreamInfoProvider> adaptiveStreams = root
           .get('streamingData')
           ?.getList('adaptiveFormats')
-          ?.map((e) => _StreamInfo(e))
+          ?.map((e) => _StreamInfo(e, StreamSource.adaptive))
           .cast<StreamInfoProvider>()
           .toList() ??
       const [];
@@ -238,5 +238,8 @@ class _StreamInfo extends StreamInfoProvider {
     return codecs.last;
   }
 
-  _StreamInfo(this.root);
+  @override
+  final StreamSource source;
+
+  _StreamInfo(this.root, this.source);
 }

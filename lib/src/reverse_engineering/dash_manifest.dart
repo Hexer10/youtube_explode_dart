@@ -48,6 +48,9 @@ class _StreamInfo extends StreamInfoProvider {
   _StreamInfo(this.root);
 
   @override
+  StreamSource get source => StreamSource.dash;
+
+  @override
   late final int tag = int.parse(root.getAttribute('id')!);
 
   @override
