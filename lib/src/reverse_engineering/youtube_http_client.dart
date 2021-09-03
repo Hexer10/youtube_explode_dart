@@ -128,10 +128,10 @@ class YoutubeHttpClient extends http.BaseClient {
           _validateResponse(response, response.statusCode);
         }
         final stream = StreamController<List<int>>();
-       response.stream.listen((data) {
-         bytesCount += data.length;
-         stream.add(data);
-       }, onError: (_) => null, onDone: stream.close, cancelOnError: false);
+        response.stream.listen((data) {
+          bytesCount += data.length;
+          stream.add(data);
+        }, onError: (_) => null, onDone: stream.close, cancelOnError: false);
         errorCount = 0;
         yield* stream.stream;
       } on Exception {
