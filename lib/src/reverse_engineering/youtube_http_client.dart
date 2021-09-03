@@ -117,21 +117,21 @@ class YoutubeHttpClient extends http.BaseClient {
       int errorCount = 0}) async* {
     var url = streamInfo.url;
     var bytesCount = start;
-    for (var i = start; i < streamInfo.size.totalBytes; i += 9898989) {
+    while (bytesCount != streamInfo.size.totalBytes) {
       try {
         final response = await retry(() {
           final request = http.Request('get', url);
-          request.headers['range'] = 'bytes=$i-${i + 9898989 - 1}';
+          request.headers['range'] = 'bytes=$bytesCount-${bytesCount + 9898989 - 1}';
           return send(request);
         });
         if (validate) {
           _validateResponse(response, response.statusCode);
         }
         final stream = StreamController<List<int>>();
-        response.stream.listen((data) {
-          bytesCount += data.length;
-          stream.add(data);
-        }, onError: (_) => null, onDone: stream.close, cancelOnError: false);
+       response.stream.listen((data) {
+         bytesCount += data.length;
+         stream.add(data);
+       }, onError: (_) => null, onDone: stream.close, cancelOnError: false);
         errorCount = 0;
         yield* stream.stream;
       } on Exception {
