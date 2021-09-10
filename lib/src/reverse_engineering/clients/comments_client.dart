@@ -22,7 +22,7 @@ class CommentsClient {
   static Future<CommentsClient?> get(
       YoutubeHttpClient httpClient, Video video) async {
     final watchPage = video.watchPage ??
-        await retry<WatchPage>(
+        await retry<WatchPage>(httpClient,
             () async => WatchPage.get(httpClient, video.id.value));
 
     final continuation = watchPage.commentsContinuation;

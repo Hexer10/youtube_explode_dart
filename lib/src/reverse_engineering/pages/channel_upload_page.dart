@@ -36,7 +36,7 @@ class ChannelUploadPage extends YoutubePage<_InitialData> {
       YoutubeHttpClient httpClient, String channelId, String sorting) {
     var url =
         'https://www.youtube.com/channel/$channelId/videos?view=0&sort=$sorting&flow=grid';
-    return retry(() async {
+    return retry(httpClient, () async {
       var raw = await httpClient.getString(url);
       return ChannelUploadPage.parse(raw, channelId);
     });

@@ -29,7 +29,7 @@ class DashManifest {
 
   ///
   static Future<DashManifest> get(YoutubeHttpClient httpClient, dynamic url) {
-    return retry(() async {
+    return retry(httpClient, () async {
       var raw = await httpClient.getString(url);
       return DashManifest.parse(raw);
     });

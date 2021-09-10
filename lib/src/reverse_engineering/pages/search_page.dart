@@ -45,7 +45,7 @@ class SearchPage extends YoutubePage<_InitialData> {
       {SearchFilter filter = const SearchFilter('')}) {
     var url =
         'https://www.youtube.com/results?search_query=${Uri.encodeQueryComponent(queryString)}&sp=${filter.value}';
-    return retry(() async {
+    return retry(httpClient, () async {
       var raw = await httpClient.getString(url);
       return SearchPage.parse(raw, queryString);
     });

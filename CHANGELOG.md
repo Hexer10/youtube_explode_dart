@@ -1,3 +1,6 @@
+## 1.10.7
+- Fix the error of incomplete data loading on the Android emulator.
+- Fix error when the http-client is closed and the request is still running.
 ## 1.10.6
 - Implement `Playlist.videoCount`.
 
@@ -20,11 +23,11 @@
 ## 1.10.1
 - Fix issue #146: Closed Captions couldn't be extracted anymore.
 - Code cleanup.
- 
+
 
 ## 1.10.0
 - Fix issue #144: get_video_info was removed from yt.
-- Min sdk version now is 2.13.0 
+- Min sdk version now is 2.13.0
 - BREAKING CHANGE: New comments API implementation.
 
 ## 1.9.10
@@ -45,7 +48,7 @@
 ## 1.9.6
 - Fix comment client.
 - Fix issue #130 (ClosedCaptions)
- 
+
 
 ## 1.9.5
 - Temporary for issue #130
