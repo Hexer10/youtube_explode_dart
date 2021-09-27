@@ -39,7 +39,7 @@ class ChannelAboutPage extends YoutubePage<_InitialData> {
   static Future<ChannelAboutPage> get(YoutubeHttpClient httpClient, String id) {
     var url = 'https://www.youtube.com/channel/$id/about?hl=en';
 
-    return retry(() async {
+    return retry(httpClient, () async {
       var raw = await httpClient.getString(url);
       var result = ChannelAboutPage.parse(raw);
 
@@ -52,7 +52,7 @@ class ChannelAboutPage extends YoutubePage<_InitialData> {
       YoutubeHttpClient httpClient, String username) {
     var url = 'https://www.youtube.com/user/$username/about?hl=en';
 
-    return retry(() async {
+    return retry(httpClient, () async {
       var raw = await httpClient.getString(url);
       var result = ChannelAboutPage.parse(raw);
 

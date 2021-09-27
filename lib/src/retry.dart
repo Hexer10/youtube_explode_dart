@@ -4,11 +4,12 @@ import 'dart:async';
 
 import 'package:http/http.dart';
 
+import '../youtube_explode_dart.dart';
 import 'exceptions/exceptions.dart';
 
 /// Run the [function] each time an exception is thrown until the retryCount
 /// is 0.
-Future<T> retry<T>(FutureOr<T> Function() function) async {
+Future<T> retry<T>(YoutubeHttpClient? client, FutureOr<T> Function() function) async {
   var retryCount = 5;
 
   // ignore: literal_only_boolean_expressions
@@ -17,6 +18,10 @@ Future<T> retry<T>(FutureOr<T> Function() function) async {
       return await function();
       // ignore: avoid_catches_without_on_clauses
     } on Exception catch (e) {
+      if (client != null && client.closed) {
+        throw HttpClientClosedException();
+      }
+
       retryCount -= getExceptionCost(e);
       if (retryCount <= 0) {
         rethrow;

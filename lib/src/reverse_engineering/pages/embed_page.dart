@@ -71,7 +71,7 @@ class EmbedPage {
   static Future<EmbedPage> get(YoutubeHttpClient httpClient, String videoId) {
     var url = 'https://youtube.com/embed/$videoId?hl=en';
     // final url = 'http://localhost:8080/embed/$videoId?hl=en';
-    return retry(() async {
+    return retry(httpClient, () async {
       var raw = await httpClient.getString(url);
       return EmbedPage.parse(raw);
     });

@@ -58,7 +58,7 @@ class SearchClient {
     // ignore: literal_only_boolean_expressions
     for (;;) {
       if (page == null) {
-        page = await retry(() async =>
+        page = await retry(_httpClient, () async =>
             SearchPage.get(_httpClient, searchQuery, filter: filter));
       } else {
         page = await page.nextPage(_httpClient);

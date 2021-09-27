@@ -63,7 +63,7 @@ class EmbeddedPlayerClient {
 
     final url = Uri.parse('https://www.youtube.com/youtubei/v1/player');
 
-    return retry(() async {
+    return retry(httpClient, () async {
       final raw = await httpClient.post(url,
           body: json.encode(body),
           headers: {
