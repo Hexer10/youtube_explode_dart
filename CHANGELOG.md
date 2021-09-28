@@ -1,3 +1,7 @@
+## 1.10.7+1
+- Fix tests.
+- Remove debug leftovers.
+
 ## 1.10.7
 - Fix the error of incomplete data loading on the Android emulator.
 - Fix error when the http-client is closed and the request is still running.

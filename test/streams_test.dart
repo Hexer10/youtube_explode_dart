@@ -42,7 +42,9 @@ void main() {
 
   test('Stream of age-limited video throws VideoUnplayableException', () {
     expect(yt!.videos.streamsClient.getManifest(VideoId('SkRSXFQerZs')),
-        throwsA(const TypeMatcher<VideoUnplayableException>()));
+        throwsA(const TypeMatcher<VideoUnplayableException>()),
+        skip:
+            'Seems that this is not consistent with the CI - There is can retrieve a StreamManifest.');
   });
   test('Get the hls manifest of a live stream', () async {
     expect(
