@@ -1,7 +1,6 @@
-import 'package:youtube_explode_dart/src/channels/channel_id.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/pages/playlist_page.dart';
-
+import '../channels/channel_id.dart';
 import '../common/common.dart';
+import '../reverse_engineering/pages/playlist_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
 import '../videos/video_id.dart';

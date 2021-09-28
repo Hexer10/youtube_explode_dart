@@ -23,6 +23,8 @@ class Bitrate with Comparable<Bitrate>, _$Bitrate {
 
   const Bitrate._();
 
+  static const Bitrate unknown = Bitrate(0);
+
   @override
   int compareTo(Bitrate other) => bitsPerSecond.compareTo(other.bitsPerSecond);
 

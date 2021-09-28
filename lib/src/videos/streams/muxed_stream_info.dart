@@ -1,3 +1,4 @@
+import '../../reverse_engineering/models/fragment.dart';
 import 'audio_stream_info.dart';
 import 'bitrate.dart';
 import 'filesize.dart';
@@ -45,6 +46,10 @@ class MuxedStreamInfo implements AudioStreamInfo, VideoStreamInfo {
   /// Video framerate.
   @override
   final Framerate framerate;
+
+  /// Muxed streams never have fragments.
+  @override
+  List<Fragment> get fragments => const [];
 
   /// Initializes an instance of [MuxedStreamInfo]
   MuxedStreamInfo(

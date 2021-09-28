@@ -151,15 +151,20 @@ class StreamsClient {
         url = url.setQueryParam(signatureParameter, signature);
       }
 
-      // Content length
-      var contentLength = streamInfo.contentLength ??
-          await _httpClient.getContentLength(url, validate: false) ??
-          0;
+      // Content length - Dont try to get content length of a dash stream.
+      var contentLength = streamInfo.source == StreamSource.dash
+          ? 0
+          : streamInfo.contentLength ??
+              await _httpClient.getContentLength(url, validate: false) ??
+              0;
 
+      if (contentLength == 0 && streamInfo.source != StreamSource.dash) {
+        continue;
+      }
       // Common
       var container = StreamContainer.parse(streamInfo.container!);
       var fileSize = FileSize(contentLength);
-      var bitrate = Bitrate(streamInfo.bitrate!);
+      var bitrate = Bitrate(streamInfo.bitrate ?? 0);
 
       var audioCodec = streamInfo.audioCodec;
       var videoCodec = streamInfo.videoCodec;
@@ -167,7 +172,7 @@ class StreamsClient {
       // Muxed or Video-only
       if (!videoCodec.isNullOrWhiteSpace) {
         var framerate = Framerate(streamInfo.framerate ?? 24);
-        var videoQualityLabel = streamInfo.videoQualityLabel!;
+        var videoQualityLabel = streamInfo.videoQualityLabel ?? '';
 
         var videoQuality = VideoQualityUtil.fromLabel(videoQualityLabel);
 
@@ -206,13 +211,14 @@ class StreamsClient {
             videoQualityLabel,
             videoQuality,
             videoResolution,
-            framerate);
+            framerate,
+            streamInfo.fragments ?? const []);
         continue;
       }
       // Audio-only
       if (!audioCodec.isNullOrWhiteSpace) {
-        streams[tag] = AudioOnlyStreamInfo(
-            tag, url, container, fileSize, bitrate, audioCodec!);
+        streams[tag] = AudioOnlyStreamInfo(tag, url, container, fileSize,
+            bitrate, audioCodec!, streamInfo.fragments ?? const []);
       }
 
       // #if DEBUG
@@ -228,13 +234,13 @@ class StreamsClient {
     videoId = VideoId.fromString(videoId);
 
     try {
-      final context = await _getStreamContextFromEmbeddedClient(videoId);
+      final context = await _getStreamContextFromWatchPage(videoId);
       return _getManifest(context);
     } on YoutubeExplodeException {
       //TODO: ignore
     }
 
-    final context = await _getStreamContextFromWatchPage(videoId);
+    final context = await _getStreamContextFromEmbeddedClient(videoId);
     return _getManifest(context);
   }
 

@@ -96,7 +96,8 @@ class PlayerResponse {
   late final List<StreamInfoProvider> muxedStreams = root
           .get('streamingData')
           ?.getList('formats')
-          ?.map((e) => _StreamInfo(e, StreamSource.muxed))
+          ?.where((e) => e['url'] != null)
+          .map((e) => _StreamInfo(e, StreamSource.muxed))
           .cast<StreamInfoProvider>()
           .toList() ??
       const <StreamInfoProvider>[];

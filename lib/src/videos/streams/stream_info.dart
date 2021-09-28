@@ -1,3 +1,4 @@
+import '../../reverse_engineering/models/fragment.dart';
 import 'bitrate.dart';
 import 'filesize.dart';
 import 'stream_container.dart';
@@ -20,8 +21,12 @@ abstract class StreamInfo {
   /// Stream bitrate.
   final Bitrate bitrate;
 
+  /// DASH streams contain multiple stream fragments.
+  final List<Fragment> fragments;
+
   /// Initialize an instance of [StreamInfo].
-  StreamInfo(this.tag, this.url, this.container, this.size, this.bitrate);
+  StreamInfo(this.tag, this.url, this.container, this.size, this.bitrate,
+      this.fragments);
 }
 
 /// Extension for Iterables of StreamInfo.

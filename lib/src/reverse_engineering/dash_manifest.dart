@@ -1,6 +1,10 @@
+import 'package:collection/collection.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:xml/xml.dart' as xml;
 
+import '../extensions/helpers_extension.dart';
 import '../retry.dart';
+import 'models/fragment.dart';
 import 'models/stream_info_provider.dart';
 import 'youtube_http_client.dart';
 
@@ -11,14 +15,7 @@ class DashManifest {
   final xml.XmlDocument _root;
 
   ///
-  late final Iterable<_StreamInfo> streams = _root
-      .findElements('Representation')
-      .where((e) => e
-          .findElements('Initialization')
-          .first
-          .getAttribute('sourceURL')!
-          .contains('sq/'))
-      .map((e) => _StreamInfo(e));
+  late final Iterable<_StreamInfo> streams = parseMDP(_root);
 
   ///
   DashManifest(this._root);
@@ -38,59 +35,238 @@ class DashManifest {
   ///
   static String? getSignatureFromUrl(String url) =>
       _urlSignatureExp.firstMatch(url)?.group(1);
+
+  bool _isDrmProtected(xml.XmlElement element) =>
+      element.findElements('ContentProtection').isNotEmpty;
+
+  _SegmentTimeline? extractSegmentTimeline(xml.XmlElement source) {
+    final segmentTimeline = source.getElement('SegmentTimeline');
+    if (segmentTimeline != null) {
+      return _SegmentTimeline(segmentTimeline.findAllElements('S').map((e) {
+        final d = int.tryParse(e.getAttribute('d') ?? '0')!;
+        final r = int.tryParse(e.getAttribute('r') ?? '0')!;
+        return _S(d, r);
+      }).toList());
+    }
+    return null;
+  }
+
+  _MsInfo extractMultiSegmentInfo(
+      xml.XmlElement element, _MsInfo msParentInfo) {
+    final msInfo = msParentInfo.copy(); // Copy
+
+    final segmentList = element.getElement('SegmentList');
+    if (segmentList != null) {
+      msInfo.segmentTimeline =
+          extractSegmentTimeline(segmentList) ?? msParentInfo.segmentTimeline;
+      msInfo.initializationUrl =
+          segmentList.getElement('Initialization')?.getAttribute('sourceURL');
+
+      final segmentUrlsSE = segmentList.findAllElements('SegmentURL');
+      if (segmentUrlsSE.isNotEmpty) {
+        msInfo.segmentUrls = [
+          for (final segment in segmentUrlsSE) segment.getAttribute('media')!
+        ];
+      }
+    } else {
+      final segmentTemplate = element.getElement('SegmentTemplate');
+      if (segmentTemplate != null) {
+        // Note: Currently SegmentTemplates are not supported.
+/*        final segmentTimeLine = extractSegmentTimeline(segmentTemplate);
+        if (segmentTimeLine != null) {
+          msInfo['s'] = segmentTimeLine;
+        }
+
+        final timeScale = segmentTemplate.getAttribute('timescale');
+        if (timeScale != null) {
+          msInfo['timescale'] = int.parse(timeScale);
+        }
+
+        final media = segmentTemplate.getAttribute('media');
+        if (media != null) {
+          msInfo['media'] = media;
+        }
+        final initialization = segmentTemplate.getAttribute('initialization');
+        if (initialization != null) {
+          msInfo['initialization'] = initialization;
+        } else {
+          extractInitialization(segmentTemplate);
+        }*/
+      }
+    }
+    return msInfo;
+  }
+
+  List<_StreamInfo> parseMDP(xml.XmlDocument root) {
+    if (root.getAttribute('type') == 'dynamic') {
+      return const [];
+    }
+
+    final formats = <_StreamInfo>[];
+    final periods = root.findAllElements('Period');
+    for (final period in periods) {
+      final periodMsInfo = extractMultiSegmentInfo(period, _MsInfo());
+      final adaptionSets = period.findAllElements('AdaptationSet');
+      for (final adaptionSet in adaptionSets) {
+        if (_isDrmProtected(adaptionSet)) {
+          continue;
+        }
+        final adaptionSetMsInfo =
+            extractMultiSegmentInfo(adaptionSet, periodMsInfo);
+        for (final representation
+            in adaptionSet.findAllElements('Representation')) {
+          if (_isDrmProtected(representation)) {
+            continue;
+          }
+          final representationAttrib = {
+            for (var e in adaptionSet.attributes) e.name.local: e.value,
+            for (var e in representation.attributes) e.name.local: e.value,
+          };
+
+          final mimeType = MediaType.parse(representationAttrib['mimeType']!);
+
+          if (mimeType.type == 'video' || mimeType.type == 'audio') {
+            // Extract the base url
+            var baseUrl = JoinedIterable<xml.XmlElement>([
+              representation.childElements,
+              adaptionSet.childElements,
+              period.childElements,
+              root.childElements
+            ])
+                .firstWhereOrNull((e) {
+                  final baseUrlE = e.getElement('BaseURL')?.text.trim();
+                  if (baseUrlE == null) {
+                    return false;
+                  }
+                  return baseUrlE.contains(RegExp('^https?://'));
+                })
+                ?.text
+                .trim();
+
+            if (baseUrl == null || !baseUrl.startsWith('http')) {
+              throw UnimplementedError(
+                  'This kind of DASH Stream is not yet implemented. '
+                  'Please open a new issue on this project GitHub.');
+            }
+
+            final representationMsInfo =
+                extractMultiSegmentInfo(representation, adaptionSetMsInfo);
+
+            if (representationMsInfo.segmentUrls != null &&
+                representationMsInfo.segmentTimeline != null) {
+              final fragments = <Fragment>[];
+              var segmentIndex = 0;
+              for (final s in representationMsInfo.segmentTimeline!.segments) {
+                for (var i = 0; i < (s.r + 1); i++) {
+                  final segmentUri =
+                      representationMsInfo.segmentUrls![segmentIndex];
+                  if (segmentUri.contains(RegExp('^https?://'))) {
+                    throw UnimplementedError(
+                        'This kind of DASH Stream is not yet implemented. '
+                        'Please open a new issue on this project GitHub.');
+                  }
+                  fragments.add(Fragment(segmentUri));
+                  segmentIndex++;
+                }
+              }
+              representationMsInfo.fragments = fragments;
+            }
+
+            final fragments = <Fragment>[
+              if (representationMsInfo.fragments != null &&
+                  representationMsInfo.initializationUrl != null)
+                Fragment(representationMsInfo.initializationUrl!),
+              ...?representationMsInfo.fragments
+            ];
+
+            formats.add(_StreamInfo(
+                int.parse(representationAttrib['id']!),
+                baseUrl,
+                mimeType,
+                int.tryParse(representationAttrib['width'] ?? ''),
+                int.tryParse(representationAttrib['height'] ?? ''),
+                int.tryParse(representationAttrib['frameRate'] ?? ''),
+                fragments));
+          }
+        }
+      }
+    }
+
+    return formats;
+  }
 }
 
 class _StreamInfo extends StreamInfoProvider {
-  static final _contentLenExp = RegExp(r'[/\?]clen[/=](\d+)');
+  @override
+  final int tag;
 
-  final xml.XmlElement root;
+  @override
+  final String url;
 
-  _StreamInfo(this.root);
+  @override
+  String get container => _mimetype.subtype;
+
+  final MediaType _mimetype;
+
+  bool get isAudioOnly => _mimetype.type == 'audio';
+
+  @override
+  String? get audioCodec => isAudioOnly ? _mimetype.subtype : null;
+
+  @override
+  String? get videoCodec => isAudioOnly ? null : _mimetype.subtype;
+
+  @override
+  final int? videoWidth;
+
+  @override
+  final int? videoHeight;
+
+  @override
+  final int? framerate;
+
+  @override
+  final List<Fragment> fragments;
 
   @override
   StreamSource get source => StreamSource.dash;
 
-  @override
-  late final int tag = int.parse(root.getAttribute('id')!);
+  _StreamInfo(this.tag, this.url, this._mimetype, this.videoWidth,
+      this.videoHeight, this.framerate, this.fragments);
+}
 
-  @override
-  late final String url = root.getAttribute('BaseURL')!;
+class _SegmentTimeline {
+  final List<_S> segments;
 
-  @override
-  late final int contentLength = int.parse(
-      (root.getAttribute('contentLength') ??
-          _contentLenExp.firstMatch(url)?.group(1))!);
+  const _SegmentTimeline(this.segments);
+}
 
-  @override
-  late final int bitrate = int.parse(root.getAttribute('bandwidth')!);
+class _S {
+  final int d;
+  final int r;
 
-  @override
-  late final String? container = '';
+  const _S(this.d, this.r);
+}
 
-  /*
-      Uri.decodeFull((_containerExp.firstMatch(url)?.group(1))!);*/
+class _MsInfo {
+  int startNumber = 1;
 
-  late final bool isAudioOnly =
-      root.findElements('AudioChannelConfiguration').isNotEmpty;
+  String? initializationUrl;
+  _SegmentTimeline? segmentTimeline;
+  List<String>? segmentUrls;
+  List<Fragment>? fragments;
 
-  @override
-  late final String? audioCodec =
-      isAudioOnly ? null : root.getAttribute('codecs');
+  _MsInfo();
 
-  @override
-  late final String? videoCodec =
-      isAudioOnly ? root.getAttribute('codecs') : null;
+  _MsInfo copy() {
+    final v = _MsInfo();
 
-  @override
-  late final int videoWidth = int.parse(root.getAttribute('width')!);
+    v.initializationUrl = initializationUrl;
+    v.segmentTimeline = segmentTimeline;
+    v.segmentUrls = segmentUrls;
+    v.fragments = fragments;
+    v.startNumber = startNumber;
 
-  @override
-  late final int videoHeight = int.parse(root.getAttribute('height')!);
-
-  @override
-  late final int framerate = int.parse(root.getAttribute('framerate')!);
-
-  // TODO: Implement this
-  @override
-  late final String? videoQualityLabel = null;
+    return v;
+  }
 }

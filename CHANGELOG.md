@@ -1,6 +1,8 @@
 ## 1.10.7
 - Fix the error of incomplete data loading on the Android emulator.
 - Fix error when the http-client is closed and the request is still running.
+- Fix extraction for DASH streams.
+
 ## 1.10.6
 - Implement `Playlist.videoCount`.
 

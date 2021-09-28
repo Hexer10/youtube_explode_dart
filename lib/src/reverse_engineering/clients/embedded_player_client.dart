@@ -83,53 +83,84 @@ class EmbeddedPlayerClient {
 }
 
 class _StreamInfo extends StreamInfoProvider {
+  static final _contentLenExp = RegExp(r'[\?&]clen=(\d+)');
+
+  /// Json parsed map
   final JsonMap root;
 
   @override
-  late final int tag = root['itag']!;
+  late final int? bitrate = root.getT<int>('bitrate');
 
   @override
-  late final String url = root['url']!;
+  late final String? container = mimeType?.subtype;
 
   @override
-  late final int? contentLength = int.tryParse(root['contentLength'] ??
-      StreamInfoProvider.contentLenExp.firstMatch(url)?.group(1) ??
-      '');
+  late final int? contentLength = int.tryParse(
+      root.getT<String>('contentLength') ??
+          _contentLenExp.firstMatch(url)?.group(1) ??
+          '');
 
   @override
-  late final int bitrate = root['bitrate']!;
-
-  late final MediaType mimeType = MediaType.parse(root['mimeType']!);
+  late final int? framerate = root.getT<int>('fps');
 
   @override
-  late final String container = mimeType.subtype;
-
-  late final List<String> codecs = mimeType.parameters['codecs']!
-      .split(',')
-      .map((e) => e.trim())
-      .toList()
-      .cast<String>();
+  late final String? signature =
+      Uri.splitQueryString(root.getT<String>('signatureCipher') ?? '')['s'];
 
   @override
-  late final String audioCodec = codecs.last;
+  late final String? signatureParameter = Uri.splitQueryString(
+          root.getT<String>('cipher') ?? '')['sp'] ??
+      Uri.splitQueryString(root.getT<String>('signatureCipher') ?? '')['sp'];
 
   @override
-  late final String? videoCodec = isAudioOnly ? null : codecs.first;
-
-  late final bool isAudioOnly = mimeType.type == 'audio';
+  late final int tag = root.getT<int>('itag')!;
 
   @override
-  late final String videoQualityLabel =
-      root['qualityLabel'] ?? root['quality_label'];
+  late final String url = root.getT<String>('url') ??
+      Uri.splitQueryString(root.getT<String>('cipher') ?? '')['url'] ??
+      Uri.splitQueryString(root.getT<String>('signatureCipher') ?? '')['url']!;
 
   @override
-  late final int? videoWidth = root['width'];
+  late final String? videoCodec = isAudioOnly
+      ? null
+      : codecs?.split(',').firstOrNull?.trim().nullIfWhitespace;
 
   @override
-  late final int? videoHeight = root['height'];
+  late final int? videoHeight = root.getT<int>('height');
 
   @override
-  late final int? framerate = root['fps'] ?? 0;
+  late final String? videoQualityLabel = root.getT<String>('qualityLabel');
+
+  @override
+  late final int? videoWidth = root.getT<int>('width');
+
+  late final bool isAudioOnly = mimeType?.type == 'audio';
+
+  late final MediaType? mimeType = _getMimeType();
+
+  MediaType? _getMimeType() {
+    var mime = root.getT<String>('mimeType');
+    if (mime == null) {
+      return null;
+    }
+    return MediaType.parse(mime);
+  }
+
+  late final String? codecs = mimeType?.parameters['codecs']?.toLowerCase();
+
+  @override
+  late final String? audioCodec =
+      isAudioOnly ? codecs : _getAudioCodec(codecs?.split(','))?.trim();
+
+  String? _getAudioCodec(List<String>? codecs) {
+    if (codecs == null) {
+      return null;
+    }
+    if (codecs.length == 1) {
+      return null;
+    }
+    return codecs.last;
+  }
 
   @override
   final StreamSource source;

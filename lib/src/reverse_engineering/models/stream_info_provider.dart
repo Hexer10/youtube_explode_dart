@@ -1,3 +1,5 @@
+import 'fragment.dart';
+
 enum StreamSource { muxed, adaptive, dash }
 
 ///
@@ -24,7 +26,7 @@ abstract class StreamInfoProvider {
   int? get contentLength => null;
 
   ///
-  int? get bitrate;
+  int? get bitrate => null;
 
   ///
   String? get container;
@@ -36,7 +38,7 @@ abstract class StreamInfoProvider {
   String? get videoCodec => null;
 
   ///
-  String? get videoQualityLabel;
+  String? get videoQualityLabel => null;
 
   ///
   int? get videoWidth => null;
@@ -46,4 +48,7 @@ abstract class StreamInfoProvider {
 
   ///
   int? get framerate => null;
+
+  ///
+  List<Fragment>? get fragments => null;
 }

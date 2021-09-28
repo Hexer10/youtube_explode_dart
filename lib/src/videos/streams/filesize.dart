@@ -23,6 +23,8 @@ class FileSize with Comparable<FileSize>, _$FileSize {
 
   const FileSize._();
 
+  static const FileSize unknown = FileSize(0);
+
   @override
   int compareTo(FileSize other) => totalBytes.compareTo(other.totalBytes);
 

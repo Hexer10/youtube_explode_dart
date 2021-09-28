@@ -70,8 +70,7 @@ extension VideoQualityUtil on VideoQuality {
       return VideoQuality.high4320;
     }
 
-    throw ArgumentError.value(
-        label, 'label', 'Unrecognized video quality label');
+    return VideoQuality.unknown;
   }
 
   ///

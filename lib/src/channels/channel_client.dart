@@ -1,12 +1,10 @@
-import 'package:youtube_explode_dart/src/channels/channel_uploads_list.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/pages/channel_page.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/pages/watch_page.dart';
-
 import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';
 import '../reverse_engineering/pages/channel_about_page.dart';
+import '../reverse_engineering/pages/channel_page.dart';
 import '../reverse_engineering/pages/channel_upload_page.dart';
+import '../reverse_engineering/pages/watch_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
 import '../videos/video_id.dart';

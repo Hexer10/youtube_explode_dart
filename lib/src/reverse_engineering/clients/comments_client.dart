@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/pages/watch_page.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
+import '../pages/watch_page.dart';
 import '../youtube_http_client.dart';
 
 class CommentsClient {
@@ -22,8 +22,8 @@ class CommentsClient {
   static Future<CommentsClient?> get(
       YoutubeHttpClient httpClient, Video video) async {
     final watchPage = video.watchPage ??
-        await retry<WatchPage>(httpClient,
-            () async => WatchPage.get(httpClient, video.id.value));
+        await retry<WatchPage>(
+            httpClient, () async => WatchPage.get(httpClient, video.id.value));
 
     final continuation = watchPage.commentsContinuation;
     if (continuation == null) {

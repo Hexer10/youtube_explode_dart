@@ -14,6 +14,7 @@ class YoutubeHttpClient extends http.BaseClient {
 
   // Flag to interrupt receiving stream.
   bool _closed = false;
+
   bool get closed => _closed;
 
   static const Map<String, String> _defaultHeaders = {
@@ -127,14 +128,51 @@ class YoutubeHttpClient extends http.BaseClient {
       {Map<String, String> headers = const {},
       bool validate = true,
       int start = 0,
+      int errorCount = 0}) {
+    if (streamInfo.fragments.isNotEmpty) {
+      // DASH(fragmented) stream
+      return _getFragmentedStream(streamInfo,
+          headers: headers,
+          validate: validate,
+          start: start,
+          errorCount: errorCount);
+    }
+    // Normal stream
+    return _getStream(streamInfo,
+        headers: headers,
+        validate: validate,
+        start: start,
+        errorCount: errorCount);
+  }
+
+  Stream<List<int>> _getFragmentedStream(StreamInfo streamInfo,
+      {Map<String, String> headers = const {},
+      bool validate = true,
+      int start = 0,
       int errorCount = 0}) async* {
-    var url = streamInfo.url;
+    // This is the base url.
+    final url = streamInfo.url;
+    for (final fragment in streamInfo.fragments) {
+      final req = await retry(
+          this, () => get(Uri.parse(url.toString() + fragment.path)));
+      yield req.bodyBytes;
+    }
+  }
+
+  Stream<List<int>> _getStream(StreamInfo streamInfo,
+      {Map<String, String> headers = const {},
+      bool validate = true,
+      int start = 0,
+      int errorCount = 0}) async* {
+    final url = streamInfo.url;
     var bytesCount = start;
+
     while (!_closed && bytesCount != streamInfo.size.totalBytes) {
       try {
         final response = await retry(this, () {
           final request = http.Request('get', url);
-          request.headers['range'] = 'bytes=$bytesCount-${bytesCount + 9898989 - 1}';
+          request.headers['range'] =
+              'bytes=$bytesCount-${bytesCount + 9898989 - 1}';
           return send(request);
         });
         if (validate) {
@@ -154,7 +192,7 @@ class YoutubeHttpClient extends http.BaseClient {
           rethrow;
         }
         await Future.delayed(const Duration(milliseconds: 500));
-        yield* getStream(streamInfo,
+        yield* _getStream(streamInfo,
             headers: headers,
             validate: validate,
             start: bytesCount,
@@ -218,8 +256,8 @@ class YoutubeHttpClient extends http.BaseClient {
         request.headers[key] = _defaultHeaders[key]!;
       }
     });
-    // print('Request: $request');
-    // print('Stack:\n${StackTrace.current}');
+    print('Request: $request');
+    print('Stack:\n${StackTrace.current}');
     return _httpClient.send(request);
   }
 }

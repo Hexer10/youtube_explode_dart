@@ -1,28 +1,17 @@
+import '../../reverse_engineering/models/fragment.dart';
 import 'streams.dart';
 
 /// YouTube media stream that only contains audio.
-class AudioOnlyStreamInfo implements AudioStreamInfo {
-  @override
-  final int tag;
-
-  @override
-  final Uri url;
-
-  @override
-  final StreamContainer container;
-
-  @override
-  final FileSize size;
-
-  @override
-  final Bitrate bitrate;
-
-  @override
-  final String audioCodec;
-
-  /// Initializes an instance of [AudioOnlyStreamInfo]
-  AudioOnlyStreamInfo(this.tag, this.url, this.container, this.size,
-      this.bitrate, this.audioCodec);
+class AudioOnlyStreamInfo extends AudioStreamInfo {
+  AudioOnlyStreamInfo(
+      int tag,
+      Uri url,
+      StreamContainer container,
+      FileSize size,
+      Bitrate bitrate,
+      String audioCodec,
+      List<Fragment> fragments)
+      : super(tag, url, container, size, bitrate, audioCodec, fragments);
 
   @override
   String toString() => 'Audio-only ($tag | $container)';

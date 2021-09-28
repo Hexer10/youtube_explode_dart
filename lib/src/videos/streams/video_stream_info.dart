@@ -1,3 +1,4 @@
+import '../../reverse_engineering/models/fragment.dart';
 import 'streams.dart';
 
 /// YouTube media stream that contains video.
@@ -28,8 +29,9 @@ abstract class VideoStreamInfo extends StreamInfo {
       this.videoQualityLabel,
       this.videoQuality,
       this.videoResolution,
-      this.framerate)
-      : super(tag, url, container, size, bitrate);
+      this.framerate,
+      List<Fragment> fragments)
+      : super(tag, url, container, size, bitrate, fragments);
 }
 
 /// Extensions for Iterables of [VideoStreamInfo]

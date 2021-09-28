@@ -1,6 +1,7 @@
 library _youtube_explode.extensions;
 
 import 'dart:convert';
+
 import 'package:collection/collection.dart';
 
 import '../reverse_engineering/cipher/cipher_operations.dart';
@@ -287,4 +288,38 @@ extension GenericExtract on List<String> {
 
     throw orThrow();
   }
+}
+
+/// Iterable that joins together multiple lists
+class JoinedIterable<T> extends Iterable<T> {
+  final Iterable<Iterable<T>> _iterables;
+
+  JoinedIterable(this._iterables);
+
+  @override
+  Iterator<T> get iterator {
+    return _JoinedIterator<T>(_iterables.map((e) => e.iterator).toList());
+  }
+}
+
+class _JoinedIterator<T> extends Iterator<T> {
+  final Iterable<Iterator<T>> _iterators;
+  var _currentIter = 0;
+
+  _JoinedIterator(this._iterators);
+
+  @override
+  bool moveNext([int debug = 0]) {
+    if (!_iterators.elementAt(_currentIter).moveNext()) {
+      if (_currentIter == _iterators.length - 1) {
+        return false;
+      }
+      _currentIter++;
+      return moveNext(debug + 1);
+    }
+    return true;
+  }
+
+  @override
+  T get current => _iterators.elementAt(_currentIter).current;
 }
