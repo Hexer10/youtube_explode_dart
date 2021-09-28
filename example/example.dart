@@ -1,5 +1,4 @@
 // ignore_for_file: avoid_print
-import 'package:youtube_explode_dart/src/youtube_explode_base.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 Future<void> main() async {
