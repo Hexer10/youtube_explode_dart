@@ -1,3 +1,5 @@
+import 'package:http_parser/http_parser.dart';
+
 import '../../reverse_engineering/models/fragment.dart';
 import 'streams.dart';
 
@@ -7,6 +9,7 @@ abstract class VideoStreamInfo extends StreamInfo {
   final String videoCodec;
 
   /// Video quality label, as seen on YouTube.
+  @Deprecated('Use qualityLabel')
   final String videoQualityLabel;
 
   /// Video quality.
@@ -30,8 +33,11 @@ abstract class VideoStreamInfo extends StreamInfo {
       this.videoQuality,
       this.videoResolution,
       this.framerate,
-      List<Fragment> fragments)
-      : super(tag, url, container, size, bitrate, fragments);
+      List<Fragment> fragments,
+      MediaType codec,
+      String qualityLabel)
+      : super(
+            tag, url, container, size, bitrate, fragments, codec, qualityLabel);
 }
 
 /// Extensions for Iterables of [VideoStreamInfo]
@@ -55,5 +61,5 @@ extension VideoStreamInfoExtension<T extends VideoStreamInfo> on Iterable<T> {
   /// This returns new list without editing the original list.
   List<T> sortByVideoQuality() => toList()
     ..sort((a, b) => b.framerate.compareTo(a.framerate))
-    ..sort((a, b) => b.videoQuality.index.compareTo(a.videoQuality.index));
+    ..sort((a, b) => b.videoResolution.compareTo(a.videoResolution));
 }

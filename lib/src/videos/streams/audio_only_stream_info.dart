@@ -1,3 +1,5 @@
+import 'package:http_parser/http_parser.dart';
+
 import '../../reverse_engineering/models/fragment.dart';
 import 'streams.dart';
 
@@ -10,8 +12,11 @@ class AudioOnlyStreamInfo extends AudioStreamInfo {
       FileSize size,
       Bitrate bitrate,
       String audioCodec,
-      List<Fragment> fragments)
-      : super(tag, url, container, size, bitrate, audioCodec, fragments);
+      List<Fragment> fragments,
+      MediaType codec,
+      String qualityLabel)
+      : super(tag, url, container, size, bitrate, audioCodec, fragments, codec,
+            qualityLabel);
 
   @override
   String toString() => 'Audio-only ($tag | $container)';

@@ -1,3 +1,5 @@
+import 'package:http_parser/http_parser.dart';
+
 import '../../reverse_engineering/models/fragment.dart';
 import 'bitrate.dart';
 import 'filesize.dart';
@@ -20,9 +22,23 @@ class VideoOnlyStreamInfo extends VideoStreamInfo {
       VideoQuality videoQuality,
       VideoResolution videoResolution,
       Framerate framerate,
-      List<Fragment> fragments)
-      : super(tag, url, container, size, bitrate, videoCodec, videoQualityLabel,
-            videoQuality, videoResolution, framerate, fragments);
+      List<Fragment> fragments,
+      MediaType codec,
+      String qualityLabel)
+      : super(
+            tag,
+            url,
+            container,
+            size,
+            bitrate,
+            videoCodec,
+            videoQualityLabel,
+            videoQuality,
+            videoResolution,
+            framerate,
+            fragments,
+            codec,
+            qualityLabel);
 
   @override
   String toString() => 'Video-only ($tag | $videoResolution | $container)';

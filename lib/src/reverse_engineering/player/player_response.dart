@@ -169,7 +169,7 @@ class _StreamInfo extends StreamInfoProvider {
   late final int? bitrate = root.getT<int>('bitrate');
 
   @override
-  late final String? container = mimeType?.subtype;
+  late final String container = codec.subtype;
 
   @override
   late final int? contentLength = int.tryParse(
@@ -206,14 +206,20 @@ class _StreamInfo extends StreamInfoProvider {
   late final int? videoHeight = root.getT<int>('height');
 
   @override
-  late final String? videoQualityLabel = root.getT<String>('qualityLabel');
+  @Deprecated('Use qualityLabel')
+  String get videoQualityLabel => qualityLabel;
+
+  @override
+  late final String qualityLabel = root.getT<String>('qualityLabel') ??
+      'tiny'; // Not sure if 'tiny' is the correct placeholder.
 
   @override
   late final int? videoWidth = root.getT<int>('width');
 
-  late final bool isAudioOnly = mimeType?.type == 'audio';
+  late final bool isAudioOnly = codec.type == 'audio';
 
-  late final MediaType? mimeType = _getMimeType();
+  @override
+  late final MediaType codec = _getMimeType()!;
 
   MediaType? _getMimeType() {
     var mime = root.getT<String>('mimeType');
@@ -223,7 +229,7 @@ class _StreamInfo extends StreamInfoProvider {
     return MediaType.parse(mime);
   }
 
-  late final String? codecs = mimeType?.parameters['codecs']?.toLowerCase();
+  late final String? codecs = codec.parameters['codecs']?.toLowerCase();
 
   @override
   late final String? audioCodec =

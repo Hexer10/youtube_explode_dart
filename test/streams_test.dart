@@ -42,9 +42,7 @@ void main() {
 
   test('Stream of age-limited video throws VideoUnplayableException', () {
     expect(yt!.videos.streamsClient.getManifest(VideoId('SkRSXFQerZs')),
-        throwsA(const TypeMatcher<VideoUnplayableException>()),
-        skip:
-            'Seems that this is not consistent with the CI - There is can retrieve a StreamManifest.');
+        throwsA(const TypeMatcher<VideoUnplayableException>()));
   });
   test('Get the hls manifest of a live stream', () async {
     expect(
@@ -65,8 +63,18 @@ void main() {
 
   group('Get specific stream of any playable video', () {
     for (final val in {
+      VideoId('9bZkp7q19f0'), //Normal
+      VideoId('rsAAeyAr-9Y'), //LiveStreamRecording
+      VideoId('V5Fsj_sCKdg'), //ContainsHighQualityStreams
       VideoId('AI7ULzgf8RU'), //ContainsDashManifest
+      VideoId('-xNN-bJQ4vI'), //Omnidirectional
+      VideoId('vX2vsvdq8nw'), //HighDynamicRange
+      VideoId('YltHGKX80Y8'), //ContainsClosedCaptions
+      VideoId('_kmeFXjjGfk'), //EmbedRestrictedByYouTube
+      VideoId('MeJVWBSsPAY'), //EmbedRestrictedByAuthor
+      VideoId('hySoCSoH-g8'), //AgeRestrictedEmbedRestricted
       VideoId('5VGm0dczmHc'), //RatingDisabled
+      VideoId('-xNN-bJQ4vI'), // 360° video
     }) {
       test('VideoId - ${val.value}', () async {
         var manifest = await yt!.videos.streamsClient.getManifest(val);

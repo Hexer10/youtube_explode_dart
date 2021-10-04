@@ -36,51 +36,6 @@ class StreamsClient {
     return DashManifest.get(_httpClient, dashManifestUrl);
   }
 
-  // Not used anymore since Youtube removed the `video_info` endpoint.
-/*  Future<StreamContext> _getStreamContextFromVideoInfo(VideoId videoId) async {
-    var embedPage = await EmbedPage.get(_httpClient, videoId.toString());
-    var playerConfig = embedPage.playerConfig;
-    if (playerConfig == null) {
-      throw VideoUnplayableException.unplayable(videoId);
-    }
-
-    var playerSource = await PlayerSource.get(
-        _httpClient, embedPage.sourceUrl ?? playerConfig.sourceUrl);
-    var cipherOperations = playerSource.getCipherOperations();
-
-    var videoInfoResponse = await VideoInfoClient.get(
-        _httpClient, videoId.toString(), playerSource.sts);
-    var playerResponse = videoInfoResponse.playerResponse;
-
-    var previewVideoId = playerResponse.previewVideoId;
-    if (!previewVideoId.isNullOrWhiteSpace) {
-      throw VideoRequiresPurchaseException.preview(
-          videoId, VideoId(previewVideoId!));
-    }
-
-    if (!playerResponse.isVideoPlayable) {
-      throw VideoUnplayableException.unplayable(videoId,
-          reason: playerResponse.videoPlayabilityError ?? '');
-    }
-
-    if (playerResponse.isLive) {
-      throw VideoUnplayableException.liveStream(videoId);
-    }
-
-    var streamInfoProviders = <StreamInfoProvider>[
-      ...videoInfoResponse.streams,
-      ...playerResponse.streams
-    ];
-
-    var dashManifestUrl = playerResponse.dashManifestUrl;
-    if (!dashManifestUrl.isNullOrWhiteSpace) {
-      var dashManifest =
-          await _getDashManifest(Uri.parse(dashManifestUrl!), cipherOperations);
-      streamInfoProviders.addAll(dashManifest.streams);
-    }
-    return StreamContext(streamInfoProviders, cipherOperations);
-  }*/
-
   Future<StreamContext> _getStreamContextFromEmbeddedClient(
       VideoId videoId) async {
     final page = await EmbeddedPlayerClient.get(_httpClient, videoId.value);
@@ -196,7 +151,9 @@ class StreamsClient {
               videoQualityLabel,
               videoQuality,
               videoResolution,
-              framerate);
+              framerate,
+              streamInfo.codec,
+              streamInfo.qualityLabel);
           continue;
         }
 
@@ -212,13 +169,23 @@ class StreamsClient {
             videoQuality,
             videoResolution,
             framerate,
-            streamInfo.fragments ?? const []);
+            streamInfo.fragments ?? const [],
+            streamInfo.codec,
+            streamInfo.qualityLabel);
         continue;
       }
       // Audio-only
       if (!audioCodec.isNullOrWhiteSpace) {
-        streams[tag] = AudioOnlyStreamInfo(tag, url, container, fileSize,
-            bitrate, audioCodec!, streamInfo.fragments ?? const []);
+        streams[tag] = AudioOnlyStreamInfo(
+            tag,
+            url,
+            container,
+            fileSize,
+            bitrate,
+            audioCodec!,
+            streamInfo.fragments ?? const [],
+            streamInfo.codec,
+            streamInfo.qualityLabel);
       }
 
       // #if DEBUG

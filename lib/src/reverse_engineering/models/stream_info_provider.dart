@@ -1,3 +1,5 @@
+import 'package:http_parser/http_parser.dart';
+
 import 'fragment.dart';
 
 enum StreamSource { muxed, adaptive, dash }
@@ -15,6 +17,8 @@ abstract class StreamInfoProvider {
 
   ///
   String get url;
+
+  MediaType get codec;
 
   ///
   String? get signature => null;
@@ -38,7 +42,11 @@ abstract class StreamInfoProvider {
   String? get videoCodec => null;
 
   ///
+  @Deprecated('Use qualityLabel')
   String? get videoQualityLabel => null;
+
+  ///
+  String get qualityLabel;
 
   ///
   int? get videoWidth => null;

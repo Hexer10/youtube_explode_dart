@@ -204,17 +204,25 @@ class _StreamInfo extends StreamInfoProvider {
   final String url;
 
   @override
-  String get container => _mimetype.subtype;
-
-  final MediaType _mimetype;
-
-  bool get isAudioOnly => _mimetype.type == 'audio';
+  final MediaType codec;
 
   @override
-  String? get audioCodec => isAudioOnly ? _mimetype.subtype : null;
+  String get container => codec.subtype;
+
+  bool get isAudioOnly => codec.type == 'audio';
 
   @override
-  String? get videoCodec => isAudioOnly ? null : _mimetype.subtype;
+  String? get audioCodec => isAudioOnly ? codec.subtype : null;
+
+  @override
+  String? get videoCodec => isAudioOnly ? null : codec.subtype;
+
+  @override
+  @Deprecated('Use qualityLabel')
+  String get videoQualityLabel => qualityLabel;
+
+  @override
+  late final String qualityLabel = 'DASH';
 
   @override
   final int? videoWidth;
@@ -231,8 +239,8 @@ class _StreamInfo extends StreamInfoProvider {
   @override
   StreamSource get source => StreamSource.dash;
 
-  _StreamInfo(this.tag, this.url, this._mimetype, this.videoWidth,
-      this.videoHeight, this.framerate, this.fragments);
+  _StreamInfo(this.tag, this.url, this.codec, this.videoWidth, this.videoHeight,
+      this.framerate, this.fragments);
 }
 
 class _SegmentTimeline {

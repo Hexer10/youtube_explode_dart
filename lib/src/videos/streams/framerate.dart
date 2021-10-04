@@ -20,7 +20,7 @@ class Framerate with Comparable<Framerate>, _$Framerate {
   bool operator <(Framerate other) => framesPerSecond < other.framesPerSecond;
 
   @override
-  String toString() => '$framesPerSecond FPS';
+  String toString() => '${framesPerSecond}fps';
 
   @override
   int compareTo(Framerate other) =>

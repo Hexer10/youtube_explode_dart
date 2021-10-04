@@ -1,3 +1,5 @@
+import 'package:http_parser/http_parser.dart';
+
 import '../../reverse_engineering/models/fragment.dart';
 import 'streams.dart';
 
@@ -7,7 +9,16 @@ abstract class AudioStreamInfo extends StreamInfo {
   final String audioCodec;
 
   ///
-  AudioStreamInfo(int tag, Uri url, StreamContainer container, FileSize size,
-      Bitrate bitrate, this.audioCodec, List<Fragment> fragments)
-      : super(tag, url, container, size, bitrate, fragments);
+  AudioStreamInfo(
+      int tag,
+      Uri url,
+      StreamContainer container,
+      FileSize size,
+      Bitrate bitrate,
+      this.audioCodec,
+      List<Fragment> fragments,
+      MediaType codec,
+      String qualityLabel)
+      : super(
+            tag, url, container, size, bitrate, fragments, codec, qualityLabel);
 }
