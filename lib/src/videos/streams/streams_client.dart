@@ -127,7 +127,7 @@ class StreamsClient {
       // Muxed or Video-only
       if (!videoCodec.isNullOrWhiteSpace) {
         var framerate = Framerate(streamInfo.framerate ?? 24);
-        var videoQualityLabel = streamInfo.videoQualityLabel ?? '';
+        var videoQualityLabel = streamInfo.qualityLabel;
 
         var videoQuality = VideoQualityUtil.fromLabel(videoQualityLabel);
 

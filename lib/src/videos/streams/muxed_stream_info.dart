@@ -1,4 +1,4 @@
-import 'package:http_parser/src/media_type.dart';
+import 'package:http_parser/http_parser.dart';
 
 import '../../reverse_engineering/models/fragment.dart';
 import 'audio_stream_info.dart';
@@ -71,7 +71,7 @@ class MuxedStreamInfo implements AudioStreamInfo, VideoStreamInfo {
       this.bitrate,
       this.audioCodec,
       this.videoCodec,
-      this.videoQualityLabel,
+      @Deprecated('Use qualityLabel') this.videoQualityLabel,
       this.videoQuality,
       this.videoResolution,
       this.framerate,
@@ -79,5 +79,5 @@ class MuxedStreamInfo implements AudioStreamInfo, VideoStreamInfo {
       this.qualityLabel);
 
   @override
-  String toString() => 'Muxed ($tag | $videoQualityLabel | $container)';
+  String toString() => 'Muxed ($tag | $qualityLabel | $container)';
 }

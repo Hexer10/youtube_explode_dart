@@ -29,7 +29,7 @@ abstract class VideoStreamInfo extends StreamInfo {
       FileSize size,
       Bitrate bitrate,
       this.videoCodec,
-      this.videoQualityLabel,
+      @Deprecated('Use qualityLabel') this.videoQualityLabel,
       this.videoQuality,
       this.videoResolution,
       this.framerate,
@@ -50,8 +50,7 @@ extension VideoStreamInfoExtension<T extends VideoStreamInfo> on Iterable<T> {
   /// a collection of video streams.
   /// This could be longer than [getAllVideoQualities] since this gives also all
   /// the different framerate values.
-  Set<String> getAllVideoQualitiesLabel() =>
-      map((e) => e.videoQualityLabel).toSet();
+  Set<String> getAllVideoQualitiesLabel() => map((e) => e.qualityLabel).toSet();
 
   /// Gets the stream with best video quality.
   T withHighestBitrate() => sortByVideoQuality().last;
