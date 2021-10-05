@@ -1,7 +1,9 @@
 ## 1.10.8
 - Added the following aliases: yt.videos.streams (instead of yt.videos.streamsClient) and yt.videos.comments (instead of yt.videos.commentsClient)
 - Re-add more test cases.
-- Implement `.describe()` on List<StreamInfo> which prints a formatted list like `youtube-dl -F` option.
+- Implement `.describe()` on List<StreamInfo> which prints a formatted list like `youtube-dl -F` option. T
+- Fix muxed video extraction ( #172 )
+- Better dis/likes video extraction.
 
 ## 1.10.7+1
 - Fix tests.
