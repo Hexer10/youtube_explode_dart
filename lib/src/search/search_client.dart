@@ -52,7 +52,7 @@ class SearchClient {
   @Deprecated(
       'Since version 1.9.0 this is the same as [SearchClient.getVideos].')
   Stream<BaseSearchContent> getVideosFromPage(String searchQuery,
-      {bool onlyVideos = true,
+      {bool onlyVideos = false,
       SearchFilter filter = const SearchFilter('')}) async* {
     SearchPage? page;
     // ignore: literal_only_boolean_expressions
