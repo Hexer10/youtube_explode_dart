@@ -10,6 +10,8 @@ class VideoId with _$VideoId {
   static final _regMatchExp = RegExp(r'youtube\..+?/watch.*?v=(.*?)(?:&|/|$)');
   static final _shortMatchExp = RegExp(r'youtu\.be/(.*?)(?:\?|&|/|$)');
   static final _embedMatchExp = RegExp(r'youtube\..+?/embed/(.*?)(?:\?|&|/|$)');
+  static final _shortsMatchExp =
+      RegExp(r'youtube\..+/shorts/([A-Za-z0-9-_]+$)');
 
   /// Initializes an instance of [VideoId] with a url or video id.
   factory VideoId(String idOrUrl) {
@@ -81,6 +83,12 @@ class VideoId with _$VideoId {
     var embedMatch = _embedMatchExp.firstMatch(url)?.group(1);
     if (!embedMatch.isNullOrWhiteSpace && validateVideoId(embedMatch!)) {
       return embedMatch;
+    }
+
+     // https://www.youtube.com/shorts/yIVRs6YSbOM
+    var shortsMatch = _shortsMatchExp.firstMatch(url)?.group(1);
+    if (!shortsMatch.isNullOrWhiteSpace && validateVideoId(shortsMatch!)) {
+      return shortsMatch;
     }
     return null;
   }
