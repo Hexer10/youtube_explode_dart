@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../common/common.dart';
 import '../playlists/playlist_id.dart';
 import 'base_search_content.dart';
 
@@ -19,5 +20,8 @@ class SearchPlaylist with _$SearchPlaylist, BaseSearchContent {
       String playlistTitle,
 
       /// Playlist video count, cannot be greater than 50.
-      int playlistVideoCount) = _SearchChannel;
+      int playlistVideoCount,
+
+      /// Video thumbnail
+      List<Thumbnail> thumbnails) = _SearchPlaylist;
 }

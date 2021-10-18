@@ -191,16 +191,22 @@ class _InitialData extends InitialData {
           renderer['ownerText']['runs'][0]['navigationEndpoint']
               ['browseEndpoint']['browseId']);
     }
-    if (content['radioRenderer'] != null) {
-      var renderer = content.get('radioRenderer')!;
+    if (content['radioRenderer'] != null ||
+        content['playlistRenderer'] != null) {
+      var renderer =
+          (content.get('radioRenderer') ?? content.get('playlistRenderer'))!;
 
       return SearchPlaylist(
-          PlaylistId(renderer.getT<String>('playlistId')!),
-          renderer.get('title')!.getT<String>('simpleText')!,
-          int.parse(_parseRuns(renderer.get('videoCountText')?.getList('runs'))
-                  .stripNonDigits()
-                  .nullIfWhitespace ??
-              '0'));
+        PlaylistId(renderer.getT<String>('playlistId')!),
+        renderer.get('title')!.getT<String>('simpleText')!,
+        int.parse(_parseRuns(renderer.get('videoCountText')?.getList('runs'))
+                .stripNonDigits()
+                .nullIfWhitespace ??
+            '0'),
+        (renderer.getList('thumbnails')?[0].getList('thumbnails') ?? const [])
+            .map((e) => Thumbnail(Uri.parse(e['url']), e['height'], e['width']))
+            .toList(),
+      );
     }
     if (content['channelRenderer'] != null) {
       var renderer = content.get('channelRenderer')!;
