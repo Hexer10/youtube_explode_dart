@@ -288,42 +288,27 @@ class _$_Comment implements _Comment {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Comment &&
-            (identical(other.author, author) ||
-                const DeepCollectionEquality().equals(other.author, author)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Comment &&
+            (identical(other.author, author) || other.author == author) &&
             (identical(other.channelId, channelId) ||
-                const DeepCollectionEquality()
-                    .equals(other.channelId, channelId)) &&
-            (identical(other.text, text) ||
-                const DeepCollectionEquality().equals(other.text, text)) &&
+                other.channelId == channelId) &&
+            (identical(other.text, text) || other.text == text) &&
             (identical(other.likeCount, likeCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.likeCount, likeCount)) &&
+                other.likeCount == likeCount) &&
             (identical(other.publishedTime, publishedTime) ||
-                const DeepCollectionEquality()
-                    .equals(other.publishedTime, publishedTime)) &&
+                other.publishedTime == publishedTime) &&
             (identical(other.replyCount, replyCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.replyCount, replyCount)) &&
+                other.replyCount == replyCount) &&
             (identical(other.isHearted, isHearted) ||
-                const DeepCollectionEquality()
-                    .equals(other.isHearted, isHearted)) &&
+                other.isHearted == isHearted) &&
             (identical(other.continuation, continuation) ||
-                const DeepCollectionEquality()
-                    .equals(other.continuation, continuation)));
+                other.continuation == continuation));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(author) ^
-      const DeepCollectionEquality().hash(channelId) ^
-      const DeepCollectionEquality().hash(text) ^
-      const DeepCollectionEquality().hash(likeCount) ^
-      const DeepCollectionEquality().hash(publishedTime) ^
-      const DeepCollectionEquality().hash(replyCount) ^
-      const DeepCollectionEquality().hash(isHearted) ^
-      const DeepCollectionEquality().hash(continuation);
+  int get hashCode => Object.hash(runtimeType, author, channelId, text,
+      likeCount, publishedTime, replyCount, isHearted, continuation);
 
   @JsonKey(ignore: true)
   @override
@@ -345,38 +330,38 @@ abstract class _Comment implements Comment {
   @override
 
   /// Comment author name.
-  String get author => throw _privateConstructorUsedError;
+  String get author;
   @override
 
   /// Comment author channel id.
-  ChannelId get channelId => throw _privateConstructorUsedError;
+  ChannelId get channelId;
   @override
 
   /// Comment text.
-  String get text => throw _privateConstructorUsedError;
+  String get text;
   @override
 
   /// Comment likes count.
-  int get likeCount => throw _privateConstructorUsedError;
+  int get likeCount;
   @override
 
   /// Published time as string. (For example: "2 years ago")
-  String get publishedTime => throw _privateConstructorUsedError;
+  String get publishedTime;
   @override
 
   /// Comment reply count.
-  int get replyCount => throw _privateConstructorUsedError;
+  int get replyCount;
   @override
 
   /// True if the comment is hearted by the creator.
 //ignore: avoid_positional_boolean_parameters
-  bool get isHearted => throw _privateConstructorUsedError;
+  bool get isHearted;
   @override
 
   /// Used internally.
   /// Shouldn't be used in the code.
   @internal
-  String? get continuation => throw _privateConstructorUsedError;
+  String? get continuation;
   @override
   @JsonKey(ignore: true)
   _$CommentCopyWith<_Comment> get copyWith =>

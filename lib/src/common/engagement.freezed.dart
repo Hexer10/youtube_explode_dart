@@ -153,24 +153,19 @@ class _$_Engagement extends _Engagement {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Engagement &&
+        (other.runtimeType == runtimeType &&
+            other is _Engagement &&
             (identical(other.viewCount, viewCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.viewCount, viewCount)) &&
+                other.viewCount == viewCount) &&
             (identical(other.likeCount, likeCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.likeCount, likeCount)) &&
+                other.likeCount == likeCount) &&
             (identical(other.dislikeCount, dislikeCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.dislikeCount, dislikeCount)));
+                other.dislikeCount == dislikeCount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(viewCount) ^
-      const DeepCollectionEquality().hash(likeCount) ^
-      const DeepCollectionEquality().hash(dislikeCount);
+      Object.hash(runtimeType, viewCount, likeCount, dislikeCount);
 
   @JsonKey(ignore: true)
   @override
@@ -186,15 +181,15 @@ abstract class _Engagement extends Engagement {
   @override
 
   /// View count.
-  int get viewCount => throw _privateConstructorUsedError;
+  int get viewCount;
   @override
 
   /// Like count.
-  int? get likeCount => throw _privateConstructorUsedError;
+  int? get likeCount;
   @override
 
   /// Dislike count.
-  int? get dislikeCount => throw _privateConstructorUsedError;
+  int? get dislikeCount;
   @override
   @JsonKey(ignore: true)
   _$EngagementCopyWith<_Engagement> get copyWith =>

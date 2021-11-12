@@ -249,39 +249,32 @@ class _$_ChannelAbout implements _ChannelAbout {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ChannelAbout &&
+        (other.runtimeType == runtimeType &&
+            other is _ChannelAbout &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
+                other.description == description) &&
             (identical(other.viewCount, viewCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.viewCount, viewCount)) &&
+                other.viewCount == viewCount) &&
             (identical(other.joinDate, joinDate) ||
-                const DeepCollectionEquality()
-                    .equals(other.joinDate, joinDate)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.thumbnails, thumbnails) ||
-                const DeepCollectionEquality()
-                    .equals(other.thumbnails, thumbnails)) &&
-            (identical(other.country, country) ||
-                const DeepCollectionEquality()
-                    .equals(other.country, country)) &&
-            (identical(other.channelLinks, channelLinks) ||
-                const DeepCollectionEquality()
-                    .equals(other.channelLinks, channelLinks)));
+                other.joinDate == joinDate) &&
+            (identical(other.title, title) || other.title == title) &&
+            const DeepCollectionEquality()
+                .equals(other.thumbnails, thumbnails) &&
+            (identical(other.country, country) || other.country == country) &&
+            const DeepCollectionEquality()
+                .equals(other.channelLinks, channelLinks));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(viewCount) ^
-      const DeepCollectionEquality().hash(joinDate) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(thumbnails) ^
-      const DeepCollectionEquality().hash(country) ^
-      const DeepCollectionEquality().hash(channelLinks);
+  int get hashCode => Object.hash(
+      runtimeType,
+      description,
+      viewCount,
+      joinDate,
+      title,
+      const DeepCollectionEquality().hash(thumbnails),
+      country,
+      const DeepCollectionEquality().hash(channelLinks));
 
   @JsonKey(ignore: true)
   @override
@@ -302,32 +295,32 @@ abstract class _ChannelAbout implements ChannelAbout {
   @override
 
   /// Full channel description.
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
 
   /// Channel view count.
-  int get viewCount => throw _privateConstructorUsedError;
+  int get viewCount;
   @override
 
   /// Channel join date.
   /// Formatted as: Gen 01, 2000
-  String get joinDate => throw _privateConstructorUsedError;
+  String get joinDate;
   @override
 
   /// Channel title.
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
 
   /// Channel thumbnails.
-  List<Thumbnail> get thumbnails => throw _privateConstructorUsedError;
+  List<Thumbnail> get thumbnails;
   @override
 
   /// Channel country.
-  String get country => throw _privateConstructorUsedError;
+  String get country;
   @override
 
   /// Channel links.
-  List<ChannelLink> get channelLinks => throw _privateConstructorUsedError;
+  List<ChannelLink> get channelLinks;
   @override
   @JsonKey(ignore: true)
   _$ChannelAboutCopyWith<_ChannelAbout> get copyWith =>

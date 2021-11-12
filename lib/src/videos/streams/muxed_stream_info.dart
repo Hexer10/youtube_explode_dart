@@ -1,4 +1,6 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:youtube_explode_dart/src/videos/streams/stream_info.dart';
 
 import '../../reverse_engineering/models/fragment.dart';
 import 'audio_stream_info.dart';
@@ -10,8 +12,11 @@ import 'video_quality.dart';
 import 'video_resolution.dart';
 import 'video_stream_info.dart';
 
+part 'muxed_stream_info.g.dart';
+
 /// YouTube media stream that contains both audio and video.
-class MuxedStreamInfo implements AudioStreamInfo, VideoStreamInfo {
+@JsonSerializable()
+class MuxedStreamInfo with StreamInfo, AudioStreamInfo, VideoStreamInfo {
   @override
   final int tag;
 
@@ -36,7 +41,7 @@ class MuxedStreamInfo implements AudioStreamInfo, VideoStreamInfo {
   /// Video quality label, as seen on YouTube.
   @Deprecated('Use qualityLabel')
   @override
-  final String videoQualityLabel;
+  String get videoQualityLabel => qualityLabel;
 
   /// Video quality.
   @override
@@ -56,6 +61,7 @@ class MuxedStreamInfo implements AudioStreamInfo, VideoStreamInfo {
 
   /// Stream codec.
   @override
+  @JsonKey(toJson: mediaTypeTojson, fromJson: mediaTypeFromJson)
   final MediaType codec;
 
   /// Stream codec.
@@ -64,20 +70,25 @@ class MuxedStreamInfo implements AudioStreamInfo, VideoStreamInfo {
 
   /// Initializes an instance of [MuxedStreamInfo]
   MuxedStreamInfo(
-      this.tag,
-      this.url,
-      this.container,
-      this.size,
-      this.bitrate,
-      this.audioCodec,
-      this.videoCodec,
-      @Deprecated('Use qualityLabel') this.videoQualityLabel,
-      this.videoQuality,
-      this.videoResolution,
-      this.framerate,
-      this.codec,
-      this.qualityLabel);
+    this.tag,
+    this.url,
+    this.container,
+    this.size,
+    this.bitrate,
+    this.audioCodec,
+    this.videoCodec,
+    this.qualityLabel,
+    this.videoQuality,
+    this.videoResolution,
+    this.framerate,
+    this.codec,
+  );
 
   @override
   String toString() => 'Muxed ($tag | $qualityLabel | $container)';
+
+  factory MuxedStreamInfo.fromJson(Map<String, dynamic> json) =>
+      _$MuxedStreamInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MuxedStreamInfoToJson(this);
 }

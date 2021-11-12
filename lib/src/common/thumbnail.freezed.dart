@@ -150,21 +150,15 @@ class _$_Thumbnail implements _Thumbnail {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Thumbnail &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
-            (identical(other.height, height) ||
-                const DeepCollectionEquality().equals(other.height, height)) &&
-            (identical(other.width, width) ||
-                const DeepCollectionEquality().equals(other.width, width)));
+        (other.runtimeType == runtimeType &&
+            other is _Thumbnail &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.width, width) || other.width == width));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(height) ^
-      const DeepCollectionEquality().hash(width);
+  int get hashCode => Object.hash(runtimeType, url, height, width);
 
   @JsonKey(ignore: true)
   @override
@@ -178,15 +172,15 @@ abstract class _Thumbnail implements Thumbnail {
   @override
 
   /// Image url.
-  Uri get url => throw _privateConstructorUsedError;
+  Uri get url;
   @override
 
   /// Image height.
-  int get height => throw _privateConstructorUsedError;
+  int get height;
   @override
 
   /// Image width.
-  int get width => throw _privateConstructorUsedError;
+  int get width;
   @override
   @JsonKey(ignore: true)
   _$ThumbnailCopyWith<_Thumbnail> get copyWith =>

@@ -182,26 +182,18 @@ class _$_Channel extends _Channel {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Channel &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.logoUrl, logoUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.logoUrl, logoUrl)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Channel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl) &&
             (identical(other.subscribersCount, subscribersCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.subscribersCount, subscribersCount)));
+                other.subscribersCount == subscribersCount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(logoUrl) ^
-      const DeepCollectionEquality().hash(subscribersCount);
+      Object.hash(runtimeType, id, title, logoUrl, subscribersCount);
 
   @JsonKey(ignore: true)
   @override
@@ -218,19 +210,19 @@ abstract class _Channel extends Channel {
   @override
 
   /// Channel ID.
-  ChannelId get id => throw _privateConstructorUsedError;
+  ChannelId get id;
   @override
 
   /// Channel title.
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
 
   /// URL of the channel's logo image.
-  String get logoUrl => throw _privateConstructorUsedError;
+  String get logoUrl;
   @override
 
   /// The (approximate) channel subscriber's count.
-  int? get subscribersCount => throw _privateConstructorUsedError;
+  int? get subscribersCount;
   @override
   @JsonKey(ignore: true)
   _$ChannelCopyWith<_Channel> get copyWith =>

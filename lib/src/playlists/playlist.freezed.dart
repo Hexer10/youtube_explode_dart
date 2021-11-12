@@ -274,37 +274,24 @@ class _$_Playlist extends _Playlist {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Playlist &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.author, author) ||
-                const DeepCollectionEquality().equals(other.author, author)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Playlist &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.author, author) || other.author == author) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
+                other.description == description) &&
             (identical(other.thumbnails, thumbnails) ||
-                const DeepCollectionEquality()
-                    .equals(other.thumbnails, thumbnails)) &&
+                other.thumbnails == thumbnails) &&
             (identical(other.engagement, engagement) ||
-                const DeepCollectionEquality()
-                    .equals(other.engagement, engagement)) &&
+                other.engagement == engagement) &&
             (identical(other.videoCount, videoCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.videoCount, videoCount)));
+                other.videoCount == videoCount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(author) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(thumbnails) ^
-      const DeepCollectionEquality().hash(engagement) ^
-      const DeepCollectionEquality().hash(videoCount);
+  int get hashCode => Object.hash(runtimeType, id, title, author, description,
+      thumbnails, engagement, videoCount);
 
   @JsonKey(ignore: true)
   @override
@@ -326,33 +313,33 @@ abstract class _Playlist extends Playlist {
   @override
 
   /// Playlist ID.
-  PlaylistId get id => throw _privateConstructorUsedError;
+  PlaylistId get id;
   @override
 
   /// Playlist title.
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
 
   /// Playlist author.
   /// Can be null if it's a system playlist (e.g. Video Mix, Topics, etc.).
-  String get author => throw _privateConstructorUsedError;
+  String get author;
   @override
 
   /// Playlist description.
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
 
   /// Available thumbnails for this playlist.
   /// Can be null if the playlist is empty.
-  ThumbnailSet get thumbnails => throw _privateConstructorUsedError;
+  ThumbnailSet get thumbnails;
   @override
 
   /// Engagement statistics.
-  Engagement get engagement => throw _privateConstructorUsedError;
+  Engagement get engagement;
   @override
 
   /// Total videos in this playlist.
-  int? get videoCount => throw _privateConstructorUsedError;
+  int? get videoCount;
   @override
   @JsonKey(ignore: true)
   _$PlaylistCopyWith<_Playlist> get copyWith =>

@@ -127,9 +127,7 @@ class StreamsClient {
       // Muxed or Video-only
       if (!videoCodec.isNullOrWhiteSpace) {
         var framerate = Framerate(streamInfo.framerate ?? 24);
-        var videoQualityLabel = streamInfo.qualityLabel;
-
-        var videoQuality = VideoQualityUtil.fromLabel(videoQualityLabel);
+        var videoQuality = VideoQualityUtil.fromLabel(streamInfo.qualityLabel);
 
         var videoWidth = streamInfo.videoWidth;
         var videoHeight = streamInfo.videoHeight;
@@ -141,19 +139,19 @@ class StreamsClient {
         if (!audioCodec.isNullOrWhiteSpace &&
             streamInfo.source != StreamSource.adaptive) {
           streams[tag] = MuxedStreamInfo(
-              tag,
-              url,
-              container,
-              fileSize,
-              bitrate,
-              audioCodec!,
-              videoCodec!,
-              videoQualityLabel,
-              videoQuality,
-              videoResolution,
-              framerate,
-              streamInfo.codec,
-              streamInfo.qualityLabel);
+            tag,
+            url,
+            container,
+            fileSize,
+            bitrate,
+            audioCodec!,
+            videoCodec!,
+            streamInfo.qualityLabel,
+            videoQuality,
+            videoResolution,
+            framerate,
+            streamInfo.codec,
+          );
           continue;
         }
 
@@ -165,13 +163,12 @@ class StreamsClient {
             fileSize,
             bitrate,
             videoCodec!,
-            videoQualityLabel,
+            streamInfo.qualityLabel,
             videoQuality,
             videoResolution,
             framerate,
             streamInfo.fragments ?? const [],
-            streamInfo.codec,
-            streamInfo.qualityLabel);
+            streamInfo.codec);
         continue;
       }
       // Audio-only
@@ -183,9 +180,9 @@ class StreamsClient {
             fileSize,
             bitrate,
             audioCodec!,
+            streamInfo.qualityLabel,
             streamInfo.fragments ?? const [],
-            streamInfo.codec,
-            streamInfo.qualityLabel);
+            streamInfo.codec);
       }
 
       // #if DEBUG

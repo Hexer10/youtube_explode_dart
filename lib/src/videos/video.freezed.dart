@@ -434,60 +434,48 @@ class _$_Video extends _Video {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Video &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.author, author) ||
-                const DeepCollectionEquality().equals(other.author, author)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Video &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.author, author) || other.author == author) &&
             (identical(other.channelId, channelId) ||
-                const DeepCollectionEquality()
-                    .equals(other.channelId, channelId)) &&
+                other.channelId == channelId) &&
             (identical(other.uploadDate, uploadDate) ||
-                const DeepCollectionEquality()
-                    .equals(other.uploadDate, uploadDate)) &&
+                other.uploadDate == uploadDate) &&
             (identical(other.publishDate, publishDate) ||
-                const DeepCollectionEquality()
-                    .equals(other.publishDate, publishDate)) &&
+                other.publishDate == publishDate) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
+                other.description == description) &&
             (identical(other.duration, duration) ||
-                const DeepCollectionEquality()
-                    .equals(other.duration, duration)) &&
+                other.duration == duration) &&
             (identical(other.thumbnails, thumbnails) ||
-                const DeepCollectionEquality()
-                    .equals(other.thumbnails, thumbnails)) &&
+                other.thumbnails == thumbnails) &&
             (identical(other.keywords, keywords) ||
-                const DeepCollectionEquality()
-                    .equals(other.keywords, keywords)) &&
+                other.keywords == keywords) &&
             (identical(other.engagement, engagement) ||
-                const DeepCollectionEquality()
-                    .equals(other.engagement, engagement)) &&
-            (identical(other.isLive, isLive) ||
-                const DeepCollectionEquality().equals(other.isLive, isLive)) &&
+                other.engagement == engagement) &&
+            (identical(other.isLive, isLive) || other.isLive == isLive) &&
             (identical(other.watchPage, watchPage) ||
-                const DeepCollectionEquality()
-                    .equals(other.watchPage, watchPage)));
+                other.watchPage == watchPage));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(author) ^
-      const DeepCollectionEquality().hash(channelId) ^
-      const DeepCollectionEquality().hash(uploadDate) ^
-      const DeepCollectionEquality().hash(publishDate) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(duration) ^
-      const DeepCollectionEquality().hash(thumbnails) ^
-      const DeepCollectionEquality().hash(keywords) ^
-      const DeepCollectionEquality().hash(engagement) ^
-      const DeepCollectionEquality().hash(isLive) ^
-      const DeepCollectionEquality().hash(watchPage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      author,
+      channelId,
+      uploadDate,
+      publishDate,
+      description,
+      duration,
+      thumbnails,
+      keywords,
+      engagement,
+      isLive,
+      watchPage);
 
   @JsonKey(ignore: true)
   @override
@@ -515,61 +503,60 @@ abstract class _Video extends Video {
   @override
 
   /// Video ID.
-  VideoId get id => throw _privateConstructorUsedError;
+  VideoId get id;
   @override
 
   /// Video title.
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
 
   /// Video author.
-  String get author => throw _privateConstructorUsedError;
+  String get author;
   @override
 
   /// Video author Id.
-  ChannelId get channelId => throw _privateConstructorUsedError;
+  ChannelId get channelId;
   @override
 
   /// Video upload date.
   /// Note: For search queries it is calculated with:
   ///   DateTime.now() - how much time is was published.
-  DateTime? get uploadDate => throw _privateConstructorUsedError;
+  DateTime? get uploadDate;
   @override
 
   /// Video publish date.
-  DateTime? get publishDate => throw _privateConstructorUsedError;
+  DateTime? get publishDate;
   @override
 
   /// Video description.
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
 
   /// Duration of the video.
-  Duration? get duration => throw _privateConstructorUsedError;
+  Duration? get duration;
   @override
 
   /// Available thumbnails for this video.
-  ThumbnailSet get thumbnails => throw _privateConstructorUsedError;
+  ThumbnailSet get thumbnails;
   @override
 
   /// Search keywords used for this video.
-  UnmodifiableListView<String> get keywords =>
-      throw _privateConstructorUsedError;
+  UnmodifiableListView<String> get keywords;
   @override
 
   /// Engagement statistics for this video.
-  Engagement get engagement => throw _privateConstructorUsedError;
+  Engagement get engagement;
   @override
 
   /// Returns true if this is a live stream.
 //ignore: avoid_positional_boolean_parameters
-  bool get isLive => throw _privateConstructorUsedError;
+  bool get isLive;
   @override
 
   /// Used internally.
   /// Shouldn't be used in the code.
   @internal
-  WatchPage? get watchPage => throw _privateConstructorUsedError;
+  WatchPage? get watchPage;
   @override
   @JsonKey(ignore: true)
   _$VideoCopyWith<_Video> get copyWith => throw _privateConstructorUsedError;

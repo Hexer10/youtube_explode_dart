@@ -166,7 +166,7 @@ class __$SearchPlaylistCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(BaseSearchContent)
+@With<BaseSearchContent>()
 class _$_SearchPlaylist with BaseSearchContent implements _SearchPlaylist {
   const _$_SearchPlaylist(this.playlistId, this.playlistTitle,
       this.playlistVideoCount, this.thumbnails);
@@ -196,28 +196,21 @@ class _$_SearchPlaylist with BaseSearchContent implements _SearchPlaylist {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _SearchPlaylist &&
+        (other.runtimeType == runtimeType &&
+            other is _SearchPlaylist &&
             (identical(other.playlistId, playlistId) ||
-                const DeepCollectionEquality()
-                    .equals(other.playlistId, playlistId)) &&
+                other.playlistId == playlistId) &&
             (identical(other.playlistTitle, playlistTitle) ||
-                const DeepCollectionEquality()
-                    .equals(other.playlistTitle, playlistTitle)) &&
+                other.playlistTitle == playlistTitle) &&
             (identical(other.playlistVideoCount, playlistVideoCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.playlistVideoCount, playlistVideoCount)) &&
-            (identical(other.thumbnails, thumbnails) ||
-                const DeepCollectionEquality()
-                    .equals(other.thumbnails, thumbnails)));
+                other.playlistVideoCount == playlistVideoCount) &&
+            const DeepCollectionEquality()
+                .equals(other.thumbnails, thumbnails));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(playlistId) ^
-      const DeepCollectionEquality().hash(playlistTitle) ^
-      const DeepCollectionEquality().hash(playlistVideoCount) ^
-      const DeepCollectionEquality().hash(thumbnails);
+  int get hashCode => Object.hash(runtimeType, playlistId, playlistTitle,
+      playlistVideoCount, const DeepCollectionEquality().hash(thumbnails));
 
   @JsonKey(ignore: true)
   @override
@@ -232,19 +225,19 @@ abstract class _SearchPlaylist implements SearchPlaylist, BaseSearchContent {
   @override
 
   /// PlaylistId.
-  PlaylistId get playlistId => throw _privateConstructorUsedError;
+  PlaylistId get playlistId;
   @override
 
   /// Playlist title.
-  String get playlistTitle => throw _privateConstructorUsedError;
+  String get playlistTitle;
   @override
 
   /// Playlist video count, cannot be greater than 50.
-  int get playlistVideoCount => throw _privateConstructorUsedError;
+  int get playlistVideoCount;
   @override
 
   /// Video thumbnail
-  List<Thumbnail> get thumbnails => throw _privateConstructorUsedError;
+  List<Thumbnail> get thumbnails;
   @override
   @JsonKey(ignore: true)
   _$SearchPlaylistCopyWith<_SearchPlaylist> get copyWith =>

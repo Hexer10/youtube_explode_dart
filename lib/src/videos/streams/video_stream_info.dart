@@ -1,43 +1,22 @@
-import 'package:http_parser/http_parser.dart';
-
-import '../../reverse_engineering/models/fragment.dart';
 import 'streams.dart';
 
 /// YouTube media stream that contains video.
-abstract class VideoStreamInfo extends StreamInfo {
+mixin VideoStreamInfo on StreamInfo {
   /// Video codec.
-  final String videoCodec;
+  String get videoCodec;
 
   /// Video quality label, as seen on YouTube.
   @Deprecated('Use qualityLabel')
-  final String videoQualityLabel;
+  String get videoQualityLabel;
 
   /// Video quality.
-  final VideoQuality videoQuality;
+  VideoQuality get videoQuality;
 
   /// Video resolution.
-  final VideoResolution videoResolution;
+  VideoResolution get videoResolution;
 
   /// Video framerate.
-  final Framerate framerate;
-
-  ///
-  VideoStreamInfo(
-      int tag,
-      Uri url,
-      StreamContainer container,
-      FileSize size,
-      Bitrate bitrate,
-      this.videoCodec,
-      @Deprecated('Use qualityLabel') this.videoQualityLabel,
-      this.videoQuality,
-      this.videoResolution,
-      this.framerate,
-      List<Fragment> fragments,
-      MediaType codec,
-      String qualityLabel)
-      : super(
-            tag, url, container, size, bitrate, fragments, codec, qualityLabel);
+  Framerate get framerate;
 }
 
 /// Extensions for Iterables of [VideoStreamInfo]

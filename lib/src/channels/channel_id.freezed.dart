@@ -109,14 +109,13 @@ class _$_ChannelId extends _ChannelId {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ChannelId &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _ChannelId &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -131,7 +130,7 @@ abstract class _ChannelId extends ChannelId {
   @override
 
   /// ID as a string.
-  String get value => throw _privateConstructorUsedError;
+  String get value;
   @override
   @JsonKey(ignore: true)
   _$ChannelIdCopyWith<_ChannelId> get copyWith =>

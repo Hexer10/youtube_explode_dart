@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'stream_container.freezed.dart';
+part 'stream_container.g.dart';
 
 /// Stream container.
 @freezed
@@ -11,6 +12,9 @@ class StreamContainer with _$StreamContainer {
       /// Container name.
       /// Can be used as file extension
       String name) = _StreamContainer;
+
+  factory StreamContainer.fromJson(Map<String, dynamic> json) =>
+      StreamContainer.parse(json['name'] as String);
 
   const StreamContainer._();
 

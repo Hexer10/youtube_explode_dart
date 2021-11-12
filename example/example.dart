@@ -3,10 +3,9 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 Future<void> main() async {
   var yt = YoutubeExplode();
-  var video =
-      await yt.videos.get('https://www.youtube.com/watch?v=AI7ULzgf8RU');
+  var streamInfo = await yt.videos.streamsClient.getManifest('fRh_vgS2dFE');
 
-  print('Title: ${video.title}');
+  print(streamInfo);
 
   // Close the YoutubeExplode's http client.
   yt.close();

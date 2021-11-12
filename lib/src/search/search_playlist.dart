@@ -10,7 +10,7 @@ part 'search_playlist.freezed.dart';
 @freezed
 class SearchPlaylist with _$SearchPlaylist, BaseSearchContent {
   /// Initialize a [SearchPlaylist] instance.
-  @With(BaseSearchContent)
+  @With<BaseSearchContent>()
   const factory SearchPlaylist(
 
       /// PlaylistId.

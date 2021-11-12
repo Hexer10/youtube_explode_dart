@@ -111,14 +111,13 @@ class _$_PlaylistId extends _PlaylistId {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PlaylistId &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _PlaylistId &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -133,7 +132,7 @@ abstract class _PlaylistId extends PlaylistId {
   @override
 
   /// The playlist id as string.
-  String get value => throw _privateConstructorUsedError;
+  String get value;
   @override
   @JsonKey(ignore: true)
   _$PlaylistIdCopyWith<_PlaylistId> get copyWith =>

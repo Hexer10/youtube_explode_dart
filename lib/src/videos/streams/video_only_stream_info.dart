@@ -1,45 +1,83 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http_parser/http_parser.dart';
 
+import '../../../youtube_explode_dart.dart';
 import '../../reverse_engineering/models/fragment.dart';
 import 'bitrate.dart';
 import 'filesize.dart';
 import 'framerate.dart';
 import 'stream_container.dart';
+import 'stream_info.dart';
 import 'video_quality.dart';
 import 'video_resolution.dart';
 import 'video_stream_info.dart';
 
+part 'video_only_stream_info.g.dart';
+
 /// YouTube media stream that only contains video.
-class VideoOnlyStreamInfo extends VideoStreamInfo {
+@JsonSerializable()
+class VideoOnlyStreamInfo with StreamInfo, VideoStreamInfo {
+  @override
+  final int tag;
+
+  @override
+  final Uri url;
+
+  @override
+  final StreamContainer container;
+
+  @override
+  final FileSize size;
+
+  @override
+  final Bitrate bitrate;
+
+  @override
+  final String videoCodec;
+
+  @override
+  final String qualityLabel;
+
+  @override
+  String get videoQualityLabel => qualityLabel;
+
+  @override
+  final VideoQuality videoQuality;
+
+  @override
+  final VideoResolution videoResolution;
+
+  @override
+  final Framerate framerate;
+
+  @override
+  final List<Fragment> fragments;
+
+  @override
+  @JsonKey(toJson: mediaTypeTojson, fromJson: mediaTypeFromJson)
+  final MediaType codec;
+
   VideoOnlyStreamInfo(
-      int tag,
-      Uri url,
-      StreamContainer container,
-      FileSize size,
-      Bitrate bitrate,
-      String videoCodec,
-      String videoQualityLabel,
-      VideoQuality videoQuality,
-      VideoResolution videoResolution,
-      Framerate framerate,
-      List<Fragment> fragments,
-      MediaType codec,
-      String qualityLabel)
-      : super(
-            tag,
-            url,
-            container,
-            size,
-            bitrate,
-            videoCodec,
-            videoQualityLabel,
-            videoQuality,
-            videoResolution,
-            framerate,
-            fragments,
-            codec,
-            qualityLabel);
+      this.tag,
+      this.url,
+      this.container,
+      this.size,
+      this.bitrate,
+      this.videoCodec,
+      this.qualityLabel,
+      this.videoQuality,
+      this.videoResolution,
+      this.framerate,
+      this.fragments,
+      this.codec);
 
   @override
   String toString() => 'Video-only ($tag | $videoResolution | $container)';
+
+  factory VideoOnlyStreamInfo.fromJson(Map<String, dynamic> json) =>
+      _$VideoOnlyStreamInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$VideoOnlyStreamInfoToJson(this);
+
+
 }

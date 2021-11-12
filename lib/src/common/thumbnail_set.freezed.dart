@@ -117,14 +117,13 @@ class _$_ThumbnailSet extends _ThumbnailSet {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ThumbnailSet &&
-            (identical(other.videoId, videoId) ||
-                const DeepCollectionEquality().equals(other.videoId, videoId)));
+        (other.runtimeType == runtimeType &&
+            other is _ThumbnailSet &&
+            (identical(other.videoId, videoId) || other.videoId == videoId));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(videoId);
+  int get hashCode => Object.hash(runtimeType, videoId);
 
   @JsonKey(ignore: true)
   @override
@@ -139,7 +138,7 @@ abstract class _ThumbnailSet extends ThumbnailSet {
   @override
 
   /// Video id.
-  String get videoId => throw _privateConstructorUsedError;
+  String get videoId;
   @override
   @JsonKey(ignore: true)
   _$ThumbnailSetCopyWith<_ThumbnailSet> get copyWith =>

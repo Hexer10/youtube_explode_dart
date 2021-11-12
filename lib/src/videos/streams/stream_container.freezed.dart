@@ -13,6 +13,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+StreamContainer _$StreamContainerFromJson(Map<String, dynamic> json) {
+  return _StreamContainer.fromJson(json);
+}
+
 /// @nodoc
 class _$StreamContainerTearOff {
   const _$StreamContainerTearOff();
@@ -21,6 +25,10 @@ class _$StreamContainerTearOff {
     return _StreamContainer(
       name,
     );
+  }
+
+  StreamContainer fromJson(Map<String, Object?> json) {
+    return StreamContainer.fromJson(json);
   }
 }
 
@@ -33,6 +41,7 @@ mixin _$StreamContainer {
   /// Can be used as file extension
   String get name => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $StreamContainerCopyWith<StreamContainer> get copyWith =>
       throw _privateConstructorUsedError;
@@ -103,9 +112,12 @@ class __$StreamContainerCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_StreamContainer extends _StreamContainer {
   const _$_StreamContainer(this.name) : super._();
+
+  factory _$_StreamContainer.fromJson(Map<String, dynamic> json) =>
+      _$$_StreamContainerFromJson(json);
 
   @override
 
@@ -116,30 +128,37 @@ class _$_StreamContainer extends _StreamContainer {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StreamContainer &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+        (other.runtimeType == runtimeType &&
+            other is _StreamContainer &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+  int get hashCode => Object.hash(runtimeType, name);
 
   @JsonKey(ignore: true)
   @override
   _$StreamContainerCopyWith<_StreamContainer> get copyWith =>
       __$StreamContainerCopyWithImpl<_StreamContainer>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_StreamContainerToJson(this);
+  }
 }
 
 abstract class _StreamContainer extends StreamContainer {
   const factory _StreamContainer(String name) = _$_StreamContainer;
   const _StreamContainer._() : super._();
 
+  factory _StreamContainer.fromJson(Map<String, dynamic> json) =
+      _$_StreamContainer.fromJson;
+
   @override
 
   /// Container name.
   /// Can be used as file extension
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @JsonKey(ignore: true)
   _$StreamContainerCopyWith<_StreamContainer> get copyWith =>

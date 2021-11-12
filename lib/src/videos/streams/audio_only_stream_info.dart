@@ -1,23 +1,60 @@
 import 'package:http_parser/http_parser.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import '../../reverse_engineering/models/fragment.dart';
+import 'stream_info.dart';
 import 'streams.dart';
 
+part 'audio_only_stream_info.g.dart';
+
 /// YouTube media stream that only contains audio.
-class AudioOnlyStreamInfo extends AudioStreamInfo {
+@JsonSerializable()
+class AudioOnlyStreamInfo with StreamInfo, AudioStreamInfo {
+  @override
+  final int tag;
+
+  @override
+  final Uri url;
+
+  @override
+  final StreamContainer container;
+
+  @override
+  final FileSize size;
+
+  @override
+  final Bitrate bitrate;
+
+  @override
+  final String audioCodec;
+
+  @override
+  @JsonKey(toJson: mediaTypeTojson, fromJson: mediaTypeFromJson)
+  final MediaType codec;
+
+  @override
+  final List<Fragment> fragments;
+
+  @override
+  final String qualityLabel;
+
   AudioOnlyStreamInfo(
-      int tag,
-      Uri url,
-      StreamContainer container,
-      FileSize size,
-      Bitrate bitrate,
-      String audioCodec,
-      List<Fragment> fragments,
-      MediaType codec,
-      String qualityLabel)
-      : super(tag, url, container, size, bitrate, audioCodec, fragments, codec,
-            qualityLabel);
+      this.tag,
+      this.url,
+      this.container,
+      this.size,
+      this.bitrate,
+      this.audioCodec,
+      this.qualityLabel,
+      this.fragments,
+      this.codec);
 
   @override
   String toString() => 'Audio-only ($tag | $container)';
+
+  factory AudioOnlyStreamInfo.fromJson(Map<String, dynamic> json) =>
+      _$AudioOnlyStreamInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AudioOnlyStreamInfoToJson(this);
+
 }

@@ -159,7 +159,7 @@ class __$SearchChannelCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(BaseSearchContent)
+@With<BaseSearchContent>()
 class _$_SearchChannel with BaseSearchContent implements _SearchChannel {
   const _$_SearchChannel(this.id, this.name, this.description, this.videoCount);
 
@@ -189,26 +189,19 @@ class _$_SearchChannel with BaseSearchContent implements _SearchChannel {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _SearchChannel &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is _SearchChannel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
+                other.description == description) &&
             (identical(other.videoCount, videoCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.videoCount, videoCount)));
+                other.videoCount == videoCount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(videoCount);
+      Object.hash(runtimeType, id, name, description, videoCount);
 
   @JsonKey(ignore: true)
   @override
@@ -224,20 +217,20 @@ abstract class _SearchChannel implements SearchChannel, BaseSearchContent {
   @override
 
   /// Channel id.
-  ChannelId get id => throw _privateConstructorUsedError;
+  ChannelId get id;
   @override
 
   /// Channel name.
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
 
   /// Description snippet.
   /// Can be empty.
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
 
   /// Channel uploaded videos.
-  int get videoCount => throw _privateConstructorUsedError;
+  int get videoCount;
   @override
   @JsonKey(ignore: true)
   _$SearchChannelCopyWith<_SearchChannel> get copyWith =>

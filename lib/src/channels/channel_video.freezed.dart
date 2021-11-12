@@ -235,36 +235,24 @@ class _$_ChannelVideo implements _ChannelVideo {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ChannelVideo &&
-            (identical(other.videoId, videoId) ||
-                const DeepCollectionEquality()
-                    .equals(other.videoId, videoId)) &&
+        (other.runtimeType == runtimeType &&
+            other is _ChannelVideo &&
+            (identical(other.videoId, videoId) || other.videoId == videoId) &&
             (identical(other.videoTitle, videoTitle) ||
-                const DeepCollectionEquality()
-                    .equals(other.videoTitle, videoTitle)) &&
+                other.videoTitle == videoTitle) &&
             (identical(other.videoDuration, videoDuration) ||
-                const DeepCollectionEquality()
-                    .equals(other.videoDuration, videoDuration)) &&
+                other.videoDuration == videoDuration) &&
             (identical(other.videoThumbnail, videoThumbnail) ||
-                const DeepCollectionEquality()
-                    .equals(other.videoThumbnail, videoThumbnail)) &&
+                other.videoThumbnail == videoThumbnail) &&
             (identical(other.videoUploadDate, videoUploadDate) ||
-                const DeepCollectionEquality()
-                    .equals(other.videoUploadDate, videoUploadDate)) &&
+                other.videoUploadDate == videoUploadDate) &&
             (identical(other.videoViews, videoViews) ||
-                const DeepCollectionEquality()
-                    .equals(other.videoViews, videoViews)));
+                other.videoViews == videoViews));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(videoId) ^
-      const DeepCollectionEquality().hash(videoTitle) ^
-      const DeepCollectionEquality().hash(videoDuration) ^
-      const DeepCollectionEquality().hash(videoThumbnail) ^
-      const DeepCollectionEquality().hash(videoUploadDate) ^
-      const DeepCollectionEquality().hash(videoViews);
+  int get hashCode => Object.hash(runtimeType, videoId, videoTitle,
+      videoDuration, videoThumbnail, videoUploadDate, videoViews);
 
   @JsonKey(ignore: true)
   @override
@@ -284,28 +272,28 @@ abstract class _ChannelVideo implements ChannelVideo {
   @override
 
   /// Video ID.
-  VideoId get videoId => throw _privateConstructorUsedError;
+  VideoId get videoId;
   @override
 
   /// Video title.
-  String get videoTitle => throw _privateConstructorUsedError;
+  String get videoTitle;
   @override
 
   /// Video duration
-  Duration get videoDuration => throw _privateConstructorUsedError;
+  Duration get videoDuration;
   @override
 
   /// Video thumbnail
-  String get videoThumbnail => throw _privateConstructorUsedError;
+  String get videoThumbnail;
   @override
 
   /// Video upload date.
   /// Formatted like 10 hours ago
-  String get videoUploadDate => throw _privateConstructorUsedError;
+  String get videoUploadDate;
   @override
 
   /// Video view count.
-  int get videoViews => throw _privateConstructorUsedError;
+  int get videoViews;
   @override
   @JsonKey(ignore: true)
   _$ChannelVideoCopyWith<_ChannelVideo> get copyWith =>

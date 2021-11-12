@@ -113,14 +113,13 @@ class _$_Username implements _Username {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Username &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _Username &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -134,7 +133,7 @@ abstract class _Username implements Username {
   @override
 
   /// User name as string.
-  String get value => throw _privateConstructorUsedError;
+  String get value;
   @override
   @JsonKey(ignore: true)
   _$UsernameCopyWith<_Username> get copyWith =>

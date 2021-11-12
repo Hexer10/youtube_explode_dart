@@ -2,40 +2,36 @@ import 'package:http_parser/http_parser.dart';
 
 import '../../reverse_engineering/models/fragment.dart';
 import '../videos.dart';
-import 'bitrate.dart';
-import 'filesize.dart';
-import 'stream_container.dart';
 
 /// Generic YouTube media stream.
-abstract class StreamInfo {
+mixin StreamInfo {
   /// Stream tag.
   /// Uniquely identifies a stream inside a manifest.
-  final int tag;
+  int get tag;
 
   /// Stream URL.
-  final Uri url;
+  Uri get url;
 
   /// Stream container.
-  final StreamContainer container;
+  StreamContainer get container;
 
   /// Stream size.
-  final FileSize size;
+  FileSize get size;
 
   /// Stream bitrate.
-  final Bitrate bitrate;
+  Bitrate get bitrate;
 
   /// DASH streams contain multiple stream fragments.
-  final List<Fragment> fragments;
+  List<Fragment> get fragments;
 
   /// Streams codec.
-  final MediaType codec;
+  MediaType get codec;
 
   /// Stream quality label.
-  final String qualityLabel;
+  String get qualityLabel;
 
-  /// Initialize an instance of [StreamInfo].
-  StreamInfo(this.tag, this.url, this.container, this.size, this.bitrate,
-      this.fragments, this.codec, this.qualityLabel);
+  /// Convert to a json-serialized type.
+  Map<String, dynamic> toJson();
 }
 
 /// Extension for Iterables of StreamInfo.
@@ -102,3 +98,7 @@ class _Column {
     return buffer.toString();
   }
 }
+
+String mediaTypeTojson(MediaType value) => value.toString();
+MediaType mediaTypeFromJson(String value) => MediaType.parse(value);
+

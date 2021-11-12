@@ -85,7 +85,7 @@ class VideoId with _$VideoId {
       return embedMatch;
     }
 
-     // https://www.youtube.com/shorts/yIVRs6YSbOM
+    // https://www.youtube.com/shorts/yIVRs6YSbOM
     var shortsMatch = _shortsMatchExp.firstMatch(url)?.group(1);
     if (!shortsMatch.isNullOrWhiteSpace && validateVideoId(shortsMatch!)) {
       return shortsMatch;

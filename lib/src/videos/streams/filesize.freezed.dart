@@ -13,6 +13,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+FileSize _$FileSizeFromJson(Map<String, dynamic> json) {
+  return _FileSize.fromJson(json);
+}
+
 /// @nodoc
 class _$FileSizeTearOff {
   const _$FileSizeTearOff();
@@ -21,6 +25,10 @@ class _$FileSizeTearOff {
     return _FileSize(
       totalBytes,
     );
+  }
+
+  FileSize fromJson(Map<String, Object?> json) {
+    return FileSize.fromJson(json);
   }
 }
 
@@ -32,6 +40,7 @@ mixin _$FileSize {
   /// Total bytes.
   int get totalBytes => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $FileSizeCopyWith<FileSize> get copyWith =>
       throw _privateConstructorUsedError;
@@ -96,10 +105,13 @@ class __$FileSizeCopyWithImpl<$Res> extends _$FileSizeCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@With.fromString('Comparable<FileSize>')
+@JsonSerializable()
+@With<Comparable<FileSize>>()
 class _$_FileSize extends _FileSize with Comparable<FileSize> {
   const _$_FileSize(this.totalBytes) : super._();
+
+  factory _$_FileSize.fromJson(Map<String, dynamic> json) =>
+      _$$_FileSizeFromJson(json);
 
   @override
 
@@ -109,30 +121,36 @@ class _$_FileSize extends _FileSize with Comparable<FileSize> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FileSize &&
+        (other.runtimeType == runtimeType &&
+            other is _FileSize &&
             (identical(other.totalBytes, totalBytes) ||
-                const DeepCollectionEquality()
-                    .equals(other.totalBytes, totalBytes)));
+                other.totalBytes == totalBytes));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(totalBytes);
+  int get hashCode => Object.hash(runtimeType, totalBytes);
 
   @JsonKey(ignore: true)
   @override
   _$FileSizeCopyWith<_FileSize> get copyWith =>
       __$FileSizeCopyWithImpl<_FileSize>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_FileSizeToJson(this);
+  }
 }
 
 abstract class _FileSize extends FileSize implements Comparable<FileSize> {
   const factory _FileSize(int totalBytes) = _$_FileSize;
   const _FileSize._() : super._();
 
+  factory _FileSize.fromJson(Map<String, dynamic> json) = _$_FileSize.fromJson;
+
   @override
 
   /// Total bytes.
-  int get totalBytes => throw _privateConstructorUsedError;
+  int get totalBytes;
   @override
   @JsonKey(ignore: true)
   _$FileSizeCopyWith<_FileSize> get copyWith =>

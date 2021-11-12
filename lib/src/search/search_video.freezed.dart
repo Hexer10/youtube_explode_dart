@@ -270,7 +270,7 @@ class __$SearchVideoCopyWithImpl<$Res> extends _$SearchVideoCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With(BaseSearchContent)
+@With<BaseSearchContent>()
 class _$_SearchVideo with BaseSearchContent implements _SearchVideo {
   const _$_SearchVideo(
       this.id,
@@ -334,48 +334,39 @@ class _$_SearchVideo with BaseSearchContent implements _SearchVideo {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _SearchVideo &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.author, author) ||
-                const DeepCollectionEquality().equals(other.author, author)) &&
+        (other.runtimeType == runtimeType &&
+            other is _SearchVideo &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.author, author) || other.author == author) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
+                other.description == description) &&
             (identical(other.duration, duration) ||
-                const DeepCollectionEquality()
-                    .equals(other.duration, duration)) &&
+                other.duration == duration) &&
             (identical(other.viewCount, viewCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.viewCount, viewCount)) &&
-            (identical(other.thumbnails, thumbnails) ||
-                const DeepCollectionEquality()
-                    .equals(other.thumbnails, thumbnails)) &&
+                other.viewCount == viewCount) &&
+            const DeepCollectionEquality()
+                .equals(other.thumbnails, thumbnails) &&
             (identical(other.uploadDate, uploadDate) ||
-                const DeepCollectionEquality()
-                    .equals(other.uploadDate, uploadDate)) &&
-            (identical(other.isLive, isLive) ||
-                const DeepCollectionEquality().equals(other.isLive, isLive)) &&
+                other.uploadDate == uploadDate) &&
+            (identical(other.isLive, isLive) || other.isLive == isLive) &&
             (identical(other.channelId, channelId) ||
-                const DeepCollectionEquality()
-                    .equals(other.channelId, channelId)));
+                other.channelId == channelId));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(author) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(duration) ^
-      const DeepCollectionEquality().hash(viewCount) ^
-      const DeepCollectionEquality().hash(thumbnails) ^
-      const DeepCollectionEquality().hash(uploadDate) ^
-      const DeepCollectionEquality().hash(isLive) ^
-      const DeepCollectionEquality().hash(channelId);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      author,
+      description,
+      duration,
+      viewCount,
+      const DeepCollectionEquality().hash(thumbnails),
+      uploadDate,
+      isLive,
+      channelId);
 
   @JsonKey(ignore: true)
   @override
@@ -399,44 +390,44 @@ abstract class _SearchVideo implements SearchVideo, BaseSearchContent {
   @override
 
   /// Video ID.
-  VideoId get id => throw _privateConstructorUsedError;
+  VideoId get id;
   @override
 
   /// Video title.
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
 
   /// Video author.
-  String get author => throw _privateConstructorUsedError;
+  String get author;
   @override
 
   /// Video description snippet. (Part of the full description if too long)
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
 
   /// Video duration as String, HH:MM:SS
-  String get duration => throw _privateConstructorUsedError;
+  String get duration;
   @override
 
   /// Video View Count
-  int get viewCount => throw _privateConstructorUsedError;
+  int get viewCount;
   @override
 
   /// Video thumbnail
-  List<Thumbnail> get thumbnails => throw _privateConstructorUsedError;
+  List<Thumbnail> get thumbnails;
   @override
 
   /// Video upload date - As string: 5 years ago.
-  String? get uploadDate => throw _privateConstructorUsedError;
+  String? get uploadDate;
   @override
 
   /// True if this video is a live stream.
 // ignore: avoid_positional_boolean_parameters
-  bool get isLive => throw _privateConstructorUsedError;
+  bool get isLive;
   @override
 
   /// Channel id
-  String get channelId => throw _privateConstructorUsedError;
+  String get channelId;
   @override
   @JsonKey(ignore: true)
   _$SearchVideoCopyWith<_SearchVideo> get copyWith =>

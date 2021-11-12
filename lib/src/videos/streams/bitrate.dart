@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bitrate.freezed.dart';
+part 'bitrate.g.dart';
 
 /// Encapsulates bitrate.
 @freezed
@@ -15,11 +16,14 @@ class Bitrate with Comparable<Bitrate>, _$Bitrate {
   double get gigaBitsPerSecond => megaBitsPerSecond / 1024;
 
   /// Initializes an instance of [Bitrate]
-  @With.fromString('Comparable<Bitrate>')
+  @With<Comparable<Bitrate>>()
   const factory Bitrate(
 
       /// Bits per second.
       int bitsPerSecond) = _Bitrate;
+
+  factory Bitrate.fromJson(Map<String, dynamic> json) =>
+      _$BitrateFromJson(json);
 
   const Bitrate._();
 

@@ -155,21 +155,15 @@ class _$_ChannelLink implements _ChannelLink {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ChannelLink &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
-            (identical(other.icon, icon) ||
-                const DeepCollectionEquality().equals(other.icon, icon)));
+        (other.runtimeType == runtimeType &&
+            other is _ChannelLink &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.icon, icon) || other.icon == icon));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(icon);
+  int get hashCode => Object.hash(runtimeType, title, url, icon);
 
   @JsonKey(ignore: true)
   @override
@@ -183,16 +177,16 @@ abstract class _ChannelLink implements ChannelLink {
   @override
 
   /// Link title.
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
 
   /// Link URL.
   /// Already decoded with the YouTube shortener already taken out.
-  Uri get url => throw _privateConstructorUsedError;
+  Uri get url;
   @override
 
   /// Link Icon URL.
-  Uri get icon => throw _privateConstructorUsedError;
+  Uri get icon;
   @override
   @JsonKey(ignore: true)
   _$ChannelLinkCopyWith<_ChannelLink> get copyWith =>

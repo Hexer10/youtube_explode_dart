@@ -28,7 +28,7 @@ class _$LanguageTearOff {
     );
   }
 
-  Language fromJson(Map<String, Object> json) {
+  Language fromJson(Map<String, Object?> json) {
     return Language.fromJson(json);
   }
 }
@@ -143,18 +143,14 @@ class _$_Language extends _Language {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Language &&
-            (identical(other.code, code) ||
-                const DeepCollectionEquality().equals(other.code, code)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+        (other.runtimeType == runtimeType &&
+            other is _Language &&
+            (identical(other.code, code) || other.code == code) &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(code) ^
-      const DeepCollectionEquality().hash(name);
+  int get hashCode => Object.hash(runtimeType, code, name);
 
   @JsonKey(ignore: true)
   @override
@@ -176,11 +172,11 @@ abstract class _Language extends Language {
   @override
 
   /// ISO 639-1 code of this language.
-  String get code => throw _privateConstructorUsedError;
+  String get code;
   @override
 
   /// Full English name of this language. This could be an empty string.
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @JsonKey(ignore: true)
   _$LanguageCopyWith<_Language> get copyWith =>
