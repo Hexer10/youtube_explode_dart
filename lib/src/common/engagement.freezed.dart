@@ -155,17 +155,18 @@ class _$_Engagement extends _Engagement {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Engagement &&
-            (identical(other.viewCount, viewCount) ||
-                other.viewCount == viewCount) &&
-            (identical(other.likeCount, likeCount) ||
-                other.likeCount == likeCount) &&
-            (identical(other.dislikeCount, dislikeCount) ||
-                other.dislikeCount == dislikeCount));
+            const DeepCollectionEquality().equals(other.viewCount, viewCount) &&
+            const DeepCollectionEquality().equals(other.likeCount, likeCount) &&
+            const DeepCollectionEquality()
+                .equals(other.dislikeCount, dislikeCount));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, viewCount, likeCount, dislikeCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(viewCount),
+      const DeepCollectionEquality().hash(likeCount),
+      const DeepCollectionEquality().hash(dislikeCount));
 
   @JsonKey(ignore: true)
   @override

@@ -157,13 +157,17 @@ class _$_ChannelLink implements _ChannelLink {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ChannelLink &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.icon, icon) || other.icon == icon));
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.url, url) &&
+            const DeepCollectionEquality().equals(other.icon, icon));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, title, url, icon);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(url),
+      const DeepCollectionEquality().hash(icon));
 
   @JsonKey(ignore: true)
   @override

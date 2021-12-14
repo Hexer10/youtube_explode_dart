@@ -119,11 +119,12 @@ class _$_ThumbnailSet extends _ThumbnailSet {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ThumbnailSet &&
-            (identical(other.videoId, videoId) || other.videoId == videoId));
+            const DeepCollectionEquality().equals(other.videoId, videoId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, videoId);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(videoId));
 
   @JsonKey(ignore: true)
   @override

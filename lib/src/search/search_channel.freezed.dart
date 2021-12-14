@@ -191,17 +191,21 @@ class _$_SearchChannel with BaseSearchContent implements _SearchChannel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SearchChannel &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.videoCount, videoCount) ||
-                other.videoCount == videoCount));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality()
+                .equals(other.videoCount, videoCount));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, description, videoCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(videoCount));
 
   @JsonKey(ignore: true)
   @override

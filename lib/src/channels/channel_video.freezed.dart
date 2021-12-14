@@ -237,22 +237,28 @@ class _$_ChannelVideo implements _ChannelVideo {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ChannelVideo &&
-            (identical(other.videoId, videoId) || other.videoId == videoId) &&
-            (identical(other.videoTitle, videoTitle) ||
-                other.videoTitle == videoTitle) &&
-            (identical(other.videoDuration, videoDuration) ||
-                other.videoDuration == videoDuration) &&
-            (identical(other.videoThumbnail, videoThumbnail) ||
-                other.videoThumbnail == videoThumbnail) &&
-            (identical(other.videoUploadDate, videoUploadDate) ||
-                other.videoUploadDate == videoUploadDate) &&
-            (identical(other.videoViews, videoViews) ||
-                other.videoViews == videoViews));
+            const DeepCollectionEquality().equals(other.videoId, videoId) &&
+            const DeepCollectionEquality()
+                .equals(other.videoTitle, videoTitle) &&
+            const DeepCollectionEquality()
+                .equals(other.videoDuration, videoDuration) &&
+            const DeepCollectionEquality()
+                .equals(other.videoThumbnail, videoThumbnail) &&
+            const DeepCollectionEquality()
+                .equals(other.videoUploadDate, videoUploadDate) &&
+            const DeepCollectionEquality()
+                .equals(other.videoViews, videoViews));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, videoId, videoTitle,
-      videoDuration, videoThumbnail, videoUploadDate, videoViews);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(videoId),
+      const DeepCollectionEquality().hash(videoTitle),
+      const DeepCollectionEquality().hash(videoDuration),
+      const DeepCollectionEquality().hash(videoThumbnail),
+      const DeepCollectionEquality().hash(videoUploadDate),
+      const DeepCollectionEquality().hash(videoViews));
 
   @JsonKey(ignore: true)
   @override

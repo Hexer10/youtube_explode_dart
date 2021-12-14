@@ -111,11 +111,12 @@ class _$_ChannelId extends _ChannelId {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ChannelId &&
-            (identical(other.value, value) || other.value == value));
+            const DeepCollectionEquality().equals(other.value, value));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, value);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(value));
 
   @JsonKey(ignore: true)
   @override

@@ -122,12 +122,13 @@ class _$_Bitrate extends _Bitrate with Comparable<Bitrate> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Bitrate &&
-            (identical(other.bitsPerSecond, bitsPerSecond) ||
-                other.bitsPerSecond == bitsPerSecond));
+            const DeepCollectionEquality()
+                .equals(other.bitsPerSecond, bitsPerSecond));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, bitsPerSecond);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(bitsPerSecond));
 
   @JsonKey(ignore: true)
   @override

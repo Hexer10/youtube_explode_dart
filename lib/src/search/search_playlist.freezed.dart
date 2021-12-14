@@ -198,19 +198,23 @@ class _$_SearchPlaylist with BaseSearchContent implements _SearchPlaylist {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SearchPlaylist &&
-            (identical(other.playlistId, playlistId) ||
-                other.playlistId == playlistId) &&
-            (identical(other.playlistTitle, playlistTitle) ||
-                other.playlistTitle == playlistTitle) &&
-            (identical(other.playlistVideoCount, playlistVideoCount) ||
-                other.playlistVideoCount == playlistVideoCount) &&
+            const DeepCollectionEquality()
+                .equals(other.playlistId, playlistId) &&
+            const DeepCollectionEquality()
+                .equals(other.playlistTitle, playlistTitle) &&
+            const DeepCollectionEquality()
+                .equals(other.playlistVideoCount, playlistVideoCount) &&
             const DeepCollectionEquality()
                 .equals(other.thumbnails, thumbnails));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, playlistId, playlistTitle,
-      playlistVideoCount, const DeepCollectionEquality().hash(thumbnails));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(playlistId),
+      const DeepCollectionEquality().hash(playlistTitle),
+      const DeepCollectionEquality().hash(playlistVideoCount),
+      const DeepCollectionEquality().hash(thumbnails));
 
   @JsonKey(ignore: true)
   @override

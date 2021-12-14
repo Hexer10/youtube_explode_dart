@@ -290,25 +290,30 @@ class _$_Comment implements _Comment {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Comment &&
-            (identical(other.author, author) || other.author == author) &&
-            (identical(other.channelId, channelId) ||
-                other.channelId == channelId) &&
-            (identical(other.text, text) || other.text == text) &&
-            (identical(other.likeCount, likeCount) ||
-                other.likeCount == likeCount) &&
-            (identical(other.publishedTime, publishedTime) ||
-                other.publishedTime == publishedTime) &&
-            (identical(other.replyCount, replyCount) ||
-                other.replyCount == replyCount) &&
-            (identical(other.isHearted, isHearted) ||
-                other.isHearted == isHearted) &&
-            (identical(other.continuation, continuation) ||
-                other.continuation == continuation));
+            const DeepCollectionEquality().equals(other.author, author) &&
+            const DeepCollectionEquality().equals(other.channelId, channelId) &&
+            const DeepCollectionEquality().equals(other.text, text) &&
+            const DeepCollectionEquality().equals(other.likeCount, likeCount) &&
+            const DeepCollectionEquality()
+                .equals(other.publishedTime, publishedTime) &&
+            const DeepCollectionEquality()
+                .equals(other.replyCount, replyCount) &&
+            const DeepCollectionEquality().equals(other.isHearted, isHearted) &&
+            const DeepCollectionEquality()
+                .equals(other.continuation, continuation));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, author, channelId, text,
-      likeCount, publishedTime, replyCount, isHearted, continuation);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(author),
+      const DeepCollectionEquality().hash(channelId),
+      const DeepCollectionEquality().hash(text),
+      const DeepCollectionEquality().hash(likeCount),
+      const DeepCollectionEquality().hash(publishedTime),
+      const DeepCollectionEquality().hash(replyCount),
+      const DeepCollectionEquality().hash(isHearted),
+      const DeepCollectionEquality().hash(continuation));
 
   @JsonKey(ignore: true)
   @override

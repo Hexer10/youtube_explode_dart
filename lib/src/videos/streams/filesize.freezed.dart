@@ -123,12 +123,13 @@ class _$_FileSize extends _FileSize with Comparable<FileSize> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _FileSize &&
-            (identical(other.totalBytes, totalBytes) ||
-                other.totalBytes == totalBytes));
+            const DeepCollectionEquality()
+                .equals(other.totalBytes, totalBytes));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, totalBytes);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(totalBytes));
 
   @JsonKey(ignore: true)
   @override
