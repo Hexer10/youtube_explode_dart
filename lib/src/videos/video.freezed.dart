@@ -436,46 +436,42 @@ class _$_Video extends _Video {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Video &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.author, author) || other.author == author) &&
-            (identical(other.channelId, channelId) ||
-                other.channelId == channelId) &&
-            (identical(other.uploadDate, uploadDate) ||
-                other.uploadDate == uploadDate) &&
-            (identical(other.publishDate, publishDate) ||
-                other.publishDate == publishDate) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.duration, duration) ||
-                other.duration == duration) &&
-            (identical(other.thumbnails, thumbnails) ||
-                other.thumbnails == thumbnails) &&
-            (identical(other.keywords, keywords) ||
-                other.keywords == keywords) &&
-            (identical(other.engagement, engagement) ||
-                other.engagement == engagement) &&
-            (identical(other.isLive, isLive) || other.isLive == isLive) &&
-            (identical(other.watchPage, watchPage) ||
-                other.watchPage == watchPage));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.author, author) &&
+            const DeepCollectionEquality().equals(other.channelId, channelId) &&
+            const DeepCollectionEquality()
+                .equals(other.uploadDate, uploadDate) &&
+            const DeepCollectionEquality()
+                .equals(other.publishDate, publishDate) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.duration, duration) &&
+            const DeepCollectionEquality()
+                .equals(other.thumbnails, thumbnails) &&
+            const DeepCollectionEquality().equals(other.keywords, keywords) &&
+            const DeepCollectionEquality()
+                .equals(other.engagement, engagement) &&
+            const DeepCollectionEquality().equals(other.isLive, isLive) &&
+            const DeepCollectionEquality().equals(other.watchPage, watchPage));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      id,
-      title,
-      author,
-      channelId,
-      uploadDate,
-      publishDate,
-      description,
-      duration,
-      thumbnails,
-      keywords,
-      engagement,
-      isLive,
-      watchPage);
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(author),
+      const DeepCollectionEquality().hash(channelId),
+      const DeepCollectionEquality().hash(uploadDate),
+      const DeepCollectionEquality().hash(publishDate),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(duration),
+      const DeepCollectionEquality().hash(thumbnails),
+      const DeepCollectionEquality().hash(keywords),
+      const DeepCollectionEquality().hash(engagement),
+      const DeepCollectionEquality().hash(isLive),
+      const DeepCollectionEquality().hash(watchPage));
 
   @JsonKey(ignore: true)
   @override

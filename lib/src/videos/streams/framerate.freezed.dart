@@ -123,12 +123,13 @@ class _$_Framerate extends _Framerate {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Framerate &&
-            (identical(other.framesPerSecond, framesPerSecond) ||
-                other.framesPerSecond == framesPerSecond));
+            const DeepCollectionEquality()
+                .equals(other.framesPerSecond, framesPerSecond));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, framesPerSecond);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(framesPerSecond));
 
   @JsonKey(ignore: true)
   @override

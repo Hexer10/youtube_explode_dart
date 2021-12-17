@@ -184,16 +184,20 @@ class _$_Channel extends _Channel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Channel &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl) &&
-            (identical(other.subscribersCount, subscribersCount) ||
-                other.subscribersCount == subscribersCount));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.logoUrl, logoUrl) &&
+            const DeepCollectionEquality()
+                .equals(other.subscribersCount, subscribersCount));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, logoUrl, subscribersCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(logoUrl),
+      const DeepCollectionEquality().hash(subscribersCount));
 
   @JsonKey(ignore: true)
   @override

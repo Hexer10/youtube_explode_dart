@@ -36,15 +36,16 @@ void main() {
     expect(video.thumbnails, isNotEmpty);
   });
 
-  test('Search with no results - old', () async {
-    var query =
-        // ignore: deprecated_member_use_from_same_package
-        await yt!.search.queryFromPage('g;jghEOGHJeguEPOUIhjegoUEHGOGHPSASG');
-    expect(query.content, isEmpty);
-    expect(query.relatedVideos, isEmpty);
-    var nextPage = await query.nextPage();
-    expect(nextPage, isNull);
-  });
+  // Seems all search key also have result now, so hide this test case
+  // test('Search with no results - old', () async {
+  //   var query =
+  //       // ignore: deprecated_member_use_from_same_package
+  //       await yt!.search.queryFromPage('g;jghEOGHJeguEPOUIhjegoUEHGOGHPSASG');
+  //   expect(query.content, isEmpty);
+  //   expect(query.relatedVideos, isEmpty);
+  //   var nextPage = await query.nextPage();
+  //   expect(nextPage, isNull);
+  // });
 
   test('Search youtube videos have thumbnails - old', () async {
     // ignore: deprecated_member_use_from_same_package

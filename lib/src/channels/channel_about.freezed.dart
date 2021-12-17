@@ -251,16 +251,14 @@ class _$_ChannelAbout implements _ChannelAbout {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ChannelAbout &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.viewCount, viewCount) ||
-                other.viewCount == viewCount) &&
-            (identical(other.joinDate, joinDate) ||
-                other.joinDate == joinDate) &&
-            (identical(other.title, title) || other.title == title) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.viewCount, viewCount) &&
+            const DeepCollectionEquality().equals(other.joinDate, joinDate) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality()
                 .equals(other.thumbnails, thumbnails) &&
-            (identical(other.country, country) || other.country == country) &&
+            const DeepCollectionEquality().equals(other.country, country) &&
             const DeepCollectionEquality()
                 .equals(other.channelLinks, channelLinks));
   }
@@ -268,12 +266,12 @@ class _$_ChannelAbout implements _ChannelAbout {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      description,
-      viewCount,
-      joinDate,
-      title,
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(viewCount),
+      const DeepCollectionEquality().hash(joinDate),
+      const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(thumbnails),
-      country,
+      const DeepCollectionEquality().hash(country),
       const DeepCollectionEquality().hash(channelLinks));
 
   @JsonKey(ignore: true)

@@ -276,22 +276,29 @@ class _$_Playlist extends _Playlist {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Playlist &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.author, author) || other.author == author) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.thumbnails, thumbnails) ||
-                other.thumbnails == thumbnails) &&
-            (identical(other.engagement, engagement) ||
-                other.engagement == engagement) &&
-            (identical(other.videoCount, videoCount) ||
-                other.videoCount == videoCount));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.author, author) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality()
+                .equals(other.thumbnails, thumbnails) &&
+            const DeepCollectionEquality()
+                .equals(other.engagement, engagement) &&
+            const DeepCollectionEquality()
+                .equals(other.videoCount, videoCount));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, author, description,
-      thumbnails, engagement, videoCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(author),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(thumbnails),
+      const DeepCollectionEquality().hash(engagement),
+      const DeepCollectionEquality().hash(videoCount));
 
   @JsonKey(ignore: true)
   @override

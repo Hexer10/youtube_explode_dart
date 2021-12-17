@@ -152,13 +152,17 @@ class _$_Thumbnail implements _Thumbnail {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Thumbnail &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.height, height) || other.height == height) &&
-            (identical(other.width, width) || other.width == width));
+            const DeepCollectionEquality().equals(other.url, url) &&
+            const DeepCollectionEquality().equals(other.height, height) &&
+            const DeepCollectionEquality().equals(other.width, width));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, url, height, width);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(url),
+      const DeepCollectionEquality().hash(height),
+      const DeepCollectionEquality().hash(width));
 
   @JsonKey(ignore: true)
   @override
