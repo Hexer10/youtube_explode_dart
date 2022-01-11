@@ -210,17 +210,18 @@ class _InitialData extends InitialData {
     }
     if (content['channelRenderer'] != null) {
       var renderer = content.get('channelRenderer')!;
+
       return SearchChannel(
           ChannelId(renderer.getT<String>('channelId')!),
           renderer.get('title')!.getT<String>('simpleText')!,
           renderer.get('descriptionSnippet')?.getList('runs')?.parseRuns() ??
               '',
           renderer
-              .get('videoCountText')!
-              .getList('runs')!
-              .first
-              .getT<String>('text')!
-              .parseInt()!);
+              .get('videoCountText')
+              ?.getList('runs')
+              ?.first
+              .getT<String>('text')
+              ?.parseInt() ?? -1);
     }
     // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
     return null;
