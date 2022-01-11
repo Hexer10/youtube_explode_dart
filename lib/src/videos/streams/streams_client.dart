@@ -198,13 +198,13 @@ class StreamsClient {
     videoId = VideoId.fromString(videoId);
 
     try {
-      final context = await _getStreamContextFromWatchPage(videoId);
+      final context = await _getStreamContextFromEmbeddedClient(videoId);
       return _getManifest(context);
     } on YoutubeExplodeException {
       //TODO: ignore
     }
+    final context = await _getStreamContextFromWatchPage(videoId);
 
-    final context = await _getStreamContextFromEmbeddedClient(videoId);
     return _getManifest(context);
   }
 
