@@ -53,9 +53,8 @@ class EmbeddedPlayerClient {
       'context': const {
         'client': {
           'hl': 'en',
-          'clientName': 'WEB',
-          'clientVersion': '2.20210721.00.00',
-          "clientScreen": "EMBED"
+          'clientName': 'ANDROID',
+          'clientVersion': '16.46.37'
         }
       },
       'videoId': videoId
