@@ -99,7 +99,7 @@ class _InitialData extends InitialData {
           ?.cast<JsonMap>();
     }
     if (context == null) {
-      throw FatalFailureException('Failed to get initial data context.');
+      throw FatalFailureException('Failed to get initial data context.', 0);
     }
     return context;
   }

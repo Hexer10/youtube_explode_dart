@@ -30,7 +30,7 @@ class ChannelClient {
     var channelPage = await ChannelPage.get(_httpClient, id.value);
 
     return Channel(id, channelPage.channelTitle, channelPage.channelLogoUrl,
-        channelPage.subscribersCount);
+        channelPage.channelBannerUrl, channelPage.subscribersCount);
   }
 
   /// Gets the metadata associated with the channel of the specified user.
@@ -41,8 +41,12 @@ class ChannelClient {
 
     var channelPage =
         await ChannelPage.getByUsername(_httpClient, username.value);
-    return Channel(ChannelId(channelPage.channelId), channelPage.channelTitle,
-        channelPage.channelLogoUrl, channelPage.subscribersCount);
+    return Channel(
+        ChannelId(channelPage.channelId),
+        channelPage.channelTitle,
+        channelPage.channelLogoUrl,
+        channelPage.channelBannerUrl,
+        channelPage.subscribersCount);
   }
 
   /// Gets the info found on a YouTube Channel About page.

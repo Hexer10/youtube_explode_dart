@@ -101,4 +101,3 @@ class _Column {
 
 String mediaTypeTojson(MediaType value) => value.toString();
 MediaType mediaTypeFromJson(String value) => MediaType.parse(value);
-

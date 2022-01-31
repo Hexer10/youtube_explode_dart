@@ -56,5 +56,4 @@ class AudioOnlyStreamInfo with StreamInfo, AudioStreamInfo {
       _$AudioOnlyStreamInfoFromJson(json);
 
   Map<String, dynamic> toJson() => _$AudioOnlyStreamInfoToJson(this);
-
 }

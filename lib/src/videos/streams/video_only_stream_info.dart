@@ -78,6 +78,4 @@ class VideoOnlyStreamInfo with StreamInfo, VideoStreamInfo {
       _$VideoOnlyStreamInfoFromJson(json);
 
   Map<String, dynamic> toJson() => _$VideoOnlyStreamInfoToJson(this);
-
-
 }

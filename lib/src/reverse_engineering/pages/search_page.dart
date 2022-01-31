@@ -217,11 +217,12 @@ class _InitialData extends InitialData {
           renderer.get('descriptionSnippet')?.getList('runs')?.parseRuns() ??
               '',
           renderer
-              .get('videoCountText')
-              ?.getList('runs')
-              ?.first
-              .getT<String>('text')
-              ?.parseInt() ?? -1);
+                  .get('videoCountText')
+                  ?.getList('runs')
+                  ?.first
+                  .getT<String>('text')
+                  ?.parseInt() ??
+              -1);
     }
     // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
     return null;

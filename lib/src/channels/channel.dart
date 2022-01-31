@@ -18,6 +18,9 @@ class Channel with _$Channel {
     /// URL of the channel's logo image.
     String logoUrl,
 
+    /// URL of the channel's banner image.
+    String bannerUrl,
+
     /// The (approximate) channel subscriber's count.
     int? subscribersCount,
   ) = _Channel;
