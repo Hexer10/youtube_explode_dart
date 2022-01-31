@@ -1,4 +1,5 @@
 import 'package:html/parser.dart' as parser;
+import 'package:http/http.dart';
 
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
@@ -30,6 +31,8 @@ class ChannelPage extends YoutubePage<_InitialData> {
       root!.querySelector('meta[property="og:image"]')?.attributes['content'] ??
       '';
 
+  String get channelBannerUrl => initialData.bannerUrl ?? '';
+
   int? get subscribersCount => initialData.subscribersCount;
 
   ///
@@ -57,13 +60,21 @@ class ChannelPage extends YoutubePage<_InitialData> {
     var url = 'https://www.youtube.com/user/$username?hl=en';
 
     return retry(httpClient, () async {
-      var raw = await httpClient.getString(url);
-      var result = ChannelPage.parse(raw);
+      try {
+        var raw = await httpClient.getString(url);
+        var result = ChannelPage.parse(raw);
 
-      if (!result.isOk) {
-        throw TransientFailureException('Channel page is broken');
+        if (!result.isOk) {
+          throw TransientFailureException('Channel page is broken');
+        }
+        return result;
+      } on FatalFailureException catch (e) {
+        if (e.statusCode != 404) {
+          rethrow;
+        }
+        url = 'https://www.youtube.com/c/$username?hl=en';
       }
-      return result;
+      throw FatalFailureException('', 0);
     });
   }
 }
@@ -110,4 +121,12 @@ class _InitialData extends InitialData {
 
     return (count * multiplier).toInt();
   }
+
+  String? get bannerUrl => root
+      .get('header')
+      ?.get('c4TabbedHeaderRenderer')
+      ?.get('banner')
+      ?.getList('thumbnails')
+      ?.first
+      .getT<String>('url');
 }

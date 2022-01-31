@@ -1,3 +1,8 @@
+## 1.10.10
+- Fix issue #136: Add `bannerUrl` getter for `Channel`.
+- Fix `ChannelClient.getByUsername` for `youtube.com/c/XXXX` channels.
+
+
 ## 1.10.9
 - Fix issue #180: YouTube throttling videos. - Thanks to @itssidhere.
 
