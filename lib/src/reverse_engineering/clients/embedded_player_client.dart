@@ -4,11 +4,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http_parser/http_parser.dart';
 
 import '../../../youtube_explode_dart.dart';
-import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../models/stream_info_provider.dart';
-import '../youtube_http_client.dart';
 
 ///
 class EmbeddedPlayerClient {

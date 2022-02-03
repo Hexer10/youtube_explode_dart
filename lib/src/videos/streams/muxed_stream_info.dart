@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:youtube_explode_dart/src/videos/streams/stream_info.dart';
 
 import '../../reverse_engineering/models/fragment.dart';
 import 'audio_stream_info.dart';
@@ -8,6 +7,7 @@ import 'bitrate.dart';
 import 'filesize.dart';
 import 'framerate.dart';
 import 'stream_container.dart';
+import 'stream_info.dart';
 import 'video_quality.dart';
 import 'video_resolution.dart';
 import 'video_stream_info.dart';
@@ -90,5 +90,6 @@ class MuxedStreamInfo with StreamInfo, AudioStreamInfo, VideoStreamInfo {
   factory MuxedStreamInfo.fromJson(Map<String, dynamic> json) =>
       _$MuxedStreamInfoFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$MuxedStreamInfoToJson(this);
 }

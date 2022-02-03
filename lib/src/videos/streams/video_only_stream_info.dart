@@ -3,14 +3,7 @@ import 'package:http_parser/http_parser.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../reverse_engineering/models/fragment.dart';
-import 'bitrate.dart';
-import 'filesize.dart';
-import 'framerate.dart';
-import 'stream_container.dart';
 import 'stream_info.dart';
-import 'video_quality.dart';
-import 'video_resolution.dart';
-import 'video_stream_info.dart';
 
 part 'video_only_stream_info.g.dart';
 
@@ -77,5 +70,6 @@ class VideoOnlyStreamInfo with StreamInfo, VideoStreamInfo {
   factory VideoOnlyStreamInfo.fromJson(Map<String, dynamic> json) =>
       _$VideoOnlyStreamInfoFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$VideoOnlyStreamInfoToJson(this);
 }

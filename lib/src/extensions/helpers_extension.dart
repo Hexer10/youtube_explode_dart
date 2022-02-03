@@ -268,7 +268,7 @@ extension UriUtils on Uri {
 }
 
 /// Parse properties with `text` method.
-extension RunsParser on List<dynamic> {
+extension RunsParser on List<Map<dynamic, dynamic>> {
   ///
   String parseRuns() => map((e) => e['text']).join();
 }

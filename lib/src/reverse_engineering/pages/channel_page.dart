@@ -1,5 +1,4 @@
 import 'package:html/parser.dart' as parser;
-import 'package:http/http.dart';
 
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';

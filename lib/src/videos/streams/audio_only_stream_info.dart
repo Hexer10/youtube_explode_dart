@@ -55,5 +55,6 @@ class AudioOnlyStreamInfo with StreamInfo, AudioStreamInfo {
   factory AudioOnlyStreamInfo.fromJson(Map<String, dynamic> json) =>
       _$AudioOnlyStreamInfoFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$AudioOnlyStreamInfoToJson(this);
 }

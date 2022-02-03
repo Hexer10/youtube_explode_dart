@@ -18,7 +18,7 @@ class PlaylistClient {
   Future<Playlist> get(dynamic id) async {
     id = PlaylistId.fromString(id);
 
-    var response = await PlaylistPage.get(_httpClient, id.value);
+    var response = await PlaylistPage.get(_httpClient, (id as PlaylistId).value);
     return Playlist(
         id,
         response.title ?? '',

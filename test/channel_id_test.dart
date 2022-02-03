@@ -3,17 +3,17 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
   group('These are valid channel ids', () {
-    for (final val in <dynamic>{
+    for (final val in {
       [ChannelId('UCEnBXANsKmyj2r9xVyKoDiQ'), 'UCEnBXANsKmyj2r9xVyKoDiQ'],
       [ChannelId('UC46807r_RiRjH8IU-h_DrDQ'), 'UC46807r_RiRjH8IU-h_DrDQ'],
     }) {
       test('ChannelID - ${val[0]}', () {
-        expect(val[0].value, val[1]);
+        expect((val[0] as ChannelId).value, val[1]);
       });
     }
   });
   group('These are valid channel urls', () {
-    for (final val in <dynamic>{
+    for (final val in {
       [
         ChannelId('youtube.com/channel/UC3xnGqlcL3y-GXz5N3wiTJQ'),
         'UC3xnGqlcL3y-GXz5N3wiTJQ'
@@ -28,7 +28,7 @@ void main() {
       ]
     }) {
       test('ChannelURL - ${val[0]}', () {
-        expect(val[0].value, val[1]);
+        expect((val[0] as ChannelId).value, val[1]);
       });
     }
   });

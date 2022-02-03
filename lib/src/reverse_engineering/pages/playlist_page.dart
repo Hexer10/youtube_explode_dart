@@ -76,7 +76,8 @@ class _InitialData extends InitialData {
       ?.get('videoOwnerRenderer')
       ?.get('title')
       ?.getT<List<dynamic>>('runs')
-      ?.parseRuns();
+      ?.cast<Map<dynamic, dynamic>>()
+      .parseRuns();
 
   late final String? description = root
       .get('metadata')
@@ -176,8 +177,16 @@ class _Video {
   String get id => root.getT<String>('videoId')!;
 
   String get author =>
-      root.get('ownerText')?.getT<List<dynamic>>('runs')?.parseRuns() ??
-      root.get('shortBylineText')?.getT<List<dynamic>>('runs')?.parseRuns() ??
+      root
+          .get('ownerText')
+          ?.getT<List<dynamic>>('runs')
+          ?.cast<Map<dynamic, dynamic>>()
+          .parseRuns() ??
+      root
+          .get('shortBylineText')
+          ?.getT<List<dynamic>>('runs')
+          ?.cast<Map<dynamic, dynamic>>()
+          .parseRuns() ??
       '';
 
   String get channelId =>

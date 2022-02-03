@@ -6,7 +6,6 @@ import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../models/initial_data.dart';
 import '../models/youtube_page.dart';
-import '../youtube_http_client.dart';
 
 ///
 class ChannelAboutPage extends YoutubePage<_InitialData> {
@@ -89,26 +88,27 @@ class _InitialData extends InitialData {
       content.get('description')!.getT<String>('simpleText')!;
 
   late final List<ChannelLink> channelLinks = content
-      .getList('primaryLinks')!
-      .map((e) => ChannelLink(
-          e.get('title')?.getT<String>('simpleText') ?? '',
-          extractUrl(e
-                  .get('navigationEndpoint')
-                  ?.get('commandMetadata')
-                  ?.get('webCommandMetadata')
-                  ?.getT<String>('url') ??
-              e
-                  .get('navigationEndpoint')
-                  ?.get('urlEndpoint')
-                  ?.getT<String>('url') ??
-              ''),
-          Uri.parse(e
-                  .get('icon')
-                  ?.getList('thumbnails')
-                  ?.firstOrNull
-                  ?.getT<String>('url') ??
-              '')))
-      .toList();
+          .getList('primaryLinks')
+          ?.map((e) => ChannelLink(
+              e.get('title')?.getT<String>('simpleText') ?? '',
+              extractUrl(e
+                      .get('navigationEndpoint')
+                      ?.get('commandMetadata')
+                      ?.get('webCommandMetadata')
+                      ?.getT<String>('url') ??
+                  e
+                      .get('navigationEndpoint')
+                      ?.get('urlEndpoint')
+                      ?.getT<String>('url') ??
+                  ''),
+              Uri.parse(e
+                      .get('icon')
+                      ?.getList('thumbnails')
+                      ?.firstOrNull
+                      ?.getT<String>('url') ??
+                  '')))
+          .toList() ??
+      [];
 
   late final int viewCount = int.parse(content
       .get('viewCountText')!
@@ -125,9 +125,6 @@ class _InitialData extends InitialData {
 
   late final String country =
       content.get('country')!.getT<String>('simpleText')!;
-
-  String parseRuns(List<dynamic>? runs) =>
-      runs?.map((e) => e.text).join() ?? '';
 
   Uri extractUrl(String text) =>
       Uri.parse(Uri.decodeFull(_urlExp.firstMatch(text)?.group(1) ?? ''));

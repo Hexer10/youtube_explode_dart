@@ -4,12 +4,6 @@ import '../../reverse_engineering/clients/closed_caption_client.dart' as re
 import '../../reverse_engineering/pages/watch_page.dart';
 import '../../reverse_engineering/youtube_http_client.dart';
 import '../videos.dart';
-import 'closed_caption.dart';
-import 'closed_caption_format.dart';
-import 'closed_caption_manifest.dart';
-import 'closed_caption_part.dart';
-import 'closed_caption_track.dart';
-import 'closed_caption_track_info.dart';
 import 'language.dart';
 
 /// Queries related to closed captions of YouTube videos.
@@ -34,7 +28,7 @@ class ClosedCaptionClient {
       ]}) async {
     videoId = VideoId.fromString(videoId);
     var tracks = <ClosedCaptionTrackInfo>{};
-    var watchPage = await WatchPage.get(_httpClient, videoId.value);
+    var watchPage = await WatchPage.get(_httpClient, (videoId as VideoId).value);
     var playerResponse = watchPage.playerResponse!;
 
     for (final track in playerResponse.closedCaptionTrack) {

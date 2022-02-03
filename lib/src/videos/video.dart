@@ -1,7 +1,4 @@
-import 'dart:collection';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:meta/meta.dart';
 
 import '../channels/channel_id.dart';
 import '../common/common.dart';

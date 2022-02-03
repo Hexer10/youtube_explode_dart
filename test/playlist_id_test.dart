@@ -23,7 +23,7 @@ void main() {
   });
 
   group('These are valid playlist urls', () {
-    for (final val in <dynamic>{
+    for (final val in {
       [
         PlaylistId(
             'youtube.com/playlist?list=PLOU2XLYxmsIJGErt5rrCqaSGTMyyqNt2H'),
@@ -56,7 +56,7 @@ void main() {
       ],
     }) {
       test('PlaylistID - ${val[0]}', () {
-        expect(val[0].value, val[1]);
+        expect((val[0] as PlaylistId).value, val[1]);
       });
     }
   });

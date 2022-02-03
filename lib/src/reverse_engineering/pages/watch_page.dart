@@ -5,11 +5,9 @@ import 'package:html/parser.dart' as parser;
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
-import '../../videos/video_id.dart';
 import '../models/initial_data.dart';
 import '../models/youtube_page.dart';
 import '../player/player_response.dart';
-import '../youtube_http_client.dart';
 import 'player_config_base.dart';
 
 ///

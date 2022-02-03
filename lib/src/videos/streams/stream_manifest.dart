@@ -1,7 +1,5 @@
 import 'dart:collection';
 
-import 'audio_stream_info.dart';
-import 'stream_info.dart';
 import 'streams.dart';
 
 /// Manifest that contains information about available media streams

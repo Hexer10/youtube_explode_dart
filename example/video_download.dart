@@ -37,7 +37,7 @@ Future<void> download(String id) async {
   var audioStream = yt.videos.streamsClient.get(audio);
 
   // Compose the file name removing the unallowed characters in windows.
-  var fileName = '${video.title}.${audio.container.name.toString()}'
+  var fileName = '${video.title}.${audio.container.name}'
       .replaceAll(r'\', '')
       .replaceAll('/', '')
       .replaceAll('*', '')

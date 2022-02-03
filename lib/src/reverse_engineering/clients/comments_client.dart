@@ -4,7 +4,6 @@ import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../pages/watch_page.dart';
-import '../youtube_http_client.dart';
 
 class CommentsClient {
   final JsonMap root;
@@ -145,6 +144,7 @@ class _Comment {
   late final String text = _commentRenderer
       .get('contentText')!
       .getT<List<dynamic>>('runs')!
+      .cast<Map<dynamic, dynamic>>()
       .parseRuns();
 
   late final String publishTime = _commentRenderer

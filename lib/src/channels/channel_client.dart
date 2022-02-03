@@ -8,12 +8,7 @@ import '../reverse_engineering/pages/watch_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
 import '../videos/video_id.dart';
-import 'channel.dart';
-import 'channel_id.dart';
-import 'channel_uploads_list.dart';
 import 'channels.dart';
-import 'username.dart';
-import 'video_sorting.dart';
 
 /// Queries related to YouTube channels.
 class ChannelClient {
@@ -40,7 +35,7 @@ class ChannelClient {
     username = Username.fromString(username);
 
     var channelPage =
-        await ChannelPage.getByUsername(_httpClient, username.value);
+        await ChannelPage.getByUsername(_httpClient, (username as Username).value);
     return Channel(
         ChannelId(channelPage.channelId),
         channelPage.channelTitle,

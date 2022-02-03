@@ -2,8 +2,6 @@ import '../../channels/channel_id.dart';
 import '../../reverse_engineering/clients/comments_client.dart' as re;
 import '../../reverse_engineering/youtube_http_client.dart';
 import '../videos.dart';
-import 'comment.dart';
-import 'comments_list.dart';
 
 /// Queries related to comments of YouTube videos.
 class CommentsClient {

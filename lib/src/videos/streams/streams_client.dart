@@ -9,13 +9,6 @@ import '../../reverse_engineering/pages/watch_page.dart';
 import '../../reverse_engineering/player/player_source.dart';
 import '../../reverse_engineering/youtube_http_client.dart';
 import '../video_id.dart';
-import 'bitrate.dart';
-import 'filesize.dart';
-import 'framerate.dart';
-import 'stream_container.dart';
-import 'stream_context.dart';
-import 'stream_info.dart';
-import 'stream_manifest.dart';
 import 'streams.dart';
 
 /// Queries related to media streams of YouTube videos.

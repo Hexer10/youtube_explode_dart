@@ -1,6 +1,9 @@
 include: package:lint/analysis_options.yaml
 
 analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
   strong-mode:
     implicit-casts: true
     implicit-dynamic: true
@@ -14,3 +17,6 @@ linter:
     prefer_const_constructors: true
     avoid_positional_boolean_parameters: false
     require_trailing_commas: false
+    prefer_relative_imports: true
+    avoid_relative_lib_imports: false
+    always_use_package_imports: false

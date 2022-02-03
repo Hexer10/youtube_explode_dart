@@ -3,8 +3,6 @@ import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
 import '../reverse_engineering/pages/watch_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
-import 'closed_captions/closed_caption_client.dart';
-import 'comments/comments_client.dart';
 import 'videos.dart';
 
 /// Queries related to YouTube videos.

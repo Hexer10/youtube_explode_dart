@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:http/http.dart';
 
 import '../youtube_explode_dart.dart';
-import 'exceptions/exceptions.dart';
 
 /// Run the [function] each time an exception is thrown until the retryCount
 /// is 0.
