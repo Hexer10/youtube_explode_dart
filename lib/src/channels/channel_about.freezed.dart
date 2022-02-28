@@ -19,12 +19,12 @@ class _$ChannelAboutTearOff {
   const _$ChannelAboutTearOff();
 
   _ChannelAbout call(
-      String description,
-      int viewCount,
-      String joinDate,
+      String? description,
+      int? viewCount,
+      String? joinDate,
       String title,
       List<Thumbnail> thumbnails,
-      String country,
+      String? country,
       List<ChannelLink> channelLinks) {
     return _ChannelAbout(
       description,
@@ -44,14 +44,14 @@ const $ChannelAbout = _$ChannelAboutTearOff();
 /// @nodoc
 mixin _$ChannelAbout {
   /// Full channel description.
-  String get description => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
 
   /// Channel view count.
-  int get viewCount => throw _privateConstructorUsedError;
+  int? get viewCount => throw _privateConstructorUsedError;
 
   /// Channel join date.
   /// Formatted as: Gen 01, 2000
-  String get joinDate => throw _privateConstructorUsedError;
+  String? get joinDate => throw _privateConstructorUsedError;
 
   /// Channel title.
   String get title => throw _privateConstructorUsedError;
@@ -60,7 +60,7 @@ mixin _$ChannelAbout {
   List<Thumbnail> get thumbnails => throw _privateConstructorUsedError;
 
   /// Channel country.
-  String get country => throw _privateConstructorUsedError;
+  String? get country => throw _privateConstructorUsedError;
 
   /// Channel links.
   List<ChannelLink> get channelLinks => throw _privateConstructorUsedError;
@@ -76,12 +76,12 @@ abstract class $ChannelAboutCopyWith<$Res> {
           ChannelAbout value, $Res Function(ChannelAbout) then) =
       _$ChannelAboutCopyWithImpl<$Res>;
   $Res call(
-      {String description,
-      int viewCount,
-      String joinDate,
+      {String? description,
+      int? viewCount,
+      String? joinDate,
       String title,
       List<Thumbnail> thumbnails,
-      String country,
+      String? country,
       List<ChannelLink> channelLinks});
 }
 
@@ -107,15 +107,15 @@ class _$ChannelAboutCopyWithImpl<$Res> implements $ChannelAboutCopyWith<$Res> {
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       viewCount: viewCount == freezed
           ? _value.viewCount
           : viewCount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       joinDate: joinDate == freezed
           ? _value.joinDate
           : joinDate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -127,7 +127,7 @@ class _$ChannelAboutCopyWithImpl<$Res> implements $ChannelAboutCopyWith<$Res> {
       country: country == freezed
           ? _value.country
           : country // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       channelLinks: channelLinks == freezed
           ? _value.channelLinks
           : channelLinks // ignore: cast_nullable_to_non_nullable
@@ -144,12 +144,12 @@ abstract class _$ChannelAboutCopyWith<$Res>
       __$ChannelAboutCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String description,
-      int viewCount,
-      String joinDate,
+      {String? description,
+      int? viewCount,
+      String? joinDate,
       String title,
       List<Thumbnail> thumbnails,
-      String country,
+      String? country,
       List<ChannelLink> channelLinks});
 }
 
@@ -177,15 +177,15 @@ class __$ChannelAboutCopyWithImpl<$Res> extends _$ChannelAboutCopyWithImpl<$Res>
       description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       viewCount == freezed
           ? _value.viewCount
           : viewCount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       joinDate == freezed
           ? _value.joinDate
           : joinDate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -197,7 +197,7 @@ class __$ChannelAboutCopyWithImpl<$Res> extends _$ChannelAboutCopyWithImpl<$Res>
       country == freezed
           ? _value.country
           : country // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       channelLinks == freezed
           ? _value.channelLinks
           : channelLinks // ignore: cast_nullable_to_non_nullable
@@ -215,16 +215,16 @@ class _$_ChannelAbout implements _ChannelAbout {
   @override
 
   /// Full channel description.
-  final String description;
+  final String? description;
   @override
 
   /// Channel view count.
-  final int viewCount;
+  final int? viewCount;
   @override
 
   /// Channel join date.
   /// Formatted as: Gen 01, 2000
-  final String joinDate;
+  final String? joinDate;
   @override
 
   /// Channel title.
@@ -236,7 +236,7 @@ class _$_ChannelAbout implements _ChannelAbout {
   @override
 
   /// Channel country.
-  final String country;
+  final String? country;
   @override
 
   /// Channel links.
@@ -283,27 +283,27 @@ class _$_ChannelAbout implements _ChannelAbout {
 
 abstract class _ChannelAbout implements ChannelAbout {
   const factory _ChannelAbout(
-      String description,
-      int viewCount,
-      String joinDate,
+      String? description,
+      int? viewCount,
+      String? joinDate,
       String title,
       List<Thumbnail> thumbnails,
-      String country,
+      String? country,
       List<ChannelLink> channelLinks) = _$_ChannelAbout;
 
   @override
 
   /// Full channel description.
-  String get description;
+  String? get description;
   @override
 
   /// Channel view count.
-  int get viewCount;
+  int? get viewCount;
   @override
 
   /// Channel join date.
   /// Formatted as: Gen 01, 2000
-  String get joinDate;
+  String? get joinDate;
   @override
 
   /// Channel title.
@@ -315,7 +315,7 @@ abstract class _ChannelAbout implements ChannelAbout {
   @override
 
   /// Channel country.
-  String get country;
+  String? get country;
   @override
 
   /// Channel links.

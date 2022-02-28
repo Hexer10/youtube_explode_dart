@@ -10,13 +10,13 @@ import '../models/youtube_page.dart';
 ///
 class ChannelAboutPage extends YoutubePage<_InitialData> {
   ///
-  String get description => initialData.description;
+  String? get description => initialData.description;
 
   ///
-  int get viewCount => initialData.viewCount;
+  int? get viewCount => initialData.viewCount;
 
   ///
-  String get joinDate => initialData.joinDate;
+  String? get joinDate => initialData.joinDate;
 
   ///
   String get title => initialData.title;
@@ -25,7 +25,7 @@ class ChannelAboutPage extends YoutubePage<_InitialData> {
   List<JsonMap> get avatar => initialData.avatar;
 
   ///
-  String get country => initialData.country;
+  String? get country => initialData.country;
 
   ///
   List<ChannelLink> get channelLinks => initialData.channelLinks;
@@ -84,8 +84,8 @@ class _InitialData extends InitialData {
         .get('channelAboutFullMetadataRenderer')!;
   }
 
-  late final String description =
-      content.get('description')!.getT<String>('simpleText')!;
+  late final String? description =
+      content.get('description')?.getT<String>('simpleText');
 
   late final List<ChannelLink> channelLinks = content
           .getList('primaryLinks')
@@ -110,21 +110,21 @@ class _InitialData extends InitialData {
           .toList() ??
       [];
 
-  late final int viewCount = int.parse(content
-      .get('viewCountText')!
-      .getT<String>('simpleText')!
-      .stripNonDigits());
+  late final int? viewCount = content
+      .get('viewCountText')
+      ?.getT<String>('simpleText')
+      ?.parseInt();
 
-  late final String joinDate =
-      content.get('joinedDateText')!.getList('runs')![1].getT<String>('text')!;
+  late final String? joinDate =
+      content.get('joinedDateText')?.getList('runs')?[1].getT<String>('text');
 
   late final String title = content.get('title')!.getT<String>('simpleText')!;
 
   late final List<JsonMap> avatar =
       content.get('avatar')!.getList('thumbnails')!;
 
-  late final String country =
-      content.get('country')!.getT<String>('simpleText')!;
+  late final String? country =
+      content.get('country')?.getT<String>('simpleText');
 
   Uri extractUrl(String text) =>
       Uri.parse(Uri.decodeFull(_urlExp.firstMatch(text)?.group(1) ?? ''));

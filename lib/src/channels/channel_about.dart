@@ -10,14 +10,14 @@ part 'channel_about.freezed.dart';
 class ChannelAbout with _$ChannelAbout {
   const factory ChannelAbout(
     /// Full channel description.
-    String description,
+    String? description,
 
     /// Channel view count.
-    int viewCount,
+    int? viewCount,
 
     /// Channel join date.
     /// Formatted as: Gen 01, 2000
-    String joinDate,
+    String? joinDate,
 
     /// Channel title.
     String title,
@@ -26,7 +26,7 @@ class ChannelAbout with _$ChannelAbout {
     List<Thumbnail> thumbnails,
 
     /// Channel country.
-    String country,
+    String? country,
 
     /// Channel links.
     List<ChannelLink> channelLinks,
