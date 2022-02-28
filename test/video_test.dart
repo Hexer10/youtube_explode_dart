@@ -21,7 +21,6 @@ void main() {
     expect(video.author, 'Tyrrrz');
     var rangeMs = DateTime(2017, 09, 30, 17, 15, 26).millisecondsSinceEpoch;
     // 1day margin since the uploadDate could differ from timezones
-    // YouTube now doesn't send the upload date/ publish date anymore.
     expect(video.uploadDate!.millisecondsSinceEpoch,
         inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
     expect(video.publishDate!.millisecondsSinceEpoch,

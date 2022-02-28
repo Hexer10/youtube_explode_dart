@@ -56,7 +56,8 @@ extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
         e.bitrate,
         e.codec.parameters['codecs'],
         if (e is VideoStreamInfo) e.framerate,
-        if (e is VideoStreamInfo) 'video only',
+        if (e is VideoOnlyStreamInfo) 'video only',
+        if (e is MuxedStreamInfo) 'muxed',
         e.size
       ]);
     }

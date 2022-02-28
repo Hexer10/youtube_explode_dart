@@ -32,7 +32,10 @@ extension VideoStreamInfoExtension<T extends VideoStreamInfo> on Iterable<T> {
   Set<String> getAllVideoQualitiesLabel() => map((e) => e.qualityLabel).toSet();
 
   /// Gets the stream with best video quality.
+  @Deprecated('This is actually a typo, and actually returns the videos sorted by the best *video quality*. Now use the `bestQuality` getter ')
   T withHighestBitrate() => sortByVideoQuality().last;
+
+  T get bestQuality => sortByVideoQuality().last;
 
   /// Gets the video streams sorted by highest video quality
   /// (then by framerate) in ascending order.

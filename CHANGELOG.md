@@ -1,3 +1,6 @@
+## 1.10.10+1
+- Deprecated `withHighestBitrate()` in favour of `bestQuality`. 
+
 ## 1.10.10
 - Fix issue #136: Add `bannerUrl` getter for `Channel`.
 - Fix `ChannelClient.getByUsername` for `youtube.com/c/XXXX` channels.
