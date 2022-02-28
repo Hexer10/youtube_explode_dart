@@ -167,8 +167,7 @@ class __$SearchPlaylistCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With<BaseSearchContent>()
-class _$_SearchPlaylist with BaseSearchContent implements _SearchPlaylist {
+class _$_SearchPlaylist implements _SearchPlaylist {
   const _$_SearchPlaylist(this.playlistId, this.playlistTitle,
       this.playlistVideoCount, this.thumbnails);
 
@@ -223,7 +222,7 @@ class _$_SearchPlaylist with BaseSearchContent implements _SearchPlaylist {
       __$SearchPlaylistCopyWithImpl<_SearchPlaylist>(this, _$identity);
 }
 
-abstract class _SearchPlaylist implements SearchPlaylist, BaseSearchContent {
+abstract class _SearchPlaylist implements SearchPlaylist {
   const factory _SearchPlaylist(PlaylistId playlistId, String playlistTitle,
       int playlistVideoCount, List<Thumbnail> thumbnails) = _$_SearchPlaylist;
 

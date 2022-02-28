@@ -79,7 +79,7 @@ void main() {
       test('VideoId - ${val.value}', () async {
         var manifest = await yt!.videos.streamsClient.getManifest(val);
         for (final streamInfo in manifest.streams) {
-          print('Stream: ${streamInfo.tag}');
+          // print('Stream: ${streamInfo.tag}');
           expect(yt!.videos.streamsClient.get(streamInfo).first, completes);
         }
       }, timeout: const Timeout(Duration(minutes: 5)));

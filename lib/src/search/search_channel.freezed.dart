@@ -160,8 +160,7 @@ class __$SearchChannelCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With<BaseSearchContent>()
-class _$_SearchChannel with BaseSearchContent implements _SearchChannel {
+class _$_SearchChannel implements _SearchChannel {
   const _$_SearchChannel(this.id, this.name, this.description, this.videoCount);
 
   @override
@@ -214,7 +213,7 @@ class _$_SearchChannel with BaseSearchContent implements _SearchChannel {
       __$SearchChannelCopyWithImpl<_SearchChannel>(this, _$identity);
 }
 
-abstract class _SearchChannel implements SearchChannel, BaseSearchContent {
+abstract class _SearchChannel implements SearchChannel {
   const factory _SearchChannel(
           ChannelId id, String name, String description, int videoCount) =
       _$_SearchChannel;

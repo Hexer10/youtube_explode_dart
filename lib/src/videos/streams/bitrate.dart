@@ -16,7 +16,7 @@ class Bitrate with Comparable<Bitrate>, _$Bitrate {
   double get gigaBitsPerSecond => megaBitsPerSecond / 1024;
 
   /// Initializes an instance of [Bitrate]
-  @With<Comparable<Bitrate>>()
+  //@With<Comparable<Bitrate>>()
   const factory Bitrate(
 
       /// Bits per second.

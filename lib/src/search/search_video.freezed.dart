@@ -271,8 +271,7 @@ class __$SearchVideoCopyWithImpl<$Res> extends _$SearchVideoCopyWithImpl<$Res>
 
 /// @nodoc
 
-@With<BaseSearchContent>()
-class _$_SearchVideo with BaseSearchContent implements _SearchVideo {
+class _$_SearchVideo implements _SearchVideo {
   const _$_SearchVideo(
       this.id,
       this.title,
@@ -372,7 +371,7 @@ class _$_SearchVideo with BaseSearchContent implements _SearchVideo {
       __$SearchVideoCopyWithImpl<_SearchVideo>(this, _$identity);
 }
 
-abstract class _SearchVideo implements SearchVideo, BaseSearchContent {
+abstract class _SearchVideo implements SearchVideo {
   const factory _SearchVideo(
       VideoId id,
       String title,

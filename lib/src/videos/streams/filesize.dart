@@ -16,7 +16,7 @@ class FileSize with Comparable<FileSize>, _$FileSize {
   double get totalGigaBytes => totalMegaBytes / 1024;
 
   /// Initializes an instance of [FileSize]
-  @With<Comparable<FileSize>>()
+  //@With<Comparable<FileSize>>()
   const factory FileSize(
 
       /// Total bytes.

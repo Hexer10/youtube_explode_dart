@@ -10,7 +10,7 @@ part 'search_video.freezed.dart';
 @freezed
 class SearchVideo with _$SearchVideo, BaseSearchContent {
   /// Initialize a [SearchVideo] instance.
-  @With<BaseSearchContent>()
+  //@With<BaseSearchContent>()
   const factory SearchVideo(
     /// Video ID.
     VideoId id,

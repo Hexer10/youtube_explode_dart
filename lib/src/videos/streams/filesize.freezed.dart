@@ -107,8 +107,7 @@ class __$FileSizeCopyWithImpl<$Res> extends _$FileSizeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@With<Comparable<FileSize>>()
-class _$_FileSize extends _FileSize with Comparable<FileSize> {
+class _$_FileSize extends _FileSize {
   const _$_FileSize(this.totalBytes) : super._();
 
   factory _$_FileSize.fromJson(Map<String, dynamic> json) =>
@@ -143,7 +142,7 @@ class _$_FileSize extends _FileSize with Comparable<FileSize> {
   }
 }
 
-abstract class _FileSize extends FileSize implements Comparable<FileSize> {
+abstract class _FileSize extends FileSize {
   const factory _FileSize(int totalBytes) = _$_FileSize;
   const _FileSize._() : super._();
 

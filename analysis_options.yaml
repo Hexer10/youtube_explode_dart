@@ -20,3 +20,4 @@ linter:
     prefer_relative_imports: true
     avoid_relative_lib_imports: false
     always_use_package_imports: false
+    avoid_dynamic_calls: false

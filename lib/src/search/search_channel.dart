@@ -9,7 +9,7 @@ part 'search_channel.freezed.dart';
 @freezed
 class SearchChannel with _$SearchChannel, BaseSearchContent {
   /// Initialize a [SearchChannel] instance.
-  @With<BaseSearchContent>()
+  //@With<BaseSearchContent>()
   const factory SearchChannel(
 
       /// Channel id.

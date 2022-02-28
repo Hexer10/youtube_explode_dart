@@ -106,8 +106,7 @@ class __$BitrateCopyWithImpl<$Res> extends _$BitrateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@With<Comparable<Bitrate>>()
-class _$_Bitrate extends _Bitrate with Comparable<Bitrate> {
+class _$_Bitrate extends _Bitrate {
   const _$_Bitrate(this.bitsPerSecond) : super._();
 
   factory _$_Bitrate.fromJson(Map<String, dynamic> json) =>
@@ -142,7 +141,7 @@ class _$_Bitrate extends _Bitrate with Comparable<Bitrate> {
   }
 }
 
-abstract class _Bitrate extends Bitrate implements Comparable<Bitrate> {
+abstract class _Bitrate extends Bitrate {
   const factory _Bitrate(int bitsPerSecond) = _$_Bitrate;
   const _Bitrate._() : super._();
 
