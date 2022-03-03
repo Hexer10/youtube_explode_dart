@@ -1,3 +1,6 @@
+## 1.10.10+2
+- Fix #194: Now closed-captions allow malformed utf8 as well.
+
 ## 1.10.10+1
 - Deprecated `withHighestBitrate()` in favour of `bestQuality`. 
 

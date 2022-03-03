@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../extensions/helpers_extension.dart';
 import '../../reverse_engineering/clients/closed_caption_client.dart' as re
     show ClosedCaptionClient;
@@ -28,7 +30,8 @@ class ClosedCaptionClient {
       ]}) async {
     videoId = VideoId.fromString(videoId);
     var tracks = <ClosedCaptionTrackInfo>{};
-    var watchPage = await WatchPage.get(_httpClient, (videoId as VideoId).value);
+    var watchPage =
+        await WatchPage.get(_httpClient, (videoId as VideoId).value);
     var playerResponse = watchPage.playerResponse!;
 
     for (final track in playerResponse.closedCaptionTrack) {
@@ -56,7 +59,9 @@ class ClosedCaptionClient {
     return ClosedCaptionTrack(captions);
   }
 
-  /// Returns the subtitles as a string.
-  Future<String> getSubTitles(ClosedCaptionTrackInfo trackInfo) =>
-      _httpClient.getString(trackInfo.url);
+  /// Returns the subtitles as a string. In XML format.
+  Future<String> getSubTitles(ClosedCaptionTrackInfo trackInfo) async {
+    final r = await _httpClient.get(trackInfo.url);
+    return utf8.decode(r.bodyBytes, allowMalformed: true);
+  }
 }
