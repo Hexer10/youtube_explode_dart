@@ -110,10 +110,8 @@ class _InitialData extends InitialData {
           .toList() ??
       [];
 
-  late final int? viewCount = content
-      .get('viewCountText')
-      ?.getT<String>('simpleText')
-      ?.parseInt();
+  late final int? viewCount =
+      content.get('viewCountText')?.getT<String>('simpleText')?.parseInt();
 
   late final String? joinDate =
       content.get('joinedDateText')?.getList('runs')?[1].getT<String>('text');
