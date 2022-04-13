@@ -30,23 +30,26 @@ void main() {
     expect(nextPage, isNull);
   });
 
+  test('Search only videos', () async {
+    var videos =
+    await yt!.search.searchContent('Banana', filter: TypeFilters.video);
+    expect(videos, everyElement(isA<SearchVideo>()));
+  });
+
   test('Search only channels', () async {
     var channels = await yt!.search
         .searchContent('PewDiePie', filter: TypeFilters.channel);
-    expect(channels.every((e) => e is SearchChannel), isTrue);
+    expect(channels, everyElement(isA<SearchChannel>()));
+
   });
 
   test('Search only playlists', () async {
-    var channels =
+    var playlists =
         await yt!.search.searchContent('Banana', filter: TypeFilters.playlist);
-    expect(channels.every((e) => e is SearchPlaylist), isTrue);
+    expect(playlists, everyElement(isA<SearchPlaylist>()));
   });
 
-  test('Search only movies', () async {
-    var channels =
-        await yt!.search.searchContent('Banana', filter: TypeFilters.playlist);
-    expect(channels.every((e) => e is SearchPlaylist), isTrue);
-  });
+
 
   test('Search test search filters', () async {
     var featureSearch =
