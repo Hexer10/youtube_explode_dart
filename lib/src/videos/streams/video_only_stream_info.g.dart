@@ -38,7 +38,7 @@ Map<String, dynamic> _$VideoOnlyStreamInfoToJson(
       'videoResolution': instance.videoResolution,
       'framerate': instance.framerate,
       'fragments': instance.fragments,
-      'codec': mediaTypeTojson(instance.codec),
+      'codec': mediaTypeToJson(instance.codec),
     };
 
 const _$VideoQualityEnumMap = {

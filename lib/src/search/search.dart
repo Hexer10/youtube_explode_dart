@@ -3,6 +3,7 @@
 /// {@category Search}
 library youtube_explode.search;
 
+export 'search_channel.dart';
 export 'search_client.dart';
 export 'search_filter.dart';
 export 'search_list.dart';

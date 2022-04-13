@@ -47,7 +47,7 @@ class VideoOnlyStreamInfo with StreamInfo, VideoStreamInfo {
   final List<Fragment> fragments;
 
   @override
-  @JsonKey(toJson: mediaTypeTojson, fromJson: mediaTypeFromJson)
+  @JsonKey(toJson: mediaTypeToJson, fromJson: mediaTypeFromJson)
   final MediaType codec;
 
   VideoOnlyStreamInfo(
@@ -65,7 +65,8 @@ class VideoOnlyStreamInfo with StreamInfo, VideoStreamInfo {
       this.codec);
 
   @override
-  String toString() => 'Video-only ($tag | $videoResolution | $container)';
+  String toString() =>
+      'Video-only ($tag | ${videoResolution}p${framerate.framesPerSecond} | $container)';
 
   factory VideoOnlyStreamInfo.fromJson(Map<String, dynamic> json) =>
       _$VideoOnlyStreamInfoFromJson(json);

@@ -29,7 +29,7 @@ class AudioOnlyStreamInfo with StreamInfo, AudioStreamInfo {
   final String audioCodec;
 
   @override
-  @JsonKey(toJson: mediaTypeTojson, fromJson: mediaTypeFromJson)
+  @JsonKey(toJson: mediaTypeToJson, fromJson: mediaTypeFromJson)
   final MediaType codec;
 
   @override

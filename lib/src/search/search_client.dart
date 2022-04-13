@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import '../../youtube_explode_dart.dart';
 import '../extensions/helpers_extension.dart';
-import '../retry.dart';
 import '../reverse_engineering/pages/search_page.dart';
-import 'base_search_content.dart';
 
 /// YouTube search queries.
 class SearchClient {
@@ -16,12 +14,12 @@ class SearchClient {
   /// Enumerates videos returned by the specified search query
   /// (from the video search page).
   /// The videos are sent in batch of 20 videos.
-  /// You [SearchList.nextPage] to get the next batch of videos.
-  Future<SearchList> getVideos(String searchQuery,
-      {SearchFilter filter = const SearchFilter('')}) async {
+  /// You [VideoSearchList.nextPage] to get the next batch of videos.
+  Future<VideoSearchList> search(String searchQuery,
+      {SearchFilter filter = TypeFilters.video}) async {
     final page = await SearchPage.get(_httpClient, searchQuery, filter: filter);
 
-    return SearchList(
+    return VideoSearchList(
         page.searchContent
             .whereType<SearchVideo>()
             .map((e) => Video(
@@ -42,37 +40,30 @@ class SearchClient {
         _httpClient);
   }
 
-  /// Enumerates videos returned by the specified search query
-  /// (from the video search page).
-  /// Contains only instances of [SearchVideo] or [SearchPlaylist]
-  @Deprecated(
-      'Since version 1.9.0 this is the same as [SearchClient.getVideos].')
-  Stream<BaseSearchContent> getVideosFromPage(String searchQuery,
-      {bool onlyVideos = true,
-      SearchFilter filter = const SearchFilter('')}) async* {
-    SearchPage? page;
-    // ignore: literal_only_boolean_expressions
-    for (;;) {
-      if (page == null) {
-        page = await retry(
-            _httpClient,
-            () async =>
-                SearchPage.get(_httpClient, searchQuery, filter: filter));
-      } else {
-        page = await page.nextPage(_httpClient);
-        if (page == null) {
-          return;
-        }
-      }
+  @Deprecated('Use SearchClient.search')
+  Future<VideoSearchList> getVideos(String searchQuery,
+          {SearchFilter filter = TypeFilters.video}) =>
+      search(searchQuery, filter: filter);
 
-      if (onlyVideos) {
-        yield* Stream.fromIterable(
-            page!.searchContent.whereType<SearchVideo>());
-      } else {
-        yield* Stream.fromIterable(page!.searchContent);
-      }
-    }
+  /// Enumerates results returned by the specified search query.
+  /// The contents are sent in batch of 20 elements.
+  /// The list can either contain a [SearchVideo], [SearchPlaylist] or a [SearchChannel].
+  /// You [SearchList.nextPage] to get the next batch of content.
+  Future<SearchList> searchContent(String searchQuery,
+      {SearchFilter filter = const SearchFilter('')}) async {
+    final page = await SearchPage.get(_httpClient, searchQuery, filter: filter);
+
+    return SearchList(page.searchContent, page, _httpClient);
   }
+
+  /// Enumerates results returned by the specified search query.
+  /// The contents are sent in batch of 20 elements.
+  /// The list can either contain a [SearchVideo], [SearchPlaylist] or a [SearchChannel].
+  /// You [SearchList.nextPage] to get the next batch of content.
+  /// Same as [SearchClient.search]
+  Future<VideoSearchList> call(String searchQuery,
+          {SearchFilter filter = const SearchFilter('')}) async =>
+      search(searchQuery, filter: filter);
 
   /// Returns the suggestions youtube provide while search on the page.
   Future<List<String>> getQuerySuggestions(String query) async {
@@ -87,24 +78,14 @@ class SearchClient {
   }
 
   /// Queries to YouTube to get the results.
-  @Deprecated('Use getVideosFromPage instead - '
-      'Should be used only to get related videos')
-  Future<SearchQuery> queryFromPage(String searchQuery) =>
-      SearchQuery.search(_httpClient, searchQuery);
+  /// You need to manually read [SearchQuery.content] and/or [SearchQuery.relatedVideos].
+  /// For most cases [SearchClient.search] is enough.
+  Future<SearchQuery> searchRaw(String searchQuery,
+          {SearchFilter filter = const SearchFilter('')}) =>
+      SearchQuery.search(_httpClient, searchQuery, filter: filter);
+
+  @Deprecated('Use searchRaw')
+  Future<SearchQuery> queryFromPage(String searchQuery,
+          {SearchFilter filter = const SearchFilter('')}) =>
+      searchRaw(searchQuery, filter: filter);
 }
-
-/*
-    channelId = ChannelId.fromString(channelId);
-    var page = await ChannelUploadPage.get(
-        _httpClient, channelId.value, videoSorting.code);
-    yield* Stream.fromIterable(page.initialData.uploads);
-
-    // ignore: literal_only_boolean_expressions
-    while (true) {
-      page = await page.nextPage(_httpClient);
-      if (page == null) {
-        return;
-      }
-      yield* Stream.fromIterable(page.initialData.uploads);
-    }
- */

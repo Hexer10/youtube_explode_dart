@@ -61,7 +61,7 @@ class MuxedStreamInfo with StreamInfo, AudioStreamInfo, VideoStreamInfo {
 
   /// Stream codec.
   @override
-  @JsonKey(toJson: mediaTypeTojson, fromJson: mediaTypeFromJson)
+  @JsonKey(toJson: mediaTypeToJson, fromJson: mediaTypeFromJson)
   final MediaType codec;
 
   /// Stream codec.
@@ -85,7 +85,8 @@ class MuxedStreamInfo with StreamInfo, AudioStreamInfo, VideoStreamInfo {
   );
 
   @override
-  String toString() => 'Muxed ($tag | $qualityLabel | $container)';
+  String toString() =>
+      'Muxed ($tag | ${videoResolution}p${framerate.framesPerSecond} | $container)';
 
   factory MuxedStreamInfo.fromJson(Map<String, dynamic> json) =>
       _$MuxedStreamInfoFromJson(json);

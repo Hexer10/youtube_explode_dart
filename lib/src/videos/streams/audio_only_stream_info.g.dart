@@ -30,7 +30,7 @@ Map<String, dynamic> _$AudioOnlyStreamInfoToJson(
       'size': instance.size,
       'bitrate': instance.bitrate,
       'audioCodec': instance.audioCodec,
-      'codec': mediaTypeTojson(instance.codec),
+      'codec': mediaTypeToJson(instance.codec),
       'fragments': instance.fragments,
       'qualityLabel': instance.qualityLabel,
     };

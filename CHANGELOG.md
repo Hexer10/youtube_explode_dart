@@ -1,3 +1,13 @@
+## 1.11.0
+- BREAKING CHANGE: Removed `SearchClient.getVideosFromPage`, use `SearchClient.search` or `SearchClient.search.search`.
+- BREAKING CHANGE: `SearchClient.search` now returns `VideoSearchList` (List<Video>).
+- BREAKING CHANGE: Remove the `filter` variable, now use `SearchFilter`.
+- To get the filters use static access on `FeatureFilters`, `UploadDateFilter`, `TypesFilter`, `DurationFilters`, `SortFilters`.
+- Introduced `SearchClient.searchContent` to search for videos, channels and playlists.
+- Introduced `SearchClient.searchRaw` to manually parse the content and also get related videos and estimated results.
+- Fix #197: Fixed `withHighestBitrate()`.
+- Introduced: `List<VideoStreamInfo>.bestQuality`.
+
 ## 1.10.10+2
 - Fix #194: Now closed-captions allow malformed utf8 as well.
 

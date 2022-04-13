@@ -37,12 +37,12 @@ mixin StreamInfo {
 /// Extension for Iterables of StreamInfo.
 extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
   /// Gets the stream with highest bitrate.
-  T withHighestBitrate() => sortByBitrate().last;
+  T withHighestBitrate() => sortByBitrate().first;
 
   /// Gets the video streams sorted by bitrate in ascending order.
   /// This returns new list without editing the original list.
   List<T> sortByBitrate() =>
-      toList()..sort((a, b) => a.bitrate.compareTo(b.bitrate));
+      toList()..sort((a, b) => b.bitrate.compareTo(a.bitrate));
 
   /// Print a formatted text of all the streams. Like youtube-dl -F option.
   String describe() {
@@ -100,5 +100,5 @@ class _Column {
   }
 }
 
-String mediaTypeTojson(MediaType value) => value.toString();
+String mediaTypeToJson(MediaType value) => value.toString();
 MediaType mediaTypeFromJson(String value) => MediaType.parse(value);
