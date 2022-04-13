@@ -32,7 +32,7 @@ void main() {
 
   test('Search only videos', () async {
     var videos =
-    await yt!.search.searchContent('Banana', filter: TypeFilters.video);
+        await yt!.search.searchContent('Banana', filter: TypeFilters.video);
     expect(videos, everyElement(isA<SearchVideo>()));
   });
 
@@ -40,7 +40,6 @@ void main() {
     var channels = await yt!.search
         .searchContent('PewDiePie', filter: TypeFilters.channel);
     expect(channels, everyElement(isA<SearchChannel>()));
-
   });
 
   test('Search only playlists', () async {
@@ -48,8 +47,6 @@ void main() {
         await yt!.search.searchContent('Banana', filter: TypeFilters.playlist);
     expect(playlists, everyElement(isA<SearchPlaylist>()));
   });
-
-
 
   test('Search test search filters', () async {
     var featureSearch =
