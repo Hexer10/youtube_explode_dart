@@ -41,7 +41,7 @@ class Username with _$Username {
       return false;
     }
 
-    return !RegExp('[^0-9a-zA-Z]').hasMatch(name);
+    return true;
   }
 
   /// Parses a username from a url.
