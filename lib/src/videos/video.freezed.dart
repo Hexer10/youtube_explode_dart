@@ -24,6 +24,7 @@ class _$VideoTearOff {
       String author,
       ChannelId channelId,
       DateTime? uploadDate,
+      String? uploadDateRaw,
       DateTime? publishDate,
       String description,
       Duration? duration,
@@ -38,6 +39,7 @@ class _$VideoTearOff {
       author,
       channelId,
       uploadDate,
+      uploadDateRaw,
       publishDate,
       description,
       duration,
@@ -71,6 +73,7 @@ mixin _$Video {
   /// Note: For search queries it is calculated with:
   ///   DateTime.now() - how much time is was published.
   DateTime? get uploadDate => throw _privateConstructorUsedError;
+  String? get uploadDateRaw => throw _privateConstructorUsedError;
 
   /// Video publish date.
   DateTime? get publishDate => throw _privateConstructorUsedError;
@@ -114,6 +117,7 @@ abstract class $VideoCopyWith<$Res> {
       String author,
       ChannelId channelId,
       DateTime? uploadDate,
+      String? uploadDateRaw,
       DateTime? publishDate,
       String description,
       Duration? duration,
@@ -144,6 +148,7 @@ class _$VideoCopyWithImpl<$Res> implements $VideoCopyWith<$Res> {
     Object? author = freezed,
     Object? channelId = freezed,
     Object? uploadDate = freezed,
+    Object? uploadDateRaw = freezed,
     Object? publishDate = freezed,
     Object? description = freezed,
     Object? duration = freezed,
@@ -174,6 +179,10 @@ class _$VideoCopyWithImpl<$Res> implements $VideoCopyWith<$Res> {
           ? _value.uploadDate
           : uploadDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      uploadDateRaw: uploadDateRaw == freezed
+          ? _value.uploadDateRaw
+          : uploadDateRaw // ignore: cast_nullable_to_non_nullable
+              as String?,
       publishDate: publishDate == freezed
           ? _value.publishDate
           : publishDate // ignore: cast_nullable_to_non_nullable
@@ -249,6 +258,7 @@ abstract class _$VideoCopyWith<$Res> implements $VideoCopyWith<$Res> {
       String author,
       ChannelId channelId,
       DateTime? uploadDate,
+      String? uploadDateRaw,
       DateTime? publishDate,
       String description,
       Duration? duration,
@@ -284,6 +294,7 @@ class __$VideoCopyWithImpl<$Res> extends _$VideoCopyWithImpl<$Res>
     Object? author = freezed,
     Object? channelId = freezed,
     Object? uploadDate = freezed,
+    Object? uploadDateRaw = freezed,
     Object? publishDate = freezed,
     Object? description = freezed,
     Object? duration = freezed,
@@ -314,6 +325,10 @@ class __$VideoCopyWithImpl<$Res> extends _$VideoCopyWithImpl<$Res>
           ? _value.uploadDate
           : uploadDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      uploadDateRaw == freezed
+          ? _value.uploadDateRaw
+          : uploadDateRaw // ignore: cast_nullable_to_non_nullable
+              as String?,
       publishDate == freezed
           ? _value.publishDate
           : publishDate // ignore: cast_nullable_to_non_nullable
@@ -359,6 +374,7 @@ class _$_Video extends _Video {
       this.author,
       this.channelId,
       this.uploadDate,
+      this.uploadDateRaw,
       this.publishDate,
       this.description,
       this.duration,
@@ -391,6 +407,8 @@ class _$_Video extends _Video {
   /// Note: For search queries it is calculated with:
   ///   DateTime.now() - how much time is was published.
   final DateTime? uploadDate;
+  @override
+  final String? uploadDateRaw;
   @override
 
   /// Video publish date.
@@ -429,7 +447,7 @@ class _$_Video extends _Video {
 
   @override
   String toString() {
-    return 'Video._internal(id: $id, title: $title, author: $author, channelId: $channelId, uploadDate: $uploadDate, publishDate: $publishDate, description: $description, duration: $duration, thumbnails: $thumbnails, keywords: $keywords, engagement: $engagement, isLive: $isLive, watchPage: $watchPage)';
+    return 'Video._internal(id: $id, title: $title, author: $author, channelId: $channelId, uploadDate: $uploadDate, uploadDateRaw: $uploadDateRaw, publishDate: $publishDate, description: $description, duration: $duration, thumbnails: $thumbnails, keywords: $keywords, engagement: $engagement, isLive: $isLive, watchPage: $watchPage)';
   }
 
   @override
@@ -443,6 +461,8 @@ class _$_Video extends _Video {
             const DeepCollectionEquality().equals(other.channelId, channelId) &&
             const DeepCollectionEquality()
                 .equals(other.uploadDate, uploadDate) &&
+            const DeepCollectionEquality()
+                .equals(other.uploadDateRaw, uploadDateRaw) &&
             const DeepCollectionEquality()
                 .equals(other.publishDate, publishDate) &&
             const DeepCollectionEquality()
@@ -465,6 +485,7 @@ class _$_Video extends _Video {
       const DeepCollectionEquality().hash(author),
       const DeepCollectionEquality().hash(channelId),
       const DeepCollectionEquality().hash(uploadDate),
+      const DeepCollectionEquality().hash(uploadDateRaw),
       const DeepCollectionEquality().hash(publishDate),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(duration),
@@ -487,6 +508,7 @@ abstract class _Video extends Video {
       String author,
       ChannelId channelId,
       DateTime? uploadDate,
+      String? uploadDateRaw,
       DateTime? publishDate,
       String description,
       Duration? duration,
@@ -519,6 +541,8 @@ abstract class _Video extends Video {
   /// Note: For search queries it is calculated with:
   ///   DateTime.now() - how much time is was published.
   DateTime? get uploadDate;
+  @override
+  String? get uploadDateRaw;
   @override
 
   /// Video publish date.

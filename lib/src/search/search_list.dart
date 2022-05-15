@@ -49,18 +49,20 @@ class VideoSearchList extends DelegatingList<Video> {
         page.searchContent
             .whereType<SearchVideo>()
             .map((e) => Video(
-                e.id,
-                e.title,
-                e.author,
-                ChannelId(e.channelId),
-                e.uploadDate.toDateTime(),
-                null,
-                e.description,
-                e.duration.toDuration(),
-                ThumbnailSet(e.id.value),
-                null,
-                Engagement(e.viewCount, null, null),
-                e.isLive))
+                  e.id,
+                  e.title,
+                  e.author,
+                  ChannelId(e.channelId),
+                  e.uploadDate.toDateTime(),
+                  e.uploadDate,
+                  null,
+                  e.description,
+                  e.duration.toDuration(),
+                  ThumbnailSet(e.id.value),
+                  null,
+                  Engagement(e.viewCount, null, null),
+                  e.isLive,
+                ))
             .toList(),
         page,
         _httpClient);
