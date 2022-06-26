@@ -24,8 +24,13 @@ class ChannelClient {
     id = ChannelId.fromString(id);
     var channelPage = await ChannelPage.get(_httpClient, id.value);
 
-    return Channel(id, channelPage.channelTitle, channelPage.channelLogoUrl,
-        channelPage.channelBannerUrl, channelPage.subscribersCount);
+    return Channel(
+      id,
+      channelPage.channelTitle,
+      channelPage.channelLogoUrl,
+      channelPage.channelBannerUrl,
+      channelPage.subscribersCount,
+    );
   }
 
   /// Gets the metadata associated with the channel of the specified user.
@@ -34,14 +39,14 @@ class ChannelClient {
   Future<Channel> getByUsername(dynamic username) async {
     username = Username.fromString(username);
 
-    var channelPage = await ChannelPage.getByUsername(
-        _httpClient, (username as Username).value);
+    var channelPage = await ChannelPage.getByUsername(_httpClient, (username as Username).value);
     return Channel(
-        ChannelId(channelPage.channelId),
-        channelPage.channelTitle,
-        channelPage.channelLogoUrl,
-        channelPage.channelBannerUrl,
-        channelPage.subscribersCount);
+      ChannelId(channelPage.channelId),
+      channelPage.channelTitle,
+      channelPage.channelLogoUrl,
+      channelPage.channelBannerUrl,
+      channelPage.subscribersCount,
+    );
   }
 
   /// Gets the info found on a YouTube Channel About page.
@@ -53,16 +58,14 @@ class ChannelClient {
     final aboutPage = await ChannelAboutPage.get(_httpClient, channelId.value);
 
     return ChannelAbout(
-        aboutPage.description,
-        aboutPage.viewCount,
-        aboutPage.joinDate,
-        aboutPage.title,
-        [
-          for (var e in aboutPage.avatar)
-            Thumbnail(Uri.parse(e['url']), e['height'], e['width'])
-        ],
-        aboutPage.country,
-        aboutPage.channelLinks);
+      aboutPage.description,
+      aboutPage.viewCount,
+      aboutPage.joinDate,
+      aboutPage.title,
+      [for (var e in aboutPage.avatar) Thumbnail(Uri.parse(e['url']), e['height'], e['width'])],
+      aboutPage.country,
+      aboutPage.channelLinks,
+    );
   }
 
   /// Gets the info found on a YouTube Channel About page.
@@ -71,20 +74,17 @@ class ChannelClient {
   Future<ChannelAbout> getAboutPageByUsername(dynamic username) async {
     username = Username.fromString(username);
 
-    var page =
-        await ChannelAboutPage.getByUsername(_httpClient, username.value);
+    var page = await ChannelAboutPage.getByUsername(_httpClient, username.value);
 
     return ChannelAbout(
-        page.description,
-        page.viewCount,
-        page.joinDate,
-        page.title,
-        [
-          for (var e in page.avatar)
-            Thumbnail(Uri.parse(e['url']), e['height'], e['width'])
-        ],
-        page.country,
-        page.channelLinks);
+      page.description,
+      page.viewCount,
+      page.joinDate,
+      page.title,
+      [for (var e in page.avatar) Thumbnail(Uri.parse(e['url']), e['height'], e['width'])],
+      page.country,
+      page.channelLinks,
+    );
   }
 
   /// Gets the metadata associated with the channel
@@ -113,29 +113,29 @@ class ChannelClient {
   ///
   /// Note that this endpoint provides less info about each video
   /// (only the Title and VideoId).
-  Future<ChannelUploadsList> getUploadsFromPage(dynamic channelId,
-      [VideoSorting videoSorting = VideoSorting.newest]) async {
+  Future<ChannelUploadsList> getUploadsFromPage(dynamic channelId, [VideoSorting videoSorting = VideoSorting.newest]) async {
     channelId = ChannelId.fromString(channelId);
-    final page = await ChannelUploadPage.get(
-        _httpClient, (channelId as ChannelId).value, videoSorting.code);
+    final page = await ChannelUploadPage.get(_httpClient, (channelId as ChannelId).value, videoSorting.code);
 
     final channel = await get(channelId);
 
     return ChannelUploadsList(
         page.uploads
             .map((e) => Video(
-                e.videoId,
-                e.videoTitle,
-                channel.title,
-                channelId,
-                e.videoUploadDate.toDateTime(),
-                null,
-                '',
-                e.videoDuration,
-                ThumbnailSet(e.videoId.value),
-                null,
-                Engagement(e.videoViews, null, null),
-                false))
+                  e.videoId,
+                  e.videoTitle,
+                  channel.title,
+                  channelId,
+                  e.videoUploadDate.toDateTime(),
+                  e.videoUploadDate,
+                  null,
+                  '',
+                  e.videoDuration,
+                  ThumbnailSet(e.videoId.value),
+                  null,
+                  Engagement(e.videoViews, null, null),
+                  false,
+                ))
             .toList(),
         channel.title,
         channelId,

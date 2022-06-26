@@ -17,9 +17,7 @@ class ChannelUploadsList extends DelegatingList<Video> {
 
   /// Construct an instance of [SearchList]
   /// See [SearchList]
-  ChannelUploadsList(
-      List<Video> base, this.author, this.channel, this._page, this._httpClient)
-      : super(base);
+  ChannelUploadsList(List<Video> base, this.author, this.channel, this._page, this._httpClient) : super(base);
 
   /// Fetches the next batch of videos or returns null if there are no more
   /// results.
@@ -31,18 +29,20 @@ class ChannelUploadsList extends DelegatingList<Video> {
     return ChannelUploadsList(
         page.uploads
             .map((e) => Video(
-                e.videoId,
-                e.videoTitle,
-                author,
-                channel,
-                e.videoUploadDate.toDateTime(),
-                null,
-                '',
-                e.videoDuration,
-                ThumbnailSet(e.videoId.value),
-                null,
-                Engagement(e.videoViews, null, null),
-                false))
+                  e.videoId,
+                  e.videoTitle,
+                  author,
+                  channel,
+                  e.videoUploadDate.toDateTime(),
+                  e.videoUploadDate,
+                  null,
+                  '',
+                  e.videoDuration,
+                  ThumbnailSet(e.videoId.value),
+                  null,
+                  Engagement(e.videoViews, null, null),
+                  false,
+                ))
             .toList(),
         author,
         channel,

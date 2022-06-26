@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'Insert the video id or url',
             ),
             TextField(controller: textController),
-            RaisedButton(
+            ElevatedButton(
                 child: const Text('Download'),
                 onPressed: () async {
                   // Here you should validate the given input or else an error

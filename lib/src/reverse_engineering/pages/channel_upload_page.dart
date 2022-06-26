@@ -73,7 +73,7 @@ class _InitialData extends InitialData {
           ?.getList('tabs')
           ?.map((e) => e['tabRenderer'])
           .cast<JsonMap>()
-          .firstWhereOrNull((e) => e['selected'] as bool)
+          .firstWhereOrNull((e) => e['selected'] as bool? ?? false)
           ?.get('content')
           ?.get('sectionListRenderer')
           ?.getList('contents')

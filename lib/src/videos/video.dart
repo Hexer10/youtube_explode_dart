@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../channels/channel_id.dart';
@@ -34,6 +36,7 @@ class Video with _$Video {
       /// Note: For search queries it is calculated with:
       ///   DateTime.now() - how much time is was published.
       DateTime? uploadDate,
+      String? uploadDateRaw,
 
       /// Video publish date.
       DateTime? publishDate,
@@ -79,6 +82,7 @@ class Video with _$Video {
         /// Note: For search queries it is calculated with:
         ///   DateTime.now() - how much time is was published.
         uploadDate,
+        uploadDateRaw,
 
         /// Video publish date.
         publishDate,
@@ -110,6 +114,7 @@ class Video with _$Video {
       /// Note: For search queries it is calculated with:
       ///   DateTime.now() - how much time is was published.
       DateTime? uploadDate,
+      String? uploadDateRaw,
 
       /// Video publish date.
       DateTime? publishDate,

@@ -22,7 +22,7 @@ class DashManifest {
 
   ///
   // ignore: deprecated_member_use
-  DashManifest.parse(String raw) : _root = xml.parse(raw);
+  DashManifest.parse(String raw) : _root = xml.XmlDocument.parse(raw);
 
   ///
   static Future<DashManifest> get(YoutubeHttpClient httpClient, dynamic url) {

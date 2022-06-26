@@ -52,7 +52,7 @@ extension StringUtility on String {
 
   /// Format: HH:MM:SS
   Duration? toDuration() {
-    if (/*string == null ||*/ trim().isEmpty) {
+    if (this == 'SHORTS' || trim().isEmpty) {
       return null;
     }
 
