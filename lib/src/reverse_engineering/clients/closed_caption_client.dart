@@ -17,7 +17,7 @@ class ClosedCaptionClient {
 
   ///
   // ignore: deprecated_member_use
-  ClosedCaptionClient.parse(String raw) : root = xml.parse(raw);
+  ClosedCaptionClient.parse(String raw) : root = xml.XmlDocument.parse(raw);
 
   ///
   static Future<ClosedCaptionClient> get(

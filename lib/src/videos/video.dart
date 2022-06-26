@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../channels/channel_id.dart';
