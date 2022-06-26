@@ -59,7 +59,10 @@ void main() {
 
     expect(caption, isNotNull);
     expect(captionPart, isNotNull);
-    expect(caption.text, anyOf('how about this black there are some', 'there are some really nice colors here')); // Seems like sometimes the text changes.
+    expect(
+        caption.text,
+        anyOf('how about this black there are some',
+            'there are some really nice colors here')); // Seems like sometimes the text changes.
     expect(captionPart?.text, anyOf(' about', ' some'));
   });
 }

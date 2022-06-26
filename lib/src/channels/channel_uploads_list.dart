@@ -17,7 +17,9 @@ class ChannelUploadsList extends DelegatingList<Video> {
 
   /// Construct an instance of [SearchList]
   /// See [SearchList]
-  ChannelUploadsList(List<Video> base, this.author, this.channel, this._page, this._httpClient) : super(base);
+  ChannelUploadsList(
+      List<Video> base, this.author, this.channel, this._page, this._httpClient)
+      : super(base);
 
   /// Fetches the next batch of videos or returns null if there are no more
   /// results.
