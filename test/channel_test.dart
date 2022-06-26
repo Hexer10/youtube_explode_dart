@@ -83,7 +83,7 @@ void main() {
             20000000000)); //Seems youtube likes to change and lower this number
     expect(aboutPage.description, isNotEmpty);
     expect(aboutPage.thumbnails, isNotEmpty); // Avatar list
-    expect(aboutPage.channelLinks, isEmpty);
+    expect(aboutPage.channelLinks, isNotNull);
     expect(aboutPage.country, 'United States');
     expect(aboutPage.joinDate, 'Apr 29, 2010');
   });
