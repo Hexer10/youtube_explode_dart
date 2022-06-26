@@ -1,3 +1,9 @@
+## 1.12.0
+- Fix #207: Allow every character to be present in a username.
+- Fix shorts. Thanks to @prateekmedia.
+- Add raw upload date on Video model. Thanks to @Nikos Portolos.
+- Fix null values for selected fields when parsing chanel uploads. Thanks to @Nikos Portolos.
+
 ## 1.11.0
 - BREAKING CHANGE: Removed `SearchClient.getVideosFromPage`, use `SearchClient.search` or `SearchClient.search.search`.
 - BREAKING CHANGE: `SearchClient.search` now returns `VideoSearchList` (List<Video>).
