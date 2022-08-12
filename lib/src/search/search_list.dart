@@ -5,7 +5,6 @@ import 'package:collection/collection.dart';
 import '../../youtube_explode_dart.dart';
 import '../extensions/helpers_extension.dart';
 import '../reverse_engineering/pages/search_page.dart';
-import 'base_search_content.dart';
 
 /// This list contains search videos.
 ///This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.
@@ -46,25 +45,28 @@ class VideoSearchList extends DelegatingList<Video> {
     }
 
     return VideoSearchList(
-        page.searchContent
-            .whereType<SearchVideo>()
-            .map((e) => Video(
-                  e.id,
-                  e.title,
-                  e.author,
-                  ChannelId(e.channelId),
-                  e.uploadDate.toDateTime(),
-                  e.uploadDate,
-                  null,
-                  e.description,
-                  e.duration.toDuration(),
-                  ThumbnailSet(e.id.value),
-                  null,
-                  Engagement(e.viewCount, null, null),
-                  e.isLive,
-                ))
-            .toList(),
-        page,
-        _httpClient);
+      page.searchContent
+          .whereType<SearchVideo>()
+          .map(
+            (e) => Video(
+              e.id,
+              e.title,
+              e.author,
+              ChannelId(e.channelId),
+              e.uploadDate.toDateTime(),
+              e.uploadDate,
+              null,
+              e.description,
+              e.duration.toDuration(),
+              ThumbnailSet(e.id.value),
+              null,
+              Engagement(e.viewCount, null, null),
+              e.isLive,
+            ),
+          )
+          .toList(),
+      page,
+      _httpClient,
+    );
   }
 }

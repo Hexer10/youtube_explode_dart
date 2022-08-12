@@ -83,13 +83,13 @@ extension VideoQualityUtil on VideoQuality {
       return getLabel();
     }
 
-    var framerateRounded = (framerate / 10).ceil() * 10;
+    final framerateRounded = (framerate / 10).ceil() * 10;
     return '${getLabel()}$framerateRounded';
   }
 
   /// Returns a [VideoResolution] from its [VideoQuality]
   VideoResolution toVideoResolution() {
-    var r = _resolutionMap[this];
+    final r = _resolutionMap[this];
     if (r == null) {
       throw ArgumentError.value(this, 'quality', 'Unrecognized video quality');
     }

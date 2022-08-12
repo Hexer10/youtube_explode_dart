@@ -28,9 +28,9 @@ class PlaylistId with _$PlaylistId {
   const PlaylistId._();
 
   const factory PlaylistId._internal(
-
-      /// The playlist id as string.
-      String value) = _PlaylistId;
+    /// The playlist id as string.
+    String value,
+  ) = _PlaylistId;
 
   ///  Converts [obj] to a [PlaylistId] by calling .toString on that object.
   /// If it is already a [PlaylistId], [obj] is returned
@@ -88,24 +88,26 @@ class PlaylistId with _$PlaylistId {
       return url;
     }
 
-    var regMatch = _regMatchExp.firstMatch(url)?.group(1);
+    final regMatch = _regMatchExp.firstMatch(url)?.group(1);
     if (!regMatch.isNullOrWhiteSpace && validatePlaylistId(regMatch!)) {
       return regMatch;
     }
 
-    var compositeMatch = _compositeMatchExp.firstMatch(url)?.group(1);
+    final compositeMatch = _compositeMatchExp.firstMatch(url)?.group(1);
     if (!compositeMatch.isNullOrWhiteSpace &&
         validatePlaylistId(compositeMatch!)) {
       return compositeMatch;
     }
 
-    var shortCompositeMatch = _shortCompositeMatchExp.firstMatch(url)?.group(1);
+    final shortCompositeMatch =
+        _shortCompositeMatchExp.firstMatch(url)?.group(1);
     if (!shortCompositeMatch.isNullOrWhiteSpace &&
         validatePlaylistId(shortCompositeMatch!)) {
       return shortCompositeMatch;
     }
 
-    var embedCompositeMatch = _embedCompositeMatchExp.firstMatch(url)?.group(1);
+    final embedCompositeMatch =
+        _embedCompositeMatchExp.firstMatch(url)?.group(1);
     if (!embedCompositeMatch.isNullOrWhiteSpace &&
         validatePlaylistId(embedCompositeMatch!)) {
       return embedCompositeMatch;

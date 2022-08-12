@@ -56,7 +56,7 @@ extension StringUtility on String {
       return null;
     }
 
-    var parts = split(':');
+    final parts = split(':');
     assert(parts.length <= 3);
 
     if (parts.length == 1) {
@@ -64,13 +64,16 @@ extension StringUtility on String {
     }
     if (parts.length == 2) {
       return Duration(
-          minutes: int.parse(parts[0]), seconds: int.parse(parts[1]));
+        minutes: int.parse(parts[0]),
+        seconds: int.parse(parts[1]),
+      );
     }
     if (parts.length == 3) {
       return Duration(
-          hours: int.parse(parts[0]),
-          minutes: int.parse(parts[1]),
-          seconds: int.parse(parts[2]));
+        hours: int.parse(parts[0]),
+        minutes: int.parse(parts[1]),
+        seconds: int.parse(parts[2]),
+      );
     }
     // Shouldn't reach here.
     throw Error();
@@ -140,10 +143,10 @@ extension StringUtility2 on String? {
     }
     assert(parts.length == 3);
 
-    var qty = int.parse(parts.first);
+    final qty = int.parse(parts.first);
 
     // Try to get the unit
-    var unit = parts[1];
+    final unit = parts[1];
     Duration time;
     if (unit.startsWith('second')) {
       time = Duration(seconds: qty);
@@ -160,8 +163,10 @@ extension StringUtility2 on String? {
     } else if (unit.startsWith('year')) {
       time = Duration(days: qty * 365);
     } else {
-      throw StateError('Couldn\'t parse $unit unit of time. '
-          'Please report this to the project page!');
+      throw StateError(
+        'Couldn\'t parse $unit unit of time. '
+        'Please report this to the project page!',
+      );
     }
 
     return DateTime.now().subtract(time);
@@ -203,7 +208,7 @@ extension ListUtil<E> on Iterable<E> {
 extension UriUtility on Uri {
   /// Returns a new Uri with the new query parameters set.
   Uri setQueryParam(String key, String value) {
-    var query = Map<String, String>.from(queryParameters);
+    final query = Map<String, String>.from(queryParameters);
 
     query[key] = value;
 
@@ -215,7 +220,7 @@ extension UriUtility on Uri {
 extension GetOrNullMap on Map {
   /// Get a map inside a map
   Map<String, dynamic>? get(String key) {
-    var v = this[key];
+    final v = this[key];
     if (v == null) {
       return null;
     }
@@ -225,7 +230,7 @@ extension GetOrNullMap on Map {
   /// Get a value inside a map.
   /// If it is null this returns null, if of another type this throws.
   T? getT<T>(String key) {
-    var v = this[key];
+    final v = this[key];
     if (v == null) {
       return null;
     }
@@ -260,7 +265,7 @@ extension GetOrNullMap on Map {
 extension UriUtils on Uri {
   ///
   Uri replaceQueryParameters(Map<String, String> parameters) {
-    var query = Map<String, String>.from(queryParameters);
+    final query = Map<String, String>.from(queryParameters);
     query.addAll(parameters);
 
     return replace(queryParameters: query);
@@ -275,8 +280,11 @@ extension RunsParser on List<Map<dynamic, dynamic>> {
 
 extension GenericExtract on List<String> {
   /// Used to extract initial data.
-  T extractGenericData<T>(List<String> match,
-      T Function(Map<String, dynamic>) builder, Exception Function() orThrow) {
+  T extractGenericData<T>(
+    List<String> match,
+    T Function(Map<String, dynamic>) builder,
+    Exception Function() orThrow,
+  ) {
     JsonMap? initialData;
 
     for (final m in match) {
@@ -297,9 +305,8 @@ class JoinedIterable<T> extends Iterable<T> {
   JoinedIterable(this._iterables);
 
   @override
-  Iterator<T> get iterator {
-    return _JoinedIterator<T>(_iterables.map((e) => e.iterator).toList());
-  }
+  Iterator<T> get iterator =>
+      _JoinedIterator<T>(_iterables.map((e) => e.iterator).toList());
 }
 
 class _JoinedIterator<T> extends Iterator<T> {

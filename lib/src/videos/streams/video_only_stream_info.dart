@@ -51,18 +51,19 @@ class VideoOnlyStreamInfo with StreamInfo, VideoStreamInfo {
   final MediaType codec;
 
   VideoOnlyStreamInfo(
-      this.tag,
-      this.url,
-      this.container,
-      this.size,
-      this.bitrate,
-      this.videoCodec,
-      this.qualityLabel,
-      this.videoQuality,
-      this.videoResolution,
-      this.framerate,
-      this.fragments,
-      this.codec);
+    this.tag,
+    this.url,
+    this.container,
+    this.size,
+    this.bitrate,
+    this.videoCodec,
+    this.qualityLabel,
+    this.videoQuality,
+    this.videoResolution,
+    this.framerate,
+    this.fragments,
+    this.codec,
+  );
 
   @override
   String toString() =>

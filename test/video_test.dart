@@ -12,19 +12,23 @@ void main() {
   });
 
   test('Get metadata of a video', () async {
-    var videoUrl = 'https://www.youtube.com/watch?v=AI7ULzgf8RU';
-    var video = await yt!.videos.get(VideoId(videoUrl));
+    const videoUrl = 'https://www.youtube.com/watch?v=AI7ULzgf8RU';
+    final video = await yt!.videos.get(VideoId(videoUrl));
     expect(video.id.value, 'AI7ULzgf8RU');
     expect(video.url, videoUrl);
     expect(video.title, 'Aka no Ha [Another] +HDHR');
     expect(video.channelId.value, 'UCEnBXANsKmyj2r9xVyKoDiQ');
     expect(video.author, 'Tyrrrz');
-    var rangeMs = DateTime(2017, 09, 30, 17, 15, 26).millisecondsSinceEpoch;
+    final rangeMs = DateTime(2017, 09, 30, 17, 15, 26).millisecondsSinceEpoch;
     // 1day margin since the uploadDate could differ from timezones
-    expect(video.uploadDate!.millisecondsSinceEpoch,
-        inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
-    expect(video.publishDate!.millisecondsSinceEpoch,
-        inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
+    expect(
+      video.uploadDate!.millisecondsSinceEpoch,
+      inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000),
+    );
+    expect(
+      video.publishDate!.millisecondsSinceEpoch,
+      inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000),
+    );
     expect(video.description, contains('246pp'));
     // Should be 1:38 but sometimes it differs
     // so we're using a 10 seconds range from it.
@@ -35,11 +39,12 @@ void main() {
     expect(video.thumbnails.standardResUrl, isNotEmpty);
     expect(video.thumbnails.maxResUrl, isNotEmpty);
     expect(
-        video.keywords,
-        containsAll([
-          'osu',
-          'mouse' /*, 'rhythm game'*/
-        ]));
+      video.keywords,
+      containsAll([
+        'osu',
+        'mouse' /*, 'rhythm game'*/
+      ]),
+    );
     expect(video.engagement.viewCount, greaterThanOrEqualTo(134));
     expect(video.engagement.likeCount, greaterThanOrEqualTo(5));
     expect(video.engagement.dislikeCount, greaterThanOrEqualTo(0));
@@ -63,7 +68,7 @@ void main() {
       VideoId('p3dDcKOFXQg'), //RequiresPurchase
     }) {
       test('VideoId - ${val.value}', () async {
-        var video = await yt!.videos.get(val);
+        final video = await yt!.videos.get(val);
         expect(video.id.value, val.value);
 
         expect(video.uploadDate, isNotNull);
@@ -75,8 +80,10 @@ void main() {
   group('Get metadata of invalid videos throws VideoUnplayableException', () {
     for (final val in {VideoId('qld9w0b-1ao'), VideoId('pb_hHv3fByo')}) {
       test('VideoId - $val', () {
-        expect(() async => yt!.videos.get(val),
-            throwsA(const TypeMatcher<VideoUnplayableException>()));
+        expect(
+          () async => yt!.videos.get(val),
+          throwsA(const TypeMatcher<VideoUnplayableException>()),
+        );
       });
     }
   });

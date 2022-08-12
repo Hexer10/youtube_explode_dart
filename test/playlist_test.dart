@@ -12,9 +12,9 @@ void main() {
   });
 
   test('Get metadata of a playlist', () async {
-    var playlistUrl =
+    const playlistUrl =
         'https://www.youtube.com/playlist?list=PLr-IftNTIujSF-8tlGbZBQyGIT6TCF6Yd';
-    var playlist = await yt!.playlists.get(PlaylistId(playlistUrl));
+    final playlist = await yt!.playlists.get(PlaylistId(playlistUrl));
     expect(playlist.id.value, 'PLr-IftNTIujSF-8tlGbZBQyGIT6TCF6Yd');
     expect(playlist.url, playlistUrl);
     expect(playlist.title, 'osu! Highlights');
@@ -39,16 +39,19 @@ void main() {
       PlaylistId('PL601B2E69B03FAB9D')
     }) {
       test('PlaylistID - ${val.value}', () async {
-        var playlist = await yt!.playlists.get(val);
+        final playlist = await yt!.playlists.get(val);
         expect(playlist.id.value, val.value);
       });
     }
   });
 
   test('Get more than 100 videos in a playlist', () async {
-    var videos = await yt!.playlists
-        .getVideos(PlaylistId(
-            'https://www.youtube.com/playlist?list=PLCSusC_jlo14J0uBgFqfHsKu7gc5W2HyM'))
+    final videos = await yt!.playlists
+        .getVideos(
+          PlaylistId(
+            'https://www.youtube.com/playlist?list=PLCSusC_jlo14J0uBgFqfHsKu7gc5W2HyM',
+          ),
+        )
         .toList();
     expect(videos.length, greaterThan(100));
   });

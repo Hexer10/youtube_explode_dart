@@ -47,7 +47,9 @@ class EmbeddedPlayerClient {
   ///
   @alwaysThrows
   static Future<EmbeddedPlayerClient> get(
-      YoutubeHttpClient httpClient, String videoId) {
+    YoutubeHttpClient httpClient,
+    String videoId,
+  ) {
     final body = {
       'context': const {
         'client': {
@@ -62,18 +64,20 @@ class EmbeddedPlayerClient {
     final url = Uri.parse('https://www.youtube.com/youtubei/v1/player');
 
     return retry(httpClient, () async {
-      final raw = await httpClient.post(url,
-          body: json.encode(body),
-          headers: {
-            'X-Goog-Api-Key': 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8'
-          },
-          validate: true);
+      final raw = await httpClient.post(
+        url,
+        body: json.encode(body),
+        headers: {'X-Goog-Api-Key': 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8'},
+        validate: true,
+      );
 
-      var result = EmbeddedPlayerClient.parse(raw.body);
+      final result = EmbeddedPlayerClient.parse(raw.body);
 
       if (!result.isVideoAvailable) {
-        throw VideoUnplayableException.unplayable(VideoId(videoId),
-            reason: result.reason);
+        throw VideoUnplayableException.unplayable(
+          VideoId(videoId),
+          reason: result.reason,
+        );
       }
       return result;
     });
@@ -94,9 +98,10 @@ class _StreamInfo extends StreamInfoProvider {
 
   @override
   late final int? contentLength = int.tryParse(
-      root.getT<String>('contentLength') ??
-          _contentLenExp.firstMatch(url)?.group(1) ??
-          '');
+    root.getT<String>('contentLength') ??
+        _contentLenExp.firstMatch(url)?.group(1) ??
+        '',
+  );
 
   @override
   late final int? framerate = root.getT<int>('fps');
@@ -107,7 +112,8 @@ class _StreamInfo extends StreamInfoProvider {
 
   @override
   late final String? signatureParameter = Uri.splitQueryString(
-          root.getT<String>('cipher') ?? '')['sp'] ??
+        root.getT<String>('cipher') ?? '',
+      )['sp'] ??
       Uri.splitQueryString(root.getT<String>('signatureCipher') ?? '')['sp'];
 
   @override
@@ -143,7 +149,7 @@ class _StreamInfo extends StreamInfoProvider {
   late final MediaType codec = _getMimeType()!;
 
   MediaType? _getMimeType() {
-    var mime = root.getT<String>('mimeType');
+    final mime = root.getT<String>('mimeType');
     if (mime == null) {
       return null;
     }

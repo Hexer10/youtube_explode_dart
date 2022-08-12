@@ -12,16 +12,16 @@ class SearchPlaylist with _$SearchPlaylist, BaseSearchContent {
   /// Initialize a [SearchPlaylist] instance.
   //@With<BaseSearchContent>()
   const factory SearchPlaylist(
+    /// PlaylistId.
+    PlaylistId playlistId,
 
-      /// PlaylistId.
-      PlaylistId playlistId,
+    /// Playlist title.
+    String playlistTitle,
 
-      /// Playlist title.
-      String playlistTitle,
+    /// Playlist video count, cannot be greater than 50.
+    int playlistVideoCount,
 
-      /// Playlist video count, cannot be greater than 50.
-      int playlistVideoCount,
-
-      /// Video thumbnail
-      List<Thumbnail> thumbnails) = _SearchPlaylist;
+    /// Video thumbnail
+    List<Thumbnail> thumbnails,
+  ) = _SearchPlaylist;
 }

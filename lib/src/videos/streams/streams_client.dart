@@ -19,7 +19,9 @@ class StreamsClient {
   StreamsClient(this._httpClient);
 
   Future<DashManifest> _getDashManifest(
-      Uri dashManifestUrl, Iterable<CipherOperation> cipherOperations) {
+    Uri dashManifestUrl,
+    Iterable<CipherOperation> cipherOperations,
+  ) {
     var signature =
         DashManifest.getSignatureFromUrl(dashManifestUrl.toString());
     if (!signature.isNullOrWhiteSpace) {
@@ -30,7 +32,8 @@ class StreamsClient {
   }
 
   Future<StreamContext> _getStreamContextFromEmbeddedClient(
-      VideoId videoId) async {
+    VideoId videoId,
+  ) async {
     final page = await EmbeddedPlayerClient.get(_httpClient, videoId.value);
 
     return StreamContext(page.streams.toList(), const []);
@@ -41,41 +44,45 @@ class StreamsClient {
 
     final playerConfig = watchPage.playerConfig;
 
-    var playerResponse =
+    final playerResponse =
         watchPage.playerResponse ?? playerConfig?.playerResponse;
     if (playerResponse == null) {
       throw VideoUnplayableException.unplayable(videoId);
     }
 
-    var previewVideoId = playerResponse.previewVideoId;
+    final previewVideoId = playerResponse.previewVideoId;
     if (!previewVideoId.isNullOrWhiteSpace) {
       throw VideoRequiresPurchaseException.preview(
-          videoId, VideoId(previewVideoId!));
+        videoId,
+        VideoId(previewVideoId!),
+      );
     }
 
-    var playerSourceUrl = watchPage.sourceUrl ?? playerConfig?.sourceUrl;
-    var playerSource = !playerSourceUrl.isNullOrWhiteSpace
+    final playerSourceUrl = watchPage.sourceUrl ?? playerConfig?.sourceUrl;
+    final playerSource = !playerSourceUrl.isNullOrWhiteSpace
         ? await PlayerSource.get(_httpClient, playerSourceUrl!)
         : null;
-    var cipherOperations =
+    final cipherOperations =
         playerSource?.getCipherOperations() ?? const <CipherOperation>[];
 
     if (!playerResponse.isVideoPlayable) {
-      throw VideoUnplayableException.unplayable(videoId,
-          reason: playerResponse.videoPlayabilityError ?? '');
+      throw VideoUnplayableException.unplayable(
+        videoId,
+        reason: playerResponse.videoPlayabilityError ?? '',
+      );
     }
 
     if (playerResponse.isLive) {
       throw VideoUnplayableException.liveStream(videoId);
     }
 
-    var streamInfoProviders = <StreamInfoProvider>[
+    final streamInfoProviders = <StreamInfoProvider>[
       ...playerResponse.streams,
     ];
 
-    var dashManifestUrl = playerResponse.dashManifestUrl;
+    final dashManifestUrl = playerResponse.dashManifestUrl;
     if (!(dashManifestUrl?.isNullOrWhiteSpace ?? true)) {
-      var dashManifest =
+      final dashManifest =
           await _getDashManifest(Uri.parse(dashManifestUrl!), cipherOperations);
       streamInfoProviders.addAll(dashManifest.streams);
     }
@@ -84,15 +91,15 @@ class StreamsClient {
 
   Future<StreamManifest> _getManifest(StreamContext streamContext) async {
     // To make sure there are no duplicates streams, group them by tag
-    var streams = <int, StreamInfo>{};
+    final streams = <int, StreamInfo>{};
 
     for (final streamInfo in streamContext.streamInfoProviders) {
-      var tag = streamInfo.tag;
+      final tag = streamInfo.tag;
       var url = Uri.parse(streamInfo.url);
 
       // Signature
       var signature = streamInfo.signature;
-      var signatureParameter = streamInfo.signatureParameter ?? 'signature';
+      final signatureParameter = streamInfo.signatureParameter ?? 'signature';
 
       if (!signature.isNullOrWhiteSpace) {
         signature = streamContext.cipherOperations.decipher(signature!);
@@ -100,7 +107,7 @@ class StreamsClient {
       }
 
       // Content length - Dont try to get content length of a dash stream.
-      var contentLength = streamInfo.source == StreamSource.dash
+      final contentLength = streamInfo.source == StreamSource.dash
           ? 0
           : streamInfo.contentLength ??
               await _httpClient.getContentLength(url, validate: false) ??
@@ -110,21 +117,22 @@ class StreamsClient {
         continue;
       }
       // Common
-      var container = StreamContainer.parse(streamInfo.container!);
-      var fileSize = FileSize(contentLength);
-      var bitrate = Bitrate(streamInfo.bitrate ?? 0);
+      final container = StreamContainer.parse(streamInfo.container!);
+      final fileSize = FileSize(contentLength);
+      final bitrate = Bitrate(streamInfo.bitrate ?? 0);
 
-      var audioCodec = streamInfo.audioCodec;
-      var videoCodec = streamInfo.videoCodec;
+      final audioCodec = streamInfo.audioCodec;
+      final videoCodec = streamInfo.videoCodec;
 
       // Muxed or Video-only
       if (!videoCodec.isNullOrWhiteSpace) {
-        var framerate = Framerate(streamInfo.framerate ?? 24);
-        var videoQuality = VideoQualityUtil.fromLabel(streamInfo.qualityLabel);
+        final framerate = Framerate(streamInfo.framerate ?? 24);
+        final videoQuality =
+            VideoQualityUtil.fromLabel(streamInfo.qualityLabel);
 
-        var videoWidth = streamInfo.videoWidth;
-        var videoHeight = streamInfo.videoHeight;
-        var videoResolution = videoWidth != -1 && videoHeight != -1
+        final videoWidth = streamInfo.videoWidth;
+        final videoHeight = streamInfo.videoHeight;
+        final videoResolution = videoWidth != -1 && videoHeight != -1
             ? VideoResolution(videoWidth ?? 0, videoHeight ?? 0)
             : videoQuality.toVideoResolution();
 
@@ -150,32 +158,34 @@ class StreamsClient {
 
         // Video only
         streams[tag] = VideoOnlyStreamInfo(
-            tag,
-            url,
-            container,
-            fileSize,
-            bitrate,
-            videoCodec!,
-            streamInfo.qualityLabel,
-            videoQuality,
-            videoResolution,
-            framerate,
-            streamInfo.fragments ?? const [],
-            streamInfo.codec);
+          tag,
+          url,
+          container,
+          fileSize,
+          bitrate,
+          videoCodec!,
+          streamInfo.qualityLabel,
+          videoQuality,
+          videoResolution,
+          framerate,
+          streamInfo.fragments ?? const [],
+          streamInfo.codec,
+        );
         continue;
       }
       // Audio-only
       if (!audioCodec.isNullOrWhiteSpace) {
         streams[tag] = AudioOnlyStreamInfo(
-            tag,
-            url,
-            container,
-            fileSize,
-            bitrate,
-            audioCodec!,
-            streamInfo.qualityLabel,
-            streamInfo.fragments ?? const [],
-            streamInfo.codec);
+          tag,
+          url,
+          container,
+          fileSize,
+          bitrate,
+          audioCodec!,
+          streamInfo.qualityLabel,
+          streamInfo.fragments ?? const [],
+          streamInfo.codec,
+        );
       }
 
       // #if DEBUG
@@ -210,15 +220,18 @@ class StreamsClient {
 
     if (playerResponse == null) {
       throw TransientFailureException(
-          'Couldn\'t extract the playerResponse from the Watch Page!');
+        "Couldn't extract the playerResponse from the Watch Page!",
+      );
     }
 
     if (!playerResponse.isVideoPlayable) {
-      throw VideoUnplayableException.unplayable(videoId,
-          reason: playerResponse.videoPlayabilityError ?? '');
+      throw VideoUnplayableException.unplayable(
+        videoId,
+        reason: playerResponse.videoPlayabilityError ?? '',
+      );
     }
 
-    var hlsManifest = playerResponse.hlsManifestUrl;
+    final hlsManifest = playerResponse.hlsManifestUrl;
     if (hlsManifest == null) {
       throw VideoUnplayableException.notLiveStream(videoId);
     }

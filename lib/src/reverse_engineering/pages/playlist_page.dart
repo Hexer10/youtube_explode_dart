@@ -46,9 +46,9 @@ class PlaylistPage extends YoutubePage<_InitialData> {
     YoutubeHttpClient httpClient,
     String id,
   ) async {
-    var url = 'https://www.youtube.com/playlist?list=$id&hl=en&persist_hl=1';
+    final url = 'https://www.youtube.com/playlist?list=$id&hl=en&persist_hl=1';
     return retry(httpClient, () async {
-      var raw = await httpClient.getString(url);
+      final raw = await httpClient.getString(url);
       return PlaylistPage.parse(raw, id);
     });
   }

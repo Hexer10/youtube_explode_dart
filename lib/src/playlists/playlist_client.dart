@@ -18,7 +18,7 @@ class PlaylistClient {
   Future<Playlist> get(dynamic id) async {
     id = PlaylistId.fromString(id);
 
-    var response =
+    final response =
         await PlaylistPage.get(_httpClient, (id as PlaylistId).value);
     return Playlist(
       id,
@@ -40,7 +40,7 @@ class PlaylistClient {
 
     while (page != null) {
       for (final video in page.videos) {
-        var videoId = video.id;
+        final videoId = video.id;
 
         // Already added
         if (!encounteredVideoIds.add(videoId)) {

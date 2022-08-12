@@ -36,11 +36,11 @@ class ChannelAboutPage extends YoutubePage<_InitialData> {
 
   ///
   static Future<ChannelAboutPage> get(YoutubeHttpClient httpClient, String id) {
-    var url = 'https://www.youtube.com/channel/$id/about?hl=en';
+    final url = 'https://www.youtube.com/channel/$id/about?hl=en';
 
     return retry(httpClient, () async {
-      var raw = await httpClient.getString(url);
-      var result = ChannelAboutPage.parse(raw);
+      final raw = await httpClient.getString(url);
+      final result = ChannelAboutPage.parse(raw);
 
       return result;
     });
@@ -48,12 +48,14 @@ class ChannelAboutPage extends YoutubePage<_InitialData> {
 
   ///
   static Future<ChannelAboutPage> getByUsername(
-      YoutubeHttpClient httpClient, String username) {
-    var url = 'https://www.youtube.com/user/$username/about?hl=en';
+    YoutubeHttpClient httpClient,
+    String username,
+  ) {
+    final url = 'https://www.youtube.com/user/$username/about?hl=en';
 
     return retry(httpClient, () async {
-      var raw = await httpClient.getString(url);
-      var result = ChannelAboutPage.parse(raw);
+      final raw = await httpClient.getString(url);
+      final result = ChannelAboutPage.parse(raw);
 
       return result;
     });
@@ -67,46 +69,51 @@ class _InitialData extends InitialData {
 
   _InitialData(JsonMap root) : super(root);
 
-  JsonMap _getContentContext() {
-    return root
-        .get('contents')!
-        .get('twoColumnBrowseResultsRenderer')!
-        .getList('tabs')!
-        .firstWhere((e) => e['tabRenderer']?['content'] != null)
-        .get('tabRenderer')!
-        .get('content')!
-        .get('sectionListRenderer')!
-        .getList('contents')!
-        .firstOrNull!
-        .get('itemSectionRenderer')!
-        .getList('contents')!
-        .firstOrNull!
-        .get('channelAboutFullMetadataRenderer')!;
-  }
+  JsonMap _getContentContext() => root
+      .get('contents')!
+      .get('twoColumnBrowseResultsRenderer')!
+      .getList('tabs')!
+      .firstWhere((e) => e['tabRenderer']?['content'] != null)
+      .get('tabRenderer')!
+      .get('content')!
+      .get('sectionListRenderer')!
+      .getList('contents')!
+      .firstOrNull!
+      .get('itemSectionRenderer')!
+      .getList('contents')!
+      .firstOrNull!
+      .get('channelAboutFullMetadataRenderer')!;
 
   late final String? description =
       content.get('description')?.getT<String>('simpleText');
 
   late final List<ChannelLink> channelLinks = content
           .getList('primaryLinks')
-          ?.map((e) => ChannelLink(
+          ?.map(
+            (e) => ChannelLink(
               e.get('title')?.getT<String>('simpleText') ?? '',
-              extractUrl(e
-                      .get('navigationEndpoint')
-                      ?.get('commandMetadata')
-                      ?.get('webCommandMetadata')
-                      ?.getT<String>('url') ??
-                  e
-                      .get('navigationEndpoint')
-                      ?.get('urlEndpoint')
-                      ?.getT<String>('url') ??
-                  ''),
-              Uri.parse(e
-                      .get('icon')
-                      ?.getList('thumbnails')
-                      ?.firstOrNull
-                      ?.getT<String>('url') ??
-                  '')))
+              extractUrl(
+                e
+                        .get('navigationEndpoint')
+                        ?.get('commandMetadata')
+                        ?.get('webCommandMetadata')
+                        ?.getT<String>('url') ??
+                    e
+                        .get('navigationEndpoint')
+                        ?.get('urlEndpoint')
+                        ?.getT<String>('url') ??
+                    '',
+              ),
+              Uri.parse(
+                e
+                        .get('icon')
+                        ?.getList('thumbnails')
+                        ?.firstOrNull
+                        ?.getT<String>('url') ??
+                    '',
+              ),
+            ),
+          )
           .toList() ??
       [];
 

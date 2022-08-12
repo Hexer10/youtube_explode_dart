@@ -34,7 +34,7 @@ class EmbedPage {
 
   ///
   EmbedPlayerConfig? getPlayerConfig() {
-    var playerConfigJson =
+    final playerConfigJson =
         (_playerConfigJson3 ?? _playerConfigJson2 ?? _playerConfigJson)
             ?.extractJson();
     if (playerConfigJson == null) {
@@ -69,10 +69,10 @@ class EmbedPage {
 
   ///
   static Future<EmbedPage> get(YoutubeHttpClient httpClient, String videoId) {
-    var url = 'https://youtube.com/embed/$videoId?hl=en';
+    final url = 'https://youtube.com/embed/$videoId?hl=en';
     // final url = 'http://localhost:8080/embed/$videoId?hl=en';
     return retry(httpClient, () async {
-      var raw = await httpClient.getString(url);
+      final raw = await httpClient.getString(url);
       return EmbedPage.parse(raw);
     });
   }

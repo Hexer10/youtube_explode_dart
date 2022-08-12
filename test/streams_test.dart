@@ -26,37 +26,48 @@ void main() {
       VideoId('5VGm0dczmHc'), //RatingDisabled
       VideoId('-xNN-bJQ4vI'), // 360° video
     }) {
-      test('VideoId - ${val.value}', () async {
-        var manifest = await yt!.videos.streamsClient.getManifest(val);
-        expect(manifest.videoOnly, isNotEmpty);
-        expect(manifest.audioOnly, isNotEmpty);
-      }, timeout: const Timeout(Duration(seconds: 90)));
+      test(
+        'VideoId - ${val.value}',
+        () async {
+          final manifest = await yt!.videos.streamsClient.getManifest(val);
+          expect(manifest.videoOnly, isNotEmpty);
+          expect(manifest.audioOnly, isNotEmpty);
+        },
+        timeout: const Timeout(Duration(seconds: 90)),
+      );
     }
   });
 
   // Seems that youtube broke something and now this throws VideoUnplayableException instead of VideoRequiresPurchaseException
   test('Stream of paid videos throw VideoRequiresPurchaseException', () {
-    expect(yt!.videos.streamsClient.getManifest(VideoId('p3dDcKOFXQg')),
-        throwsA(const TypeMatcher<VideoUnplayableException>()));
+    expect(
+      yt!.videos.streamsClient.getManifest(VideoId('p3dDcKOFXQg')),
+      throwsA(const TypeMatcher<VideoUnplayableException>()),
+    );
   });
 
   test('Stream of age-limited video throws VideoUnplayableException', () {
-    expect(yt!.videos.streamsClient.getManifest(VideoId('SkRSXFQerZs')),
-        throwsA(const TypeMatcher<VideoUnplayableException>()));
+    expect(
+      yt!.videos.streamsClient.getManifest(VideoId('SkRSXFQerZs')),
+      throwsA(const TypeMatcher<VideoUnplayableException>()),
+    );
   });
   test('Get the hls manifest of a live stream', () async {
     expect(
-        await yt!.videos.streamsClient
-            .getHttpLiveStreamUrl(VideoId('5qap5aO4i9A')),
-        isNotEmpty);
+      await yt!.videos.streamsClient
+          .getHttpLiveStreamUrl(VideoId('5qap5aO4i9A')),
+      isNotEmpty,
+    );
   });
 
   // Seems that youtube broke something and now this throws VideoUnplayableException instead of VideoUnavailableException
   group('Stream of unavailable videos throws VideoUnplayableException', () {
     for (final val in {VideoId('qld9w0b-1ao'), VideoId('pb_hHv3fByo')}) {
       test('VideoId - ${val.value}', () {
-        expect(yt!.videos.streamsClient.getManifest(val),
-            throwsA(const TypeMatcher<VideoUnplayableException>()));
+        expect(
+          yt!.videos.streamsClient.getManifest(val),
+          throwsA(const TypeMatcher<VideoUnplayableException>()),
+        );
       });
     }
   });
@@ -76,13 +87,17 @@ void main() {
       VideoId('5VGm0dczmHc'), //RatingDisabled
       VideoId('-xNN-bJQ4vI'), // 360° video
     }) {
-      test('VideoId - ${val.value}', () async {
-        var manifest = await yt!.videos.streamsClient.getManifest(val);
-        for (final streamInfo in manifest.streams) {
-          // print('Stream: ${streamInfo.tag}');
-          expect(yt!.videos.streamsClient.get(streamInfo).first, completes);
-        }
-      }, timeout: const Timeout(Duration(minutes: 5)));
+      test(
+        'VideoId - ${val.value}',
+        () async {
+          final manifest = await yt!.videos.streamsClient.getManifest(val);
+          for (final streamInfo in manifest.streams) {
+            // print('Stream: ${streamInfo.tag}');
+            expect(yt!.videos.streamsClient.get(streamInfo).first, completes);
+          }
+        },
+        timeout: const Timeout(Duration(minutes: 5)),
+      );
     }
   });
 }

@@ -19,10 +19,14 @@ class CommentsClient {
 
   ///
   static Future<CommentsClient?> get(
-      YoutubeHttpClient httpClient, Video video) async {
+    YoutubeHttpClient httpClient,
+    Video video,
+  ) async {
     final watchPage = video.watchPage ??
         await retry<WatchPage>(
-            httpClient, () async => WatchPage.get(httpClient, video.id.value));
+          httpClient,
+          () async => WatchPage.get(httpClient, video.id.value),
+        );
 
     final continuation = watchPage.commentsContinuation;
     if (continuation == null) {
@@ -35,53 +39,53 @@ class CommentsClient {
 
   ///
   static Future<CommentsClient?> getReplies(
-      YoutubeHttpClient httpClient, String token) async {
+    YoutubeHttpClient httpClient,
+    String token,
+  ) async {
     final data = await httpClient.sendPost('next', token);
     return CommentsClient(data);
   }
 
-  List<JsonMap> _getCommentRenderers() {
-    return root
-            .getList('onResponseReceivedEndpoints')!
-            .last
-            .get('appendContinuationItemsAction')
-            ?.getList('continuationItems')
-            ?.where((e) => e['commentRenderer'] != null)
-            .toList(growable: false) /* Used for the replies */ ??
-        root
-            .getList('onResponseReceivedEndpoints')!
-            .last
-            .get('reloadContinuationItemsCommand')!
-            .getList('continuationItems', 'appendContinuationItemsAction')!
-            .where((e) => e['commentThreadRenderer'] != null)
-            .map((e) => e.get('commentThreadRenderer')!)
-            .toList(growable: false);
-  }
+  List<JsonMap> _getCommentRenderers() =>
+      root
+          .getList('onResponseReceivedEndpoints')!
+          .last
+          .get('appendContinuationItemsAction')
+          ?.getList('continuationItems')
+          ?.where((e) => e['commentRenderer'] != null)
+          .toList(growable: false) /* Used for the replies */ ??
+      root
+          .getList('onResponseReceivedEndpoints')!
+          .last
+          .get('reloadContinuationItemsCommand')!
+          .getList('continuationItems', 'appendContinuationItemsAction')!
+          .where((e) => e['commentThreadRenderer'] != null)
+          .map((e) => e.get('commentThreadRenderer')!)
+          .toList(growable: false);
 
-  String? _getContinuationToken() {
-    return root
-            .getList('onResponseReceivedEndpoints')!
-            .last
-            .get('appendContinuationItemsAction')
-            ?.getList('continuationItems')
-            ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
-            ?.get('continuationItemRenderer')
-            ?.get('button')
-            ?.get('buttonRenderer')
-            ?.get('command')
-            ?.get('continuationCommand')
-            ?.getT<String>('token') /* Used for the replies */ ??
-        root
-            .getList('onResponseReceivedEndpoints')!
-            .last
-            .get('reloadContinuationItemsCommand')!
-            .getList('continuationItems', 'appendContinuationItemsAction')!
-            .firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
-            ?.get('continuationItemRenderer')
-            ?.get('continuationEndpoint')
-            ?.get('continuationCommand')
-            ?.getT<String>('token');
-  }
+  String? _getContinuationToken() =>
+      root
+          .getList('onResponseReceivedEndpoints')!
+          .last
+          .get('appendContinuationItemsAction')
+          ?.getList('continuationItems')
+          ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+          ?.get('continuationItemRenderer')
+          ?.get('button')
+          ?.get('buttonRenderer')
+          ?.get('command')
+          ?.get('continuationCommand')
+          ?.getT<String>('token') /* Used for the replies */ ??
+      root
+          .getList('onResponseReceivedEndpoints')!
+          .last
+          .get('reloadContinuationItemsCommand')!
+          .getList('continuationItems', 'appendContinuationItemsAction')!
+          .firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+          ?.get('continuationItemRenderer')
+          ?.get('continuationEndpoint')
+          ?.get('continuationCommand')
+          ?.getT<String>('token');
 
   // onResponseReceivedEndpoints[0].reloadContinuationItemsCommand.continuationItems[0].commentsHeaderRenderer
   int getCommentsCount() => root
