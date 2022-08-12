@@ -25,12 +25,11 @@ class DashManifest {
   DashManifest.parse(String raw) : _root = xml.XmlDocument.parse(raw);
 
   ///
-  static Future<DashManifest> get(YoutubeHttpClient httpClient, dynamic url) {
-    return retry(httpClient, () async {
-      final raw = await httpClient.getString(url);
-      return DashManifest.parse(raw);
-    });
-  }
+  static Future<DashManifest> get(YoutubeHttpClient httpClient, dynamic url) =>
+      retry(httpClient, () async {
+        final raw = await httpClient.getString(url);
+        return DashManifest.parse(raw);
+      });
 
   ///
   static String? getSignatureFromUrl(String url) =>

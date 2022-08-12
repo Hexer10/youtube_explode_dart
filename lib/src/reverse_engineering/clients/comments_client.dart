@@ -46,48 +46,46 @@ class CommentsClient {
     return CommentsClient(data);
   }
 
-  List<JsonMap> _getCommentRenderers() {
-    return root
-            .getList('onResponseReceivedEndpoints')!
-            .last
-            .get('appendContinuationItemsAction')
-            ?.getList('continuationItems')
-            ?.where((e) => e['commentRenderer'] != null)
-            .toList(growable: false) /* Used for the replies */ ??
-        root
-            .getList('onResponseReceivedEndpoints')!
-            .last
-            .get('reloadContinuationItemsCommand')!
-            .getList('continuationItems', 'appendContinuationItemsAction')!
-            .where((e) => e['commentThreadRenderer'] != null)
-            .map((e) => e.get('commentThreadRenderer')!)
-            .toList(growable: false);
-  }
+  List<JsonMap> _getCommentRenderers() =>
+      root
+          .getList('onResponseReceivedEndpoints')!
+          .last
+          .get('appendContinuationItemsAction')
+          ?.getList('continuationItems')
+          ?.where((e) => e['commentRenderer'] != null)
+          .toList(growable: false) /* Used for the replies */ ??
+      root
+          .getList('onResponseReceivedEndpoints')!
+          .last
+          .get('reloadContinuationItemsCommand')!
+          .getList('continuationItems', 'appendContinuationItemsAction')!
+          .where((e) => e['commentThreadRenderer'] != null)
+          .map((e) => e.get('commentThreadRenderer')!)
+          .toList(growable: false);
 
-  String? _getContinuationToken() {
-    return root
-            .getList('onResponseReceivedEndpoints')!
-            .last
-            .get('appendContinuationItemsAction')
-            ?.getList('continuationItems')
-            ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
-            ?.get('continuationItemRenderer')
-            ?.get('button')
-            ?.get('buttonRenderer')
-            ?.get('command')
-            ?.get('continuationCommand')
-            ?.getT<String>('token') /* Used for the replies */ ??
-        root
-            .getList('onResponseReceivedEndpoints')!
-            .last
-            .get('reloadContinuationItemsCommand')!
-            .getList('continuationItems', 'appendContinuationItemsAction')!
-            .firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
-            ?.get('continuationItemRenderer')
-            ?.get('continuationEndpoint')
-            ?.get('continuationCommand')
-            ?.getT<String>('token');
-  }
+  String? _getContinuationToken() =>
+      root
+          .getList('onResponseReceivedEndpoints')!
+          .last
+          .get('appendContinuationItemsAction')
+          ?.getList('continuationItems')
+          ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+          ?.get('continuationItemRenderer')
+          ?.get('button')
+          ?.get('buttonRenderer')
+          ?.get('command')
+          ?.get('continuationCommand')
+          ?.getT<String>('token') /* Used for the replies */ ??
+      root
+          .getList('onResponseReceivedEndpoints')!
+          .last
+          .get('reloadContinuationItemsCommand')!
+          .getList('continuationItems', 'appendContinuationItemsAction')!
+          .firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+          ?.get('continuationItemRenderer')
+          ?.get('continuationEndpoint')
+          ?.get('continuationCommand')
+          ?.getT<String>('token');
 
   // onResponseReceivedEndpoints[0].reloadContinuationItemsCommand.continuationItems[0].commentsHeaderRenderer
   int getCommentsCount() => root

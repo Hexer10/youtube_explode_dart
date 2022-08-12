@@ -305,9 +305,8 @@ class JoinedIterable<T> extends Iterable<T> {
   JoinedIterable(this._iterables);
 
   @override
-  Iterator<T> get iterator {
-    return _JoinedIterator<T>(_iterables.map((e) => e.iterator).toList());
-  }
+  Iterator<T> get iterator =>
+      _JoinedIterator<T>(_iterables.map((e) => e.iterator).toList());
 }
 
 class _JoinedIterator<T> extends Iterator<T> {

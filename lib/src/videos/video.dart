@@ -62,37 +62,36 @@ class Video with _$Video {
     /// Used internally.
     /// Shouldn't be used in the code.
     @internal WatchPage? watchPage,
-  ]) {
-    return Video._internal(
-      /// Video ID.
-      id,
+  ]) =>
+      Video._internal(
+        /// Video ID.
+        id,
 
-      /// Video title.
-      title,
+        /// Video title.
+        title,
 
-      /// Video author.
-      author,
+        /// Video author.
+        author,
 
-      /// Video author Id.
-      channelId,
+        /// Video author Id.
+        channelId,
 
-      /// Video upload date.
-      /// Note: For search queries it is calculated with:
-      ///   DateTime.now() - how much time is was published.
-      uploadDate,
-      uploadDateRaw,
+        /// Video upload date.
+        /// Note: For search queries it is calculated with:
+        ///   DateTime.now() - how much time is was published.
+        uploadDate,
+        uploadDateRaw,
 
-      /// Video publish date.
-      publishDate,
-      description,
-      duration,
-      thumbnails,
-      UnmodifiableListView(keywords ?? const Iterable.empty()),
-      engagement,
-      isLive,
-      watchPage,
-    );
-  }
+        /// Video publish date.
+        publishDate,
+        description,
+        duration,
+        thumbnails,
+        UnmodifiableListView(keywords ?? const Iterable.empty()),
+        engagement,
+        isLive,
+        watchPage,
+      );
 
   /// Initializes an instance of [Video]
   const factory Video._internal(

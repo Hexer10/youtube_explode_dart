@@ -220,7 +220,7 @@ class StreamsClient {
 
     if (playerResponse == null) {
       throw TransientFailureException(
-        'Couldn\'t extract the playerResponse from the Watch Page!',
+        "Couldn't extract the playerResponse from the Watch Page!",
       );
     }
 

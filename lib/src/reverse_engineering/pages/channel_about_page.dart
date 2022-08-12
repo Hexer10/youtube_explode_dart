@@ -69,22 +69,20 @@ class _InitialData extends InitialData {
 
   _InitialData(JsonMap root) : super(root);
 
-  JsonMap _getContentContext() {
-    return root
-        .get('contents')!
-        .get('twoColumnBrowseResultsRenderer')!
-        .getList('tabs')!
-        .firstWhere((e) => e['tabRenderer']?['content'] != null)
-        .get('tabRenderer')!
-        .get('content')!
-        .get('sectionListRenderer')!
-        .getList('contents')!
-        .firstOrNull!
-        .get('itemSectionRenderer')!
-        .getList('contents')!
-        .firstOrNull!
-        .get('channelAboutFullMetadataRenderer')!;
-  }
+  JsonMap _getContentContext() => root
+      .get('contents')!
+      .get('twoColumnBrowseResultsRenderer')!
+      .getList('tabs')!
+      .firstWhere((e) => e['tabRenderer']?['content'] != null)
+      .get('tabRenderer')!
+      .get('content')!
+      .get('sectionListRenderer')!
+      .getList('contents')!
+      .firstOrNull!
+      .get('itemSectionRenderer')!
+      .getList('contents')!
+      .firstOrNull!
+      .get('channelAboutFullMetadataRenderer')!;
 
   late final String? description =
       content.get('description')?.getT<String>('simpleText');

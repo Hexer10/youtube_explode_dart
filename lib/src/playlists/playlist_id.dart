@@ -28,9 +28,9 @@ class PlaylistId with _$PlaylistId {
   const PlaylistId._();
 
   const factory PlaylistId._internal(
-
-      /// The playlist id as string.
-      String value) = _PlaylistId;
+    /// The playlist id as string.
+    String value,
+  ) = _PlaylistId;
 
   ///  Converts [obj] to a [PlaylistId] by calling .toString on that object.
   /// If it is already a [PlaylistId], [obj] is returned

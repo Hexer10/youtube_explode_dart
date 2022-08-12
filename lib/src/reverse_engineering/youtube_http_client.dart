@@ -38,7 +38,9 @@ class YoutubeHttpClient extends http.BaseClient {
 
   /// Throws if something is wrong with the response.
   void _validateResponse(http.BaseResponse response, int statusCode) {
-    if (_closed) return;
+    if (_closed) {
+      return;
+    }
 
     final request = response.request!;
 
@@ -67,7 +69,9 @@ class YoutubeHttpClient extends http.BaseClient {
     bool validate = true,
   }) async {
     final response = await get(url, headers: headers);
-    if (_closed) throw HttpClientClosedException();
+    if (_closed) {
+      throw HttpClientClosedException();
+    }
 
     if (validate) {
       _validateResponse(response, response.statusCode);
@@ -87,7 +91,9 @@ class YoutubeHttpClient extends http.BaseClient {
       url = Uri.parse(url);
     }
     final response = await super.get(url, headers: headers);
-    if (_closed) throw HttpClientClosedException();
+    if (_closed) {
+      throw HttpClientClosedException();
+    }
 
     if (validate) {
       _validateResponse(response, response.statusCode);
@@ -105,7 +111,9 @@ class YoutubeHttpClient extends http.BaseClient {
   }) async {
     final response =
         await super.post(url, headers: headers, body: body, encoding: encoding);
-    if (_closed) throw HttpClientClosedException();
+    if (_closed) {
+      throw HttpClientClosedException();
+    }
 
     if (validate) {
       _validateResponse(response, response.statusCode);
@@ -125,7 +133,9 @@ class YoutubeHttpClient extends http.BaseClient {
       url = Uri.parse(url);
     }
     final response = await post(url, headers: headers, body: body);
-    if (_closed) throw HttpClientClosedException();
+    if (_closed) {
+      throw HttpClientClosedException();
+    }
 
     if (validate) {
       _validateResponse(response, response.statusCode);
@@ -238,7 +248,9 @@ class YoutubeHttpClient extends http.BaseClient {
     bool validate = true,
   }) async {
     final response = await head(url, headers: headers);
-    if (_closed) throw HttpClientClosedException();
+    if (_closed) {
+      throw HttpClientClosedException();
+    }
 
     if (validate) {
       _validateResponse(response, response.statusCode);
@@ -268,7 +280,9 @@ class YoutubeHttpClient extends http.BaseClient {
 
     return retry<JsonMap>(this, () async {
       final raw = await post(url, body: json.encode(body));
-      if (_closed) throw HttpClientClosedException();
+      if (_closed) {
+        throw HttpClientClosedException();
+      }
 
       return json.decode(raw.body);
     });
@@ -282,7 +296,9 @@ class YoutubeHttpClient extends http.BaseClient {
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) {
-    if (_closed) throw HttpClientClosedException();
+    if (_closed) {
+      throw HttpClientClosedException();
+    }
 
     _defaultHeaders.forEach((key, value) {
       if (request.headers[key] == null) {
