@@ -2,8 +2,8 @@
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 Future<void> main() async {
-  var yt = YoutubeExplode();
-  var streamInfo = await yt.videos.streamsClient.getManifest('fRh_vgS2dFE');
+  final yt = YoutubeExplode();
+  final streamInfo = await yt.videos.streamsClient.getManifest('fRh_vgS2dFE');
 
   print(streamInfo);
 

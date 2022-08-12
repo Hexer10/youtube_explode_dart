@@ -16,7 +16,7 @@ void main() {
       'FLEnBXANsKmyj2r9xVyKoDiQ'
     }) {
       test('PlaylistID - $val', () {
-        var playlist = PlaylistId(val);
+        final playlist = PlaylistId(val);
         expect(playlist.value, val);
       });
     }
@@ -26,32 +26,38 @@ void main() {
     for (final val in {
       [
         PlaylistId(
-            'youtube.com/playlist?list=PLOU2XLYxmsIJGErt5rrCqaSGTMyyqNt2H'),
+          'youtube.com/playlist?list=PLOU2XLYxmsIJGErt5rrCqaSGTMyyqNt2H',
+        ),
         'PLOU2XLYxmsIJGErt5rrCqaSGTMyyqNt2H'
       ],
       [
         PlaylistId(
-            'youtube.com/watch?v=b8m9zhNAgKs&list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr'),
+          'youtube.com/watch?v=b8m9zhNAgKs&list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr',
+        ),
         'PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr'
       ],
       [
         PlaylistId(
-            'youtu.be/b8m9zhNAgKs/?list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr'),
+          'youtu.be/b8m9zhNAgKs/?list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr',
+        ),
         'PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr'
       ],
       [
         PlaylistId(
-            'youtube.com/embed/b8m9zhNAgKs/?list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr'),
+          'youtube.com/embed/b8m9zhNAgKs/?list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr',
+        ),
         'PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr'
       ],
       [
         PlaylistId(
-            'youtube.com/watch?v=x2ZRoWQ0grU&list=RDEMNJhLy4rECJ_fG8NL-joqsg'),
+          'youtube.com/watch?v=x2ZRoWQ0grU&list=RDEMNJhLy4rECJ_fG8NL-joqsg',
+        ),
         'RDEMNJhLy4rECJ_fG8NL-joqsg'
       ],
       [
         PlaylistId(
-            'youtube.com/watch?v=b8m9zhNAgKs&list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr'),
+          'youtube.com/watch?v=b8m9zhNAgKs&list=PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr',
+        ),
         'PL9tY0BWXOZFuFEG_GtOBZ8-8wbkH-NVAr'
       ],
     }) {

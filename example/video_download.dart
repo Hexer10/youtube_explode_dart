@@ -12,7 +12,7 @@ final yt = YoutubeExplode();
 Future<void> main() async {
   stdout.writeln('Type the video id or url: ');
 
-  var url = stdin.readLineSync()!.trim();
+  final url = stdin.readLineSync()!.trim();
 
   // Save the video to the download directory.
   Directory('downloads').createSync();
@@ -26,18 +26,18 @@ Future<void> main() async {
 
 Future<void> download(String id) async {
   // Get video metadata.
-  var video = await yt.videos.get(id);
+  final video = await yt.videos.get(id);
 
   // Get the video manifest.
-  var manifest = await yt.videos.streamsClient.getManifest(id);
-  var streams = manifest.videoOnly;
+  final manifest = await yt.videos.streamsClient.getManifest(id);
+  final streams = manifest.videoOnly;
 
   // Get the audio track with the highest bitrate.
-  var audio = streams.first;
-  var audioStream = yt.videos.streamsClient.get(audio);
+  final audio = streams.first;
+  final audioStream = yt.videos.streamsClient.get(audio);
 
   // Compose the file name removing the unallowed characters in windows.
-  var fileName = '${video.title}.${audio.container.name}'
+  final fileName = '${video.title}.${audio.container.name}'
       .replaceAll(r'\', '')
       .replaceAll('/', '')
       .replaceAll('*', '')
@@ -46,7 +46,7 @@ Future<void> download(String id) async {
       .replaceAll('<', '')
       .replaceAll('>', '')
       .replaceAll('|', '');
-  var file = File('downloads/$fileName');
+  final file = File('downloads/$fileName');
 
   // Delete the file if exists.
   if (file.existsSync()) {
@@ -54,24 +54,24 @@ Future<void> download(String id) async {
   }
 
   // Open the file in writeAppend.
-  var output = file.openWrite(mode: FileMode.writeOnlyAppend);
+  final output = file.openWrite(mode: FileMode.writeOnlyAppend);
 
   // Track the file download status.
-  var len = audio.size.totalBytes;
+  final len = audio.size.totalBytes;
   var count = 0;
 
   // Create the message and set the cursor position.
-  var msg = 'Downloading ${video.title}.${audio.container.name}';
+  final msg = 'Downloading ${video.title}.${audio.container.name}';
   stdout.writeln(msg);
 
   // Listen for data received.
-  var progressBar = ProgressBar();
+  final progressBar = ProgressBar();
   await for (final data in audioStream) {
     // Keep track of the current downloaded data.
     count += data.length;
 
     // Calculate the current progress.
-    var progress = ((count / len) * 100).ceil();
+    final progress = ((count / len) * 100).ceil();
 
     // Update the progressbar.
     progressBar.update(progress);

@@ -8,9 +8,9 @@ part 'framerate.g.dart';
 class Framerate with Comparable<Framerate>, _$Framerate {
   /// Initialize an instance of [Framerate]
   const factory Framerate(
-
-      /// Framerate as frames per second
-      num framesPerSecond) = _Framerate;
+    /// Framerate as frames per second
+    num framesPerSecond,
+  ) = _Framerate;
 
   const Framerate._();
 

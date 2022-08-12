@@ -32,8 +32,8 @@ class SwapCipherOperation extends CipherOperation {
 
   @override
   String decipher(String input) {
-    var runes = input.runes.toList();
-    var first = runes[0];
+    final runes = input.runes.toList();
+    final first = runes[0];
     runes[0] = runes[index];
     runes[index] = first;
     return String.fromCharCodes(runes);
@@ -50,7 +50,7 @@ class ReverseCipherOperation extends CipherOperation {
 
   @override
   String decipher(String input) {
-    var runes = input.runes.toList().reversed;
+    final runes = input.runes.toList().reversed;
     return String.fromCharCodes(runes);
   }
 

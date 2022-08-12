@@ -40,11 +40,11 @@ class ChannelPage extends YoutubePage<_InitialData> {
 
   ///
   static Future<ChannelPage> get(YoutubeHttpClient httpClient, String id) {
-    var url = 'https://www.youtube.com/channel/$id?hl=en';
+    final url = 'https://www.youtube.com/channel/$id?hl=en';
 
     return retry(httpClient, () async {
-      var raw = await httpClient.getString(url);
-      var result = ChannelPage.parse(raw);
+      final raw = await httpClient.getString(url);
+      final result = ChannelPage.parse(raw);
 
       if (!result.isOk) {
         throw TransientFailureException('Channel page is broken');
@@ -55,13 +55,15 @@ class ChannelPage extends YoutubePage<_InitialData> {
 
   ///
   static Future<ChannelPage> getByUsername(
-      YoutubeHttpClient httpClient, String username) {
+    YoutubeHttpClient httpClient,
+    String username,
+  ) {
     var url = 'https://www.youtube.com/user/$username?hl=en';
 
     return retry(httpClient, () async {
       try {
-        var raw = await httpClient.getString(url);
-        var result = ChannelPage.parse(raw);
+        final raw = await httpClient.getString(url);
+        final result = ChannelPage.parse(raw);
 
         if (!result.isOk) {
           throw TransientFailureException('Channel page is broken');

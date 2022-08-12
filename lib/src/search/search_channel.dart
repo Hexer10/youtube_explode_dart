@@ -11,17 +11,17 @@ class SearchChannel with _$SearchChannel, BaseSearchContent {
   /// Initialize a [SearchChannel] instance.
   //@With<BaseSearchContent>()
   const factory SearchChannel(
+    /// Channel id.
+    ChannelId id,
 
-      /// Channel id.
-      ChannelId id,
+    /// Channel name.
+    String name,
 
-      /// Channel name.
-      String name,
+    /// Description snippet.
+    /// Can be empty.
+    String description,
 
-      /// Description snippet.
-      /// Can be empty.
-      String description,
-
-      /// Channel uploaded videos.
-      int videoCount) = _SearchChannel;
+    /// Channel uploaded videos.
+    int videoCount,
+  ) = _SearchChannel;
 }

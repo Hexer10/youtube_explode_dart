@@ -8,7 +8,9 @@ class VideoRequiresPurchaseException extends VideoUnplayableException {
 
   /// Initializes an instance of [VideoRequiresPurchaseException].
   VideoRequiresPurchaseException.preview(VideoId videoId, this.previewVideoId)
-      : super('Video `$videoId` is unplayable because it requires purchase.\n'
-            'Streams are not available for this video.\n'
-            'There is a preview video available: `$previewVideoId`.');
+      : super(
+          'Video `$videoId` is unplayable because it requires purchase.\n'
+          'Streams are not available for this video.\n'
+          'There is a preview video available: `$previewVideoId`.',
+        );
 }

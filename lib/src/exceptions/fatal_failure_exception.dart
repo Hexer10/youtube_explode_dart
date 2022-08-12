@@ -12,11 +12,13 @@ class FatalFailureException extends YoutubeExplodeException {
   /// Initializes an instance of [FatalFailureException] with a [Response]
   FatalFailureException.httpRequest(BaseResponse response)
       : statusCode = response.statusCode,
-        super('''
+        super(
+          '''
 Failed to perform an HTTP request to YouTube due to a fatal failure.
 In most cases, this error indicates that YouTube most likely changed something, which broke the library.
 If this issue persists, please report it on the project's GitHub page.
 Request: ${response.request}
 Response: (${response.statusCode})
-''');
+''',
+        );
 }

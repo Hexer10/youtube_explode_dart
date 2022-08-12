@@ -8,10 +8,10 @@ part 'stream_container.g.dart';
 class StreamContainer with _$StreamContainer {
   /// Initializes an instance of [StreamContainer]
   const factory StreamContainer._internal(
-
-      /// Container name.
-      /// Can be used as file extension
-      String name) = _StreamContainer;
+    /// Container name.
+    /// Can be used as file extension
+    String name,
+  ) = _StreamContainer;
 
   factory StreamContainer.fromJson(Map<String, dynamic> json) =>
       StreamContainer.parse(json['name'] as String);

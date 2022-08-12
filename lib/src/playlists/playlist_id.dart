@@ -88,24 +88,26 @@ class PlaylistId with _$PlaylistId {
       return url;
     }
 
-    var regMatch = _regMatchExp.firstMatch(url)?.group(1);
+    final regMatch = _regMatchExp.firstMatch(url)?.group(1);
     if (!regMatch.isNullOrWhiteSpace && validatePlaylistId(regMatch!)) {
       return regMatch;
     }
 
-    var compositeMatch = _compositeMatchExp.firstMatch(url)?.group(1);
+    final compositeMatch = _compositeMatchExp.firstMatch(url)?.group(1);
     if (!compositeMatch.isNullOrWhiteSpace &&
         validatePlaylistId(compositeMatch!)) {
       return compositeMatch;
     }
 
-    var shortCompositeMatch = _shortCompositeMatchExp.firstMatch(url)?.group(1);
+    final shortCompositeMatch =
+        _shortCompositeMatchExp.firstMatch(url)?.group(1);
     if (!shortCompositeMatch.isNullOrWhiteSpace &&
         validatePlaylistId(shortCompositeMatch!)) {
       return shortCompositeMatch;
     }
 
-    var embedCompositeMatch = _embedCompositeMatchExp.firstMatch(url)?.group(1);
+    final embedCompositeMatch =
+        _embedCompositeMatchExp.firstMatch(url)?.group(1);
     if (!embedCompositeMatch.isNullOrWhiteSpace &&
         validatePlaylistId(embedCompositeMatch!)) {
       return embedCompositeMatch;
