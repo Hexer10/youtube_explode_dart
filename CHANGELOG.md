@@ -1,3 +1,8 @@
+## 1.12.1
+- Fix #216 comments api.
+- Export `BaseSearchContent`, thanks to @RubinRaithel.
+- Updated tests.
+
 ## 1.12.0
 - Fix #207: Allow every character to be present in a username.
 - Fix shorts. Thanks to @prateekmedia.

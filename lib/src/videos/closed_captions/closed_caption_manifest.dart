@@ -29,7 +29,6 @@ class ClosedCaptionManifest {
   }
 }
 
-
 bool x(bool autoGen, bool isAuto) {
   if (!autoGen) {
     return !isAuto;

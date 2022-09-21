@@ -5,7 +5,6 @@ import 'package:collection/collection.dart';
 import '../../youtube_explode_dart.dart';
 import '../extensions/helpers_extension.dart';
 import '../reverse_engineering/pages/search_page.dart';
-import 'base_search_content.dart';
 
 /// This list contains search videos.
 ///This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.

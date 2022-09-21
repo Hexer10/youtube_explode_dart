@@ -28,7 +28,7 @@ class Username with _$Username {
 
   const factory Username._(
     /// User name as string.
-    final String value,
+    String value,
   ) = _Username;
 
   /// Returns true if the given username is a valid username.
