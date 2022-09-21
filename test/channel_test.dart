@@ -50,7 +50,7 @@ void main() {
         .getUploads(ChannelId(
             'https://www.youtube.com/channel/UCEnBXANsKmyj2r9xVyKoDiQ'))
         .toList();
-    expect(videos.length, greaterThanOrEqualTo(75));
+    expect(videos.length, greaterThanOrEqualTo(50));
   });
 
   group('Get the videos of any youtube channel', () {
@@ -84,7 +84,7 @@ void main() {
     expect(aboutPage.description, isNotEmpty);
     expect(aboutPage.thumbnails, isNotEmpty); // Avatar list
     expect(aboutPage.channelLinks, isNotNull);
-    expect(aboutPage.country, 'United States');
+    expect(aboutPage.country, 'Japan');
     expect(aboutPage.joinDate, 'Apr 29, 2010');
   });
 }

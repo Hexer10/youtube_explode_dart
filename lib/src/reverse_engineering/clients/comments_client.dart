@@ -40,6 +40,8 @@ class CommentsClient {
     return CommentsClient(data);
   }
 
+  /*
+onResponseReceivedEndpoints[1].reloadContinuationItemsCommand.continuationItems[2].commentThreadRenderer.comment.commentRenderer.contentText.runs[0].text   */
   List<JsonMap> _getCommentRenderers() {
     return root
             .getList('onResponseReceivedEndpoints')!

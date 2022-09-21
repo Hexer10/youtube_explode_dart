@@ -13,14 +13,14 @@ void main() {
 
   test('Get metadata of a playlist', () async {
     var playlistUrl =
-        'https://www.youtube.com/playlist?list=PLr-IftNTIujSF-8tlGbZBQyGIT6TCF6Yd';
+        'https://www.youtube.com/playlist?list=PLxTcxOtc5WIPFIyrYAvGqGhfAOmKJB0V3';
     var playlist = await yt!.playlists.get(PlaylistId(playlistUrl));
-    expect(playlist.id.value, 'PLr-IftNTIujSF-8tlGbZBQyGIT6TCF6Yd');
+    expect(playlist.id.value, 'PLxTcxOtc5WIPFIyrYAvGqGhfAOmKJB0V3');
     expect(playlist.url, playlistUrl);
-    expect(playlist.title, 'osu! Highlights');
-    expect(playlist.author, 'Tyrrrz');
-    expect(playlist.description, 'My best osu! plays');
-    expect(playlist.engagement.viewCount, greaterThanOrEqualTo(133));
+    expect(playlist.title, 'Tutorial');
+    expect(playlist.author, 'Hexah');
+    expect(playlist.description, '');
+    expect(playlist.engagement.viewCount, greaterThanOrEqualTo(2));
     expect(playlist.engagement.likeCount, isNull);
     expect(playlist.engagement.dislikeCount, isNull);
     expect(playlist.thumbnails.lowResUrl, isNotEmpty);
@@ -28,7 +28,7 @@ void main() {
     expect(playlist.thumbnails.highResUrl, isNotEmpty);
     expect(playlist.thumbnails.standardResUrl, isNotEmpty);
     expect(playlist.thumbnails.maxResUrl, isNotEmpty);
-    expect(playlist.videoCount, greaterThanOrEqualTo(20));
+    expect(playlist.videoCount, greaterThanOrEqualTo(3));
   });
   group('Get metadata of any playlist', () {
     for (final val in {

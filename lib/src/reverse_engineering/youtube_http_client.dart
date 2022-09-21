@@ -222,9 +222,11 @@ class YoutubeHttpClient extends http.BaseClient {
     final body = {
       'context': const {
         'client': {
-          'hl': 'en',
-          'clientName': 'WEB',
-          'clientVersion': '2.20200911.04.00'
+          'browserName': 'Chrome',
+          'browserVersion': '105.0.0.0',
+          'clientFormFactor': 'UNKNOWN_FORM_FACTOR',
+          'clientName': "WEB",
+          'clientVersion': "2.20220921.00.00"
         }
       },
       'continuation': token

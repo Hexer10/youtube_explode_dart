@@ -47,7 +47,7 @@ void main() {
   test('Get the hls manifest of a live stream', () async {
     expect(
         await yt!.videos.streamsClient
-            .getHttpLiveStreamUrl(VideoId('5qap5aO4i9A')),
+            .getHttpLiveStreamUrl(VideoId('jfKfPfyJRdk')),
         isNotEmpty);
   });
 

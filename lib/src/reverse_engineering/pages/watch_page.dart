@@ -215,6 +215,9 @@ class _InitialData extends InitialData {
     return null;
   }
 
+  /*
+  contents.twoColumnWatchNextResults.results.results.contents[3].itemSectionRenderer.contents[0].continuationItemRenderer.continuationEndpoint.continuationCommand.token
+   */
   JsonMap? getContinuationContext() {
     if (root['contents'] != null) {
       return root
@@ -223,7 +226,7 @@ class _InitialData extends InitialData {
           ?.get('results')
           ?.get('results')
           ?.getList('contents')
-          ?.firstWhereOrNull((e) => e['itemSectionRenderer'] != null)
+          ?.lastWhereOrNull((e) => e['itemSectionRenderer'] != null)
           ?.get('itemSectionRenderer')
           ?.getList('contents')
           ?.firstOrNull
