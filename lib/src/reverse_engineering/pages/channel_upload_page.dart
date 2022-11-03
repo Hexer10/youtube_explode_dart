@@ -67,27 +67,36 @@ class _InitialData extends InitialData {
   List<JsonMap> getContentContext() {
     List<JsonMap>? context;
     if (root.containsKey('contents')) {
-      final render = root
+      var render = root
           .get('contents')
           ?.get('twoColumnBrowseResultsRenderer')
           ?.getList('tabs')
           ?.map((e) => e['tabRenderer'])
           .cast<JsonMap>()
           .firstWhereOrNull((e) => e['selected'] as bool? ?? false)
-          ?.get('content')
-          ?.get('sectionListRenderer')
-          ?.getList('contents')
-          ?.firstOrNull
-          ?.get('itemSectionRenderer')
-          ?.getList('contents')
-          ?.firstOrNull;
+          ?.get('content');
 
-      if (render?.containsKey('gridRenderer') ?? false) {
-        context =
-            render?.get('gridRenderer')?.getList('items')?.cast<JsonMap>();
-      } else if (render?.containsKey('messageRenderer') ?? false) {
-        // Workaround for no-videos.
-        context = const [];
+      if (render != null) {
+        if (render.containsKey('sectionListRenderer')) {
+          render = render
+              .get('sectionListRenderer')
+              ?.getList('contents')
+              ?.firstOrNull
+              ?.get('itemSectionRenderer')
+              ?.getList('contents')
+              ?.firstOrNull;
+
+          if (render?.containsKey('gridRenderer') ?? false) {
+            context =
+                render?.get('gridRenderer')?.getList('items')?.cast<JsonMap>();
+          } else if (render?.containsKey('messageRenderer') ?? false) {
+            // Workaround for no-videos.
+            context = const [];
+          }
+        } else if (render.containsKey('richGridRenderer')) {
+          context =
+              render.get('richGridRenderer')?.getList('contents') ?? const [];
+        }
       }
     }
     if (context == null && root.containsKey('onResponseReceivedActions')) {
@@ -112,7 +121,7 @@ class _InitialData extends InitialData {
           ?.getList('tabs')
           ?.map((e) => e['tabRenderer'])
           .cast<JsonMap>()
-          .firstWhereOrNull((e) => e['selected'] as bool)
+          .firstWhereOrNull((e) => e['selected'] as bool? ?? false)
           ?.get('content')
           ?.get('sectionListRenderer')
           ?.getList('contents')
@@ -142,11 +151,20 @@ class _InitialData extends InitialData {
   }
 
   ChannelVideo? _parseContent(JsonMap? content) {
-    if (content == null || !content.containsKey('gridVideoRenderer')) {
+    if (content == null) {
       return null;
     }
 
-    var video = content.get('gridVideoRenderer')!;
+    Map<String, dynamic>? video;
+    if (content.containsKey('gridVideoRenderer')) {
+      video = content.get('gridVideoRenderer');
+    } else if (content.containsKey('richItemRenderer')) {
+      video = content.get('richItemRenderer')?.get('content')?.get('videoRenderer');
+    }
+
+    if (video == null) {
+      return null;
+    }
     return ChannelVideo(
       VideoId(video.getT<String>('videoId')!),
       video.get('title')?.getT<String>('simpleText') ??

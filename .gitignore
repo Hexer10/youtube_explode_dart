@@ -16,3 +16,4 @@ doc/api/
 /local/
 
 .flutter-plugins-dependencies
+/coverage/

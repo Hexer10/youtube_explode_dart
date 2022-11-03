@@ -72,6 +72,13 @@ void main() {
     expect(videos, hasLength(30));
   });
 
+  test('Get next page of yt video', () async {
+    var videos =
+        await yt!.channels.getUploadsFromPage('UCEnBXANsKmyj2r9xVyKoDiQ');
+    final nextPage = await videos.nextPage();
+    expect(nextPage, hasLength(30));
+  });
+
   //TODO: Remove dupe test
   test('Get about page of a youtube', () async {
     var aboutPage = await yt!.channels.getAboutPageByUsername(
