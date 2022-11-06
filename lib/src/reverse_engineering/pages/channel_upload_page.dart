@@ -116,8 +116,9 @@ class _InitialData extends InitialData {
   }
 
   JsonMap? getContinuationContext() {
-    final continuationItemRenderer = getContentContext().firstWhereOrNull((e) =>
-        e['continuationItemRenderer'] != null)?.get('continuationItemRenderer');
+    final continuationItemRenderer = getContentContext()
+        .firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+        ?.get('continuationItemRenderer');
     if (continuationItemRenderer != null) {
       final command = continuationItemRenderer
           .get('continuationEndpoint')
