@@ -1,3 +1,6 @@
+## 1.12.2
+- Fix #228: error when getting videos from the uploads page. 
+
 ## 1.12.1
 - Fix #216 comments api.
 - Export `BaseSearchContent`, thanks to @RubinRaithel.
