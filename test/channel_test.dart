@@ -72,7 +72,7 @@ void main() {
     expect(videos, hasLength(30));
   });
 
-  test('Get next page of yt video', () async {
+  test('Get next page youtube channel uploads page', () async {
     var videos =
         await yt!.channels.getUploadsFromPage('UCEnBXANsKmyj2r9xVyKoDiQ');
     final nextPage = await videos.nextPage();

@@ -63,7 +63,8 @@ class YoutubeHttpClient extends http.BaseClient {
   ///
   Future<String> getString(dynamic url,
       {Map<String, String> headers = const {}, bool validate = true}) async {
-    var response = await get(url, headers: headers);
+    var response =
+        await get(url is String ? Uri.parse(url) : url, headers: headers);
     if (_closed) throw HttpClientClosedException();
 
     if (validate) {
@@ -74,18 +75,19 @@ class YoutubeHttpClient extends http.BaseClient {
   }
 
   @override
-  Future<http.Response> get(dynamic url,
+  Future<http.Response> get(Uri url,
       {Map<String, String>? headers = const {}, bool validate = false}) async {
-    assert(url is String || url is Uri);
-    if (url is String) {
-      url = Uri.parse(url);
-    }
     var response = await super.get(url, headers: headers);
     if (_closed) throw HttpClientClosedException();
 
     if (validate) {
       _validateResponse(response, response.statusCode);
     }
+
+    //final now = DateTime.now();
+    //_log(response.body,
+    //    '${now.minute}.${now.second}.${now.millisecond}-${url.pathSegments.last}-GET');
+
     return response;
   }
 
@@ -239,6 +241,9 @@ class YoutubeHttpClient extends http.BaseClient {
       final raw = await post(url, body: json.encode(body));
       if (_closed) throw HttpClientClosedException();
 
+      //final now = DateTime.now();
+      //_log(raw.body,
+      //    '${now.minute}.${now.second}.${now.millisecond}-$action-POST');
       return json.decode(raw.body);
     });
   }
@@ -249,17 +254,25 @@ class YoutubeHttpClient extends http.BaseClient {
     _httpClient.close();
   }
 
+  //void _log(String str, String filename) {
+  //  Directory('requests').createSync();
+  //  File('requests/$filename.json')
+  //      .writeAsStringSync('${StackTrace.current}\n$str');
+  //}
+
   @override
-  Future<http.StreamedResponse> send(http.BaseRequest request) {
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
     if (_closed) throw HttpClientClosedException();
 
+    // Apply default headers if they are not already present
     _defaultHeaders.forEach((key, value) {
       if (request.headers[key] == null) {
         request.headers[key] = _defaultHeaders[key]!;
       }
     });
-    // print('Request: $request');
-    // print('Stack:\n${StackTrace.current}');
+
+    //print(request);
+    //print(StackTrace.current);
     return _httpClient.send(request);
   }
 }

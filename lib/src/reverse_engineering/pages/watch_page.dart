@@ -120,7 +120,8 @@ class WatchPage extends YoutubePage<_InitialData> {
 
   ///
   static Future<WatchPage> get(YoutubeHttpClient httpClient, String videoId) {
-    final url = 'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en';
+    final url = Uri.parse(
+        'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en');
     return retry(httpClient, () async {
       var req = await httpClient.get(url, validate: true);
 

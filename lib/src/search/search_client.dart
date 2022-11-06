@@ -68,8 +68,8 @@ class SearchClient {
 
   /// Returns the suggestions youtube provide while search on the page.
   Future<List<String>> getQuerySuggestions(String query) async {
-    final request = await _httpClient.get(
-        'https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=en&gl=en&q=${Uri.encodeComponent(query)}&callback=func');
+    final request = await _httpClient.get(Uri.parse(
+        'https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=en&gl=en&q=${Uri.encodeComponent(query)}&callback=func'));
     final body = request.body;
     final startIndex = body.indexOf('func(');
     final jsonStr = body.substring(startIndex + 5, body.length - 1);

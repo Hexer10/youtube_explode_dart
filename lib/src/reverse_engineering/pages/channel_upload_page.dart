@@ -52,7 +52,9 @@ class _InitialData extends InitialData {
 
   late final JsonMap? continuationContext = getContinuationContext();
 
-  late final String token = continuationContext?.getT<String>('token') ?? '';
+  late final String token = continuationContext?.getT<String>('token') ??
+      continuationContext?.getT<String>('continuation') ??
+      '';
 
   late final List<ChannelVideo> uploads = _getUploads();
 
@@ -114,6 +116,16 @@ class _InitialData extends InitialData {
   }
 
   JsonMap? getContinuationContext() {
+    final continuationItemRenderer = getContentContext().firstWhereOrNull((e) =>
+        e['continuationItemRenderer'] != null)?.get('continuationItemRenderer');
+    if (continuationItemRenderer != null) {
+      final command = continuationItemRenderer
+          .get('continuationEndpoint')
+          ?.get('continuationCommand');
+      if (command != null) {
+        return command;
+      }
+    }
     if (root.containsKey('contents')) {
       return root
           .get('contents')
@@ -159,7 +171,8 @@ class _InitialData extends InitialData {
     if (content.containsKey('gridVideoRenderer')) {
       video = content.get('gridVideoRenderer');
     } else if (content.containsKey('richItemRenderer')) {
-      video = content.get('richItemRenderer')?.get('content')?.get('videoRenderer');
+      video =
+          content.get('richItemRenderer')?.get('content')?.get('videoRenderer');
     }
 
     if (video == null) {

@@ -25,6 +25,11 @@ extension StringUtility on String {
   /// Strips out all non digit characters.
   String stripNonDigits() => replaceAll(_exp, '');
 
+  //void _log(String str, String filename) {
+  //  Directory('requests').createSync();
+  //  File('requests/$filename.json').writeAsStringSync(str);
+  //}
+
   /// Extract and decode json from a string
   Map<String, dynamic>? extractJson([String separator = '']) {
     final index = indexOf(separator) + separator.length;
@@ -41,6 +46,11 @@ extension StringUtility on String {
       try {
         return json.decode(str.substring(startIdx, endIdx + 1))
             as Map<String, dynamic>;
+
+        //final now = DateTime.now();
+        //_log(str.substring(startIdx, endIdx + 1),
+        //    '${now.minute}.${now.second}.${now.millisecond}-DECODE');
+        //return value;
       } on FormatException {
         endIdx = str.lastIndexOf(str.substring(0, endIdx));
         if (endIdx == 0) {
