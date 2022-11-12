@@ -1,3 +1,7 @@
+## 1.12.3
+- Fix #229: error when getting comments from a video with comments disabled. Not it returns null.
+- Fix error when getting comments of a with no comments. Now it returns an empty list.
+
 ## 1.12.2
 - Fix #228: error when getting videos from the uploads page. 
 
