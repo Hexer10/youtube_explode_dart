@@ -115,12 +115,9 @@ class ChannelClient {
   }
 
   /// Enumerates videos uploaded by the specified channel.
-  /// This fetches thru all the uploads pages of the channel so it is
-  /// recommended to use _.take_ (or any other method) to limit the
-  /// search result. Every page has 30 results.
+  /// This fetches thru all the uploads pages of the channel.
   ///
-  /// Note that this endpoint provides less info about each video
-  /// (only the Title and VideoId).
+  /// Use .nextPage() to fetch the next batch of videos.
   Future<ChannelUploadsList> getUploadsFromPage(dynamic channelId,
       [VideoSorting videoSorting = VideoSorting.newest]) async {
     channelId = ChannelId.fromString(channelId);
