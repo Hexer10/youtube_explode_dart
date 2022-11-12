@@ -43,28 +43,31 @@ class CommentsClient {
   /*
 onResponseReceivedEndpoints[1].reloadContinuationItemsCommand.continuationItems[2].commentThreadRenderer.comment.commentRenderer.contentText.runs[0].text   */
   List<JsonMap>? _getCommentRenderers() {
-    final endpoint = root.getList('onResponseReceivedEndpoints');
+    final endpoint = root.getList('onResponseReceivedEndpoints')?.last;
     if (endpoint == null) {
       return null;
     }
 
-    final comments = endpoint.last
+    // This was used in old youtube versions.
+    final comments = endpoint
         .get('appendContinuationItemsAction')
         ?.getList('continuationItems')
         ?.where((e) => e['commentRenderer'] != null)
         .toList(growable: false);
 
-    if (comments != null) {
+    if (comments?.isNotEmpty ?? false) {
       return comments;
     }
-    return /* Used for the replies */
-        endpoint.last
-                .get('reloadContinuationItemsCommand')!
-                .getList('continuationItems', 'appendContinuationItemsAction')
-                ?.where((e) => e['commentThreadRenderer'] != null)
-                .map((e) => e.get('commentThreadRenderer')!)
-                .toList(growable: false) ??
-            const [];
+
+    // This can probably be simplified.
+    return endpoint
+            .get('reloadContinuationItemsCommand',
+                'appendContinuationItemsAction')!
+            .getList('continuationItems', 'appendContinuationItemsAction')
+            ?.where((e) => e['commentThreadRenderer'] != null)
+            .map((e) => e.get('commentThreadRenderer')!)
+            .toList(growable: false) ??
+        const [];
   }
 
   String? _getContinuationToken() {
@@ -83,7 +86,8 @@ onResponseReceivedEndpoints[1].reloadContinuationItemsCommand.continuationItems[
         root
             .getList('onResponseReceivedEndpoints')!
             .last
-            .get('reloadContinuationItemsCommand')!
+            .get('reloadContinuationItemsCommand',
+                'appendContinuationItemsAction')!
             .getList('continuationItems', 'appendContinuationItemsAction')!
             .firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
             ?.get('continuationItemRenderer')

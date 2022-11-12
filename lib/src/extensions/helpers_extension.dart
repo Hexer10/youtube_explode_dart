@@ -224,8 +224,8 @@ extension UriUtility on Uri {
 ///
 extension GetOrNullMap on Map {
   /// Get a map inside a map
-  Map<String, dynamic>? get(String key) {
-    var v = this[key];
+  Map<String, dynamic>? get(String key, [String? orKey]) {
+    var v = this[key] ?? (orKey == null ? null : this[orKey]);
     if (v == null) {
       return null;
     }
