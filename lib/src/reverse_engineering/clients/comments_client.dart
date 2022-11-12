@@ -8,10 +8,10 @@ import '../pages/watch_page.dart';
 class CommentsClient {
   final JsonMap root;
 
-  late final List<JsonMap> _commentRenderers = _getCommentRenderers();
+  late final List<JsonMap>? _commentRenderers = _getCommentRenderers();
 
-  late final List<_Comment> comments =
-      _commentRenderers.map((e) => _Comment(e)).toList(growable: false);
+  late final List<_Comment>? comments =
+      _commentRenderers?.map((e) => _Comment(e)).toList(growable: false);
 
   late final String? _continuationToken = _getContinuationToken();
 
@@ -42,22 +42,29 @@ class CommentsClient {
 
   /*
 onResponseReceivedEndpoints[1].reloadContinuationItemsCommand.continuationItems[2].commentThreadRenderer.comment.commentRenderer.contentText.runs[0].text   */
-  List<JsonMap> _getCommentRenderers() {
-    return root
-            .getList('onResponseReceivedEndpoints')!
-            .last
-            .get('appendContinuationItemsAction')
-            ?.getList('continuationItems')
-            ?.where((e) => e['commentRenderer'] != null)
-            .toList(growable: false) /* Used for the replies */ ??
-        root
-            .getList('onResponseReceivedEndpoints')!
-            .last
-            .get('reloadContinuationItemsCommand')!
-            .getList('continuationItems', 'appendContinuationItemsAction')!
-            .where((e) => e['commentThreadRenderer'] != null)
-            .map((e) => e.get('commentThreadRenderer')!)
-            .toList(growable: false);
+  List<JsonMap>? _getCommentRenderers() {
+    final endpoint = root.getList('onResponseReceivedEndpoints');
+    if (endpoint == null) {
+      return null;
+    }
+
+    final comments = endpoint.last
+        .get('appendContinuationItemsAction')
+        ?.getList('continuationItems')
+        ?.where((e) => e['commentRenderer'] != null)
+        .toList(growable: false);
+
+    if (comments != null) {
+      return comments;
+    }
+    return /* Used for the replies */
+        endpoint.last
+                .get('reloadContinuationItemsCommand')!
+                .getList('continuationItems', 'appendContinuationItemsAction')
+                ?.where((e) => e['commentThreadRenderer'] != null)
+                .map((e) => e.get('commentThreadRenderer')!)
+                .toList(growable: false) ??
+            const [];
   }
 
   String? _getContinuationToken() {
@@ -86,18 +93,20 @@ onResponseReceivedEndpoints[1].reloadContinuationItemsCommand.continuationItems[
   }
 
   // onResponseReceivedEndpoints[0].reloadContinuationItemsCommand.continuationItems[0].commentsHeaderRenderer
-  int getCommentsCount() => root
-      .getList('onResponseReceivedEndpoints')!
-      .first
-      .get('reloadContinuationItemsCommand')!
-      .getList('continuationItems')!
-      .first
-      .get('commentsHeaderRenderer')!
-      .get('commentsCount')!
-      .getList('runs')!
-      .first
-      .getT<String>('text')
-      .parseIntWithUnits()!;
+  int getCommentsCount() =>
+      root
+          .getList('onResponseReceivedEndpoints')!
+          .first
+          .get('reloadContinuationItemsCommand')!
+          .getList('continuationItems')!
+          .first
+          .get('commentsHeaderRenderer')!
+          .get('commentsCount')
+          ?.getList('runs')!
+          .first
+          .getT<String>('text')
+          .parseIntWithUnits()! ??
+      0;
 
   Future<CommentsClient?> nextPage(YoutubeHttpClient httpClient) async {
     if (_continuationToken == null) {

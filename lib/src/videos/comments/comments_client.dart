@@ -10,7 +10,7 @@ class CommentsClient {
   /// Initializes an instance of [CommentsClient]
   CommentsClient(this._httpClient);
 
-  /// Returns a [List<Comment>] containing the first batch of comments.
+  /// Returns a [List<Comment>] containing the first batch of comments or null if the video has comments disabled.
   /// You can use [CommentsList.nextPage()] to get the next batch of comments.
   Future<CommentsList?> getComments(Video video) async {
     if (video.watchPage == null) {
@@ -19,12 +19,12 @@ class CommentsClient {
 
     final page = await re.CommentsClient.get(_httpClient, video);
 
-    if (page == null) {
+    if (page == null || page.comments == null) {
       return null;
     }
 
     return CommentsList(
-        page.comments
+        page.comments!
             .map((e) => Comment(
                 e.author,
                 ChannelId(e.channelId),
@@ -48,12 +48,12 @@ class CommentsClient {
     final page =
         await re.CommentsClient.getReplies(_httpClient, comment.continuation!);
 
-    if (page == null) {
+    if (page == null || page.comments == null) {
       return null;
     }
 
     return CommentsList(
-        page.comments
+        page.comments!
             .map((e) => Comment(
                 e.author,
                 ChannelId(e.channelId),

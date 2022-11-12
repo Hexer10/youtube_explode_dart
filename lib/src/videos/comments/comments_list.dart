@@ -22,12 +22,12 @@ class CommentsList extends DelegatingList<Comment> {
   /// results.
   Future<CommentsList?> nextPage() async {
     final page = await _client.nextPage(_httpClient);
-    if (page == null) {
+    if (page == null || page.comments == null) {
       return null;
     }
 
     return CommentsList(
-        page.comments
+        page.comments!
             .map((e) => Comment(
                 e.author,
                 ChannelId(e.channelId),
