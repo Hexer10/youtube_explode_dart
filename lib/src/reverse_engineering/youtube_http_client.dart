@@ -19,11 +19,11 @@ class YoutubeHttpClient extends http.BaseClient {
 
   static const Map<String, String> _defaultHeaders = {
     'user-agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36',
     'cookie': 'CONSENT=YES+cb',
     'accept':
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    'accept-language': 'accept-language: en-US,en;q=0.9',
+    'accept-language': 'en-US,en;q=0.9',
     'sec-fetch-dest': 'document',
     'sec-fetch-mode': 'navigate',
     'sec-fetch-site': 'none',
@@ -172,9 +172,13 @@ class YoutubeHttpClient extends http.BaseClient {
     while (!_closed && bytesCount != streamInfo.size.totalBytes) {
       try {
         final response = await retry(this, () {
-          final request = http.Request('get', url);
-          request.headers['range'] =
-              'bytes=$bytesCount-${bytesCount + 9898989 - 1}';
+          final from = bytesCount;
+          final to = (streamInfo.isThrottled
+                  ? (bytesCount + 9898989)
+                  : streamInfo.size.totalBytes) -
+              1;
+          final request =
+              http.Request('get', url.setQueryParam('range', '$from-$to'));
           return send(request);
         });
         if (validate) {

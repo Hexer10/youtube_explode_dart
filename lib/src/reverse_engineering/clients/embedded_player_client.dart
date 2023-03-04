@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http_parser/http_parser.dart';
 
 import '../../../youtube_explode_dart.dart';
@@ -45,7 +44,6 @@ class EmbeddedPlayerClient {
   EmbeddedPlayerClient.parse(String raw) : root = json.decode(raw);
 
   ///
-  @alwaysThrows
   static Future<EmbeddedPlayerClient> get(
       YoutubeHttpClient httpClient, String videoId) {
     final body = {
@@ -53,21 +51,29 @@ class EmbeddedPlayerClient {
         'client': {
           'hl': 'en',
           'clientName': 'ANDROID',
-          'clientVersion': '16.46.37'
+          'clientVersion': '17.31.35',
+          'androidSdkVersion': 30,
+          'userAgent':
+              'com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip',
+          'timeZone': 'UTC',
+          'utcOffsetMinutes': 0
         }
       },
-      'videoId': videoId
+      'videoId': videoId,
+      'params': '8AEB',
+      'playbackContext': const {
+        'contentPlaybackContext': {'html5Preference': 'HTML5_PREF_WANTS'},
+        'contentCheckOk': true,
+        'racyCheckOk': true,
+      },
     };
 
-    final url = Uri.parse('https://www.youtube.com/youtubei/v1/player');
+    final url = Uri.parse(
+        'https://www.youtube.com/youtubei/v1/player?key=AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w&prettyPrint=false');
 
     return retry(httpClient, () async {
-      final raw = await httpClient.post(url,
-          body: json.encode(body),
-          headers: {
-            'X-Goog-Api-Key': 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8'
-          },
-          validate: true);
+      final raw =
+          await httpClient.post(url, body: json.encode(body), validate: true);
 
       var result = EmbeddedPlayerClient.parse(raw.body);
 
