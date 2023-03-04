@@ -131,7 +131,7 @@ class _CachedValue<T> {
 
   T get value {
     if (expired) {
-      throw StateError('Value $value is expired!');
+      throw StateError('Value $_value is expired!');
     }
     return _value;
   }
