@@ -31,7 +31,7 @@ Map<String, dynamic> _$MuxedStreamInfoToJson(MuxedStreamInfo instance) =>
       'bitrate': instance.bitrate,
       'audioCodec': instance.audioCodec,
       'videoCodec': instance.videoCodec,
-      'videoQuality': _$VideoQualityEnumMap[instance.videoQuality],
+      'videoQuality': _$VideoQualityEnumMap[instance.videoQuality]!,
       'videoResolution': instance.videoResolution,
       'framerate': instance.framerate,
       'codec': mediaTypeToJson(instance.codec),

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'playlist.dart';
 
@@ -12,28 +12,7 @@ part of 'playlist.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$PlaylistTearOff {
-  const _$PlaylistTearOff();
-
-  _Playlist call(PlaylistId id, String title, String author, String description,
-      ThumbnailSet thumbnails, Engagement engagement, int? videoCount) {
-    return _Playlist(
-      id,
-      title,
-      author,
-      description,
-      thumbnails,
-      engagement,
-      videoCount,
-    );
-  }
-}
-
-/// @nodoc
-const $Playlist = _$PlaylistTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$Playlist {
@@ -68,7 +47,8 @@ mixin _$Playlist {
 /// @nodoc
 abstract class $PlaylistCopyWith<$Res> {
   factory $PlaylistCopyWith(Playlist value, $Res Function(Playlist) then) =
-      _$PlaylistCopyWithImpl<$Res>;
+      _$PlaylistCopyWithImpl<$Res, Playlist>;
+  @useResult
   $Res call(
       {PlaylistId id,
       String title,
@@ -84,82 +64,90 @@ abstract class $PlaylistCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PlaylistCopyWithImpl<$Res> implements $PlaylistCopyWith<$Res> {
+class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
+    implements $PlaylistCopyWith<$Res> {
   _$PlaylistCopyWithImpl(this._value, this._then);
 
-  final Playlist _value;
   // ignore: unused_field
-  final $Res Function(Playlist) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? author = freezed,
-    Object? description = freezed,
-    Object? thumbnails = freezed,
-    Object? engagement = freezed,
+    Object? id = null,
+    Object? title = null,
+    Object? author = null,
+    Object? description = null,
+    Object? thumbnails = null,
+    Object? engagement = null,
     Object? videoCount = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as PlaylistId,
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      author: author == freezed
+      author: null == author
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as String,
-      description: description == freezed
+      description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      thumbnails: thumbnails == freezed
+      thumbnails: null == thumbnails
           ? _value.thumbnails
           : thumbnails // ignore: cast_nullable_to_non_nullable
               as ThumbnailSet,
-      engagement: engagement == freezed
+      engagement: null == engagement
           ? _value.engagement
           : engagement // ignore: cast_nullable_to_non_nullable
               as Engagement,
-      videoCount: videoCount == freezed
+      videoCount: freezed == videoCount
           ? _value.videoCount
           : videoCount // ignore: cast_nullable_to_non_nullable
               as int?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $PlaylistIdCopyWith<$Res> get id {
     return $PlaylistIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value));
+      return _then(_value.copyWith(id: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ThumbnailSetCopyWith<$Res> get thumbnails {
     return $ThumbnailSetCopyWith<$Res>(_value.thumbnails, (value) {
-      return _then(_value.copyWith(thumbnails: value));
+      return _then(_value.copyWith(thumbnails: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $EngagementCopyWith<$Res> get engagement {
     return $EngagementCopyWith<$Res>(_value.engagement, (value) {
-      return _then(_value.copyWith(engagement: value));
+      return _then(_value.copyWith(engagement: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$PlaylistCopyWith<$Res> implements $PlaylistCopyWith<$Res> {
-  factory _$PlaylistCopyWith(_Playlist value, $Res Function(_Playlist) then) =
-      __$PlaylistCopyWithImpl<$Res>;
+abstract class _$$_PlaylistCopyWith<$Res> implements $PlaylistCopyWith<$Res> {
+  factory _$$_PlaylistCopyWith(
+          _$_Playlist value, $Res Function(_$_Playlist) then) =
+      __$$_PlaylistCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {PlaylistId id,
       String title,
@@ -178,50 +166,50 @@ abstract class _$PlaylistCopyWith<$Res> implements $PlaylistCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$PlaylistCopyWithImpl<$Res> extends _$PlaylistCopyWithImpl<$Res>
-    implements _$PlaylistCopyWith<$Res> {
-  __$PlaylistCopyWithImpl(_Playlist _value, $Res Function(_Playlist) _then)
-      : super(_value, (v) => _then(v as _Playlist));
+class __$$_PlaylistCopyWithImpl<$Res>
+    extends _$PlaylistCopyWithImpl<$Res, _$_Playlist>
+    implements _$$_PlaylistCopyWith<$Res> {
+  __$$_PlaylistCopyWithImpl(
+      _$_Playlist _value, $Res Function(_$_Playlist) _then)
+      : super(_value, _then);
 
-  @override
-  _Playlist get _value => super._value as _Playlist;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? author = freezed,
-    Object? description = freezed,
-    Object? thumbnails = freezed,
-    Object? engagement = freezed,
+    Object? id = null,
+    Object? title = null,
+    Object? author = null,
+    Object? description = null,
+    Object? thumbnails = null,
+    Object? engagement = null,
     Object? videoCount = freezed,
   }) {
-    return _then(_Playlist(
-      id == freezed
+    return _then(_$_Playlist(
+      null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as PlaylistId,
-      title == freezed
+      null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      author == freezed
+      null == author
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as String,
-      description == freezed
+      null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      thumbnails == freezed
+      null == thumbnails
           ? _value.thumbnails
           : thumbnails // ignore: cast_nullable_to_non_nullable
               as ThumbnailSet,
-      engagement == freezed
+      null == engagement
           ? _value.engagement
           : engagement // ignore: cast_nullable_to_non_nullable
               as Engagement,
-      videoCount == freezed
+      freezed == videoCount
           ? _value.videoCount
           : videoCount // ignore: cast_nullable_to_non_nullable
               as int?,
@@ -236,35 +224,34 @@ class _$_Playlist extends _Playlist {
       this.thumbnails, this.engagement, this.videoCount)
       : super._();
 
-  @override
-
   /// Playlist ID.
-  final PlaylistId id;
   @override
+  final PlaylistId id;
 
   /// Playlist title.
-  final String title;
   @override
+  final String title;
 
   /// Playlist author.
   /// Can be null if it's a system playlist (e.g. Video Mix, Topics, etc.).
-  final String author;
   @override
+  final String author;
 
   /// Playlist description.
-  final String description;
   @override
+  final String description;
 
   /// Available thumbnails for this playlist.
   /// Can be null if the playlist is empty.
-  final ThumbnailSet thumbnails;
   @override
+  final ThumbnailSet thumbnails;
 
   /// Engagement statistics.
-  final Engagement engagement;
   @override
+  final Engagement engagement;
 
   /// Total videos in this playlist.
+  @override
   final int? videoCount;
 
   @override
@@ -276,46 +263,40 @@ class _$_Playlist extends _Playlist {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Playlist &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.author, author) &&
-            const DeepCollectionEquality()
-                .equals(other.description, description) &&
-            const DeepCollectionEquality()
-                .equals(other.thumbnails, thumbnails) &&
-            const DeepCollectionEquality()
-                .equals(other.engagement, engagement) &&
-            const DeepCollectionEquality()
-                .equals(other.videoCount, videoCount));
+            other is _$_Playlist &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.author, author) || other.author == author) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.thumbnails, thumbnails) ||
+                other.thumbnails == thumbnails) &&
+            (identical(other.engagement, engagement) ||
+                other.engagement == engagement) &&
+            (identical(other.videoCount, videoCount) ||
+                other.videoCount == videoCount));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(author),
-      const DeepCollectionEquality().hash(description),
-      const DeepCollectionEquality().hash(thumbnails),
-      const DeepCollectionEquality().hash(engagement),
-      const DeepCollectionEquality().hash(videoCount));
+  int get hashCode => Object.hash(runtimeType, id, title, author, description,
+      thumbnails, engagement, videoCount);
 
   @JsonKey(ignore: true)
   @override
-  _$PlaylistCopyWith<_Playlist> get copyWith =>
-      __$PlaylistCopyWithImpl<_Playlist>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_PlaylistCopyWith<_$_Playlist> get copyWith =>
+      __$$_PlaylistCopyWithImpl<_$_Playlist>(this, _$identity);
 }
 
 abstract class _Playlist extends Playlist {
   const factory _Playlist(
-      PlaylistId id,
-      String title,
-      String author,
-      String description,
-      ThumbnailSet thumbnails,
-      Engagement engagement,
-      int? videoCount) = _$_Playlist;
+      final PlaylistId id,
+      final String title,
+      final String author,
+      final String description,
+      final ThumbnailSet thumbnails,
+      final Engagement engagement,
+      final int? videoCount) = _$_Playlist;
   const _Playlist._() : super._();
 
   @override
@@ -350,6 +331,6 @@ abstract class _Playlist extends Playlist {
   int? get videoCount;
   @override
   @JsonKey(ignore: true)
-  _$PlaylistCopyWith<_Playlist> get copyWith =>
+  _$$_PlaylistCopyWith<_$_Playlist> get copyWith =>
       throw _privateConstructorUsedError;
 }

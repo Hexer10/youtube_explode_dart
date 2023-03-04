@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'video.dart';
 
@@ -12,48 +12,7 @@ part of 'video.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$VideoTearOff {
-  const _$VideoTearOff();
-
-  _Video _internal(
-      VideoId id,
-      String title,
-      String author,
-      ChannelId channelId,
-      DateTime? uploadDate,
-      String? uploadDateRaw,
-      DateTime? publishDate,
-      String description,
-      Duration? duration,
-      ThumbnailSet thumbnails,
-      UnmodifiableListView<String> keywords,
-      Engagement engagement,
-      bool isLive,
-      [@internal WatchPage? watchPage]) {
-    return _Video(
-      id,
-      title,
-      author,
-      channelId,
-      uploadDate,
-      uploadDateRaw,
-      publishDate,
-      description,
-      duration,
-      thumbnails,
-      keywords,
-      engagement,
-      isLive,
-      watchPage,
-    );
-  }
-}
-
-/// @nodoc
-const $Video = _$VideoTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$Video {
@@ -110,7 +69,8 @@ mixin _$Video {
 /// @nodoc
 abstract class $VideoCopyWith<$Res> {
   factory $VideoCopyWith(Video value, $Res Function(Video) then) =
-      _$VideoCopyWithImpl<$Res>;
+      _$VideoCopyWithImpl<$Res, Video>;
+  @useResult
   $Res call(
       {VideoId id,
       String title,
@@ -134,124 +94,132 @@ abstract class $VideoCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$VideoCopyWithImpl<$Res> implements $VideoCopyWith<$Res> {
+class _$VideoCopyWithImpl<$Res, $Val extends Video>
+    implements $VideoCopyWith<$Res> {
   _$VideoCopyWithImpl(this._value, this._then);
 
-  final Video _value;
   // ignore: unused_field
-  final $Res Function(Video) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? author = freezed,
-    Object? channelId = freezed,
+    Object? id = null,
+    Object? title = null,
+    Object? author = null,
+    Object? channelId = null,
     Object? uploadDate = freezed,
     Object? uploadDateRaw = freezed,
     Object? publishDate = freezed,
-    Object? description = freezed,
+    Object? description = null,
     Object? duration = freezed,
-    Object? thumbnails = freezed,
-    Object? keywords = freezed,
-    Object? engagement = freezed,
-    Object? isLive = freezed,
+    Object? thumbnails = null,
+    Object? keywords = null,
+    Object? engagement = null,
+    Object? isLive = null,
     Object? watchPage = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as VideoId,
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      author: author == freezed
+      author: null == author
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as String,
-      channelId: channelId == freezed
+      channelId: null == channelId
           ? _value.channelId
           : channelId // ignore: cast_nullable_to_non_nullable
               as ChannelId,
-      uploadDate: uploadDate == freezed
+      uploadDate: freezed == uploadDate
           ? _value.uploadDate
           : uploadDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      uploadDateRaw: uploadDateRaw == freezed
+      uploadDateRaw: freezed == uploadDateRaw
           ? _value.uploadDateRaw
           : uploadDateRaw // ignore: cast_nullable_to_non_nullable
               as String?,
-      publishDate: publishDate == freezed
+      publishDate: freezed == publishDate
           ? _value.publishDate
           : publishDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      description: description == freezed
+      description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      duration: duration == freezed
+      duration: freezed == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
               as Duration?,
-      thumbnails: thumbnails == freezed
+      thumbnails: null == thumbnails
           ? _value.thumbnails
           : thumbnails // ignore: cast_nullable_to_non_nullable
               as ThumbnailSet,
-      keywords: keywords == freezed
+      keywords: null == keywords
           ? _value.keywords
           : keywords // ignore: cast_nullable_to_non_nullable
               as UnmodifiableListView<String>,
-      engagement: engagement == freezed
+      engagement: null == engagement
           ? _value.engagement
           : engagement // ignore: cast_nullable_to_non_nullable
               as Engagement,
-      isLive: isLive == freezed
+      isLive: null == isLive
           ? _value.isLive
           : isLive // ignore: cast_nullable_to_non_nullable
               as bool,
-      watchPage: watchPage == freezed
+      watchPage: freezed == watchPage
           ? _value.watchPage
           : watchPage // ignore: cast_nullable_to_non_nullable
               as WatchPage?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $VideoIdCopyWith<$Res> get id {
     return $VideoIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value));
+      return _then(_value.copyWith(id: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ChannelIdCopyWith<$Res> get channelId {
     return $ChannelIdCopyWith<$Res>(_value.channelId, (value) {
-      return _then(_value.copyWith(channelId: value));
+      return _then(_value.copyWith(channelId: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ThumbnailSetCopyWith<$Res> get thumbnails {
     return $ThumbnailSetCopyWith<$Res>(_value.thumbnails, (value) {
-      return _then(_value.copyWith(thumbnails: value));
+      return _then(_value.copyWith(thumbnails: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $EngagementCopyWith<$Res> get engagement {
     return $EngagementCopyWith<$Res>(_value.engagement, (value) {
-      return _then(_value.copyWith(engagement: value));
+      return _then(_value.copyWith(engagement: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$VideoCopyWith<$Res> implements $VideoCopyWith<$Res> {
-  factory _$VideoCopyWith(_Video value, $Res Function(_Video) then) =
-      __$VideoCopyWithImpl<$Res>;
+abstract class _$$_VideoCopyWith<$Res> implements $VideoCopyWith<$Res> {
+  factory _$$_VideoCopyWith(_$_Video value, $Res Function(_$_Video) then) =
+      __$$_VideoCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {VideoId id,
       String title,
@@ -279,85 +247,83 @@ abstract class _$VideoCopyWith<$Res> implements $VideoCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$VideoCopyWithImpl<$Res> extends _$VideoCopyWithImpl<$Res>
-    implements _$VideoCopyWith<$Res> {
-  __$VideoCopyWithImpl(_Video _value, $Res Function(_Video) _then)
-      : super(_value, (v) => _then(v as _Video));
+class __$$_VideoCopyWithImpl<$Res> extends _$VideoCopyWithImpl<$Res, _$_Video>
+    implements _$$_VideoCopyWith<$Res> {
+  __$$_VideoCopyWithImpl(_$_Video _value, $Res Function(_$_Video) _then)
+      : super(_value, _then);
 
-  @override
-  _Video get _value => super._value as _Video;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? author = freezed,
-    Object? channelId = freezed,
+    Object? id = null,
+    Object? title = null,
+    Object? author = null,
+    Object? channelId = null,
     Object? uploadDate = freezed,
     Object? uploadDateRaw = freezed,
     Object? publishDate = freezed,
-    Object? description = freezed,
+    Object? description = null,
     Object? duration = freezed,
-    Object? thumbnails = freezed,
-    Object? keywords = freezed,
-    Object? engagement = freezed,
-    Object? isLive = freezed,
+    Object? thumbnails = null,
+    Object? keywords = null,
+    Object? engagement = null,
+    Object? isLive = null,
     Object? watchPage = freezed,
   }) {
-    return _then(_Video(
-      id == freezed
+    return _then(_$_Video(
+      null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as VideoId,
-      title == freezed
+      null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      author == freezed
+      null == author
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as String,
-      channelId == freezed
+      null == channelId
           ? _value.channelId
           : channelId // ignore: cast_nullable_to_non_nullable
               as ChannelId,
-      uploadDate == freezed
+      freezed == uploadDate
           ? _value.uploadDate
           : uploadDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      uploadDateRaw == freezed
+      freezed == uploadDateRaw
           ? _value.uploadDateRaw
           : uploadDateRaw // ignore: cast_nullable_to_non_nullable
               as String?,
-      publishDate == freezed
+      freezed == publishDate
           ? _value.publishDate
           : publishDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      description == freezed
+      null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      duration == freezed
+      freezed == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
               as Duration?,
-      thumbnails == freezed
+      null == thumbnails
           ? _value.thumbnails
           : thumbnails // ignore: cast_nullable_to_non_nullable
               as ThumbnailSet,
-      keywords == freezed
+      null == keywords
           ? _value.keywords
           : keywords // ignore: cast_nullable_to_non_nullable
               as UnmodifiableListView<String>,
-      engagement == freezed
+      null == engagement
           ? _value.engagement
           : engagement // ignore: cast_nullable_to_non_nullable
               as Engagement,
-      isLive == freezed
+      null == isLive
           ? _value.isLive
           : isLive // ignore: cast_nullable_to_non_nullable
               as bool,
-      watchPage == freezed
+      freezed == watchPage
           ? _value.watchPage
           : watchPage // ignore: cast_nullable_to_non_nullable
               as WatchPage?,
@@ -385,63 +351,62 @@ class _$_Video extends _Video {
       [@internal this.watchPage])
       : super._();
 
-  @override
-
   /// Video ID.
-  final VideoId id;
   @override
+  final VideoId id;
 
   /// Video title.
-  final String title;
   @override
+  final String title;
 
   /// Video author.
-  final String author;
   @override
+  final String author;
 
   /// Video author Id.
-  final ChannelId channelId;
   @override
+  final ChannelId channelId;
 
   /// Video upload date.
   /// Note: For search queries it is calculated with:
   ///   DateTime.now() - how much time is was published.
+  @override
   final DateTime? uploadDate;
   @override
   final String? uploadDateRaw;
-  @override
 
   /// Video publish date.
-  final DateTime? publishDate;
   @override
+  final DateTime? publishDate;
 
   /// Video description.
-  final String description;
   @override
+  final String description;
 
   /// Duration of the video.
-  final Duration? duration;
   @override
+  final Duration? duration;
 
   /// Available thumbnails for this video.
-  final ThumbnailSet thumbnails;
   @override
+  final ThumbnailSet thumbnails;
 
   /// Search keywords used for this video.
-  final UnmodifiableListView<String> keywords;
   @override
+  final UnmodifiableListView<String> keywords;
 
   /// Engagement statistics for this video.
-  final Engagement engagement;
   @override
+  final Engagement engagement;
 
   /// Returns true if this is a live stream.
 //ignore: avoid_positional_boolean_parameters
-  final bool isLive;
   @override
+  final bool isLive;
 
   /// Used internally.
   /// Shouldn't be used in the code.
+  @override
   @internal
   final WatchPage? watchPage;
 
@@ -454,69 +419,73 @@ class _$_Video extends _Video {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Video &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.author, author) &&
-            const DeepCollectionEquality().equals(other.channelId, channelId) &&
-            const DeepCollectionEquality()
-                .equals(other.uploadDate, uploadDate) &&
-            const DeepCollectionEquality()
-                .equals(other.uploadDateRaw, uploadDateRaw) &&
-            const DeepCollectionEquality()
-                .equals(other.publishDate, publishDate) &&
-            const DeepCollectionEquality()
-                .equals(other.description, description) &&
-            const DeepCollectionEquality().equals(other.duration, duration) &&
-            const DeepCollectionEquality()
-                .equals(other.thumbnails, thumbnails) &&
+            other is _$_Video &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.author, author) || other.author == author) &&
+            (identical(other.channelId, channelId) ||
+                other.channelId == channelId) &&
+            (identical(other.uploadDate, uploadDate) ||
+                other.uploadDate == uploadDate) &&
+            (identical(other.uploadDateRaw, uploadDateRaw) ||
+                other.uploadDateRaw == uploadDateRaw) &&
+            (identical(other.publishDate, publishDate) ||
+                other.publishDate == publishDate) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.duration, duration) ||
+                other.duration == duration) &&
+            (identical(other.thumbnails, thumbnails) ||
+                other.thumbnails == thumbnails) &&
             const DeepCollectionEquality().equals(other.keywords, keywords) &&
-            const DeepCollectionEquality()
-                .equals(other.engagement, engagement) &&
-            const DeepCollectionEquality().equals(other.isLive, isLive) &&
-            const DeepCollectionEquality().equals(other.watchPage, watchPage));
+            (identical(other.engagement, engagement) ||
+                other.engagement == engagement) &&
+            (identical(other.isLive, isLive) || other.isLive == isLive) &&
+            (identical(other.watchPage, watchPage) ||
+                other.watchPage == watchPage));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(author),
-      const DeepCollectionEquality().hash(channelId),
-      const DeepCollectionEquality().hash(uploadDate),
-      const DeepCollectionEquality().hash(uploadDateRaw),
-      const DeepCollectionEquality().hash(publishDate),
-      const DeepCollectionEquality().hash(description),
-      const DeepCollectionEquality().hash(duration),
-      const DeepCollectionEquality().hash(thumbnails),
+      id,
+      title,
+      author,
+      channelId,
+      uploadDate,
+      uploadDateRaw,
+      publishDate,
+      description,
+      duration,
+      thumbnails,
       const DeepCollectionEquality().hash(keywords),
-      const DeepCollectionEquality().hash(engagement),
-      const DeepCollectionEquality().hash(isLive),
-      const DeepCollectionEquality().hash(watchPage));
+      engagement,
+      isLive,
+      watchPage);
 
   @JsonKey(ignore: true)
   @override
-  _$VideoCopyWith<_Video> get copyWith =>
-      __$VideoCopyWithImpl<_Video>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_VideoCopyWith<_$_Video> get copyWith =>
+      __$$_VideoCopyWithImpl<_$_Video>(this, _$identity);
 }
 
 abstract class _Video extends Video {
   const factory _Video(
-      VideoId id,
-      String title,
-      String author,
-      ChannelId channelId,
-      DateTime? uploadDate,
-      String? uploadDateRaw,
-      DateTime? publishDate,
-      String description,
-      Duration? duration,
-      ThumbnailSet thumbnails,
-      UnmodifiableListView<String> keywords,
-      Engagement engagement,
-      bool isLive,
-      [@internal WatchPage? watchPage]) = _$_Video;
+      final VideoId id,
+      final String title,
+      final String author,
+      final ChannelId channelId,
+      final DateTime? uploadDate,
+      final String? uploadDateRaw,
+      final DateTime? publishDate,
+      final String description,
+      final Duration? duration,
+      final ThumbnailSet thumbnails,
+      final UnmodifiableListView<String> keywords,
+      final Engagement engagement,
+      final bool isLive,
+      [@internal final WatchPage? watchPage]) = _$_Video;
   const _Video._() : super._();
 
   @override
@@ -580,5 +549,6 @@ abstract class _Video extends Video {
   WatchPage? get watchPage;
   @override
   @JsonKey(ignore: true)
-  _$VideoCopyWith<_Video> get copyWith => throw _privateConstructorUsedError;
+  _$$_VideoCopyWith<_$_Video> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'video_id.dart';
 
@@ -12,21 +12,7 @@ part of 'video_id.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$VideoIdTearOff {
-  const _$VideoIdTearOff();
-
-  _VideoId _internal(String value) {
-    return _VideoId(
-      value,
-    );
-  }
-}
-
-/// @nodoc
-const $VideoId = _$VideoIdTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$VideoId {
@@ -40,54 +26,59 @@ mixin _$VideoId {
 /// @nodoc
 abstract class $VideoIdCopyWith<$Res> {
   factory $VideoIdCopyWith(VideoId value, $Res Function(VideoId) then) =
-      _$VideoIdCopyWithImpl<$Res>;
+      _$VideoIdCopyWithImpl<$Res, VideoId>;
+  @useResult
   $Res call({String value});
 }
 
 /// @nodoc
-class _$VideoIdCopyWithImpl<$Res> implements $VideoIdCopyWith<$Res> {
+class _$VideoIdCopyWithImpl<$Res, $Val extends VideoId>
+    implements $VideoIdCopyWith<$Res> {
   _$VideoIdCopyWithImpl(this._value, this._then);
 
-  final VideoId _value;
   // ignore: unused_field
-  final $Res Function(VideoId) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? value = freezed,
+    Object? value = null,
   }) {
     return _then(_value.copyWith(
-      value: value == freezed
+      value: null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$VideoIdCopyWith<$Res> implements $VideoIdCopyWith<$Res> {
-  factory _$VideoIdCopyWith(_VideoId value, $Res Function(_VideoId) then) =
-      __$VideoIdCopyWithImpl<$Res>;
+abstract class _$$_VideoIdCopyWith<$Res> implements $VideoIdCopyWith<$Res> {
+  factory _$$_VideoIdCopyWith(
+          _$_VideoId value, $Res Function(_$_VideoId) then) =
+      __$$_VideoIdCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String value});
 }
 
 /// @nodoc
-class __$VideoIdCopyWithImpl<$Res> extends _$VideoIdCopyWithImpl<$Res>
-    implements _$VideoIdCopyWith<$Res> {
-  __$VideoIdCopyWithImpl(_VideoId _value, $Res Function(_VideoId) _then)
-      : super(_value, (v) => _then(v as _VideoId));
+class __$$_VideoIdCopyWithImpl<$Res>
+    extends _$VideoIdCopyWithImpl<$Res, _$_VideoId>
+    implements _$$_VideoIdCopyWith<$Res> {
+  __$$_VideoIdCopyWithImpl(_$_VideoId _value, $Res Function(_$_VideoId) _then)
+      : super(_value, _then);
 
-  @override
-  _VideoId get _value => super._value as _VideoId;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? value = freezed,
+    Object? value = null,
   }) {
-    return _then(_VideoId(
-      value == freezed
+    return _then(_$_VideoId(
+      null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as String,
@@ -100,31 +91,30 @@ class __$VideoIdCopyWithImpl<$Res> extends _$VideoIdCopyWithImpl<$Res>
 class _$_VideoId extends _VideoId {
   const _$_VideoId(this.value) : super._();
 
-  @override
-
   /// ID as string.
+  @override
   final String value;
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _VideoId &&
-            const DeepCollectionEquality().equals(other.value, value));
+            other is _$_VideoId &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(value));
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
-  _$VideoIdCopyWith<_VideoId> get copyWith =>
-      __$VideoIdCopyWithImpl<_VideoId>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_VideoIdCopyWith<_$_VideoId> get copyWith =>
+      __$$_VideoIdCopyWithImpl<_$_VideoId>(this, _$identity);
 }
 
 abstract class _VideoId extends VideoId {
-  const factory _VideoId(String value) = _$_VideoId;
+  const factory _VideoId(final String value) = _$_VideoId;
   const _VideoId._() : super._();
 
   @override
@@ -133,6 +123,6 @@ abstract class _VideoId extends VideoId {
   String get value;
   @override
   @JsonKey(ignore: true)
-  _$VideoIdCopyWith<_VideoId> get copyWith =>
+  _$$_VideoIdCopyWith<_$_VideoId> get copyWith =>
       throw _privateConstructorUsedError;
 }

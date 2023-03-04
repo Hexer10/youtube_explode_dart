@@ -34,7 +34,7 @@ Map<String, dynamic> _$VideoOnlyStreamInfoToJson(
       'bitrate': instance.bitrate,
       'videoCodec': instance.videoCodec,
       'qualityLabel': instance.qualityLabel,
-      'videoQuality': _$VideoQualityEnumMap[instance.videoQuality],
+      'videoQuality': _$VideoQualityEnumMap[instance.videoQuality]!,
       'videoResolution': instance.videoResolution,
       'framerate': instance.framerate,
       'fragments': instance.fragments,

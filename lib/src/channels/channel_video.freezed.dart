@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'channel_video.dart';
 
@@ -12,27 +12,7 @@ part of 'channel_video.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$ChannelVideoTearOff {
-  const _$ChannelVideoTearOff();
-
-  _ChannelVideo call(VideoId videoId, String videoTitle, Duration videoDuration,
-      String videoThumbnail, String videoUploadDate, int videoViews) {
-    return _ChannelVideo(
-      videoId,
-      videoTitle,
-      videoDuration,
-      videoThumbnail,
-      videoUploadDate,
-      videoViews,
-    );
-  }
-}
-
-/// @nodoc
-const $ChannelVideo = _$ChannelVideoTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$ChannelVideo {
@@ -64,7 +44,8 @@ mixin _$ChannelVideo {
 abstract class $ChannelVideoCopyWith<$Res> {
   factory $ChannelVideoCopyWith(
           ChannelVideo value, $Res Function(ChannelVideo) then) =
-      _$ChannelVideoCopyWithImpl<$Res>;
+      _$ChannelVideoCopyWithImpl<$Res, ChannelVideo>;
+  @useResult
   $Res call(
       {VideoId videoId,
       String videoTitle,
@@ -77,65 +58,70 @@ abstract class $ChannelVideoCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ChannelVideoCopyWithImpl<$Res> implements $ChannelVideoCopyWith<$Res> {
+class _$ChannelVideoCopyWithImpl<$Res, $Val extends ChannelVideo>
+    implements $ChannelVideoCopyWith<$Res> {
   _$ChannelVideoCopyWithImpl(this._value, this._then);
 
-  final ChannelVideo _value;
   // ignore: unused_field
-  final $Res Function(ChannelVideo) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? videoId = freezed,
-    Object? videoTitle = freezed,
-    Object? videoDuration = freezed,
-    Object? videoThumbnail = freezed,
-    Object? videoUploadDate = freezed,
-    Object? videoViews = freezed,
+    Object? videoId = null,
+    Object? videoTitle = null,
+    Object? videoDuration = null,
+    Object? videoThumbnail = null,
+    Object? videoUploadDate = null,
+    Object? videoViews = null,
   }) {
     return _then(_value.copyWith(
-      videoId: videoId == freezed
+      videoId: null == videoId
           ? _value.videoId
           : videoId // ignore: cast_nullable_to_non_nullable
               as VideoId,
-      videoTitle: videoTitle == freezed
+      videoTitle: null == videoTitle
           ? _value.videoTitle
           : videoTitle // ignore: cast_nullable_to_non_nullable
               as String,
-      videoDuration: videoDuration == freezed
+      videoDuration: null == videoDuration
           ? _value.videoDuration
           : videoDuration // ignore: cast_nullable_to_non_nullable
               as Duration,
-      videoThumbnail: videoThumbnail == freezed
+      videoThumbnail: null == videoThumbnail
           ? _value.videoThumbnail
           : videoThumbnail // ignore: cast_nullable_to_non_nullable
               as String,
-      videoUploadDate: videoUploadDate == freezed
+      videoUploadDate: null == videoUploadDate
           ? _value.videoUploadDate
           : videoUploadDate // ignore: cast_nullable_to_non_nullable
               as String,
-      videoViews: videoViews == freezed
+      videoViews: null == videoViews
           ? _value.videoViews
           : videoViews // ignore: cast_nullable_to_non_nullable
               as int,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $VideoIdCopyWith<$Res> get videoId {
     return $VideoIdCopyWith<$Res>(_value.videoId, (value) {
-      return _then(_value.copyWith(videoId: value));
+      return _then(_value.copyWith(videoId: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$ChannelVideoCopyWith<$Res>
+abstract class _$$_ChannelVideoCopyWith<$Res>
     implements $ChannelVideoCopyWith<$Res> {
-  factory _$ChannelVideoCopyWith(
-          _ChannelVideo value, $Res Function(_ChannelVideo) then) =
-      __$ChannelVideoCopyWithImpl<$Res>;
+  factory _$$_ChannelVideoCopyWith(
+          _$_ChannelVideo value, $Res Function(_$_ChannelVideo) then) =
+      __$$_ChannelVideoCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {VideoId videoId,
       String videoTitle,
@@ -149,46 +135,45 @@ abstract class _$ChannelVideoCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ChannelVideoCopyWithImpl<$Res> extends _$ChannelVideoCopyWithImpl<$Res>
-    implements _$ChannelVideoCopyWith<$Res> {
-  __$ChannelVideoCopyWithImpl(
-      _ChannelVideo _value, $Res Function(_ChannelVideo) _then)
-      : super(_value, (v) => _then(v as _ChannelVideo));
+class __$$_ChannelVideoCopyWithImpl<$Res>
+    extends _$ChannelVideoCopyWithImpl<$Res, _$_ChannelVideo>
+    implements _$$_ChannelVideoCopyWith<$Res> {
+  __$$_ChannelVideoCopyWithImpl(
+      _$_ChannelVideo _value, $Res Function(_$_ChannelVideo) _then)
+      : super(_value, _then);
 
-  @override
-  _ChannelVideo get _value => super._value as _ChannelVideo;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? videoId = freezed,
-    Object? videoTitle = freezed,
-    Object? videoDuration = freezed,
-    Object? videoThumbnail = freezed,
-    Object? videoUploadDate = freezed,
-    Object? videoViews = freezed,
+    Object? videoId = null,
+    Object? videoTitle = null,
+    Object? videoDuration = null,
+    Object? videoThumbnail = null,
+    Object? videoUploadDate = null,
+    Object? videoViews = null,
   }) {
-    return _then(_ChannelVideo(
-      videoId == freezed
+    return _then(_$_ChannelVideo(
+      null == videoId
           ? _value.videoId
           : videoId // ignore: cast_nullable_to_non_nullable
               as VideoId,
-      videoTitle == freezed
+      null == videoTitle
           ? _value.videoTitle
           : videoTitle // ignore: cast_nullable_to_non_nullable
               as String,
-      videoDuration == freezed
+      null == videoDuration
           ? _value.videoDuration
           : videoDuration // ignore: cast_nullable_to_non_nullable
               as Duration,
-      videoThumbnail == freezed
+      null == videoThumbnail
           ? _value.videoThumbnail
           : videoThumbnail // ignore: cast_nullable_to_non_nullable
               as String,
-      videoUploadDate == freezed
+      null == videoUploadDate
           ? _value.videoUploadDate
           : videoUploadDate // ignore: cast_nullable_to_non_nullable
               as String,
-      videoViews == freezed
+      null == videoViews
           ? _value.videoViews
           : videoViews // ignore: cast_nullable_to_non_nullable
               as int,
@@ -202,30 +187,29 @@ class _$_ChannelVideo implements _ChannelVideo {
   const _$_ChannelVideo(this.videoId, this.videoTitle, this.videoDuration,
       this.videoThumbnail, this.videoUploadDate, this.videoViews);
 
-  @override
-
   /// Video ID.
-  final VideoId videoId;
   @override
+  final VideoId videoId;
 
   /// Video title.
-  final String videoTitle;
   @override
+  final String videoTitle;
 
   /// Video duration
-  final Duration videoDuration;
   @override
+  final Duration videoDuration;
 
   /// Video thumbnail
-  final String videoThumbnail;
   @override
+  final String videoThumbnail;
 
   /// Video upload date.
   /// Formatted like 10 hours ago
-  final String videoUploadDate;
   @override
+  final String videoUploadDate;
 
   /// Video view count.
+  @override
   final int videoViews;
 
   @override
@@ -237,44 +221,39 @@ class _$_ChannelVideo implements _ChannelVideo {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ChannelVideo &&
-            const DeepCollectionEquality().equals(other.videoId, videoId) &&
-            const DeepCollectionEquality()
-                .equals(other.videoTitle, videoTitle) &&
-            const DeepCollectionEquality()
-                .equals(other.videoDuration, videoDuration) &&
-            const DeepCollectionEquality()
-                .equals(other.videoThumbnail, videoThumbnail) &&
-            const DeepCollectionEquality()
-                .equals(other.videoUploadDate, videoUploadDate) &&
-            const DeepCollectionEquality()
-                .equals(other.videoViews, videoViews));
+            other is _$_ChannelVideo &&
+            (identical(other.videoId, videoId) || other.videoId == videoId) &&
+            (identical(other.videoTitle, videoTitle) ||
+                other.videoTitle == videoTitle) &&
+            (identical(other.videoDuration, videoDuration) ||
+                other.videoDuration == videoDuration) &&
+            (identical(other.videoThumbnail, videoThumbnail) ||
+                other.videoThumbnail == videoThumbnail) &&
+            (identical(other.videoUploadDate, videoUploadDate) ||
+                other.videoUploadDate == videoUploadDate) &&
+            (identical(other.videoViews, videoViews) ||
+                other.videoViews == videoViews));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(videoId),
-      const DeepCollectionEquality().hash(videoTitle),
-      const DeepCollectionEquality().hash(videoDuration),
-      const DeepCollectionEquality().hash(videoThumbnail),
-      const DeepCollectionEquality().hash(videoUploadDate),
-      const DeepCollectionEquality().hash(videoViews));
+  int get hashCode => Object.hash(runtimeType, videoId, videoTitle,
+      videoDuration, videoThumbnail, videoUploadDate, videoViews);
 
   @JsonKey(ignore: true)
   @override
-  _$ChannelVideoCopyWith<_ChannelVideo> get copyWith =>
-      __$ChannelVideoCopyWithImpl<_ChannelVideo>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_ChannelVideoCopyWith<_$_ChannelVideo> get copyWith =>
+      __$$_ChannelVideoCopyWithImpl<_$_ChannelVideo>(this, _$identity);
 }
 
 abstract class _ChannelVideo implements ChannelVideo {
   const factory _ChannelVideo(
-      VideoId videoId,
-      String videoTitle,
-      Duration videoDuration,
-      String videoThumbnail,
-      String videoUploadDate,
-      int videoViews) = _$_ChannelVideo;
+      final VideoId videoId,
+      final String videoTitle,
+      final Duration videoDuration,
+      final String videoThumbnail,
+      final String videoUploadDate,
+      final int videoViews) = _$_ChannelVideo;
 
   @override
 
@@ -303,6 +282,6 @@ abstract class _ChannelVideo implements ChannelVideo {
   int get videoViews;
   @override
   @JsonKey(ignore: true)
-  _$ChannelVideoCopyWith<_ChannelVideo> get copyWith =>
+  _$$_ChannelVideoCopyWith<_$_ChannelVideo> get copyWith =>
       throw _privateConstructorUsedError;
 }

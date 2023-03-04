@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'channel.dart';
 
@@ -12,26 +12,7 @@ part of 'channel.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$ChannelTearOff {
-  const _$ChannelTearOff();
-
-  _Channel call(ChannelId id, String title, String logoUrl, String bannerUrl,
-      int? subscribersCount) {
-    return _Channel(
-      id,
-      title,
-      logoUrl,
-      bannerUrl,
-      subscribersCount,
-    );
-  }
-}
-
-/// @nodoc
-const $Channel = _$ChannelTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$Channel {
@@ -57,7 +38,8 @@ mixin _$Channel {
 /// @nodoc
 abstract class $ChannelCopyWith<$Res> {
   factory $ChannelCopyWith(Channel value, $Res Function(Channel) then) =
-      _$ChannelCopyWithImpl<$Res>;
+      _$ChannelCopyWithImpl<$Res, Channel>;
+  @useResult
   $Res call(
       {ChannelId id,
       String title,
@@ -69,58 +51,64 @@ abstract class $ChannelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ChannelCopyWithImpl<$Res> implements $ChannelCopyWith<$Res> {
+class _$ChannelCopyWithImpl<$Res, $Val extends Channel>
+    implements $ChannelCopyWith<$Res> {
   _$ChannelCopyWithImpl(this._value, this._then);
 
-  final Channel _value;
   // ignore: unused_field
-  final $Res Function(Channel) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? logoUrl = freezed,
-    Object? bannerUrl = freezed,
+    Object? id = null,
+    Object? title = null,
+    Object? logoUrl = null,
+    Object? bannerUrl = null,
     Object? subscribersCount = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as ChannelId,
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      logoUrl: logoUrl == freezed
+      logoUrl: null == logoUrl
           ? _value.logoUrl
           : logoUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      bannerUrl: bannerUrl == freezed
+      bannerUrl: null == bannerUrl
           ? _value.bannerUrl
           : bannerUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      subscribersCount: subscribersCount == freezed
+      subscribersCount: freezed == subscribersCount
           ? _value.subscribersCount
           : subscribersCount // ignore: cast_nullable_to_non_nullable
               as int?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ChannelIdCopyWith<$Res> get id {
     return $ChannelIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value));
+      return _then(_value.copyWith(id: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$ChannelCopyWith<$Res> implements $ChannelCopyWith<$Res> {
-  factory _$ChannelCopyWith(_Channel value, $Res Function(_Channel) then) =
-      __$ChannelCopyWithImpl<$Res>;
+abstract class _$$_ChannelCopyWith<$Res> implements $ChannelCopyWith<$Res> {
+  factory _$$_ChannelCopyWith(
+          _$_Channel value, $Res Function(_$_Channel) then) =
+      __$$_ChannelCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {ChannelId id,
       String title,
@@ -133,40 +121,39 @@ abstract class _$ChannelCopyWith<$Res> implements $ChannelCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ChannelCopyWithImpl<$Res> extends _$ChannelCopyWithImpl<$Res>
-    implements _$ChannelCopyWith<$Res> {
-  __$ChannelCopyWithImpl(_Channel _value, $Res Function(_Channel) _then)
-      : super(_value, (v) => _then(v as _Channel));
+class __$$_ChannelCopyWithImpl<$Res>
+    extends _$ChannelCopyWithImpl<$Res, _$_Channel>
+    implements _$$_ChannelCopyWith<$Res> {
+  __$$_ChannelCopyWithImpl(_$_Channel _value, $Res Function(_$_Channel) _then)
+      : super(_value, _then);
 
-  @override
-  _Channel get _value => super._value as _Channel;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? logoUrl = freezed,
-    Object? bannerUrl = freezed,
+    Object? id = null,
+    Object? title = null,
+    Object? logoUrl = null,
+    Object? bannerUrl = null,
     Object? subscribersCount = freezed,
   }) {
-    return _then(_Channel(
-      id == freezed
+    return _then(_$_Channel(
+      null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as ChannelId,
-      title == freezed
+      null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      logoUrl == freezed
+      null == logoUrl
           ? _value.logoUrl
           : logoUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      bannerUrl == freezed
+      null == bannerUrl
           ? _value.bannerUrl
           : bannerUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      subscribersCount == freezed
+      freezed == subscribersCount
           ? _value.subscribersCount
           : subscribersCount // ignore: cast_nullable_to_non_nullable
               as int?,
@@ -181,25 +168,24 @@ class _$_Channel extends _Channel {
       this.id, this.title, this.logoUrl, this.bannerUrl, this.subscribersCount)
       : super._();
 
-  @override
-
   /// Channel ID.
-  final ChannelId id;
   @override
+  final ChannelId id;
 
   /// Channel title.
-  final String title;
   @override
+  final String title;
 
   /// URL of the channel's logo image.
-  final String logoUrl;
   @override
+  final String logoUrl;
 
   /// URL of the channel's banner image.
-  final String bannerUrl;
   @override
+  final String bannerUrl;
 
   /// The (approximate) channel subscriber's count.
+  @override
   final int? subscribersCount;
 
   @override
@@ -211,33 +197,34 @@ class _$_Channel extends _Channel {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Channel &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.logoUrl, logoUrl) &&
-            const DeepCollectionEquality().equals(other.bannerUrl, bannerUrl) &&
-            const DeepCollectionEquality()
-                .equals(other.subscribersCount, subscribersCount));
+            other is _$_Channel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl) &&
+            (identical(other.bannerUrl, bannerUrl) ||
+                other.bannerUrl == bannerUrl) &&
+            (identical(other.subscribersCount, subscribersCount) ||
+                other.subscribersCount == subscribersCount));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(logoUrl),
-      const DeepCollectionEquality().hash(bannerUrl),
-      const DeepCollectionEquality().hash(subscribersCount));
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, logoUrl, bannerUrl, subscribersCount);
 
   @JsonKey(ignore: true)
   @override
-  _$ChannelCopyWith<_Channel> get copyWith =>
-      __$ChannelCopyWithImpl<_Channel>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_ChannelCopyWith<_$_Channel> get copyWith =>
+      __$$_ChannelCopyWithImpl<_$_Channel>(this, _$identity);
 }
 
 abstract class _Channel extends Channel {
-  const factory _Channel(ChannelId id, String title, String logoUrl,
-      String bannerUrl, int? subscribersCount) = _$_Channel;
+  const factory _Channel(
+      final ChannelId id,
+      final String title,
+      final String logoUrl,
+      final String bannerUrl,
+      final int? subscribersCount) = _$_Channel;
   const _Channel._() : super._();
 
   @override
@@ -262,6 +249,6 @@ abstract class _Channel extends Channel {
   int? get subscribersCount;
   @override
   @JsonKey(ignore: true)
-  _$ChannelCopyWith<_Channel> get copyWith =>
+  _$$_ChannelCopyWith<_$_Channel> get copyWith =>
       throw _privateConstructorUsedError;
 }
