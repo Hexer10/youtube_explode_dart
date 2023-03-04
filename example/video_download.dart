@@ -30,7 +30,7 @@ Future<void> download(String id) async {
 
   // Get the video manifest.
   var manifest = await yt.videos.streamsClient.getManifest(id);
-  var streams = manifest.videoOnly;
+  var streams = manifest.audioOnly;
 
   // Get the audio track with the highest bitrate.
   var audio = streams.first;

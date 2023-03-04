@@ -20,3 +20,6 @@ linter:
     avoid_relative_lib_imports: false
     always_use_package_imports: false
     avoid_dynamic_calls: false
+    library_private_types_in_public_api: false
+    # Has some false positives
+    unnecessary_null_aware_operator_on_extension_on_nullable: false
