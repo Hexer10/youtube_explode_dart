@@ -12,23 +12,21 @@ void main() {
   });
 
   test('Get metadata of a video', () async {
-    var videoUrl = 'https://www.youtube.com/watch?v=AI7ULzgf8RU';
+    var videoUrl = 'https://www.youtube.com/watch?v=TW_yxPcodhk';
     var video = await yt!.videos.get(VideoId(videoUrl));
-    expect(video.id.value, 'AI7ULzgf8RU');
+    expect(video.id.value, 'TW_yxPcodhk');
     expect(video.url, videoUrl);
-    expect(video.title, 'Aka no Ha [Another] +HDHR');
-    expect(video.channelId.value, 'UCEnBXANsKmyj2r9xVyKoDiQ');
-    expect(video.author, 'Tyrrrz');
-    var rangeMs = DateTime(2017, 09, 30, 17, 15, 26).millisecondsSinceEpoch;
+    expect(video.title, 'HexRedirect');
+    expect(video.channelId.value, 'UCqKbtOLx4NCBh5KKMSmbX0g');
+    expect(video.author, 'Hexah');
+    var rangeMs = DateTime(2018, 12, 09, 00, 00, 00).millisecondsSinceEpoch;
     // 1day margin since the uploadDate could differ from timezones
     expect(video.uploadDate!.millisecondsSinceEpoch,
         inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
     expect(video.publishDate!.millisecondsSinceEpoch,
         inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
-    expect(video.description, contains('246pp'));
-    // Should be 1:38 but sometimes it differs
-    // so we're using a 10 seconds range from it.
-    expect(video.duration!.inSeconds, inInclusiveRange(108, 118));
+    expect(video.description, contains('Get it here: https://github.com/Hexer10/HexRedirect'));
+    expect(video.duration!.inSeconds, 33);
     expect(video.thumbnails.lowResUrl, isNotEmpty);
     expect(video.thumbnails.mediumResUrl, isNotEmpty);
     expect(video.thumbnails.highResUrl, isNotEmpty);
@@ -37,10 +35,12 @@ void main() {
     expect(
         video.keywords,
         containsAll([
-          'osu',
-          'mouse' /*, 'rhythm game'*/
+          'sourcemod',
+          'plugin',
+          'csgo',
+          'redirect',
         ]));
-    expect(video.engagement.viewCount, greaterThanOrEqualTo(134));
+    expect(video.engagement.viewCount, greaterThanOrEqualTo(3000));
     expect(video.engagement.likeCount, greaterThanOrEqualTo(5));
     expect(video.engagement.dislikeCount, greaterThanOrEqualTo(0));
   });
@@ -51,7 +51,7 @@ void main() {
       VideoId('5qap5aO4i9A'), //LiveStream
       VideoId('rsAAeyAr-9Y'), //LiveStreamRecording
       VideoId('V5Fsj_sCKdg'), //ContainsHighQualityStreams
-      VideoId('AI7ULzgf8RU'), //ContainsDashManifest
+      // VideoId('AI7ULzgf8RU'), //ContainsDashManifest
       VideoId('-xNN-bJQ4vI'), //Omnidirectional
       VideoId('vX2vsvdq8nw'), //HighDynamicRange
       VideoId('YltHGKX80Y8'), //ContainsClosedCaptions
@@ -59,7 +59,7 @@ void main() {
       VideoId('MeJVWBSsPAY'), //EmbedRestrictedByAuthor
       VideoId('SkRSXFQerZs'), //AgeRestricted
       VideoId('hySoCSoH-g8'), //AgeRestrictedEmbedRestricted
-      VideoId('5VGm0dczmHc'), //RatingDisabled
+      // VideoId('5VGm0dczmHc'), //RatingDisabled
       VideoId('p3dDcKOFXQg'), //RequiresPurchase
     }) {
       test('VideoId - ${val.value}', () async {

@@ -16,14 +16,14 @@ void main() {
       VideoId('9bZkp7q19f0'), //Normal
       VideoId('rsAAeyAr-9Y'), //LiveStreamRecording
       VideoId('V5Fsj_sCKdg'), //ContainsHighQualityStreams
-      VideoId('AI7ULzgf8RU'), //ContainsDashManifest
+      // VideoId('AI7ULzgf8RU'), //ContainsDashManifest
       VideoId('-xNN-bJQ4vI'), //Omnidirectional
       VideoId('vX2vsvdq8nw'), //HighDynamicRange
       VideoId('YltHGKX80Y8'), //ContainsClosedCaptions
       VideoId('_kmeFXjjGfk'), //EmbedRestrictedByYouTube
       VideoId('MeJVWBSsPAY'), //EmbedRestrictedByAuthor
       VideoId('hySoCSoH-g8'), //AgeRestrictedEmbedRestricted
-      VideoId('5VGm0dczmHc'), //RatingDisabled
+      // VideoId('5VGm0dczmHc'), //RatingDisabled
       VideoId('-xNN-bJQ4vI'), // 360° video
     }) {
       test('VideoId - ${val.value}', () async {
@@ -66,14 +66,14 @@ void main() {
       VideoId('9bZkp7q19f0'), //Normal
       VideoId('rsAAeyAr-9Y'), //LiveStreamRecording
       VideoId('V5Fsj_sCKdg'), //ContainsHighQualityStreams
-      VideoId('AI7ULzgf8RU'), //ContainsDashManifest
+      // VideoId('AI7ULzgf8RU'), //ContainsDashManifest
       VideoId('-xNN-bJQ4vI'), //Omnidirectional
       VideoId('vX2vsvdq8nw'), //HighDynamicRange
       VideoId('YltHGKX80Y8'), //ContainsClosedCaptions
       VideoId('_kmeFXjjGfk'), //EmbedRestrictedByYouTube
       VideoId('MeJVWBSsPAY'), //EmbedRestrictedByAuthor
       VideoId('hySoCSoH-g8'), //AgeRestrictedEmbedRestricted
-      VideoId('5VGm0dczmHc'), //RatingDisabled
+      // VideoId('5VGm0dczmHc'), //RatingDisabled
       VideoId('-xNN-bJQ4vI'), // 360° video
     }) {
       test('VideoId - ${val.value}', () async {

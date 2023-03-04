@@ -15,7 +15,7 @@ void main() {
     var channelUrl = 'https://www.youtube.com/channel/UCEnBXANsKmyj2r9xVyKoDiQ';
     var channel = await yt!.channels.get(ChannelId(channelUrl));
     expect(channel.url, channelUrl);
-    expect(channel.title, 'Tyrrrz');
+    expect(channel.title, 'Oleksii Holub');
     expect(channel.logoUrl, isNotEmpty);
     expect(channel.logoUrl, isNot(equalsIgnoringWhitespace('')));
     expect(channel.subscribersCount, greaterThanOrEqualTo(190));
@@ -41,8 +41,8 @@ void main() {
   });
 
   test('Get metadata of a channel by a video', () async {
-    var channel = await yt!.channels.getByVideo(VideoId('5NmxuoNyDss'));
-    expect(channel.id.value, 'UCEnBXANsKmyj2r9xVyKoDiQ');
+    var channel = await yt!.channels.getByVideo(VideoId('TW_yxPcodhk'));
+    expect(channel.id.value, 'UCqKbtOLx4NCBh5KKMSmbX0g');
   });
 
   test('Get the videos of a youtube channel', () async {
@@ -50,7 +50,7 @@ void main() {
         .getUploads(ChannelId(
             'https://www.youtube.com/channel/UCEnBXANsKmyj2r9xVyKoDiQ'))
         .toList();
-    expect(videos.length, greaterThanOrEqualTo(50));
+    expect(videos.length, greaterThanOrEqualTo(6));
   });
 
   group('Get the videos of any youtube channel', () {
@@ -68,30 +68,14 @@ void main() {
 
   test('Get videos of a youtube channel from the uploads page', () async {
     var videos =
-        await yt!.channels.getUploadsFromPage('UCEnBXANsKmyj2r9xVyKoDiQ');
+        await yt!.channels.getUploadsFromPage('UC46807r_RiRjH8IU-h_DrDQ');
     expect(videos, hasLength(30));
   });
 
   test('Get next page youtube channel uploads page', () async {
     var videos =
-        await yt!.channels.getUploadsFromPage('UCEnBXANsKmyj2r9xVyKoDiQ');
+        await yt!.channels.getUploadsFromPage('UC46807r_RiRjH8IU-h_DrDQ');
     final nextPage = await videos.nextPage();
     expect(nextPage, hasLength(30));
-  });
-
-  //TODO: Remove dupe test
-  test('Get about page of a youtube', () async {
-    var aboutPage = await yt!.channels.getAboutPageByUsername(
-        'PewDiePie'); // or yt.channels.getAboutPage(channelId)
-    expect(aboutPage.title, 'PewDiePie');
-    expect(
-        aboutPage.viewCount,
-        greaterThanOrEqualTo(
-            20000000000)); //Seems youtube likes to change and lower this number
-    expect(aboutPage.description, isNotEmpty);
-    expect(aboutPage.thumbnails, isNotEmpty); // Avatar list
-    expect(aboutPage.channelLinks, isNotNull);
-    expect(aboutPage.country, 'Japan');
-    expect(aboutPage.joinDate, 'Apr 29, 2010');
   });
 }

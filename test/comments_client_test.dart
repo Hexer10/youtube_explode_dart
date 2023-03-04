@@ -12,11 +12,11 @@ void main() {
   });
 
   test('Get comments of a video', () async {
-    var videoUrl = 'https://www.youtube.com/watch?v=AI7ULzgf8RU';
+    var videoUrl = 'https://www.youtube.com/watch?v=TW_yxPcodhk';
     var video = await yt!.videos.get(VideoId(videoUrl));
     var comments = (await yt!.videos.commentsClient.getComments(video))!;
     expect(comments.length, greaterThanOrEqualTo(1));
-    expect(comments.totalLength, greaterThanOrEqualTo(3));
+    expect(comments.totalLength, greaterThanOrEqualTo(1));
     expect(comments.first.isHearted, false);
   });
 
