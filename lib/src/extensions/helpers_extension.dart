@@ -262,7 +262,7 @@ extension GetOrNullMap on Map {
       throw Exception('Invalid type: ${v.runtimeType} should be of type List');
     }
 
-    return (v.toList()).cast<Map<String, dynamic>>();
+    return v.toList().cast<Map<String, dynamic>>();
   }
 }
 

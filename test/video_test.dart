@@ -19,13 +19,14 @@ void main() {
     expect(video.title, 'HexRedirect');
     expect(video.channelId.value, 'UCqKbtOLx4NCBh5KKMSmbX0g');
     expect(video.author, 'Hexah');
-    var rangeMs = DateTime(2018, 12, 09, 00, 00, 00).millisecondsSinceEpoch;
+    var rangeMs = DateTime(2018, 12, 09).millisecondsSinceEpoch;
     // 1day margin since the uploadDate could differ from timezones
     expect(video.uploadDate!.millisecondsSinceEpoch,
         inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
     expect(video.publishDate!.millisecondsSinceEpoch,
         inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000));
-    expect(video.description, contains('Get it here: https://github.com/Hexer10/HexRedirect'));
+    expect(video.description,
+        contains('Get it here: https://github.com/Hexer10/HexRedirect'));
     expect(video.duration!.inSeconds, 33);
     expect(video.thumbnails.lowResUrl, isNotEmpty);
     expect(video.thumbnails.mediumResUrl, isNotEmpty);

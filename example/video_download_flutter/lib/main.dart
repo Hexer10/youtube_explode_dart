@@ -105,8 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        content: Text(
-                            'Download completed and saved to: ${filePath}'),
+                        content:
+                            Text('Download completed and saved to: $filePath'),
                       );
                     },
                   );
