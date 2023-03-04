@@ -15,8 +15,7 @@ class CommentsList extends DelegatingList<Comment> {
   /// Construct an instance of [SearchList]
   /// See [SearchList]
   CommentsList(
-      List<Comment> base, this.totalLength, this._client, this._httpClient)
-      : super(base);
+      super.base, this.totalLength, this._client, this._httpClient);
 
   /// Fetches the next batch of videos or returns null if there are no more
   /// results.

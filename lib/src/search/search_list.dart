@@ -14,7 +14,7 @@ class SearchList<T extends BaseSearchContent> extends DelegatingList<T> {
 
   /// Construct an instance of [SearchList]
   /// See [SearchList]
-  SearchList(List<T> base, this._page, this._httpClient) : super(base);
+  SearchList(super.base, this._page, this._httpClient);
 
   /// Fetches the next batch of videos or returns null if there are no more
   /// results.
@@ -34,7 +34,7 @@ class VideoSearchList extends DelegatingList<Video> {
 
   /// Construct an instance of [SearchList]
   /// See [SearchList]
-  VideoSearchList(List<Video> base, this._page, this._httpClient) : super(base);
+  VideoSearchList(super.base, this._page, this._httpClient);
 
   /// Fetches the next batch of videos or returns null if there are no more
   /// results.

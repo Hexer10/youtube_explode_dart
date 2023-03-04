@@ -6,7 +6,7 @@ import 'exceptions.dart';
 /// is private, or due to other reasons.
 class VideoUnavailableException extends VideoUnplayableException {
   /// Initializes an instance of [VideoUnavailableException]
-  VideoUnavailableException(String message) : super(message);
+  VideoUnavailableException(super.message);
 
   /// Initializes an instance of [VideoUnplayableException] with a [VideoId]
   VideoUnavailableException.unavailable(VideoId videoId)

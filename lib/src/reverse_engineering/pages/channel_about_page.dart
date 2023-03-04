@@ -65,7 +65,7 @@ final _urlExp = RegExp(r'q=([^=]*)$');
 class _InitialData extends InitialData {
   late final JsonMap content = _getContentContext();
 
-  _InitialData(JsonMap root) : super(root);
+  _InitialData(super.root);
 
   JsonMap _getContentContext() {
     return root

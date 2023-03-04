@@ -48,7 +48,7 @@ class ChannelUploadPage extends YoutubePage<_InitialData> {
 }
 
 class _InitialData extends InitialData {
-  _InitialData(JsonMap root) : super(root);
+  _InitialData(super.root);
 
   late final JsonMap? continuationContext = getContinuationContext();
 

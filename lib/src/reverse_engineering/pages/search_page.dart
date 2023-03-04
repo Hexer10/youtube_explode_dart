@@ -52,7 +52,7 @@ class SearchPage extends YoutubePage<_InitialData> {
 }
 
 class _InitialData extends InitialData {
-  _InitialData(JsonMap root) : super(root);
+  _InitialData(super.root);
 
   List<JsonMap>? getContentContext() {
     if (root['contents'] != null) {

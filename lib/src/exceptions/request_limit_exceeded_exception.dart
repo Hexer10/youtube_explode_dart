@@ -5,7 +5,7 @@ import 'youtube_explode_exception.dart';
 /// Exception thrown when a fatal failure occurs.
 class RequestLimitExceededException extends YoutubeExplodeException {
   /// Initializes an instance of [RequestLimitExceededException]
-  RequestLimitExceededException(String message) : super(message);
+  RequestLimitExceededException(super.message);
 
   /// Initializes an instance of [RequestLimitExceeded] with a [Response]
   RequestLimitExceededException.httpRequest(BaseResponse response) : super('''

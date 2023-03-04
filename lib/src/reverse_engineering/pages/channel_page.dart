@@ -81,7 +81,7 @@ class ChannelPage extends YoutubePage<_InitialData> {
 class _InitialData extends InitialData {
   static final RegExp _subCountExp = RegExp(r'(\d+(?:\.\d+)?)(K|M|\s)');
 
-  _InitialData(JsonMap root) : super(root);
+  _InitialData(super.root);
 
   int? get subscribersCount {
     final renderer = root.get('header')?.get('c4TabbedHeaderRenderer');

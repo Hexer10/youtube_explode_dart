@@ -7,7 +7,7 @@ class FatalFailureException extends YoutubeExplodeException {
   final int statusCode;
 
   /// Initializes an instance of [FatalFailureException]
-  FatalFailureException(String message, this.statusCode) : super(message);
+  FatalFailureException(super.message, this.statusCode);
 
   /// Initializes an instance of [FatalFailureException] with a [Response]
   FatalFailureException.httpRequest(BaseResponse response)

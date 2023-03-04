@@ -5,7 +5,7 @@ import 'youtube_explode_exception.dart';
 /// Exception thrown when a fatal failure occurs.
 class TransientFailureException extends YoutubeExplodeException {
   /// Initializes an instance of [TransientFailureException]
-  TransientFailureException(String message) : super(message);
+  TransientFailureException(super.message);
 
   /// Initializes an instance of [TransientFailureException] with a [Response]
   TransientFailureException.httpRequest(BaseResponse response) : super('''

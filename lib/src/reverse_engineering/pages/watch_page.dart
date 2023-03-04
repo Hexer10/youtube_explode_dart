@@ -160,7 +160,7 @@ class WatchPlayerConfig implements PlayerConfigBase {
 }
 
 class _InitialData extends InitialData {
-  _InitialData(JsonMap root) : super(root);
+  _InitialData(super.root);
 
   late final int? likesCount = _getLikes();
   late final int? disLikesCount = _getDislikes();
