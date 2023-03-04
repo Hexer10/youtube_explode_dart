@@ -1,3 +1,6 @@
+## 1.12.4
+- Fix #231: Slow download speed.
+
 ## 1.12.3
 - Fix #229: error when getting comments from a video with comments disabled. Not it returns null.
 - Fix error when getting comments of a with no comments. Now it returns an empty list.
