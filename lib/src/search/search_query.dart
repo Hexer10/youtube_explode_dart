@@ -33,11 +33,11 @@ class SearchQuery {
 
   /// Content of this search.
   /// Contains either [SearchVideo], [SearchPlaylist] or [SearchChannel]
-  List<dynamic> get content => _page.searchContent;
+  List<BaseSearchContent> get content => _page.searchContent;
 
   /// Videos related to this search.
   /// Contains either [SearchVideo] or [SearchPlaylist]
-  List<dynamic> get relatedVideos => _page.relatedVideos;
+  List<BaseSearchContent> get relatedVideos => _page.relatedVideos;
 
   /// Returns the estimated search result count.
   int get estimatedResults => _page.estimatedResults;

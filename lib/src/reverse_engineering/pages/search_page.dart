@@ -14,7 +14,7 @@ class SearchPage extends YoutubePage<_InitialData> {
 
   late final List<BaseSearchContent> searchContent = initialData.searchContent;
 
-  late final List<dynamic> relatedVideos = initialData.relatedVideos;
+  late final List<BaseSearchContent> relatedVideos = initialData.relatedVideos;
 
   late final int estimatedResults = initialData.estimatedResults;
 
@@ -118,7 +118,7 @@ class _InitialData extends InitialData {
       getContentContext()?.map(_parseContent).whereNotNull().toList() ??
           const [];
 
-  List<dynamic> get relatedVideos =>
+  List<BaseSearchContent> get relatedVideos =>
       getContentContext()
           ?.where((e) => e['shelfRenderer'] != null)
           .map((e) => e
