@@ -8,7 +8,7 @@ import '../reverse_engineering/pages/search_page.dart';
 
 /// This list contains search videos.
 ///This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.
-class SearchList<T extends BaseSearchContent> extends DelegatingList<T> {
+class SearchList extends DelegatingList<SearchResult> {
   final SearchPage _page;
   final YoutubeHttpClient _httpClient;
 
@@ -24,7 +24,7 @@ class SearchList<T extends BaseSearchContent> extends DelegatingList<T> {
       return null;
     }
 
-    return SearchList<T>(page.searchContent as List<T>, page, _httpClient);
+    return SearchList(page.searchContent, page, _httpClient);
   }
 }
 

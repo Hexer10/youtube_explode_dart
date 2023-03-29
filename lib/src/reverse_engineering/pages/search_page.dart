@@ -12,9 +12,9 @@ class SearchPage extends YoutubePage<_InitialData> {
   ///
   final String queryString;
 
-  late final List<BaseSearchContent> searchContent = initialData.searchContent;
+  late final List<SearchResult> searchContent = initialData.searchContent;
 
-  late final List<BaseSearchContent> relatedVideos = initialData.relatedVideos;
+  late final List<SearchResult> relatedVideos = initialData.relatedVideos;
 
   late final int estimatedResults = initialData.estimatedResults;
 
@@ -114,11 +114,11 @@ class _InitialData extends InitialData {
   }
 
   // Contains only [SearchVideo] or [SearchPlaylist]
-  late final List<BaseSearchContent> searchContent =
+  late final List<SearchResult> searchContent =
       getContentContext()?.map(_parseContent).whereNotNull().toList() ??
           const [];
 
-  List<BaseSearchContent> get relatedVideos =>
+  List<SearchResult> get relatedVideos =>
       getContentContext()
           ?.where((e) => e['shelfRenderer'] != null)
           .map((e) => e
@@ -137,7 +137,7 @@ class _InitialData extends InitialData {
   late final int estimatedResults =
       int.parse(root.getT<String>('estimatedResults') ?? '0');
 
-  BaseSearchContent? _parseContent(JsonMap? content) {
+  SearchResult? _parseContent(JsonMap? content) {
     if (content == null) {
       return null;
     }

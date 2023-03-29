@@ -1,3 +1,8 @@
+## 2.0.0
+- BREAKING CHANGE: Required at least dart 2.18
+- Deprecated: `BaseSearchContent`; now the search apis return a freezed union type instead of a common class.
+- Deprecated: Renamed methods of the `SearchPlaylist` class: `playlistId`, `playlistTitle` and `playlistVideoCount` are own named `id`, `title`, and `videoCount`.
+
 ## 1.12.4
 - Fix #231: Slow download speed.
 
