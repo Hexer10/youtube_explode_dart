@@ -64,7 +64,7 @@ class YoutubeHttpClient extends http.BaseClient {
   Future<String> getString(dynamic url,
       {Map<String, String> headers = const {}, bool validate = true}) async {
     var response =
-        await get(url is String ? Uri.parse(url) : url, headers: headers);
+        await _httpClient.get(url is String ? Uri.parse(url) : url, headers: headers);
     if (_closed) throw HttpClientClosedException();
 
     if (validate) {
@@ -77,7 +77,7 @@ class YoutubeHttpClient extends http.BaseClient {
   @override
   Future<http.Response> get(Uri url,
       {Map<String, String>? headers = const {}, bool validate = false}) async {
-    var response = await super.get(url, headers: headers);
+    var response = await _httpClient.get(url, headers: headers);
     if (_closed) throw HttpClientClosedException();
 
     if (validate) {
@@ -98,7 +98,7 @@ class YoutubeHttpClient extends http.BaseClient {
       Encoding? encoding,
       bool validate = false}) async {
     final response =
-        await super.post(url, headers: headers, body: body, encoding: encoding);
+        await _httpClient.post(url, headers: headers, body: body, encoding: encoding);
     if (_closed) throw HttpClientClosedException();
 
     if (validate) {
@@ -116,7 +116,7 @@ class YoutubeHttpClient extends http.BaseClient {
     if (url is String) {
       url = Uri.parse(url);
     }
-    var response = await post(url, headers: headers, body: body);
+    var response = await _httpClient.post(url, headers: headers, body: body);
     if (_closed) throw HttpClientClosedException();
 
     if (validate) {
@@ -211,7 +211,7 @@ class YoutubeHttpClient extends http.BaseClient {
   ///
   Future<int?> getContentLength(dynamic url,
       {Map<String, String> headers = const {}, bool validate = true}) async {
-    var response = await head(url, headers: headers);
+    var response = await _httpClient.head(url, headers: headers);
     if (_closed) throw HttpClientClosedException();
 
     if (validate) {
@@ -242,7 +242,7 @@ class YoutubeHttpClient extends http.BaseClient {
         'https://www.youtube.com/youtubei/v1/$action?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8');
 
     return retry<JsonMap>(this, () async {
-      final raw = await post(url, body: json.encode(body));
+      final raw = await _httpClient.post(url, body: json.encode(body));
       if (_closed) throw HttpClientClosedException();
 
       //final now = DateTime.now();
