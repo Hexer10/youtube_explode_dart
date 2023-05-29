@@ -30,11 +30,9 @@ abstract class YoutubePage<T extends InitialData> {
             'Failed to retrieve initial data from $runtimeType, please report this to the project GitHub page.'));
   }
 
-  YoutubePage(
-      this.root,
-      this.initialDataBuilder,
+  YoutubePage(this.root, this.initialDataBuilder,
       [@Deprecated('Use YoutubePage.fromInitialData()')
-          this._defaultInitialData])
+      this._defaultInitialData])
       : assert((root != null && initialDataBuilder != null) ||
             _defaultInitialData != null);
 

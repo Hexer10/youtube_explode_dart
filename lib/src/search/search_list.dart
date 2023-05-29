@@ -26,6 +26,7 @@ class SearchList extends BasePagedList<SearchResult> {
     return SearchList(page.searchContent, page, _httpClient);
   }
 }
+
 /// This contains the search results which can only be a video
 /// Same as [SearchList] but filters to only return Videos.
 ///This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.

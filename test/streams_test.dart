@@ -14,7 +14,10 @@ void main() {
   });
 
   group('Get streams manifest of any video', () {
-    for (final videoId in /*VideoIdData.playable*/[VideoIdData.ageRestrictedViolent, VideoIdData.ageRestrictedSexual]) {
+    for (final videoId in /*VideoIdData.playable*/ [
+      VideoIdData.ageRestrictedViolent,
+      VideoIdData.ageRestrictedSexual
+    ]) {
       test('VideoId - $videoId', () async {
         var manifest = await yt!.videos.streamsClient.getManifest(videoId.id);
         expect(manifest.videoOnly, isNotEmpty);
