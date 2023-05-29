@@ -35,7 +35,7 @@ class ClosedCaption {
   final xml.XmlElement root;
 
   ///
-  String get text => root.text;
+  String get text => root.innerText;
 
   ///
   late final Duration offset =
@@ -60,7 +60,7 @@ class ClosedCaptionPart {
   final xml.XmlElement root;
 
   ///
-  String get text => root.text;
+  String get text => root.innerText;
 
   ///
   late final Duration offset =

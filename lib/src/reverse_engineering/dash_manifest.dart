@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:xml/xml.dart' as xml;
 
-import '../extensions/helpers_extension.dart';
 import '../retry.dart';
 import 'models/fragment.dart';
 import 'models/stream_info_provider.dart';
@@ -127,20 +126,20 @@ class DashManifest {
 
           if (mimeType.type == 'video' || mimeType.type == 'audio') {
             // Extract the base url
-            var baseUrl = JoinedIterable<xml.XmlElement>([
-              representation.childElements,
-              adaptionSet.childElements,
-              period.childElements,
-              root.childElements
-            ])
+            var baseUrl = <xml.XmlElement>[
+              ...representation.childElements,
+              ...adaptionSet.childElements,
+              ...period.childElements,
+              ...root.childElements
+            ]
                 .firstWhereOrNull((e) {
-                  final baseUrlE = e.getElement('BaseURL')?.text.trim();
+                  final baseUrlE = e.getElement('BaseURL')?.innerText.trim();
                   if (baseUrlE == null) {
                     return false;
                   }
                   return baseUrlE.contains(RegExp('^https?://'));
                 })
-                ?.text
+                ?.innerText
                 .trim();
 
             if (baseUrl == null || !baseUrl.startsWith('http')) {
