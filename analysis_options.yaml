@@ -1,25 +1,10 @@
-include: package:lint/package.yaml
+include: package:lints/recommended.yaml
 
 analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
-  language:
-    strict-casts: false
-    strict-raw-types: false
 
 linter:
   rules:
-    prefer_final_locals: false
-    parameter_assignments: false
-    avoid_escaping_inner_quotes: false
-    prefer_const_constructors: true
-    avoid_positional_boolean_parameters: false
-    require_trailing_commas: false
-    prefer_relative_imports: true
-    avoid_relative_lib_imports: false
-    always_use_package_imports: false
-    avoid_dynamic_calls: false
     library_private_types_in_public_api: false
-    # Has some false positives
-    unnecessary_null_aware_operator_on_extension_on_nullable: false
