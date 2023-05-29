@@ -20,7 +20,7 @@ class SearchPage extends YoutubePage<_InitialData> {
 
   /// InitialData
   SearchPage.id(this.queryString, _InitialData initialData)
-      : super(null, null, initialData);
+      : super.fromInitialData(initialData);
 
   Future<SearchPage?> nextPage(YoutubeHttpClient httpClient) async {
     if (initialData.continuationToken?.isEmpty == null ||

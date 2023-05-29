@@ -27,7 +27,7 @@ class PlaylistPage extends YoutubePage<_InitialData> {
 
   /// InitialData
   PlaylistPage.id(this.playlistId, _InitialData initialData)
-      : super(null, null, initialData);
+      : super.fromInitialData(initialData);
 
   ///
   Future<PlaylistPage?> nextPage(YoutubeHttpClient httpClient) async {

@@ -18,8 +18,8 @@ class ChannelUploadPage extends YoutubePage<_InitialData> {
   late final List<ChannelVideo> uploads = initialData.uploads;
 
   /// InitialData
-  ChannelUploadPage.id(this.channelId, _InitialData? initialData)
-      : super(null, null, initialData);
+  ChannelUploadPage.id(this.channelId, super.initialData)
+      : super.fromInitialData();
 
   ///
   Future<ChannelUploadPage?> nextPage(YoutubeHttpClient httpClient) async {
