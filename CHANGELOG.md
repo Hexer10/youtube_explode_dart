@@ -1,7 +1,11 @@
 ## 2.0.0
-- BREAKING CHANGE: Required at least dart 2.18
+- BREAKING CHANGE: Required at least dart 3.00
+- Fixes for dart3
 - Deprecated: `BaseSearchContent`; now the search apis return a freezed union type instead of a common class.
 - Deprecated: Renamed methods of the `SearchPlaylist` class: `playlistId`, `playlistTitle` and `playlistVideoCount` are own named `id`, `title`, and `videoCount`.
+- Fixes for violence age restricted videos.
+- Replaced deprecated `XmlElement.text` to `innerText`.
+- Implemented common super class `BasePagedList` for `CommentsList`, `VideoSearchList`, `ChannelUploadsList` and `SearchList`.
 
 ## 1.12.4
 - Fix #231: Slow download speed.
