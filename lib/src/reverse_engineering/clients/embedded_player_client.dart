@@ -18,7 +18,7 @@ class EmbeddedPlayerClient {
   late final String reason = root['playabilityStatus']!['reason'] ?? '';
 
   ///
-  late final bool isVideoAvailable = status.toLowerCase() == 'ok';
+  late final bool isVideoPlayable = status.toLowerCase() == 'ok';
 
   ///
   late final Iterable<_StreamInfo> muxedStreams = root
@@ -43,29 +43,41 @@ class EmbeddedPlayerClient {
   ///
   EmbeddedPlayerClient.parse(String raw) : root = json.decode(raw);
 
+  static const androidContext = {
+    'hl': 'en',
+    'clientName': 'ANDROID',
+    'clientVersion': '17.31.35',
+    'androidSdkVersion': 30,
+    'userAgent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36,gzip(gfe)',
+    'timeZone': 'UTC',
+    'utcOffsetMinutes': 0,
+  };
+  static const webEmbeddedContext = {
+    'hl': 'en',
+    'clientName': 'WEB_EMBEDDED_PLAYER',
+    'clientVersion': '1.20230523.01.00',
+    'androidSdkVersion': 30,
+    'userAgent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36,gzip(gfe)',
+    'timeZone': 'UTC',
+    'utcOffsetMinutes': 0,
+  };
+
   ///
   static Future<EmbeddedPlayerClient> get(
-      YoutubeHttpClient httpClient, String videoId) {
+      YoutubeHttpClient httpClient, String videoId,
+      {required Map<String, dynamic> context}) {
     final body = {
-      'context': const {
-        'client': {
-          'hl': 'en',
-          'clientName': 'ANDROID',
-          'clientVersion': '17.31.35',
-          'androidSdkVersion': 30,
-          'userAgent':
-              'com.google.android.youtube/17.31.35 (Linux; U; Android 11) gzip',
-          'timeZone': 'UTC',
-          'utcOffsetMinutes': 0
-        }
+      'context': {
+        'client': {...context}
       },
       'videoId': videoId,
-      'params': '8AEB',
       'playbackContext': const {
         'contentPlaybackContext': {'html5Preference': 'HTML5_PREF_WANTS'},
-        'contentCheckOk': true,
-        'racyCheckOk': true,
       },
+      'contentCheckOk': true,
+      'racyCheckOk': true,
     };
 
     final url = Uri.parse(
@@ -77,7 +89,7 @@ class EmbeddedPlayerClient {
 
       var result = EmbeddedPlayerClient.parse(raw.body);
 
-      if (!result.isVideoAvailable) {
+      if (!result.isVideoPlayable) {
         throw VideoUnplayableException.unplayable(VideoId(videoId),
             reason: result.reason);
       }

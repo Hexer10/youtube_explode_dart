@@ -29,9 +29,10 @@ class StreamsClient {
     return DashManifest.get(_httpClient, dashManifestUrl);
   }
 
-  Future<StreamContext> _getStreamContextFromEmbeddedClient(
-      VideoId videoId) async {
-    final page = await EmbeddedPlayerClient.get(_httpClient, videoId.value);
+  Future<StreamContext> _getStreamContextFromEmbeddedClient(VideoId videoId,
+      {required Map<String, dynamic> context}) async {
+    final page = await EmbeddedPlayerClient.get(_httpClient, videoId.value,
+        context: context);
 
     return StreamContext(page.streams.toList(), const []);
   }
@@ -191,13 +192,22 @@ class StreamsClient {
     videoId = VideoId.fromString(videoId);
 
     try {
-      final context = await _getStreamContextFromEmbeddedClient(videoId);
+      final context = await _getStreamContextFromWatchPage(videoId);
       return _getManifest(context);
     } on YoutubeExplodeException {
-      //TODO: ignore
+      //
     }
-    final context = await _getStreamContextFromWatchPage(videoId);
 
+    try {
+      final context = await _getStreamContextFromEmbeddedClient(videoId,
+          context: EmbeddedPlayerClient.androidContext);
+      return _getManifest(context);
+    } on YoutubeExplodeException {
+      //
+    }
+
+    final context = await _getStreamContextFromEmbeddedClient(videoId,
+        context: EmbeddedPlayerClient.webEmbeddedContext);
     return _getManifest(context);
   }
 
