@@ -1,13 +1,11 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
-
 import '../../../youtube_explode_dart.dart';
 import '../../reverse_engineering/clients/comments_client.dart' as re;
 
 /// This list contains search videos.
 ///This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.
-class CommentsList extends DelegatingList<Comment> {
+class CommentsList extends BasePagedList<Comment> {
   final re.CommentsClient _client;
   final YoutubeHttpClient _httpClient;
   final int totalLength;
@@ -18,6 +16,7 @@ class CommentsList extends DelegatingList<Comment> {
 
   /// Fetches the next batch of videos or returns null if there are no more
   /// results.
+  @override
   Future<CommentsList?> nextPage() async {
     final page = await _client.nextPage(_httpClient);
     if (page == null || page.comments == null) {

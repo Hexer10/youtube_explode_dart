@@ -1,14 +1,12 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
-
 import '../../youtube_explode_dart.dart';
 import '../extensions/helpers_extension.dart';
 import '../reverse_engineering/pages/channel_upload_page.dart';
 
 /// This list contains a channel uploads.
 /// This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.
-class ChannelUploadsList extends DelegatingList<Video> {
+class ChannelUploadsList extends BasePagedList<Video> {
   final ChannelUploadPage _page;
   final YoutubeHttpClient _httpClient;
 
@@ -22,6 +20,7 @@ class ChannelUploadsList extends DelegatingList<Video> {
 
   /// Fetches the next batch of videos or returns null if there are no more
   /// results.
+  @override
   Future<ChannelUploadsList?> nextPage() async {
     final page = await _page.nextPage(_httpClient);
     if (page == null) {

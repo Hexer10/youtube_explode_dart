@@ -1,14 +1,12 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
-
 import '../../youtube_explode_dart.dart';
 import '../extensions/helpers_extension.dart';
 import '../reverse_engineering/pages/search_page.dart';
 
-/// This list contains search videos.
+/// This contains the search results which can be a video, channel or playlist.
 ///This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.
-class SearchList extends DelegatingList<SearchResult> {
+class SearchList extends BasePagedList<SearchResult> {
   final SearchPage _page;
   final YoutubeHttpClient _httpClient;
 
@@ -18,6 +16,7 @@ class SearchList extends DelegatingList<SearchResult> {
 
   /// Fetches the next batch of videos or returns null if there are no more
   /// results.
+  @override
   Future<SearchList?> nextPage() async {
     final page = await _page.nextPage(_httpClient);
     if (page == null) {
@@ -27,8 +26,11 @@ class SearchList extends DelegatingList<SearchResult> {
     return SearchList(page.searchContent, page, _httpClient);
   }
 }
+/// This contains the search results which can only be a video
+/// Same as [SearchList] but filters to only return Videos.
+///This behaves like a [List] but has the [SearchList.nextPage] to get the next batch of videos.
 
-class VideoSearchList extends DelegatingList<Video> {
+class VideoSearchList extends BasePagedList<Video> {
   final SearchPage _page;
   final YoutubeHttpClient _httpClient;
 
@@ -38,6 +40,7 @@ class VideoSearchList extends DelegatingList<Video> {
 
   /// Fetches the next batch of videos or returns null if there are no more
   /// results.
+  @override
   Future<VideoSearchList?> nextPage() async {
     final page = await _page.nextPage(_httpClient);
     if (page == null) {
