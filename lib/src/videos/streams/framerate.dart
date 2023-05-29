@@ -5,7 +5,7 @@ part 'framerate.g.dart';
 
 /// Encapsulates framerate.
 @freezed
-class Framerate with Comparable<Framerate>, _$Framerate {
+class Framerate with _$Framerate implements Comparable<Framerate> {
   /// Initialize an instance of [Framerate]
   const factory Framerate(
 
