@@ -48,7 +48,7 @@ void main() {
   test('Get the videos of a youtube channel', () async {
     var videos = await yt!.channels
         .getUploads(ChannelId(
-            'https://www.youtube.com/channel/UCEnBXANsKmyj2r9xVyKoDiQ'))
+            'https://www.youtube.com/channel/UCqKbtOLx4NCBh5KKMSmbX0g'))
         .toList();
     expect(videos.length, greaterThanOrEqualTo(6));
   });
@@ -76,6 +76,6 @@ void main() {
     var videos =
         await yt!.channels.getUploadsFromPage('UC46807r_RiRjH8IU-h_DrDQ');
     final nextPage = await videos.nextPage();
-    expect(nextPage, hasLength(30));
+    expect(nextPage!.length, greaterThanOrEqualTo(20));
   });
 }

@@ -50,7 +50,7 @@ void main() {
 
   group('Get metadata of any video', () {
     for (final videoId in VideoIdData.valid) {
-      test('VideoId - ${videoId.id}', () async {
+      test('VideoId - $videoId', () async {
         var video = await yt!.videos.get(videoId.id);
         expect(video.id.value, videoId.id);
 
@@ -63,7 +63,7 @@ void main() {
   group('Get metadata of invalid videos throws VideoUnplayableException', () {
     for (final val in VideoIdData.invalid) {
       test('VideoId - $val', () {
-        expect(() async => yt!.videos.get(val),
+        expect(() async => yt!.videos.get(val.id),
             throwsA(const TypeMatcher<VideoUnplayableException>()));
       });
     }

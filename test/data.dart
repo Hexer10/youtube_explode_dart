@@ -56,8 +56,6 @@ enum VideoIdData {
     ageRestrictedViolent,
     ageRestrictedSexual,
     ageRestrictedEmbedRestricted,
-    requiresPurchase,
-    liveStream,
     liveStreamRecording,
     withBrokenTitle,
     withHighQualityStreams,

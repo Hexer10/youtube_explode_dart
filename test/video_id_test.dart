@@ -1,11 +1,13 @@
 import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
+import 'data.dart';
+
 void main() {
   group('These are valid video ids', () {
-    for (final val in {'9bZkp7q19f0', '_kmeFXjjGfk', 'AI7ULzgf8RU'}) {
+    for (final val in VideoIdData.values) {
       test('VideoID - $val', () {
-        expect(VideoId(val).value, val);
+        expect(VideoId(val.id).value, val.id);
       });
     }
   });
