@@ -1,6 +1,8 @@
 import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
+import 'data.dart';
+
 void main() {
   YoutubeExplode? yt;
   setUpAll(() {
@@ -12,32 +14,18 @@ void main() {
   });
 
   group('Get streams manifest of any video', () {
-    for (final val in {
-      VideoId('9bZkp7q19f0'), //Normal
-      VideoId('rsAAeyAr-9Y'), //LiveStreamRecording
-      VideoId('V5Fsj_sCKdg'), //ContainsHighQualityStreams
-      // VideoId('AI7ULzgf8RU'), //ContainsDashManifest
-      VideoId('-xNN-bJQ4vI'), //Omnidirectional
-      VideoId('vX2vsvdq8nw'), //HighDynamicRange
-      VideoId('YltHGKX80Y8'), //ContainsClosedCaptions
-      VideoId('_kmeFXjjGfk'), //EmbedRestrictedByYouTube
-      VideoId('MeJVWBSsPAY'), //EmbedRestrictedByAuthor
-      VideoId('hySoCSoH-g8'), //AgeRestrictedEmbedRestricted
-      // VideoId('5VGm0dczmHc'), //RatingDisabled
-      VideoId('-xNN-bJQ4vI'), // 360° video
-    }) {
-      test('VideoId - ${val.value}', () async {
-        var manifest = await yt!.videos.streamsClient.getManifest(val);
+    for (final videoId in /*VideoIdData.playable*/[VideoIdData.ageRestrictedViolent, VideoIdData.ageRestrictedSexual]) {
+      test('VideoId - $videoId', () async {
+        var manifest = await yt!.videos.streamsClient.getManifest(videoId.id);
         expect(manifest.videoOnly, isNotEmpty);
         expect(manifest.audioOnly, isNotEmpty);
       }, timeout: const Timeout(Duration(seconds: 90)));
     }
   });
 
-  // Seems that youtube broke something and now this throws VideoUnplayableException instead of VideoRequiresPurchaseException
   test('Stream of paid videos throw VideoRequiresPurchaseException', () {
     expect(yt!.videos.streamsClient.getManifest(VideoId('p3dDcKOFXQg')),
-        throwsA(const TypeMatcher<VideoUnplayableException>()));
+        throwsA(const TypeMatcher<VideoRequiresPurchaseException>()));
   });
 
   test('Stream of age-limited video throws VideoUnplayableException', () {

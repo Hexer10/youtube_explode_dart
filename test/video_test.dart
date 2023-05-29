@@ -1,6 +1,8 @@
 import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
+import 'data.dart';
+
 void main() {
   YoutubeExplode? yt;
   setUpAll(() {
@@ -47,25 +49,10 @@ void main() {
   });
 
   group('Get metadata of any video', () {
-    for (final val in {
-      VideoId('9bZkp7q19f0'), //Normal
-      VideoId('5qap5aO4i9A'), //LiveStream
-      VideoId('rsAAeyAr-9Y'), //LiveStreamRecording
-      VideoId('V5Fsj_sCKdg'), //ContainsHighQualityStreams
-      // VideoId('AI7ULzgf8RU'), //ContainsDashManifest
-      VideoId('-xNN-bJQ4vI'), //Omnidirectional
-      VideoId('vX2vsvdq8nw'), //HighDynamicRange
-      VideoId('YltHGKX80Y8'), //ContainsClosedCaptions
-      VideoId('_kmeFXjjGfk'), //EmbedRestrictedByYouTube
-      VideoId('MeJVWBSsPAY'), //EmbedRestrictedByAuthor
-      VideoId('SkRSXFQerZs'), //AgeRestricted
-      VideoId('hySoCSoH-g8'), //AgeRestrictedEmbedRestricted
-      // VideoId('5VGm0dczmHc'), //RatingDisabled
-      VideoId('p3dDcKOFXQg'), //RequiresPurchase
-    }) {
-      test('VideoId - ${val.value}', () async {
-        var video = await yt!.videos.get(val);
-        expect(video.id.value, val.value);
+    for (final videoId in VideoIdData.valid) {
+      test('VideoId - ${videoId.id}', () async {
+        var video = await yt!.videos.get(videoId.id);
+        expect(video.id.value, videoId.id);
 
         expect(video.uploadDate, isNotNull);
         expect(video.publishDate, isNotNull);
@@ -74,7 +61,7 @@ void main() {
   });
 
   group('Get metadata of invalid videos throws VideoUnplayableException', () {
-    for (final val in {VideoId('qld9w0b-1ao'), VideoId('pb_hHv3fByo')}) {
+    for (final val in VideoIdData.invalid) {
       test('VideoId - $val', () {
         expect(() async => yt!.videos.get(val),
             throwsA(const TypeMatcher<VideoUnplayableException>()));
