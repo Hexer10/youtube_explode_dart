@@ -65,9 +65,9 @@ class VideoSearchList extends BasePagedList<Video> {
                   null,
                   Engagement(e.viewCount, null, null),
                   e.isLive,
-                ))
+                ),)
             .toList(),
         page,
-        _httpClient);
+        _httpClient,);
   }
 }

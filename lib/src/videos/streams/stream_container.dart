@@ -11,7 +11,7 @@ class StreamContainer with _$StreamContainer {
 
       /// Container name.
       /// Can be used as file extension
-      String name) = _StreamContainer;
+      String name,) = _StreamContainer;
 
   factory StreamContainer.fromJson(Map<String, dynamic> json) =>
       StreamContainer.parse(json['name'] as String);

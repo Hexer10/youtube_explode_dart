@@ -16,7 +16,7 @@ class ChannelUploadsList extends BasePagedList<Video> {
   /// Construct an instance of [SearchList]
   /// See [SearchList]
   ChannelUploadsList(
-      super.base, this.author, this.channel, this._page, this._httpClient);
+      super.base, this.author, this.channel, this._page, this._httpClient,);
 
   /// Fetches the next batch of videos or returns null if there are no more
   /// results.
@@ -42,11 +42,11 @@ class ChannelUploadsList extends BasePagedList<Video> {
                   null,
                   Engagement(e.videoViews, null, null),
                   false,
-                ))
+                ),)
             .toList(),
         author,
         channel,
         page,
-        _httpClient);
+        _httpClient,);
   }
 }

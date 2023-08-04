@@ -16,15 +16,15 @@ class SearchQuery {
   /// Search a video.
   static Future<SearchQuery> search(
       YoutubeHttpClient httpClient, String searchQuery,
-      {SearchFilter filter = const SearchFilter('')}) async {
-    var page = await SearchPage.get(httpClient, searchQuery, filter: filter);
+      {SearchFilter filter = const SearchFilter(''),}) async {
+    final page = await SearchPage.get(httpClient, searchQuery, filter: filter);
     return SearchQuery(httpClient, searchQuery, page);
   }
 
   /// Get the data of the next page.
   /// Returns null if there is no next page.
   Future<SearchQuery?> nextPage() async {
-    var page = await _page.nextPage(_httpClient);
+    final page = await _page.nextPage(_httpClient);
     if (page == null) {
       return null;
     }

@@ -48,7 +48,7 @@ class PlayerResponse {
   ///
   Duration get videoDuration => Duration(
       seconds:
-          int.parse(root.get('videoDetails')!.getT<String>('lengthSeconds')!));
+          int.parse(root.get('videoDetails')!.getT<String>('lengthSeconds')!),);
 
   ///
   List<String> get videoKeywords =>
@@ -79,7 +79,7 @@ class PlayerResponse {
               ?.get('')
               ?.get('ypcTrailerRenderer')
               ?.getT<String>('playerVars') ??
-          '')['video_id'] ??
+          '',)['video_id'] ??
       root
           .get('playabilityStatus')
           ?.get("errorScreen")
@@ -95,7 +95,7 @@ class PlayerResponse {
           .pipe(base64.decode)
           .pipe(utf8.decode)
           .pipe((value) =>
-              RegExp(r'video_id=(.{11})').firstMatch(value)?.group(1))
+              RegExp('video_id=(.{11})').firstMatch(value)?.group(1),)
           ?.nullIfWhitespace;
 
   ///
@@ -191,7 +191,7 @@ class _StreamInfo extends StreamInfoProvider {
   late final int? contentLength = int.tryParse(
       root.getT<String>('contentLength') ??
           _contentLenExp.firstMatch(url)?.group(1) ??
-          '');
+          '',);
 
   @override
   late final int? framerate = root.getT<int>('fps');
@@ -202,7 +202,7 @@ class _StreamInfo extends StreamInfoProvider {
 
   @override
   late final String? signatureParameter = Uri.splitQueryString(
-          root.getT<String>('cipher') ?? '')['sp'] ??
+          root.getT<String>('cipher') ?? '',)['sp'] ??
       Uri.splitQueryString(root.getT<String>('signatureCipher') ?? '')['sp'];
 
   @override
@@ -238,7 +238,7 @@ class _StreamInfo extends StreamInfoProvider {
   late final MediaType codec = _getMimeType()!;
 
   MediaType? _getMimeType() {
-    var mime = root.getT<String>('mimeType');
+    final mime = root.getT<String>('mimeType');
     if (mime == null) {
       return null;
     }

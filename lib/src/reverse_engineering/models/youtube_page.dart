@@ -27,14 +27,10 @@ abstract class YoutubePage<T extends InitialData> {
         ['var ytInitialData = ', 'window["ytInitialData"] ='],
         initialDataBuilder!,
         () => TransientFailureException(
-            'Failed to retrieve initial data from $runtimeType, please report this to the project GitHub page.'));
+            'Failed to retrieve initial data from $runtimeType, please report this to the project GitHub page.',),);
   }
 
-  YoutubePage(this.root, this.initialDataBuilder,
-      [@Deprecated('Use YoutubePage.fromInitialData()')
-      this._defaultInitialData])
-      : assert((root != null && initialDataBuilder != null) ||
-            _defaultInitialData != null);
+  YoutubePage(this.root, this.initialDataBuilder) : _defaultInitialData = null;
 
   YoutubePage.fromInitialData(this._defaultInitialData)
       : initialDataBuilder = null,

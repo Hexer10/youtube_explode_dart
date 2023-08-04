@@ -12,7 +12,7 @@ class Username with _$Username {
     final username = parseUsername(urlOrUsername);
     if (username == null) {
       throw ArgumentError.value(
-          urlOrUsername, 'urlOrUsername', 'Invalid username');
+          urlOrUsername, 'urlOrUsername', 'Invalid username',);
     }
     return Username._(username);
   }
@@ -54,7 +54,7 @@ class Username with _$Username {
       return nameOrUrl;
     }
 
-    var regMatch = RegExp(r'youtube\..+?/user/(.*?)(?:\?|&|/|$)')
+    final regMatch = RegExp(r'youtube\..+?/user/(.*?)(?:\?|&|/|$)')
         .firstMatch(nameOrUrl)
         ?.group(1);
     if (!regMatch.isNullOrWhiteSpace && validateUsername(regMatch!)) {

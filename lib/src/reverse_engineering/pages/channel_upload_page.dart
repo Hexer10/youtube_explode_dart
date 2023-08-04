@@ -33,11 +33,11 @@ class ChannelUploadPage extends YoutubePage<_InitialData> {
 
   ///
   static Future<ChannelUploadPage> get(
-      YoutubeHttpClient httpClient, String channelId, String sorting) {
-    var url =
+      YoutubeHttpClient httpClient, String channelId, String sorting,) {
+    final url =
         'https://www.youtube.com/channel/$channelId/videos?view=0&sort=$sorting&flow=grid';
     return retry(httpClient, () async {
-      var raw = await httpClient.getString(url);
+      final raw = await httpClient.getString(url);
       return ChannelUploadPage.parse(raw, channelId);
     });
   }

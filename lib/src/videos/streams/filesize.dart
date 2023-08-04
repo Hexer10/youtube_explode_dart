@@ -20,7 +20,7 @@ class FileSize with _$FileSize implements Comparable<FileSize> {
   const factory FileSize(
 
       /// Total bytes.
-      int totalBytes) = _FileSize;
+      int totalBytes,) = _FileSize;
 
   factory FileSize.fromJson(Map<String, dynamic> json) =>
       _$FileSizeFromJson(json);

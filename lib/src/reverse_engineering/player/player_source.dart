@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:youtube_explode_dart/src/reverse_engineering/cipher/cipher_manifest.dart';
-
 import '../../retry.dart';
+import '../cipher/cipher_manifest.dart';
 import '../youtube_http_client.dart';
 
 ///
@@ -18,10 +17,10 @@ class PlayerSource {
 
   ///
   static Future<PlayerSource> get(
-      YoutubeHttpClient httpClient, String url) async {
+      YoutubeHttpClient httpClient, String url,) async {
     if (_cache[url]?.expired ?? true) {
-      var val = await retry(httpClient, () async {
-        var raw = await httpClient.getString(url);
+      final val = await retry(httpClient, () async {
+        final raw = await httpClient.getString(url);
         return PlayerSource.parse(raw);
       });
       if (_cache[url] == null) {
@@ -59,7 +58,7 @@ class _CachedValue<T> {
       : expireTime = DateTime.now().millisecondsSinceEpoch + cacheTime;
 
   void update(T newValue) {
-    var now = DateTime.now().millisecondsSinceEpoch;
+    final now = DateTime.now().millisecondsSinceEpoch;
     expireTime = now + cacheTime;
     value = newValue;
   }

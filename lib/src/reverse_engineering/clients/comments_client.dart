@@ -1,10 +1,12 @@
 import 'package:collection/collection.dart';
+import 'package:meta/meta.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
 import '../pages/watch_page.dart';
 
+@internal
 class CommentsClient {
   final JsonMap root;
 
@@ -19,10 +21,10 @@ class CommentsClient {
 
   ///
   static Future<CommentsClient?> get(
-      YoutubeHttpClient httpClient, Video video) async {
+      YoutubeHttpClient httpClient, Video video,) async {
     final watchPage = video.watchPage ??
         await retry<WatchPage>(
-            httpClient, () async => WatchPage.get(httpClient, video.id.value));
+            httpClient, () async => WatchPage.get(httpClient, video.id.value),);
 
     final continuation = watchPage.commentsContinuation;
     if (continuation == null) {
@@ -35,7 +37,7 @@ class CommentsClient {
 
   ///
   static Future<CommentsClient?> getReplies(
-      YoutubeHttpClient httpClient, String token) async {
+      YoutubeHttpClient httpClient, String token,) async {
     final data = await httpClient.sendPost('next', token);
     return CommentsClient(data);
   }
@@ -62,7 +64,7 @@ onResponseReceivedEndpoints[1].reloadContinuationItemsCommand.continuationItems[
     // This can probably be simplified.
     return endpoint
             .get('reloadContinuationItemsCommand',
-                'appendContinuationItemsAction')!
+                'appendContinuationItemsAction',)!
             .getList('continuationItems', 'appendContinuationItemsAction')
             ?.where((e) => e['commentThreadRenderer'] != null)
             .map((e) => e.get('commentThreadRenderer')!)
@@ -87,7 +89,7 @@ onResponseReceivedEndpoints[1].reloadContinuationItemsCommand.continuationItems[
             .getList('onResponseReceivedEndpoints')!
             .last
             .get('reloadContinuationItemsCommand',
-                'appendContinuationItemsAction')!
+                'appendContinuationItemsAction',)!
             .getList('continuationItems', 'appendContinuationItemsAction')!
             .firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
             ?.get('continuationItemRenderer')

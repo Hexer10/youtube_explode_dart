@@ -62,7 +62,7 @@ class Video with _$Video {
       [
       /// Used internally.
       /// Shouldn't be used in the code.
-      @internal WatchPage? watchPage]) {
+      @internal WatchPage? watchPage,]) {
     return Video._internal(
 
         /// Video ID.
@@ -91,7 +91,7 @@ class Video with _$Video {
         UnmodifiableListView(keywords ?? const Iterable.empty()),
         engagement,
         isLive,
-        watchPage);
+        watchPage,);
   }
 
   /// Initializes an instance of [Video]
@@ -139,7 +139,7 @@ class Video with _$Video {
       [
       /// Used internally.
       /// Shouldn't be used in the code.
-      @internal WatchPage? watchPage]) = _Video;
+      @internal WatchPage? watchPage,]) = _Video;
 
   const Video._();
 }

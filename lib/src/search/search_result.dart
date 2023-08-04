@@ -60,7 +60,7 @@ class SearchResult with _$SearchResult {
       int videoCount,
 
       /// Video thumbnail
-      List<Thumbnail> thumbnails) = SearchPlaylist;
+      List<Thumbnail> thumbnails,) = SearchPlaylist;
 
   /// Metadata related to a search query result (channel)
   const factory SearchResult.channel(
@@ -76,7 +76,7 @@ class SearchResult with _$SearchResult {
       String description,
 
       /// Channel uploaded videos.
-      int videoCount) = SearchChannel;
+      int videoCount,) = SearchChannel;
 }
 
 @Deprecated('Use SearchPlaylist')

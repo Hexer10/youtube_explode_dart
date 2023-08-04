@@ -62,7 +62,7 @@ class VideoOnlyStreamInfo with StreamInfo, VideoStreamInfo {
       this.videoResolution,
       this.framerate,
       this.fragments,
-      this.codec);
+      this.codec,);
 
   @override
   String toString() =>

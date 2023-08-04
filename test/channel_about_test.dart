@@ -12,8 +12,8 @@ void main() {
   });
 
   test('Get a channel about page', () async {
-    var channelUrl = 'https://www.youtube.com/user/FavijTV';
-    var channel = await yt!.channels.getAboutPageByUsername(channelUrl);
+    const channelUrl = 'https://www.youtube.com/user/FavijTV';
+    final channel = await yt!.channels.getAboutPageByUsername(channelUrl);
     expect(channel.country, 'Italy');
     expect(channel.thumbnails, isNotEmpty);
     expect(channel.channelLinks, isNotEmpty);

@@ -34,7 +34,7 @@ class VideoClient {
 
   /// Gets the metadata associated with the specified video.
   Future<Video> _getVideoFromWatchPage(VideoId videoId) async {
-    var watchPage = await WatchPage.get(_httpClient, videoId.value);
+    final watchPage = await WatchPage.get(_httpClient, videoId.value);
     final playerResponse = watchPage.playerResponse!;
 
     return Video(
@@ -58,9 +58,9 @@ class VideoClient {
         ThumbnailSet(videoId.value),
         playerResponse.videoKeywords,
         Engagement(playerResponse.videoViewCount, watchPage.videoLikeCount,
-            watchPage.videoDislikeCount),
+            watchPage.videoDislikeCount,),
         playerResponse.isLive,
-        watchPage);
+        watchPage,);
   }
 
   /// Get a [Video] instance from a [videoId]

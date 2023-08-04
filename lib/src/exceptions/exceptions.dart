@@ -1,5 +1,3 @@
-library youtube_explode.exceptions;
-
 export 'fatal_failure_exception.dart';
 export 'http_client_closed.dart';
 export 'request_limit_exceeded_exception.dart';

@@ -19,7 +19,7 @@ class ChannelId with _$ChannelId {
   const factory ChannelId._internal(
 
       /// ID as a string.
-      String value) = _ChannelId;
+      String value,) = _ChannelId;
 
   const ChannelId._();
 
@@ -65,7 +65,7 @@ class ChannelId with _$ChannelId {
       return url;
     }
 
-    var regMatch = RegExp(r'youtube\..+?/channel/(.*?)(?:\?|&|/|$)')
+    final regMatch = RegExp(r'youtube\..+?/channel/(.*?)(?:\?|&|/|$)')
         .firstMatch(url)
         ?.group(1);
     if (!regMatch.isNullOrWhiteSpace && validateChannelId(regMatch!)) {

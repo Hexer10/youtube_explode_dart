@@ -27,7 +27,7 @@ class ClosedCaption {
 
   /// Initializes an instance of [ClosedCaption]
   ClosedCaption(
-      this.text, this.offset, this.duration, Iterable<ClosedCaptionPart> parts)
+      this.text, this.offset, this.duration, Iterable<ClosedCaptionPart> parts,)
       : parts = UnmodifiableListView(parts);
 
   /// Gets the caption part displayed at the specified point in time,

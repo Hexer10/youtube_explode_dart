@@ -19,7 +19,7 @@ class VideoId with _$VideoId {
 
     if (id == null) {
       throw ArgumentError.value(
-          idOrUrl, 'urlOrUrl', 'Invalid YouTube video ID or URL');
+          idOrUrl, 'urlOrUrl', 'Invalid YouTube video ID or URL',);
     }
     return VideoId._internal(id);
   }
@@ -29,7 +29,7 @@ class VideoId with _$VideoId {
   const factory VideoId._internal(
 
       /// ID as string.
-      String value) = _VideoId;
+      String value,) = _VideoId;
 
   ///  Converts [obj] to a [VideoId] by calling .toString on that object.
   /// If it is already a [VideoId], [obj] is returned
@@ -68,25 +68,25 @@ class VideoId with _$VideoId {
     }
 
     // https://www.youtube.com/watch?v=yIVRs6YSbOM
-    var regMatch = _regMatchExp.firstMatch(url)?.group(1);
+    final regMatch = _regMatchExp.firstMatch(url)?.group(1);
     if (!regMatch.isNullOrWhiteSpace && validateVideoId(regMatch!)) {
       return regMatch;
     }
 
     // https://youtu.be/yIVRs6YSbOM
-    var shortMatch = _shortMatchExp.firstMatch(url)?.group(1);
+    final shortMatch = _shortMatchExp.firstMatch(url)?.group(1);
     if (!shortMatch.isNullOrWhiteSpace && validateVideoId(shortMatch!)) {
       return shortMatch;
     }
 
     // https://www.youtube.com/embed/yIVRs6YSbOM
-    var embedMatch = _embedMatchExp.firstMatch(url)?.group(1);
+    final embedMatch = _embedMatchExp.firstMatch(url)?.group(1);
     if (!embedMatch.isNullOrWhiteSpace && validateVideoId(embedMatch!)) {
       return embedMatch;
     }
 
     // https://www.youtube.com/shorts/yIVRs6YSbOM
-    var shortsMatch = _shortsMatchExp.firstMatch(url)?.group(1);
+    final shortsMatch = _shortsMatchExp.firstMatch(url)?.group(1);
     if (!shortsMatch.isNullOrWhiteSpace && validateVideoId(shortsMatch!)) {
       return shortsMatch;
     }

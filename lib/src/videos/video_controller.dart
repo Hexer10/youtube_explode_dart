@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import '../../youtube_explode_dart.dart';
 
 import '../reverse_engineering/pages/watch_page.dart';
 import '../reverse_engineering/player/player_response.dart';
@@ -61,12 +61,12 @@ class VideoController {
         headers: {
           'User-Agent':
               'com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip'
-        });
+        },);
     return PlayerResponse.parse(content);
   }
 
   Future<PlayerResponse> getPlayerResponseWithSignature(
-      VideoId videoId, String? signatureTimestamp) async {
+      VideoId videoId, String? signatureTimestamp,) async {
     /// The only client that can handle age-restricted videos without authentication is the
     ///  TVHTML5_SIMPLY_EMBEDDED_PLAYER client.
     ///  This client does require signature deciphering, so we only use it as a fallback.
@@ -80,7 +80,7 @@ class VideoController {
               'signatureTimestamp': signatureTimestamp ?? '19369',
             }
           }
-        });
+        },);
     return PlayerResponse.parse(content);
   }
 }

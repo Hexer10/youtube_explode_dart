@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:meta/meta.dart';
 import 'package:xml/xml.dart' as xml;
 
 import '../retry.dart';
@@ -8,6 +9,7 @@ import 'models/stream_info_provider.dart';
 import 'youtube_http_client.dart';
 
 ///
+@internal
 class DashManifest {
   static final _urlSignatureExp = RegExp(r'/s/(.*?)(?:/|$)');
 
@@ -26,7 +28,7 @@ class DashManifest {
   ///
   static Future<DashManifest> get(YoutubeHttpClient httpClient, dynamic url) {
     return retry(httpClient, () async {
-      var raw = await httpClient.getString(url);
+      final raw = await httpClient.getString(url);
       return DashManifest.parse(raw);
     });
   }
@@ -45,13 +47,13 @@ class DashManifest {
         final d = int.tryParse(e.getAttribute('d') ?? '0')!;
         final r = int.tryParse(e.getAttribute('r') ?? '0')!;
         return _S(d, r);
-      }).toList());
+      }).toList(),);
     }
     return null;
   }
 
   _MsInfo extractMultiSegmentInfo(
-      xml.XmlElement element, _MsInfo msParentInfo) {
+      xml.XmlElement element, _MsInfo msParentInfo,) {
     final msInfo = msParentInfo.copy(); // Copy
 
     final segmentList = element.getElement('SegmentList');
@@ -126,7 +128,7 @@ class DashManifest {
 
           if (mimeType.type == 'video' || mimeType.type == 'audio') {
             // Extract the base url
-            var baseUrl = <xml.XmlElement>[
+            final baseUrl = <xml.XmlElement>[
               ...representation.childElements,
               ...adaptionSet.childElements,
               ...period.childElements,
@@ -185,7 +187,7 @@ class DashManifest {
                 int.tryParse(representationAttrib['width'] ?? ''),
                 int.tryParse(representationAttrib['height'] ?? ''),
                 int.tryParse(representationAttrib['frameRate'] ?? ''),
-                fragments));
+                fragments,),);
           }
         }
       }
@@ -194,6 +196,7 @@ class DashManifest {
     return formats;
   }
 }
+
 
 class _StreamInfo extends StreamInfoProvider {
   @override
@@ -239,7 +242,7 @@ class _StreamInfo extends StreamInfoProvider {
   StreamSource get source => StreamSource.dash;
 
   _StreamInfo(this.tag, this.url, this.codec, this.videoWidth, this.videoHeight,
-      this.framerate, this.fragments);
+      this.framerate, this.fragments,);
 }
 
 class _SegmentTimeline {

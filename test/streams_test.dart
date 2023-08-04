@@ -16,24 +16,24 @@ void main() {
   group('Get streams manifest of any video', () {
     for (final videoId in VideoIdData.playable) {
       test('VideoId - $videoId', () async {
-        var manifest = await yt!.videos.streamsClient.getManifest(videoId.id);
+        final manifest = await yt!.videos.streamsClient.getManifest(videoId.id);
         expect(manifest.videoOnly, isNotEmpty);
         expect(manifest.audioOnly, isNotEmpty);
-      }, timeout: const Timeout(Duration(seconds: 90)));
+      }, timeout: const Timeout(Duration(seconds: 90)),);
     }
   });
 
   test('Stream of paid videos throw VideoRequiresPurchaseException', () {
     expect(
         yt!.videos.streamsClient.getManifest(VideoIdData.requiresPurchase.id),
-        throwsA(const TypeMatcher<VideoRequiresPurchaseException>()));
+        throwsA(const TypeMatcher<VideoRequiresPurchaseException>()),);
   });
 
   test('Get the hls manifest of a live stream', () async {
     expect(
         await yt!.videos.streamsClient
             .getHttpLiveStreamUrl(VideoId('jfKfPfyJRdk')),
-        isNotEmpty);
+        isNotEmpty,);
   });
 
   // Seems that youtube broke something and now this throws VideoUnplayableException instead of VideoUnavailableException
@@ -41,7 +41,7 @@ void main() {
     for (final val in VideoIdData.invalid) {
       test('VideoId - $val', () {
         expect(yt!.videos.streamsClient.getManifest(val.id),
-            throwsA(const TypeMatcher<VideoUnplayableException>()));
+            throwsA(const TypeMatcher<VideoUnplayableException>()),);
       });
     }
   });
@@ -49,11 +49,11 @@ void main() {
   group('Get specific stream of any playable video', () {
     for (final val in VideoIdData.playable) {
       test('VideoId - $val', () async {
-        var manifest = await yt!.videos.streamsClient.getManifest(val.id);
+        final manifest = await yt!.videos.streamsClient.getManifest(val.id);
         for (final streamInfo in manifest.streams) {
           expect(yt!.videos.streamsClient.get(streamInfo).first, completes);
         }
-      }, timeout: const Timeout(Duration(minutes: 5)));
+      }, timeout: const Timeout(Duration(minutes: 5)),);
     }
   });
 }

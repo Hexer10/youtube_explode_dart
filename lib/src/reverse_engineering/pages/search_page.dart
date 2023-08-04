@@ -28,7 +28,7 @@ class SearchPage extends YoutubePage<_InitialData> {
       return null;
     }
 
-    var data =
+    final data =
         await httpClient.sendPost('search', initialData.continuationToken!);
     return SearchPage.id(queryString, _InitialData(data));
   }
@@ -36,11 +36,11 @@ class SearchPage extends YoutubePage<_InitialData> {
   ///
   static Future<SearchPage> get(
       YoutubeHttpClient httpClient, String queryString,
-      {SearchFilter filter = const SearchFilter('')}) {
-    var url =
+      {SearchFilter filter = const SearchFilter(''),}) {
+    final url =
         'https://www.youtube.com/results?search_query=${Uri.encodeQueryComponent(queryString)}&sp=${filter.value}';
     return retry(httpClient, () async {
-      var raw = await httpClient.getString(url);
+      final raw = await httpClient.getString(url);
       return SearchPage.parse(raw, queryString);
     });
     // ask for next page
@@ -81,7 +81,7 @@ class _InitialData extends InitialData {
 
   String? _getContinuationToken() {
     if (root['contents'] != null) {
-      var contents = root
+      final contents = root
           .get('contents')
           ?.get('twoColumnSearchResultsRenderer')
           ?.get('primaryContents')
@@ -125,7 +125,7 @@ class _InitialData extends InitialData {
               .get('shelfRenderer')
               ?.get('content')
               ?.get('verticalListRenderer')
-              ?.getList('items'))
+              ?.getList('items'),)
           .firstOrNull
           ?.map(_parseContent)
           .whereNotNull()
@@ -142,7 +142,7 @@ class _InitialData extends InitialData {
       return null;
     }
     if (content['videoRenderer'] != null) {
-      var renderer = content.get('videoRenderer')!;
+      final renderer = content.get('videoRenderer')!;
 
       //       root.get('ownerText')?.getT<List<dynamic>>('runs')?.parseRuns() ??
       return SearchVideo(
@@ -178,10 +178,10 @@ class _InitialData extends InitialData {
                   ?.getT<String>('text')
                   ?.stripNonDigits()
                   .nullIfWhitespace ??
-              '0'),
+              '0',),
           (renderer.get('thumbnail')?.getList('thumbnails') ?? const [])
               .map((e) =>
-                  Thumbnail(Uri.parse(e['url']), e['height'], e['width']))
+                  Thumbnail(Uri.parse(e['url']), e['height'], e['width']),)
               .toList(),
           renderer.get('publishedTimeText')?.getT<String>('simpleText'),
           renderer
@@ -197,11 +197,11 @@ class _InitialData extends InitialData {
               .first
               .get('navigationEndpoint')!
               .get('browseEndpoint')!
-              .getT<String>('browseId')!);
+              .getT<String>('browseId')!,);
     }
     if (content['radioRenderer'] != null ||
         content['playlistRenderer'] != null) {
-      var renderer =
+      final renderer =
           (content.get('radioRenderer') ?? content.get('playlistRenderer'))!;
 
       return SearchPlaylist(
@@ -220,7 +220,7 @@ class _InitialData extends InitialData {
       );
     }
     if (content['channelRenderer'] != null) {
-      var renderer = content.get('channelRenderer')!;
+      final renderer = content.get('channelRenderer')!;
 
       return SearchChannel(
           ChannelId(renderer.getT<String>('channelId')!),
@@ -233,7 +233,7 @@ class _InitialData extends InitialData {
                   ?.first
                   .getT<String>('text')
                   ?.parseInt() ??
-              -1);
+              -1,);
     }
     // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
     return null;

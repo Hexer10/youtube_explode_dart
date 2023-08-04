@@ -33,10 +33,10 @@ class CommentsList extends BasePagedList<Comment> {
                 e.publishTime,
                 e.repliesCount ?? 0,
                 e.isHearted,
-                e.continuation))
+                e.continuation,),)
             .toList(growable: false),
         totalLength,
         page,
-        _httpClient);
+        _httpClient,);
   }
 }

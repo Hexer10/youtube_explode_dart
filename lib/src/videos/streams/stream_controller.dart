@@ -1,8 +1,8 @@
-import 'package:youtube_explode_dart/src/exceptions/exceptions.dart';
-import 'package:youtube_explode_dart/src/extensions/helpers_extension.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/dash_manifest.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/player/player_source.dart';
-import 'package:youtube_explode_dart/src/videos/video_controller.dart';
+import '../../exceptions/exceptions.dart';
+import '../../extensions/helpers_extension.dart';
+import '../../reverse_engineering/dash_manifest.dart';
+import '../../reverse_engineering/player/player_source.dart';
+import '../video_controller.dart';
 
 class StreamController extends VideoController {
   StreamController(super.httpClient);
@@ -18,7 +18,7 @@ class StreamController extends VideoController {
     }
 
     return PlayerSource.parse(await httpClient.getString(
-        'https://www.youtube.com/s/player/$version/player_ias.vflset/en_US/base.js'));
+        'https://www.youtube.com/s/player/$version/player_ias.vflset/en_US/base.js',),);
   }
 
   Future<DashManifest> getDashManifest(String url) async {

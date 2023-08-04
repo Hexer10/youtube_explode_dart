@@ -13,7 +13,7 @@ class Language with _$Language {
       String code,
 
       /// Full English name of this language. This could be an empty string.
-      String name) = _Language;
+      String name,) = _Language;
 
   const Language._();
 

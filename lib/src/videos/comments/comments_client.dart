@@ -33,11 +33,11 @@ class CommentsClient {
                 e.publishTime,
                 e.repliesCount ?? 0,
                 e.isHearted,
-                e.continuation))
+                e.continuation,),)
             .toList(growable: false),
         page.getCommentsCount(),
         page,
-        _httpClient);
+        _httpClient,);
   }
 
   Future<CommentsList?> getReplies(Comment comment) async {
@@ -62,10 +62,10 @@ class CommentsClient {
                 e.publishTime,
                 e.repliesCount ?? 0,
                 e.isHearted,
-                e.continuation))
+                e.continuation,),)
             .toList(growable: false),
         0,
         page,
-        _httpClient);
+        _httpClient,);
   }
 }

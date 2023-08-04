@@ -1,6 +1,9 @@
-include: package:lints/recommended.yaml
+include: package:lint/strict.yaml
 
 analyzer:
+  language:
+    strict-casts: false
+
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
@@ -9,3 +12,8 @@ analyzer:
 linter:
   rules:
     library_private_types_in_public_api: false
+    parameter_assignments: false
+    always_use_package_imports: false
+    prefer_relative_imports: true
+    avoid_dynamic_calls: false
+    no_runtimeType_toString: false

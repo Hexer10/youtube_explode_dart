@@ -9,7 +9,7 @@ class ThumbnailSet with _$ThumbnailSet {
   const factory ThumbnailSet(
 
       /// Video id.
-      String videoId) = _ThumbnailSet;
+      String videoId,) = _ThumbnailSet;
 
   const ThumbnailSet._();
 

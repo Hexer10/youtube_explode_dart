@@ -34,7 +34,7 @@ class WatchPage extends YoutubePage<_InitialData> {
 
   ///
   String? get sourceUrl {
-    var url = root
+    final url = root
         .querySelectorAll('script')
         .map((e) => e.attributes['src'])
         .whereNotNull()
@@ -65,7 +65,7 @@ class WatchPage extends YoutubePage<_InitialData> {
               ?.text
               .stripNonDigits()
               .nullIfWhitespace ??
-          '0');
+          '0',);
 
   ///
   int get videoDislikeCount =>
@@ -80,7 +80,7 @@ class WatchPage extends YoutubePage<_InitialData> {
               ?.text
               .stripNonDigits()
               .nullIfWhitespace ??
-          '0');
+          '0',);
 
   String? get commentsContinuation => initialData.commentsContinuation;
 
@@ -112,7 +112,7 @@ class WatchPage extends YoutubePage<_InitialData> {
         ['var ytInitialPlayerResponse = '],
         (root) => PlayerResponse(root),
         () => TransientFailureException(
-            'Failed to retrieve initial player response, please report this to the project GitHub page.'));
+            'Failed to retrieve initial player response, please report this to the project GitHub page.',),);
   }
 
   ///
@@ -123,14 +123,14 @@ class WatchPage extends YoutubePage<_InitialData> {
   ///
   static Future<WatchPage> get(YoutubeHttpClient httpClient, String videoId) {
     final url = Uri.parse(
-        'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en');
+        'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en',);
     return retry(httpClient, () async {
-      var req = await httpClient.get(url, validate: true);
+      final req = await httpClient.get(url, validate: true);
 
-      var cookies = req.headers['set-cookie']!;
-      var visitorInfoLive = _visitorInfoLiveExp.firstMatch(cookies)?.group(1);
-      var ysc = _yscExp.firstMatch(cookies)!.group(1)!;
-      var result = WatchPage.parse(req.body, visitorInfoLive ?? '', ysc);
+      final cookies = req.headers['set-cookie']!;
+      final visitorInfoLive = _visitorInfoLiveExp.firstMatch(cookies)?.group(1);
+      final ysc = _yscExp.firstMatch(cookies)!.group(1)!;
+      final result = WatchPage.parse(req.body, visitorInfoLive ?? '', ysc);
 
       if (!result.isOk) {
         throw TransientFailureException('Video watch page is broken.');

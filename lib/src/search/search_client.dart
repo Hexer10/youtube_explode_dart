@@ -16,7 +16,7 @@ class SearchClient {
   /// The videos are sent in batch of 20 videos.
   /// You [VideoSearchList.nextPage] to get the next batch of videos.
   Future<VideoSearchList> search(String searchQuery,
-      {SearchFilter filter = TypeFilters.video}) async {
+      {SearchFilter filter = TypeFilters.video,}) async {
     final page = await SearchPage.get(_httpClient, searchQuery, filter: filter);
 
     return VideoSearchList(
@@ -35,15 +35,15 @@ class SearchClient {
                 ThumbnailSet(e.id.value),
                 null,
                 Engagement(e.viewCount, null, null),
-                e.isLive))
+                e.isLive,),)
             .toList(),
         page,
-        _httpClient);
+        _httpClient,);
   }
 
   @Deprecated('Use SearchClient.search')
   Future<VideoSearchList> getVideos(String searchQuery,
-          {SearchFilter filter = TypeFilters.video}) =>
+          {SearchFilter filter = TypeFilters.video,}) =>
       search(searchQuery, filter: filter);
 
   /// Enumerates results returned by the specified search query.
@@ -51,7 +51,7 @@ class SearchClient {
   /// The list can either contain a [SearchVideo], [SearchPlaylist] or a [SearchChannel].
   /// You [SearchList.nextPage] to get the next batch of content.
   Future<SearchList> searchContent(String searchQuery,
-      {SearchFilter filter = const SearchFilter('')}) async {
+      {SearchFilter filter = const SearchFilter(''),}) async {
     final page = await SearchPage.get(_httpClient, searchQuery, filter: filter);
 
     return SearchList(page.searchContent, page, _httpClient);
@@ -63,13 +63,13 @@ class SearchClient {
   /// You [SearchList.nextPage] to get the next batch of content.
   /// Same as [SearchClient.search]
   Future<VideoSearchList> call(String searchQuery,
-          {SearchFilter filter = const SearchFilter('')}) async =>
+          {SearchFilter filter = const SearchFilter(''),}) async =>
       search(searchQuery, filter: filter);
 
   /// Returns the suggestions youtube provide while search on the page.
   Future<List<String>> getQuerySuggestions(String query) async {
     final request = await _httpClient.get(Uri.parse(
-        'https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=en&gl=en&q=${Uri.encodeComponent(query)}&callback=func'));
+        'https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=en&gl=en&q=${Uri.encodeComponent(query)}&callback=func',),);
     final body = request.body;
     final startIndex = body.indexOf('func(');
     final jsonStr = body.substring(startIndex + 5, body.length - 1);
@@ -82,11 +82,11 @@ class SearchClient {
   /// You need to manually read [SearchQuery.content] and/or [SearchQuery.relatedVideos].
   /// For most cases [SearchClient.search] is enough.
   Future<SearchQuery> searchRaw(String searchQuery,
-          {SearchFilter filter = const SearchFilter('')}) =>
+          {SearchFilter filter = const SearchFilter(''),}) =>
       SearchQuery.search(_httpClient, searchQuery, filter: filter);
 
   @Deprecated('Use searchRaw')
   Future<SearchQuery> queryFromPage(String searchQuery,
-          {SearchFilter filter = const SearchFilter('')}) =>
+          {SearchFilter filter = const SearchFilter(''),}) =>
       searchRaw(searchQuery, filter: filter);
 }

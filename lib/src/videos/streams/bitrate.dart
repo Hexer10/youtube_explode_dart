@@ -20,7 +20,7 @@ class Bitrate with _$Bitrate implements Comparable<Bitrate> {
   const factory Bitrate(
 
       /// Bits per second.
-      int bitsPerSecond) = _Bitrate;
+      int bitsPerSecond,) = _Bitrate;
 
   factory Bitrate.fromJson(Map<String, dynamic> json) =>
       _$BitrateFromJson(json);

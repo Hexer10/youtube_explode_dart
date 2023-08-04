@@ -47,7 +47,7 @@ class AudioOnlyStreamInfo with StreamInfo, AudioStreamInfo {
       this.audioCodec,
       this.qualityLabel,
       this.fragments,
-      this.codec);
+      this.codec,);
 
   @override
   String toString() => 'Audio-only ($tag | $container)';
