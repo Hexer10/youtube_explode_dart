@@ -9,7 +9,7 @@ import '../../retry.dart';
 import '../models/stream_info_provider.dart';
 
 ///
-class EmbeddedPlayerClient {
+class PlayerResponse {
   final JsonMap root;
 
   ///
@@ -38,10 +38,10 @@ class EmbeddedPlayerClient {
   late final List<_StreamInfo> streams = [...muxedStreams, ...adaptiveStreams];
 
   ///
-  EmbeddedPlayerClient(this.root);
+  PlayerResponse(this.root);
 
   ///
-  EmbeddedPlayerClient.parse(String raw) : root = json.decode(raw);
+  PlayerResponse.parse(String raw) : root = json.decode(raw);
 
   static const androidContext = {
     'hl': 'en',
@@ -65,7 +65,7 @@ class EmbeddedPlayerClient {
   };
 
   ///
-  static Future<EmbeddedPlayerClient> get(
+  static Future<PlayerResponse> get(
       YoutubeHttpClient httpClient, String videoId,
       {required Map<String, dynamic> context}) {
     final body = {
@@ -87,7 +87,7 @@ class EmbeddedPlayerClient {
       final raw =
           await httpClient.post(url, body: json.encode(body), validate: true);
 
-      var result = EmbeddedPlayerClient.parse(raw.body);
+      var result = PlayerResponse.parse(raw.body);
 
       if (!result.isVideoPlayable) {
         throw VideoUnplayableException.unplayable(VideoId(videoId),

@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 
 /// Parent class for domain exceptions thrown by [YoutubeExplode]
-abstract class YoutubeExplodeException implements Exception {
+class YoutubeExplodeException implements Exception {
   /// Generic message.
   final String message;
 

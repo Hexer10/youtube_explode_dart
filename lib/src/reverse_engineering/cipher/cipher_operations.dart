@@ -7,13 +7,13 @@ abstract class CipherOperation {
   String decipher(String input);
 }
 
-/// Slice Operation
-class SliceCipherOperation extends CipherOperation {
+/// Splice Operation
+class SpliceCipherOperation extends CipherOperation {
   /// Index where to perform the operation.
   final int index;
 
-  /// Initialize slice operation.
-  const SliceCipherOperation(this.index);
+  /// Initialize Splice operation.
+  const SpliceCipherOperation(this.index);
 
   @override
   String decipher(String input) => input.substring(index);

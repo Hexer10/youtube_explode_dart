@@ -1,7 +1,7 @@
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../reverse_engineering/cipher/cipher_operations.dart';
-import '../../reverse_engineering/clients/embedded_player_client.dart';
+import '../../reverse_engineering/clients/youtube_player_client.dart';
 import '../../reverse_engineering/dash_manifest.dart';
 import '../../reverse_engineering/heuristics.dart';
 import '../../reverse_engineering/models/stream_info_provider.dart';
@@ -31,8 +31,8 @@ class StreamsClient {
 
   Future<StreamContext> _getStreamContextFromEmbeddedClient(VideoId videoId,
       {required Map<String, dynamic> context}) async {
-    final page = await EmbeddedPlayerClient.get(_httpClient, videoId.value,
-        context: context);
+    final page =
+        await player_response.get(_httpClient, videoId.value, context: context);
 
     return StreamContext(page.streams.toList(), const []);
   }
@@ -58,8 +58,6 @@ class StreamsClient {
     var playerSource = !playerSourceUrl.isNullOrWhiteSpace
         ? await PlayerSource.get(_httpClient, playerSourceUrl!)
         : null;
-    var cipherOperations =
-        playerSource?.getCipherOperations() ?? const <CipherOperation>[];
 
     if (!playerResponse.isVideoPlayable) {
       throw VideoUnplayableException.unplayable(videoId,
@@ -200,14 +198,14 @@ class StreamsClient {
 
     try {
       final context = await _getStreamContextFromEmbeddedClient(videoId,
-          context: EmbeddedPlayerClient.androidContext);
+          context: player_response.androidContext);
       return _getManifest(context);
     } on YoutubeExplodeException {
       //
     }
 
     final context = await _getStreamContextFromEmbeddedClient(videoId,
-        context: EmbeddedPlayerClient.webEmbeddedContext);
+        context: player_response.webEmbeddedContext);
     return _getManifest(context);
   }
 

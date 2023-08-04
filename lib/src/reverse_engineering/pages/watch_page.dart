@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:meta/meta.dart';
 
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
@@ -25,10 +26,10 @@ class WatchPage extends YoutubePage<_InitialData> {
   // ignore: overridden_fields
   final Document root;
 
-  ///
+  @internal
   final String visitorInfoLive;
 
-  ///
+  @internal
   final String ysc;
 
   ///
@@ -106,6 +107,7 @@ class WatchPage extends YoutubePage<_InitialData> {
         .querySelectorAll('script')
         .map((e) => e.text)
         .toList(growable: false);
+    //TODO: Implement player response extraction from PlayerConfig if extracting from the script fails.
     return scriptText.extractGenericData(
         ['var ytInitialPlayerResponse = '],
         (root) => PlayerResponse(root),

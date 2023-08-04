@@ -109,14 +109,14 @@ class YoutubeHttpClient extends http.BaseClient {
 
   ///
   Future<String> postString(dynamic url,
-      {Map<String, String>? body,
+      {Map<String, dynamic>? body,
       Map<String, String> headers = const {},
       bool validate = true}) async {
     assert(url is String || url is Uri);
     if (url is String) {
       url = Uri.parse(url);
     }
-    var response = await post(url, headers: headers, body: body);
+    var response = await post(url, headers: headers, body: json.encode(body));
     if (_closed) throw HttpClientClosedException();
 
     if (validate) {
