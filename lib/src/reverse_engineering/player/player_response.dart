@@ -72,14 +72,31 @@ class PlayerResponse {
           .get('playabilityStatus')
           ?.get('errorScreen')
           ?.get('playerLegacyDesktopYpcTrailerRenderer')
-          ?.getT('trailerVideoId') ??
+          ?.getT<String>('trailerVideoId') ??
       Uri.splitQueryString(root
               .get('playabilityStatus')
               ?.get('errorScreen')
               ?.get('')
               ?.get('ypcTrailerRenderer')
-              ?.getT('playerVars') ??
-          '')['video_id'];
+              ?.getT<String>('playerVars') ??
+          '')['video_id'] ??
+      root
+          .get('playabilityStatus')
+          ?.get("errorScreen")
+          ?.get("ypcTrailerRenderer")
+          ?.getT<String>("playerResponse")
+          // From https://github.com/Tyrrrz/YoutubeExplode
+          // YouTube uses weird base64-like encoding here that I don't know how to deal with.
+          // It's supposed to have JSON inside, but if extracted as is, it contains garbage.
+          // Luckily, some of the text gets decoded correctly, which is enough for us to
+          // extract the preview video ID using regex.
+          ?.replaceAll('-', '+')
+          .replaceAll('_', '/')
+          .pipe(base64.decode)
+          .pipe(utf8.decode)
+          .pipe((value) =>
+              RegExp(r'video_id=(.{11})').firstMatch(value)?.group(1))
+          ?.nullIfWhitespace;
 
   ///
   bool get isLive => root.get('videoDetails')?.getT<bool>('isLive') ?? false;
@@ -248,4 +265,8 @@ class _StreamInfo extends StreamInfoProvider {
   final StreamSource source;
 
   _StreamInfo(this.root, this.source);
+}
+
+extension PipeExt<T extends Object?> on T {
+  R pipe<R>(R Function(T value) f) => f(this);
 }

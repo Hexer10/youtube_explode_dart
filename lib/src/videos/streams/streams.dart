@@ -8,7 +8,7 @@ export 'stream_container.dart';
 export 'stream_context.dart';
 export 'stream_info.dart' hide mediaTypeFromJson, mediaTypeToJson;
 export 'stream_manifest.dart';
-export 'streams_client.dart';
+export 'stream_client.dart';
 export 'video_only_stream_info.dart';
 export 'video_quality.dart';
 export 'video_resolution.dart';

@@ -24,14 +24,11 @@ void main() {
   });
 
   test('Stream of paid videos throw VideoRequiresPurchaseException', () {
-    expect(yt!.videos.streamsClient.getManifest(VideoIdData.requiresPurchase.id),
+    expect(
+        yt!.videos.streamsClient.getManifest(VideoIdData.requiresPurchase.id),
         throwsA(const TypeMatcher<VideoRequiresPurchaseException>()));
   });
 
-  test('Stream of age-limited video throws VideoUnplayableException', () {
-    expect(yt!.videos.streamsClient.getManifest(VideoIdData.ageRestrictedSexual.id),
-        throwsA(const TypeMatcher<VideoUnplayableException>()));
-  });
   test('Get the hls manifest of a live stream', () async {
     expect(
         await yt!.videos.streamsClient

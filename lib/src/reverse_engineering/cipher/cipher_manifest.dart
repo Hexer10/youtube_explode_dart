@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 
-import '../cipher/cipher_operations.dart';
 import '../../extensions/helpers_extension.dart';
+import 'cipher_operations.dart';
 
 final _signatureTimestampExp = RegExp(r'(?:signatureTimestamp|sts):(\d{5})');
 final _cipherCallSiteExp = RegExp(
@@ -16,13 +16,13 @@ final _reverseFuncName =
 final _calledFuncNameExp = RegExp(r'[$_\w]+\.([$_\w]+)\([$_\w]+,\d+\)');
 final _funcIndexExp = RegExp(r'\([$_\w]+,(\d+)\)');
 
-final class ChiperManifest {
+final class CipherManifest {
   final String signatureTimestamp;
   final List<CipherOperation> operations;
 
-  const ChiperManifest(this.signatureTimestamp, this.operations);
+  const CipherManifest(this.signatureTimestamp, this.operations);
 
-  static ChiperManifest? decode(String content) {
+  static CipherManifest? decode(String content) {
     final signatureTimestamp =
         _signatureTimestampExp.firstMatch(content)?.group(1)?.nullIfWhitespace;
 
@@ -47,7 +47,7 @@ final class ChiperManifest {
     }
 
     final cipherDefinition =
-        RegExp('var ${RegExp.escape(cipherContainerName)}={.*?};')
+        RegExp('var ${RegExp.escape(cipherContainerName)}={.*?};', dotAll: true)
             .firstMatch(content)
             ?.group(0)
             ?.nullIfWhitespace;
@@ -91,7 +91,7 @@ final class ChiperManifest {
         })
         .whereNotNull()
         .toList();
-    return ChiperManifest(signatureTimestamp, ops);
+    return CipherManifest(signatureTimestamp, ops);
   }
 
   String decipher(String input) {

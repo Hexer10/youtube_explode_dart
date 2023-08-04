@@ -4,8 +4,6 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 
-import '../reverse_engineering/cipher/cipher_operations.dart';
-
 typedef JsonMap = Map<String, dynamic>;
 
 /// Utility for Strings.
@@ -185,18 +183,6 @@ extension StringUtility2 on String? {
   }
 }
 
-/// List decipher utility.
-extension ListDecipher on Iterable<CipherOperation> {
-  /// Apply every CipherOperation on the [signature]
-  String decipher(String signature) {
-    for (final operation in this) {
-      signature = operation.decipher(signature);
-    }
-
-    return signature;
-  }
-}
-
 /// List Utility.
 extension ListUtil<E> on Iterable<E> {
   /// Same as [elementAt] but if the index is higher than the length returns
@@ -234,7 +220,7 @@ extension GetOrNullMap on Map {
 
   /// Get a value inside a map.
   /// If it is null this returns null, if of another type this throws.
-  T? getT<T>(String key) {
+  T? getT<T extends Object>(String key) {
     var v = this[key];
     if (v == null) {
       return null;
