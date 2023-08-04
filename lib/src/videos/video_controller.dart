@@ -1,8 +1,8 @@
 import 'package:meta/meta.dart';
-import 'package:youtube_explode_dart/src/reverse_engineering/clients/youtube_player_client.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../reverse_engineering/pages/watch_page.dart';
+import '../reverse_engineering/player/player_response.dart';
 
 @internal
 class VideoController {
@@ -44,7 +44,15 @@ class VideoController {
   }
 
   Future<PlayerResponse> getPlayerResponse(VideoId videoId) async {
-    final content = await _httpClient.postString(
+    /// From https://github.com/Tyrrrz/YoutubeExplode:
+    /// The most optimal client to impersonate is the Android client, because
+    /// it doesn't require signature deciphering (for both normal and n-parameter signatures).
+    /// However, the regular Android client has a limitation, preventing it from downloading
+    /// multiple streams from the same manifest (or the same stream multiple times).
+    /// As a workaround, we're using ANDROID_TESTSUITE which appears to offer the same
+    /// functionality, but doesn't impose the aforementioned limitation.
+    /// https://github.com/Tyrrrz/YoutubeExplode/issues/705
+    final content = await httpClient.postString(
         'https://www.youtube.com/youtubei/v1/player?key=AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w&prettyPrint=false',
         body: {
           ..._androidSuiteClient,
@@ -59,7 +67,10 @@ class VideoController {
 
   Future<PlayerResponse> getPlayerResponseWithSignature(
       VideoId videoId, String? signatureTimestamp) async {
-    final content = await _httpClient.postString(
+    /// The only client that can handle age-restricted videos without authentication is the
+    ///  TVHTML5_SIMPLY_EMBEDDED_PLAYER client.
+    ///  This client does require signature deciphering, so we only use it as a fallback.
+    final content = await httpClient.postString(
         'https://www.youtube.com/youtubei/v1/player?key=AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w&prettyPrint=false',
         body: {
           ..._tvClient,

@@ -7,7 +7,7 @@ import 'package:youtube_explode_dart/src/videos/video_controller.dart';
 class StreamController extends VideoController {
   StreamController(super.httpClient);
 
-  static final _versionExp = RegExp(r'player\\?([0-9a-fA-F]{8})\\?\/');
+  static final _versionExp = RegExp(r'player\\\/?([0-9a-fA-F]{8})\\?\/');
 
   Future<PlayerSource> getPlayerSource() async {
     final iframe =

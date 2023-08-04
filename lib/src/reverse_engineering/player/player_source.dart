@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:youtube_explode_dart/src/reverse_engineering/player/cipher_manifest.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/cipher/cipher_manifest.dart';
 
 import '../../retry.dart';
 import '../youtube_http_client.dart';
@@ -8,7 +8,7 @@ import '../youtube_http_client.dart';
 ///
 class PlayerSource {
   final String root;
-  late final ChiperManifest? cipherManifest = ChiperManifest.decode(root);
+  late final CipherManifest? cipherManifest = CipherManifest.decode(root);
 
   ///
   PlayerSource(this.root);

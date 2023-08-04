@@ -10,11 +10,11 @@ class VideoClient {
   final YoutubeHttpClient _httpClient;
 
   /// Queries related to media streams of YouTube videos.
-  final StreamsClient streamsClient;
+  final StreamClient streamsClient;
 
   /// Queries related to media streams of YouTube videos.
   /// Alias of [streamsClient].
-  StreamsClient get streams => streamsClient;
+  StreamClient get streams => streamsClient;
 
   /// Queries related to closed captions of YouTube videos.
   final ClosedCaptionClient closedCaptions;
@@ -28,7 +28,7 @@ class VideoClient {
 
   /// Initializes an instance of [VideoClient].
   VideoClient(this._httpClient)
-      : streamsClient = StreamsClient(_httpClient),
+      : streamsClient = StreamClient(_httpClient),
         closedCaptions = ClosedCaptionClient(_httpClient),
         commentsClient = CommentsClient(_httpClient);
 
