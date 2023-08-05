@@ -239,7 +239,7 @@ class _InitialData extends InitialData {
                 ?.getList('runs')
                 ?.first
                 .getT<String>('text')
-                ?.parseInt() ??
+                .parseInt() ??
             -1,
       );
     }

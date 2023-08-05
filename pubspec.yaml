@@ -20,6 +20,7 @@ dependencies:
   http_parser: ^4.0.0
   json_annotation: ^4.5.0
   meta: ^1.7.0
+  source_gen: ^1.4.0
   xml: ^6.1.0
 
 dev_dependencies:

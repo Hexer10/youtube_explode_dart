@@ -30,7 +30,7 @@ class SearchClient {
               e.title,
               e.author,
               ChannelId(e.channelId),
-              e.uploadDate?.toDateTime(),
+              e.uploadDate.toDateTime(),
               e.uploadDate?.toString(),
               null,
               e.description,

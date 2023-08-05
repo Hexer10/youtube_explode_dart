@@ -46,13 +46,13 @@ class VideoClient {
           watchPage.root
               .querySelector('meta[itemprop=uploadDate]')
               ?.attributes['content']
-              ?.tryParseDateTime(),
+              .tryParseDateTime(),
       playerResponse.videoUploadDate.toString(),
       playerResponse.videoPublishDate ??
           watchPage.root
               .querySelector('meta[itemprop=datePublished]')
               ?.attributes['content']
-              ?.tryParseDateTime(),
+              .tryParseDateTime(),
       playerResponse.videoDescription,
       playerResponse.videoDuration,
       ThumbnailSet(videoId.value),

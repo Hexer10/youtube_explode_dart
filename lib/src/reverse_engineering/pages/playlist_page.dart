@@ -93,7 +93,7 @@ class _InitialData extends InitialData {
       ?.getList('stats')
       ?.elementAtSafe(1)
       ?.getT<String>('simpleText')
-      ?.parseInt();
+      .parseInt();
 
   // sidebar.playlistSidebarRenderer.items[0].playlistSidebarPrimaryInfoRenderer.stats
   late final int? videoCount = root
@@ -107,7 +107,7 @@ class _InitialData extends InitialData {
       ?.getList('runs')
       ?.firstOrNull
       ?.getT<String>('text')
-      ?.parseInt();
+      .parseInt();
 
   late final String? continuationToken =
       (videosContent ?? playlistVideosContent)
@@ -215,5 +215,5 @@ class _Video {
       root.get('lengthText')?.getT<String>('simpleText')?.toDuration();
 
   int get viewCount =>
-      root.get('viewCountText')?.getT<String>('simpleText')?.parseInt() ?? 0;
+      root.get('viewCountText')?.getT<String>('simpleText').parseInt() ?? 0;
 }

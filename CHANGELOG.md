@@ -1,3 +1,6 @@
+## 2.0.0+1
+- Linter fixes.
+
 ## 2.0.0
 - BREAKING CHANGE: Required at least dart 3.00
 - Fixes for dart3

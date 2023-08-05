@@ -79,11 +79,11 @@ final class CipherManifest {
             return null;
           }
           if (calledFuncName == swapFuncName) {
-            final index = _funcIndexExp.firstMatch(e)?.group(1)?.parseInt();
+            final index = _funcIndexExp.firstMatch(e)?.group(1).parseInt();
             return SwapCipherOperation(index!);
           }
           if (calledFuncName == spliceFuncName) {
-            final index = _funcIndexExp.firstMatch(e)?.group(1)?.parseInt();
+            final index = _funcIndexExp.firstMatch(e)?.group(1).parseInt();
             return SpliceCipherOperation(index!);
           }
           if (calledFuncName == reverseFuncName) {

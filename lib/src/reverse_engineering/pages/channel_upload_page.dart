@@ -198,7 +198,7 @@ class _InitialData extends InitialData {
       video.get('thumbnail')?.getList('thumbnails')?.last.getT<String>('url') ??
           '',
       video.get('publishedTimeText')?.getT<String>('simpleText') ?? '',
-      video.get('viewCountText')?.getT<String>('simpleText')?.parseInt() ?? 0,
+      video.get('viewCountText')?.getT<String>('simpleText').parseInt() ?? 0,
     );
   }
 }

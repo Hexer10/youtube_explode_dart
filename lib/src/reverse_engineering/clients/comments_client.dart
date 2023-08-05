@@ -183,7 +183,7 @@ class _Comment {
   late final int? likeCount = _commentRenderer
       .get('voteCount')
       ?.getT<String>('simpleText')
-      ?.parseIntWithUnits();
+      .parseIntWithUnits();
 
   late final bool isHearted = _commentRenderer
           .get('actionButtons')
