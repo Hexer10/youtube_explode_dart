@@ -7,7 +7,8 @@
 - Replaced deprecated `XmlElement.text` to `innerText`.
 - Implemented common super class `BasePagedList` for `CommentsList`, `VideoSearchList`, `ChannelUploadsList` and `SearchList`.
 - Fix for some streams returning 403 status code.
-- Fix fetch of restricted videos.
+- Fix fetching of restricted videos.
+- 
 
 ## 1.12.4
 - Fix #231: Slow download speed.
