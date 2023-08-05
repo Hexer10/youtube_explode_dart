@@ -32,4 +32,4 @@ dev_dependencies:
 
 false_secrets:
   - "lib/src/reverse_engineering/youtube_http_client.dart"
-  - "lib/src/reverse_engineering/clients/embedded_player_client.dart"
+  - "lib/src/videos/video_controller.dart"
