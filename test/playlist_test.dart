@@ -36,7 +36,7 @@ void main() {
       PlaylistId('RD1hu8-y6fKg0'),
       PlaylistId('RDMMU-ty-2B02VY'),
       PlaylistId('RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs'),
-      PlaylistId('PL601B2E69B03FAB9D')
+      PlaylistId('PL601B2E69B03FAB9D'),
     }) {
       test('PlaylistID - ${val.value}', () async {
         final playlist = await yt!.playlists.get(val);
@@ -47,8 +47,11 @@ void main() {
 
   test('Get more than 100 videos in a playlist', () async {
     final videos = await yt!.playlists
-        .getVideos(PlaylistId(
-            'https://www.youtube.com/playlist?list=PLCSusC_jlo14J0uBgFqfHsKu7gc5W2HyM',),)
+        .getVideos(
+          PlaylistId(
+            'https://www.youtube.com/playlist?list=PLCSusC_jlo14J0uBgFqfHsKu7gc5W2HyM',
+          ),
+        )
         .toList();
     expect(videos.length, greaterThan(100));
   });

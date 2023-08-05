@@ -7,9 +7,9 @@ part 'thumbnail_set.freezed.dart';
 class ThumbnailSet with _$ThumbnailSet {
   /// Initializes an instance of [ThumbnailSet]
   const factory ThumbnailSet(
-
-      /// Video id.
-      String videoId,) = _ThumbnailSet;
+    /// Video id.
+    String videoId,
+  ) = _ThumbnailSet;
 
   const ThumbnailSet._();
 

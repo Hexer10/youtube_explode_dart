@@ -55,32 +55,36 @@ class WatchPage extends YoutubePage<_InitialData> {
   ///
   int get videoLikeCount =>
       initialData.likesCount ??
-      int.parse(_videoLikeExp
-              .firstMatch(root.outerHtml)
-              ?.group(1)
-              ?.stripNonDigits()
-              .nullIfWhitespace ??
-          root
-              .querySelector('.like-button-renderer-like-button')
-              ?.text
-              .stripNonDigits()
-              .nullIfWhitespace ??
-          '0',);
+      int.parse(
+        _videoLikeExp
+                .firstMatch(root.outerHtml)
+                ?.group(1)
+                ?.stripNonDigits()
+                .nullIfWhitespace ??
+            root
+                .querySelector('.like-button-renderer-like-button')
+                ?.text
+                .stripNonDigits()
+                .nullIfWhitespace ??
+            '0',
+      );
 
   ///
   int get videoDislikeCount =>
       initialData.disLikesCount ??
-      int.parse(_videoDislikeExp
-              .firstMatch(root.outerHtml)
-              ?.group(1)
-              ?.stripNonDigits()
-              .nullIfWhitespace ??
-          root
-              .querySelector('.like-button-renderer-dislike-button')
-              ?.text
-              .stripNonDigits()
-              .nullIfWhitespace ??
-          '0',);
+      int.parse(
+        _videoDislikeExp
+                .firstMatch(root.outerHtml)
+                ?.group(1)
+                ?.stripNonDigits()
+                .nullIfWhitespace ??
+            root
+                .querySelector('.like-button-renderer-dislike-button')
+                ?.text
+                .stripNonDigits()
+                .nullIfWhitespace ??
+            '0',
+      );
 
   String? get commentsContinuation => initialData.commentsContinuation;
 
@@ -109,10 +113,12 @@ class WatchPage extends YoutubePage<_InitialData> {
         .toList(growable: false);
     //TODO: Implement player response extraction from PlayerConfig if extracting from the script fails.
     return scriptText.extractGenericData(
-        ['var ytInitialPlayerResponse = '],
-        (root) => PlayerResponse(root),
-        () => TransientFailureException(
-            'Failed to retrieve initial player response, please report this to the project GitHub page.',),);
+      ['var ytInitialPlayerResponse = '],
+      (root) => PlayerResponse(root),
+      () => TransientFailureException(
+        'Failed to retrieve initial player response, please report this to the project GitHub page.',
+      ),
+    );
   }
 
   ///
@@ -123,7 +129,8 @@ class WatchPage extends YoutubePage<_InitialData> {
   ///
   static Future<WatchPage> get(YoutubeHttpClient httpClient, String videoId) {
     final url = Uri.parse(
-        'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en',);
+      'https://youtube.com/watch?v=$videoId&bpctr=9999999999&hl=en',
+    );
     return retry(httpClient, () async {
       final req = await httpClient.get(url, validate: true);
 

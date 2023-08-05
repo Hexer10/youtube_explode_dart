@@ -24,10 +24,12 @@ abstract class YoutubePage<T extends InitialData> {
         .map((e) => e.text)
         .toList(growable: false);
     return scriptText.extractGenericData(
-        ['var ytInitialData = ', 'window["ytInitialData"] ='],
-        initialDataBuilder!,
-        () => TransientFailureException(
-            'Failed to retrieve initial data from $runtimeType, please report this to the project GitHub page.',),);
+      ['var ytInitialData = ', 'window["ytInitialData"] ='],
+      initialDataBuilder!,
+      () => TransientFailureException(
+        'Failed to retrieve initial data from $runtimeType, please report this to the project GitHub page.',
+      ),
+    );
   }
 
   YoutubePage(this.root, this.initialDataBuilder) : _defaultInitialData = null;

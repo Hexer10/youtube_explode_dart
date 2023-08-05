@@ -5,7 +5,9 @@ import '../youtube_explode_dart.dart';
 /// Run the [function] each time an exception is thrown until the retryCount
 /// is 0.
 Future<T> retry<T>(
-    YoutubeHttpClient? client, FutureOr<T> Function() function,) async {
+  YoutubeHttpClient? client,
+  FutureOr<T> Function() function,
+) async {
   var retryCount = 5;
 
   // ignore: literal_only_boolean_expressions

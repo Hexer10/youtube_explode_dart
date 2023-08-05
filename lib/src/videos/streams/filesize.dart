@@ -18,9 +18,9 @@ class FileSize with _$FileSize implements Comparable<FileSize> {
   /// Initializes an instance of [FileSize]
   //@With<Comparable<FileSize>>()
   const factory FileSize(
-
-      /// Total bytes.
-      int totalBytes,) = _FileSize;
+    /// Total bytes.
+    int totalBytes,
+  ) = _FileSize;
 
   factory FileSize.fromJson(Map<String, dynamic> json) =>
       _$FileSizeFromJson(json);

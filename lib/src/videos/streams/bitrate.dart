@@ -18,9 +18,9 @@ class Bitrate with _$Bitrate implements Comparable<Bitrate> {
   /// Initializes an instance of [Bitrate]
   //@With<Comparable<Bitrate>>()
   const factory Bitrate(
-
-      /// Bits per second.
-      int bitsPerSecond,) = _Bitrate;
+    /// Bits per second.
+    int bitsPerSecond,
+  ) = _Bitrate;
 
   factory Bitrate.fromJson(Map<String, dynamic> json) =>
       _$BitrateFromJson(json);

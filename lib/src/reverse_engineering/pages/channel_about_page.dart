@@ -48,7 +48,9 @@ class ChannelAboutPage extends YoutubePage<_InitialData> {
 
   ///
   static Future<ChannelAboutPage> getByUsername(
-      YoutubeHttpClient httpClient, String username,) {
+    YoutubeHttpClient httpClient,
+    String username,
+  ) {
     final url = 'https://www.youtube.com/user/$username/about?hl=en';
 
     return retry(httpClient, () async {
@@ -89,24 +91,31 @@ class _InitialData extends InitialData {
 
   late final List<ChannelLink> channelLinks = content
           .getList('primaryLinks')
-          ?.map((e) => ChannelLink(
+          ?.map(
+            (e) => ChannelLink(
               e.get('title')?.getT<String>('simpleText') ?? '',
-              extractUrl(e
-                      .get('navigationEndpoint')
-                      ?.get('commandMetadata')
-                      ?.get('webCommandMetadata')
-                      ?.getT<String>('url') ??
-                  e
-                      .get('navigationEndpoint')
-                      ?.get('urlEndpoint')
-                      ?.getT<String>('url') ??
-                  '',),
-              Uri.parse(e
-                      .get('icon')
-                      ?.getList('thumbnails')
-                      ?.firstOrNull
-                      ?.getT<String>('url') ??
-                  '',),),)
+              extractUrl(
+                e
+                        .get('navigationEndpoint')
+                        ?.get('commandMetadata')
+                        ?.get('webCommandMetadata')
+                        ?.getT<String>('url') ??
+                    e
+                        .get('navigationEndpoint')
+                        ?.get('urlEndpoint')
+                        ?.getT<String>('url') ??
+                    '',
+              ),
+              Uri.parse(
+                e
+                        .get('icon')
+                        ?.getList('thumbnails')
+                        ?.firstOrNull
+                        ?.getT<String>('url') ??
+                    '',
+              ),
+            ),
+          )
           .toList() ??
       [];
 

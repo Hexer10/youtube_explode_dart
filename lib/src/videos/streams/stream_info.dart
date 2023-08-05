@@ -62,7 +62,7 @@ extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
         if (e is VideoStreamInfo) e.framerate,
         if (e is VideoOnlyStreamInfo) 'video only',
         if (e is MuxedStreamInfo) 'muxed',
-        e.size
+        e.size,
       ]);
     }
     return column.toString();

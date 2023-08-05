@@ -17,8 +17,11 @@ class StreamController extends VideoController {
       throw YoutubeExplodeException('Could not extract player version.');
     }
 
-    return PlayerSource.parse(await httpClient.getString(
-        'https://www.youtube.com/s/player/$version/player_ias.vflset/en_US/base.js',),);
+    return PlayerSource.parse(
+      await httpClient.getString(
+        'https://www.youtube.com/s/player/$version/player_ias.vflset/en_US/base.js',
+      ),
+    );
   }
 
   Future<DashManifest> getDashManifest(String url) async {

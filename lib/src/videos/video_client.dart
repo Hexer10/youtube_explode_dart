@@ -38,29 +38,33 @@ class VideoClient {
     final playerResponse = watchPage.playerResponse!;
 
     return Video(
-        videoId,
-        playerResponse.videoTitle,
-        playerResponse.videoAuthor,
-        ChannelId(playerResponse.videoChannelId),
-        playerResponse.videoUploadDate ??
-            watchPage.root
-                .querySelector('meta[itemprop=uploadDate]')
-                ?.attributes['content']
-                ?.tryParseDateTime(),
-        playerResponse.videoUploadDate.toString(),
-        playerResponse.videoPublishDate ??
-            watchPage.root
-                .querySelector('meta[itemprop=datePublished]')
-                ?.attributes['content']
-                ?.tryParseDateTime(),
-        playerResponse.videoDescription,
-        playerResponse.videoDuration,
-        ThumbnailSet(videoId.value),
-        playerResponse.videoKeywords,
-        Engagement(playerResponse.videoViewCount, watchPage.videoLikeCount,
-            watchPage.videoDislikeCount,),
-        playerResponse.isLive,
-        watchPage,);
+      videoId,
+      playerResponse.videoTitle,
+      playerResponse.videoAuthor,
+      ChannelId(playerResponse.videoChannelId),
+      playerResponse.videoUploadDate ??
+          watchPage.root
+              .querySelector('meta[itemprop=uploadDate]')
+              ?.attributes['content']
+              ?.tryParseDateTime(),
+      playerResponse.videoUploadDate.toString(),
+      playerResponse.videoPublishDate ??
+          watchPage.root
+              .querySelector('meta[itemprop=datePublished]')
+              ?.attributes['content']
+              ?.tryParseDateTime(),
+      playerResponse.videoDescription,
+      playerResponse.videoDuration,
+      ThumbnailSet(videoId.value),
+      playerResponse.videoKeywords,
+      Engagement(
+        playerResponse.videoViewCount,
+        watchPage.videoLikeCount,
+        watchPage.videoDislikeCount,
+      ),
+      playerResponse.isLive,
+      watchPage,
+    );
   }
 
   /// Get a [Video] instance from a [videoId]

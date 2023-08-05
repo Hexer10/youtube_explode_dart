@@ -70,13 +70,16 @@ extension StringUtility on String {
     }
     if (parts.length == 2) {
       return Duration(
-          minutes: int.parse(parts[0]), seconds: int.parse(parts[1]),);
+        minutes: int.parse(parts[0]),
+        seconds: int.parse(parts[1]),
+      );
     }
     if (parts.length == 3) {
       return Duration(
-          hours: int.parse(parts[0]),
-          minutes: int.parse(parts[1]),
-          seconds: int.parse(parts[2]),);
+        hours: int.parse(parts[0]),
+        minutes: int.parse(parts[1]),
+        seconds: int.parse(parts[2]),
+      );
     }
     // Shouldn't reach here.
     throw Error();
@@ -269,8 +272,11 @@ extension RunsParser on List<Map<dynamic, dynamic>> {
 
 extension GenericExtract on List<String> {
   /// Used to extract initial data.
-  T extractGenericData<T>(List<String> match,
-      T Function(Map<String, dynamic>) builder, Exception Function() orThrow,) {
+  T extractGenericData<T>(
+    List<String> match,
+    T Function(Map<String, dynamic>) builder,
+    Exception Function() orThrow,
+  ) {
     JsonMap? initialData;
 
     for (final m in match) {

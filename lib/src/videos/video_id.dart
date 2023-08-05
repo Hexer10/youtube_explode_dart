@@ -19,7 +19,10 @@ class VideoId with _$VideoId {
 
     if (id == null) {
       throw ArgumentError.value(
-          idOrUrl, 'urlOrUrl', 'Invalid YouTube video ID or URL',);
+        idOrUrl,
+        'urlOrUrl',
+        'Invalid YouTube video ID or URL',
+      );
     }
     return VideoId._internal(id);
   }
@@ -27,9 +30,9 @@ class VideoId with _$VideoId {
   const VideoId._();
 
   const factory VideoId._internal(
-
-      /// ID as string.
-      String value,) = _VideoId;
+    /// ID as string.
+    String value,
+  ) = _VideoId;
 
   ///  Converts [obj] to a [VideoId] by calling .toString on that object.
   /// If it is already a [VideoId], [obj] is returned

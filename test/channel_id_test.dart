@@ -16,15 +16,15 @@ void main() {
     for (final val in {
       [
         ChannelId('youtube.com/channel/UC3xnGqlcL3y-GXz5N3wiTJQ'),
-        'UC3xnGqlcL3y-GXz5N3wiTJQ'
+        'UC3xnGqlcL3y-GXz5N3wiTJQ',
       ],
       [
         ChannelId('youtube.com/channel/UCkQO3QsgTpNTsOw6ujimT5Q'),
-        'UCkQO3QsgTpNTsOw6ujimT5Q'
+        'UCkQO3QsgTpNTsOw6ujimT5Q',
       ],
       [
         ChannelId('youtube.com/channel/UCQtjJDOYluum87LA4sI6xcg'),
-        'UCQtjJDOYluum87LA4sI6xcg'
+        'UCQtjJDOYluum87LA4sI6xcg',
       ]
     }) {
       test('ChannelURL - ${val[0]}', () {
@@ -37,7 +37,7 @@ void main() {
     for (final val in {
       '',
       'UC3xnGqlcL3y-GXz5N3wiTJ',
-      'UC3xnGqlcL y-GXz5N3wiTJQ'
+      'UC3xnGqlcL y-GXz5N3wiTJQ',
     }) {
       test('ChannelID - $val', () {
         expect(() => ChannelId(val), throwsArgumentError);
@@ -49,7 +49,7 @@ void main() {
     for (final val in {
       'youtube.com/?channel=UCUC3xnGqlcL3y-GXz5N3wiTJQ',
       'youtube.com/channel/asd',
-      'youtube.com/'
+      'youtube.com/',
     }) {
       test('ChannelURL - $val', () {
         expect(() => ChannelId(val), throwsArgumentError);

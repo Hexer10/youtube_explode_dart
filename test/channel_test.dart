@@ -12,7 +12,8 @@ void main() {
   });
 
   test('Get metadata of a channel', () async {
-    const channelUrl = 'https://www.youtube.com/channel/UCEnBXANsKmyj2r9xVyKoDiQ';
+    const channelUrl =
+        'https://www.youtube.com/channel/UCEnBXANsKmyj2r9xVyKoDiQ';
     final channel = await yt!.channels.get(ChannelId(channelUrl));
     expect(channel.url, channelUrl);
     expect(channel.title, 'Oleksii Holub');
@@ -25,7 +26,7 @@ void main() {
     for (final val in {
       'UC46807r_RiRjH8IU-h_DrDQ',
       'UCJ6td3C9QlPO9O_J5dF4ZzA',
-      'UCiGm_E4ZwYSHV3bcW1pnSeQ'
+      'UCiGm_E4ZwYSHV3bcW1pnSeQ',
     }) {
       test('Channel - $val', () async {
         final channelId = ChannelId(val);
@@ -47,8 +48,11 @@ void main() {
 
   test('Get the videos of a youtube channel', () async {
     final videos = await yt!.channels
-        .getUploads(ChannelId(
-            'https://www.youtube.com/channel/UCqKbtOLx4NCBh5KKMSmbX0g',),)
+        .getUploads(
+          ChannelId(
+            'https://www.youtube.com/channel/UCqKbtOLx4NCBh5KKMSmbX0g',
+          ),
+        )
         .toList();
     expect(videos.length, greaterThanOrEqualTo(6));
   });
@@ -57,7 +61,7 @@ void main() {
     for (final val in {
       'UC46807r_RiRjH8IU-h_DrDQ',
       'UCJ6td3C9QlPO9O_J5dF4ZzA',
-      'UCiGm_E4ZwYSHV3bcW1pnSeQ'
+      'UCiGm_E4ZwYSHV3bcW1pnSeQ',
     }) {
       test('Channel - $val', () async {
         final videos = await yt!.channels.getUploads(ChannelId(val)).toList();

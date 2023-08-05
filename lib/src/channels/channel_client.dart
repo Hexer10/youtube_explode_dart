@@ -40,7 +40,9 @@ class ChannelClient {
     username = Username.fromString(username);
 
     final channelPage = await ChannelPage.getByUsername(
-        _httpClient, (username as Username).value,);
+      _httpClient,
+      (username as Username).value,
+    );
     return Channel(
       ChannelId(channelPage.channelId),
       channelPage.channelTitle,
@@ -64,8 +66,8 @@ class ChannelClient {
       aboutPage.joinDate,
       aboutPage.title,
       [
-        for (var e in aboutPage.avatar)
-          Thumbnail(Uri.parse(e['url']), e['height'], e['width'])
+        for (final e in aboutPage.avatar)
+          Thumbnail(Uri.parse(e['url']), e['height'], e['width']),
       ],
       aboutPage.country,
       aboutPage.channelLinks,
@@ -87,8 +89,8 @@ class ChannelClient {
       page.joinDate,
       page.title,
       [
-        for (var e in page.avatar)
-          Thumbnail(Uri.parse(e['url']), e['height'], e['width'])
+        for (final e in page.avatar)
+          Thumbnail(Uri.parse(e['url']), e['height'], e['width']),
       ],
       page.country,
       page.channelLinks,
@@ -118,35 +120,43 @@ class ChannelClient {
   /// This fetches thru all the uploads pages of the channel.
   ///
   /// Use .nextPage() to fetch the next batch of videos.
-  Future<ChannelUploadsList> getUploadsFromPage(dynamic channelId,
-      [VideoSorting videoSorting = VideoSorting.newest,]) async {
+  Future<ChannelUploadsList> getUploadsFromPage(
+    dynamic channelId, [
+    VideoSorting videoSorting = VideoSorting.newest,
+  ]) async {
     channelId = ChannelId.fromString(channelId);
     final page = await ChannelUploadPage.get(
-        _httpClient, (channelId as ChannelId).value, videoSorting.code,);
+      _httpClient,
+      (channelId as ChannelId).value,
+      videoSorting.code,
+    );
 
     final channel = await get(channelId);
 
     return ChannelUploadsList(
-        page.uploads
-            .map((e) => Video(
-                  e.videoId,
-                  e.videoTitle,
-                  channel.title,
-                  channelId,
-                  e.videoUploadDate.toDateTime(),
-                  e.videoUploadDate,
-                  null,
-                  '',
-                  e.videoDuration,
-                  ThumbnailSet(e.videoId.value),
-                  null,
-                  Engagement(e.videoViews, null, null),
-                  false,
-                ),)
-            .toList(),
-        channel.title,
-        channelId,
-        page,
-        _httpClient,);
+      page.uploads
+          .map(
+            (e) => Video(
+              e.videoId,
+              e.videoTitle,
+              channel.title,
+              channelId,
+              e.videoUploadDate.toDateTime(),
+              e.videoUploadDate,
+              null,
+              '',
+              e.videoDuration,
+              ThumbnailSet(e.videoId.value),
+              null,
+              Engagement(e.videoViews, null, null),
+              false,
+            ),
+          )
+          .toList(),
+      channel.title,
+      channelId,
+      page,
+      _httpClient,
+    );
   }
 }

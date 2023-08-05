@@ -55,7 +55,9 @@ class ChannelPage extends YoutubePage<_InitialData> {
 
   ///
   static Future<ChannelPage> getByUsername(
-      YoutubeHttpClient httpClient, String username,) {
+    YoutubeHttpClient httpClient,
+    String username,
+  ) {
     var url = 'https://www.youtube.com/user/$username?hl=en';
 
     return retry(httpClient, () async {

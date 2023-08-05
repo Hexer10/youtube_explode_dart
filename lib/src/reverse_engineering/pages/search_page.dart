@@ -35,8 +35,10 @@ class SearchPage extends YoutubePage<_InitialData> {
 
   ///
   static Future<SearchPage> get(
-      YoutubeHttpClient httpClient, String queryString,
-      {SearchFilter filter = const SearchFilter(''),}) {
+    YoutubeHttpClient httpClient,
+    String queryString, {
+    SearchFilter filter = const SearchFilter(''),
+  }) {
     final url =
         'https://www.youtube.com/results?search_query=${Uri.encodeQueryComponent(queryString)}&sp=${filter.value}';
     return retry(httpClient, () async {
@@ -121,11 +123,13 @@ class _InitialData extends InitialData {
   List<SearchResult> get relatedVideos =>
       getContentContext()
           ?.where((e) => e['shelfRenderer'] != null)
-          .map((e) => e
-              .get('shelfRenderer')
-              ?.get('content')
-              ?.get('verticalListRenderer')
-              ?.getList('items'),)
+          .map(
+            (e) => e
+                .get('shelfRenderer')
+                ?.get('content')
+                ?.get('verticalListRenderer')
+                ?.getList('items'),
+          )
           .firstOrNull
           ?.map(_parseContent)
           .whereNotNull()
@@ -146,27 +150,28 @@ class _InitialData extends InitialData {
 
       //       root.get('ownerText')?.getT<List<dynamic>>('runs')?.parseRuns() ??
       return SearchVideo(
-          VideoId(renderer.getT<String>('videoId')!),
+        VideoId(renderer.getT<String>('videoId')!),
+        renderer
+            .get('title')!
+            .getT<List<dynamic>>('runs')!
+            .cast<Map<dynamic, dynamic>>()
+            .parseRuns(),
+        renderer
+            .get('ownerText')!
+            .getT<List<dynamic>>('runs')!
+            .cast<Map<dynamic, dynamic>>()
+            .parseRuns(),
+        renderer
+                .getList('detailedMetadataSnippets')
+                ?.firstOrNull
+                ?.get('snippetText')
+                ?.getT<List<dynamic>>('runs')
+                ?.cast<Map<dynamic, dynamic>>()
+                .parseRuns() ??
+            '',
+        renderer.get('lengthText')?.getT<String>('simpleText') ?? '',
+        int.parse(
           renderer
-              .get('title')!
-              .getT<List<dynamic>>('runs')!
-              .cast<Map<dynamic, dynamic>>()
-              .parseRuns(),
-          renderer
-              .get('ownerText')!
-              .getT<List<dynamic>>('runs')!
-              .cast<Map<dynamic, dynamic>>()
-              .parseRuns(),
-          renderer
-                  .getList('detailedMetadataSnippets')
-                  ?.firstOrNull
-                  ?.get('snippetText')
-                  ?.getT<List<dynamic>>('runs')
-                  ?.cast<Map<dynamic, dynamic>>()
-                  .parseRuns() ??
-              '',
-          renderer.get('lengthText')?.getT<String>('simpleText') ?? '',
-          int.parse(renderer
                   .get('viewCountText')
                   ?.getT<String>('simpleText')
                   ?.stripNonDigits()
@@ -178,26 +183,29 @@ class _InitialData extends InitialData {
                   ?.getT<String>('text')
                   ?.stripNonDigits()
                   .nullIfWhitespace ??
-              '0',),
-          (renderer.get('thumbnail')?.getList('thumbnails') ?? const [])
-              .map((e) =>
-                  Thumbnail(Uri.parse(e['url']), e['height'], e['width']),)
-              .toList(),
-          renderer.get('publishedTimeText')?.getT<String>('simpleText'),
-          renderer
-                  .get('viewCountText')
-                  ?.getList('runs')
-                  ?.elementAtSafe(1)
-                  ?.getT<String>('text')
-                  ?.trim() ==
-              'watching',
-          renderer
-              .get('ownerText')!
-              .getList('runs')!
-              .first
-              .get('navigationEndpoint')!
-              .get('browseEndpoint')!
-              .getT<String>('browseId')!,);
+              '0',
+        ),
+        (renderer.get('thumbnail')?.getList('thumbnails') ?? const [])
+            .map(
+              (e) => Thumbnail(Uri.parse(e['url']), e['height'], e['width']),
+            )
+            .toList(),
+        renderer.get('publishedTimeText')?.getT<String>('simpleText'),
+        renderer
+                .get('viewCountText')
+                ?.getList('runs')
+                ?.elementAtSafe(1)
+                ?.getT<String>('text')
+                ?.trim() ==
+            'watching',
+        renderer
+            .get('ownerText')!
+            .getList('runs')!
+            .first
+            .get('navigationEndpoint')!
+            .get('browseEndpoint')!
+            .getT<String>('browseId')!,
+      );
     }
     if (content['radioRenderer'] != null ||
         content['playlistRenderer'] != null) {
@@ -223,17 +231,17 @@ class _InitialData extends InitialData {
       final renderer = content.get('channelRenderer')!;
 
       return SearchChannel(
-          ChannelId(renderer.getT<String>('channelId')!),
-          renderer.get('title')!.getT<String>('simpleText')!,
-          renderer.get('descriptionSnippet')?.getList('runs')?.parseRuns() ??
-              '',
-          renderer
-                  .get('videoCountText')
-                  ?.getList('runs')
-                  ?.first
-                  .getT<String>('text')
-                  ?.parseInt() ??
-              -1,);
+        ChannelId(renderer.getT<String>('channelId')!),
+        renderer.get('title')!.getT<String>('simpleText')!,
+        renderer.get('descriptionSnippet')?.getList('runs')?.parseRuns() ?? '',
+        renderer
+                .get('videoCountText')
+                ?.getList('runs')
+                ?.first
+                .getT<String>('text')
+                ?.parseInt() ??
+            -1,
+      );
     }
     // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
     return null;

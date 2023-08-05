@@ -23,12 +23,18 @@ void main() {
     expect(video.author, 'Hexah');
     final rangeMs = DateTime(2018, 12, 09).millisecondsSinceEpoch;
     // 1day margin since the uploadDate could differ from timezones
-    expect(video.uploadDate!.millisecondsSinceEpoch,
-        inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000),);
-    expect(video.publishDate!.millisecondsSinceEpoch,
-        inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000),);
-    expect(video.description,
-        contains('Get it here: https://github.com/Hexer10/HexRedirect'),);
+    expect(
+      video.uploadDate!.millisecondsSinceEpoch,
+      inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000),
+    );
+    expect(
+      video.publishDate!.millisecondsSinceEpoch,
+      inInclusiveRange(rangeMs - 86400000, rangeMs + 86400000),
+    );
+    expect(
+      video.description,
+      contains('Get it here: https://github.com/Hexer10/HexRedirect'),
+    );
     expect(video.duration!.inSeconds, 33);
     expect(video.thumbnails.lowResUrl, isNotEmpty);
     expect(video.thumbnails.mediumResUrl, isNotEmpty);
@@ -36,13 +42,14 @@ void main() {
     expect(video.thumbnails.standardResUrl, isNotEmpty);
     expect(video.thumbnails.maxResUrl, isNotEmpty);
     expect(
-        video.keywords,
-        containsAll([
-          'sourcemod',
-          'plugin',
-          'csgo',
-          'redirect',
-        ]),);
+      video.keywords,
+      containsAll([
+        'sourcemod',
+        'plugin',
+        'csgo',
+        'redirect',
+      ]),
+    );
     expect(video.engagement.viewCount, greaterThanOrEqualTo(3000));
     expect(video.engagement.likeCount, greaterThanOrEqualTo(5));
     expect(video.engagement.dislikeCount, greaterThanOrEqualTo(0));
@@ -63,8 +70,10 @@ void main() {
   group('Get metadata of invalid videos throws VideoUnplayableException', () {
     for (final val in VideoIdData.invalid) {
       test('VideoId - $val', () {
-        expect(() async => yt!.videos.get(val.id),
-            throwsA(const TypeMatcher<VideoUnplayableException>()),);
+        expect(
+          () async => yt!.videos.get(val.id),
+          throwsA(const TypeMatcher<VideoUnplayableException>()),
+        );
       });
     }
   });

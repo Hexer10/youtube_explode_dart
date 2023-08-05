@@ -12,7 +12,10 @@ class Username with _$Username {
     final username = parseUsername(urlOrUsername);
     if (username == null) {
       throw ArgumentError.value(
-          urlOrUsername, 'urlOrUsername', 'Invalid username',);
+        urlOrUsername,
+        'urlOrUsername',
+        'Invalid username',
+      );
     }
     return Username._(username);
   }

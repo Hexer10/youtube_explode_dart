@@ -15,8 +15,8 @@ class VideoController {
         'hl': 'en',
         'gl': 'US',
         'utcOffsetMinutes': 0,
-      }
-    }
+      },
+    },
   };
 
   static const _tvClient = {
@@ -53,34 +53,38 @@ class VideoController {
     /// functionality, but doesn't impose the aforementioned limitation.
     /// https://github.com/Tyrrrz/YoutubeExplode/issues/705
     final content = await httpClient.postString(
-        'https://www.youtube.com/youtubei/v1/player?key=AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w&prettyPrint=false',
-        body: {
-          ..._androidSuiteClient,
-          'videoId': videoId.value
-        },
-        headers: {
-          'User-Agent':
-              'com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip'
-        },);
+      'https://www.youtube.com/youtubei/v1/player?key=AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w&prettyPrint=false',
+      body: {
+        ..._androidSuiteClient,
+        'videoId': videoId.value,
+      },
+      headers: {
+        'User-Agent':
+            'com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip',
+      },
+    );
     return PlayerResponse.parse(content);
   }
 
   Future<PlayerResponse> getPlayerResponseWithSignature(
-      VideoId videoId, String? signatureTimestamp,) async {
+    VideoId videoId,
+    String? signatureTimestamp,
+  ) async {
     /// The only client that can handle age-restricted videos without authentication is the
     ///  TVHTML5_SIMPLY_EMBEDDED_PLAYER client.
     ///  This client does require signature deciphering, so we only use it as a fallback.
     final content = await httpClient.postString(
-        'https://www.youtube.com/youtubei/v1/player?key=AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w&prettyPrint=false',
-        body: {
-          ..._tvClient,
-          'videoId': videoId.value,
-          'playbackContext': {
-            'contentPlaybackContext': {
-              'signatureTimestamp': signatureTimestamp ?? '19369',
-            }
-          }
-        },);
+      'https://www.youtube.com/youtubei/v1/player?key=AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w&prettyPrint=false',
+      body: {
+        ..._tvClient,
+        'videoId': videoId.value,
+        'playbackContext': {
+          'contentPlaybackContext': {
+            'signatureTimestamp': signatureTimestamp ?? '19369',
+          },
+        },
+      },
+    );
     return PlayerResponse.parse(content);
   }
 }

@@ -21,7 +21,9 @@ class ClosedCaptionClient {
 
   ///
   static Future<ClosedCaptionClient> get(
-      YoutubeHttpClient httpClient, Uri url,) {
+    YoutubeHttpClient httpClient,
+    Uri url,
+  ) {
     final formatUrl = url.replaceQueryParameters({'fmt': 'srv3'});
     return retry(httpClient, () async {
       final raw = await httpClient.getString(formatUrl);

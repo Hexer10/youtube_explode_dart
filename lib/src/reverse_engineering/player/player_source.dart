@@ -17,7 +17,9 @@ class PlayerSource {
 
   ///
   static Future<PlayerSource> get(
-      YoutubeHttpClient httpClient, String url,) async {
+    YoutubeHttpClient httpClient,
+    String url,
+  ) async {
     if (_cache[url]?.expired ?? true) {
       final val = await retry(httpClient, () async {
         final raw = await httpClient.getString(url);

@@ -43,17 +43,21 @@ class DashManifest {
   _SegmentTimeline? extractSegmentTimeline(xml.XmlElement source) {
     final segmentTimeline = source.getElement('SegmentTimeline');
     if (segmentTimeline != null) {
-      return _SegmentTimeline(segmentTimeline.findAllElements('S').map((e) {
-        final d = int.tryParse(e.getAttribute('d') ?? '0')!;
-        final r = int.tryParse(e.getAttribute('r') ?? '0')!;
-        return _S(d, r);
-      }).toList(),);
+      return _SegmentTimeline(
+        segmentTimeline.findAllElements('S').map((e) {
+          final d = int.tryParse(e.getAttribute('d') ?? '0')!;
+          final r = int.tryParse(e.getAttribute('r') ?? '0')!;
+          return _S(d, r);
+        }).toList(),
+      );
     }
     return null;
   }
 
   _MsInfo extractMultiSegmentInfo(
-      xml.XmlElement element, _MsInfo msParentInfo,) {
+    xml.XmlElement element,
+    _MsInfo msParentInfo,
+  ) {
     final msInfo = msParentInfo.copy(); // Copy
 
     final segmentList = element.getElement('SegmentList');
@@ -66,7 +70,7 @@ class DashManifest {
       final segmentUrlsSE = segmentList.findAllElements('SegmentURL');
       if (segmentUrlsSE.isNotEmpty) {
         msInfo.segmentUrls = [
-          for (final segment in segmentUrlsSE) segment.getAttribute('media')!
+          for (final segment in segmentUrlsSE) segment.getAttribute('media')!,
         ];
       }
     } else {
@@ -120,8 +124,8 @@ class DashManifest {
             continue;
           }
           final representationAttrib = {
-            for (var e in adaptionSet.attributes) e.name.local: e.value,
-            for (var e in representation.attributes) e.name.local: e.value,
+            for (final e in adaptionSet.attributes) e.name.local: e.value,
+            for (final e in representation.attributes) e.name.local: e.value,
           };
 
           final mimeType = MediaType.parse(representationAttrib['mimeType']!);
@@ -132,7 +136,7 @@ class DashManifest {
               ...representation.childElements,
               ...adaptionSet.childElements,
               ...period.childElements,
-              ...root.childElements
+              ...root.childElements,
             ]
                 .firstWhereOrNull((e) {
                   final baseUrlE = e.getElement('BaseURL')?.innerText.trim();
@@ -177,17 +181,20 @@ class DashManifest {
               if (representationMsInfo.fragments != null &&
                   representationMsInfo.initializationUrl != null)
                 Fragment(representationMsInfo.initializationUrl!),
-              ...?representationMsInfo.fragments
+              ...?representationMsInfo.fragments,
             ];
 
-            formats.add(_StreamInfo(
+            formats.add(
+              _StreamInfo(
                 int.parse(representationAttrib['id']!),
                 baseUrl,
                 mimeType,
                 int.tryParse(representationAttrib['width'] ?? ''),
                 int.tryParse(representationAttrib['height'] ?? ''),
                 int.tryParse(representationAttrib['frameRate'] ?? ''),
-                fragments,),);
+                fragments,
+              ),
+            );
           }
         }
       }
@@ -196,7 +203,6 @@ class DashManifest {
     return formats;
   }
 }
-
 
 class _StreamInfo extends StreamInfoProvider {
   @override
@@ -241,8 +247,15 @@ class _StreamInfo extends StreamInfoProvider {
   @override
   StreamSource get source => StreamSource.dash;
 
-  _StreamInfo(this.tag, this.url, this.codec, this.videoWidth, this.videoHeight,
-      this.framerate, this.fragments,);
+  _StreamInfo(
+    this.tag,
+    this.url,
+    this.codec,
+    this.videoWidth,
+    this.videoHeight,
+    this.framerate,
+    this.fragments,
+  );
 }
 
 class _SegmentTimeline {

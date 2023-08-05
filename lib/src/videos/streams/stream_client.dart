@@ -29,20 +29,24 @@ class StreamClient {
     final manifest = playerSource.cipherManifest;
     if (manifest == null) {
       throw YoutubeExplodeException(
-          'Could not find the cipher operations manifest.',);
+        'Could not find the cipher operations manifest.',
+      );
     }
     return _cipherManifest = manifest;
   }
 
   Stream<StreamInfo> _parseStreamInfo(
-      Iterable<StreamInfoProvider> streams,) async* {
+    Iterable<StreamInfoProvider> streams,
+  ) async* {
     for (final stream in streams) {
       final itag = stream.tag;
       var url = Uri.parse(stream.url);
       if (!stream.signature.isNullOrWhiteSpace) {
         final cipherManifest = await _getCipherManifest();
-        url = url.setQueryParam(stream.signatureParameter!,
-            cipherManifest.decipher(stream.signature!),);
+        url = url.setQueryParam(
+          stream.signatureParameter!,
+          cipherManifest.decipher(stream.signature!),
+        );
       }
 
       final contentLength = stream.contentLength ??
@@ -94,31 +98,33 @@ class StreamClient {
 
         // Video only
         yield VideoOnlyStreamInfo(
-            itag,
-            url,
-            container,
-            fileSize,
-            bitrate,
-            videoCodec!,
-            stream.qualityLabel,
-            videoQuality,
-            videoResolution,
-            framerate,
-            stream.fragments ?? const [],
-            stream.codec,);
+          itag,
+          url,
+          container,
+          fileSize,
+          bitrate,
+          videoCodec!,
+          stream.qualityLabel,
+          videoQuality,
+          videoResolution,
+          framerate,
+          stream.fragments ?? const [],
+          stream.codec,
+        );
         continue;
         // Audio-only
       } else if (!audioCodec.isNullOrWhiteSpace) {
         yield AudioOnlyStreamInfo(
-            itag,
-            url,
-            container,
-            fileSize,
-            bitrate,
-            audioCodec!,
-            stream.qualityLabel,
-            stream.fragments ?? const [],
-            stream.codec,);
+          itag,
+          url,
+          container,
+          fileSize,
+          bitrate,
+          audioCodec!,
+          stream.qualityLabel,
+          stream.fragments ?? const [],
+          stream.codec,
+        );
       } else {
         throw YoutubeExplodeException('Could not extract stream codec');
       }
@@ -129,7 +135,9 @@ class StreamClient {
     var playerResponse = await _controller.getPlayerResponse(videoId);
     if (!playerResponse.previewVideoId.isNullOrWhiteSpace) {
       throw VideoRequiresPurchaseException.preview(
-          videoId, VideoId(playerResponse.previewVideoId!),);
+        videoId,
+        VideoId(playerResponse.previewVideoId!),
+      );
     }
 
     if (playerResponse.videoPlayabilityError?.contains('payment') ?? false) {
@@ -138,12 +146,16 @@ class StreamClient {
     if (!playerResponse.isVideoPlayable) {
       final cipherManifest = await _getCipherManifest();
       playerResponse = await _controller.getPlayerResponseWithSignature(
-          videoId, cipherManifest.signatureTimestamp,);
+        videoId,
+        cipherManifest.signatureTimestamp,
+      );
     }
 
     if (!playerResponse.isVideoPlayable) {
-      throw VideoUnplayableException.unplayable(videoId,
-          reason: playerResponse.videoPlayabilityError ?? '',);
+      throw VideoUnplayableException.unplayable(
+        videoId,
+        reason: playerResponse.videoPlayabilityError ?? '',
+      );
     }
 
     yield* _parseStreamInfo(playerResponse.streams);
@@ -164,13 +176,15 @@ class StreamClient {
       final streams = await _getStreams(videoId).toList();
       if (streams.isEmpty) {
         throw VideoUnavailableException(
-            'Video "$videoId" does not contain any playable streams.',);
+          'Video "$videoId" does not contain any playable streams.',
+        );
       }
 
       final response = await _httpClient.head(streams.first.url);
       if (response.statusCode == 403) {
         throw YoutubeExplodeException(
-            'Video $videoId returned 403 (stream: ${streams.first.tag}',);
+          'Video $videoId returned 403 (stream: ${streams.first.tag}',
+        );
       }
 
       return StreamManifest(streams);
@@ -186,12 +200,15 @@ class StreamClient {
 
     if (playerResponse == null) {
       throw TransientFailureException(
-          "Couldn't extract the playerResponse from the Watch Page!",);
+        "Couldn't extract the playerResponse from the Watch Page!",
+      );
     }
 
     if (!playerResponse.isVideoPlayable) {
-      throw VideoUnplayableException.unplayable(videoId,
-          reason: playerResponse.videoPlayabilityError ?? '',);
+      throw VideoUnplayableException.unplayable(
+        videoId,
+        reason: playerResponse.videoPlayabilityError ?? '',
+      );
     }
 
     final hlsManifest = playerResponse.hlsManifestUrl;

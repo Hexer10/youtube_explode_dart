@@ -23,8 +23,8 @@ void main() {
 
   test('Search with no results', () async {
     final videos = await yt!.search.search(
-        List.generate(1300, (_) => letters[rnd.nextInt(letters.length)])
-            .join(),);
+      List.generate(1300, (_) => letters[rnd.nextInt(letters.length)]).join(),
+    );
     expect(videos, isEmpty);
     final nextPage = await videos.nextPage();
     expect(nextPage, isNull);

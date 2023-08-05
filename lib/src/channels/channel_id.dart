@@ -17,9 +17,9 @@ class ChannelId with _$ChannelId {
   }
 
   const factory ChannelId._internal(
-
-      /// ID as a string.
-      String value,) = _ChannelId;
+    /// ID as a string.
+    String value,
+  ) = _ChannelId;
 
   const ChannelId._();
 

@@ -5,7 +5,8 @@ import 'cipher_operations.dart';
 
 final _signatureTimestampExp = RegExp(r'(?:signatureTimestamp|sts):(\d{5})');
 final _cipherCallSiteExp = RegExp(
-    r'''[$_\w]+=function\([$_\w]+\){([$_\w]+)=\1\.split\(['"]{2}\);.*?return \1\.join\(['"]{2}\)}''',);
+  r'''[$_\w]+=function\([$_\w]+\){([$_\w]+)=\1\.split\(['"]{2}\);.*?return \1\.join\(['"]{2}\)}''',
+);
 final _cipherContainerNameExp = RegExp(r'([$_\w]+)\.[$_\w]+\([$_\w]+,\d+\);');
 final _swapFuncNameExp =
     RegExp(r'''([$_\w]+):function\([$_\w]+,[$_\w]+\){+[^}]*?%[^}]*?}''');

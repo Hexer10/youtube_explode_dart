@@ -47,8 +47,9 @@ class PlayerResponse {
 
   ///
   Duration get videoDuration => Duration(
-      seconds:
-          int.parse(root.get('videoDetails')!.getT<String>('lengthSeconds')!),);
+        seconds:
+            int.parse(root.get('videoDetails')!.getT<String>('lengthSeconds')!),
+      );
 
   ///
   List<String> get videoKeywords =>
@@ -73,13 +74,15 @@ class PlayerResponse {
           ?.get('errorScreen')
           ?.get('playerLegacyDesktopYpcTrailerRenderer')
           ?.getT<String>('trailerVideoId') ??
-      Uri.splitQueryString(root
-              .get('playabilityStatus')
-              ?.get('errorScreen')
-              ?.get('')
-              ?.get('ypcTrailerRenderer')
-              ?.getT<String>('playerVars') ??
-          '',)['video_id'] ??
+      Uri.splitQueryString(
+        root
+                .get('playabilityStatus')
+                ?.get('errorScreen')
+                ?.get('')
+                ?.get('ypcTrailerRenderer')
+                ?.getT<String>('playerVars') ??
+            '',
+      )['video_id'] ??
       root
           .get('playabilityStatus')
           ?.get("errorScreen")
@@ -94,8 +97,9 @@ class PlayerResponse {
           .replaceAll('_', '/')
           .pipe(base64.decode)
           .pipe(utf8.decode)
-          .pipe((value) =>
-              RegExp('video_id=(.{11})').firstMatch(value)?.group(1),)
+          .pipe(
+            (value) => RegExp('video_id=(.{11})').firstMatch(value)?.group(1),
+          )
           ?.nullIfWhitespace;
 
   ///
@@ -130,7 +134,7 @@ class PlayerResponse {
   ///
   late final List<StreamInfoProvider> streams = [
     ...muxedStreams,
-    ...adaptiveStreams
+    ...adaptiveStreams,
   ];
 
   ///
@@ -189,9 +193,10 @@ class _StreamInfo extends StreamInfoProvider {
 
   @override
   late final int? contentLength = int.tryParse(
-      root.getT<String>('contentLength') ??
-          _contentLenExp.firstMatch(url)?.group(1) ??
-          '',);
+    root.getT<String>('contentLength') ??
+        _contentLenExp.firstMatch(url)?.group(1) ??
+        '',
+  );
 
   @override
   late final int? framerate = root.getT<int>('fps');
@@ -202,7 +207,8 @@ class _StreamInfo extends StreamInfoProvider {
 
   @override
   late final String? signatureParameter = Uri.splitQueryString(
-          root.getT<String>('cipher') ?? '',)['sp'] ??
+        root.getT<String>('cipher') ?? '',
+      )['sp'] ??
       Uri.splitQueryString(root.getT<String>('signatureCipher') ?? '')['sp'];
 
   @override

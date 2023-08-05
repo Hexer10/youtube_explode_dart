@@ -15,8 +15,10 @@ class SearchQuery {
 
   /// Search a video.
   static Future<SearchQuery> search(
-      YoutubeHttpClient httpClient, String searchQuery,
-      {SearchFilter filter = const SearchFilter(''),}) async {
+    YoutubeHttpClient httpClient,
+    String searchQuery, {
+    SearchFilter filter = const SearchFilter(''),
+  }) async {
     final page = await SearchPage.get(httpClient, searchQuery, filter: filter);
     return SearchQuery(httpClient, searchQuery, page);
   }

@@ -19,127 +19,125 @@ class Video with _$Video {
   bool get hasWatchPage => watchPage != null;
 
   factory Video(
+    /// Video ID.
+    VideoId id,
 
+    /// Video title.
+    String title,
+
+    /// Video author.
+    String author,
+
+    /// Video author Id.
+    ChannelId channelId,
+
+    /// Video upload date.
+    /// Note: For search queries it is calculated with:
+    ///   DateTime.now() - how much time is was published.
+    DateTime? uploadDate,
+    String? uploadDateRaw,
+
+    /// Video publish date.
+    DateTime? publishDate,
+
+    /// Video description.
+    String description,
+
+    /// Duration of the video.
+    Duration? duration,
+
+    /// Available thumbnails for this video.
+    ThumbnailSet thumbnails,
+
+    /// Search keywords used for this video.
+    Iterable<String>? keywords,
+
+    /// Engagement statistics for this video.
+    Engagement engagement,
+
+    /// Returns true if this is a live stream.
+    //ignore: avoid_positional_boolean_parameters
+    bool isLive, [
+    /// Used internally.
+    /// Shouldn't be used in the code.
+    @internal WatchPage? watchPage,
+  ]) {
+    return Video._internal(
       /// Video ID.
-      VideoId id,
+      id,
 
       /// Video title.
-      String title,
+      title,
 
       /// Video author.
-      String author,
+      author,
 
       /// Video author Id.
-      ChannelId channelId,
+      channelId,
 
       /// Video upload date.
       /// Note: For search queries it is calculated with:
       ///   DateTime.now() - how much time is was published.
-      DateTime? uploadDate,
-      String? uploadDateRaw,
+      uploadDate,
+      uploadDateRaw,
 
       /// Video publish date.
-      DateTime? publishDate,
-
-      /// Video description.
-      String description,
-
-      /// Duration of the video.
-      Duration? duration,
-
-      /// Available thumbnails for this video.
-      ThumbnailSet thumbnails,
-
-      /// Search keywords used for this video.
-      Iterable<String>? keywords,
-
-      /// Engagement statistics for this video.
-      Engagement engagement,
-
-      /// Returns true if this is a live stream.
-      //ignore: avoid_positional_boolean_parameters
-      bool isLive,
-      [
-      /// Used internally.
-      /// Shouldn't be used in the code.
-      @internal WatchPage? watchPage,]) {
-    return Video._internal(
-
-        /// Video ID.
-        id,
-
-        /// Video title.
-        title,
-
-        /// Video author.
-        author,
-
-        /// Video author Id.
-        channelId,
-
-        /// Video upload date.
-        /// Note: For search queries it is calculated with:
-        ///   DateTime.now() - how much time is was published.
-        uploadDate,
-        uploadDateRaw,
-
-        /// Video publish date.
-        publishDate,
-        description,
-        duration,
-        thumbnails,
-        UnmodifiableListView(keywords ?? const Iterable.empty()),
-        engagement,
-        isLive,
-        watchPage,);
+      publishDate,
+      description,
+      duration,
+      thumbnails,
+      UnmodifiableListView(keywords ?? const Iterable.empty()),
+      engagement,
+      isLive,
+      watchPage,
+    );
   }
 
   /// Initializes an instance of [Video]
   const factory Video._internal(
+    /// Video ID.
+    VideoId id,
 
-      /// Video ID.
-      VideoId id,
+    /// Video title.
+    String title,
 
-      /// Video title.
-      String title,
+    /// Video author.
+    String author,
 
-      /// Video author.
-      String author,
+    /// Video author Id.
+    ChannelId channelId,
 
-      /// Video author Id.
-      ChannelId channelId,
+    /// Video upload date.
+    /// Note: For search queries it is calculated with:
+    ///   DateTime.now() - how much time is was published.
+    DateTime? uploadDate,
+    String? uploadDateRaw,
 
-      /// Video upload date.
-      /// Note: For search queries it is calculated with:
-      ///   DateTime.now() - how much time is was published.
-      DateTime? uploadDate,
-      String? uploadDateRaw,
+    /// Video publish date.
+    DateTime? publishDate,
 
-      /// Video publish date.
-      DateTime? publishDate,
+    /// Video description.
+    String description,
 
-      /// Video description.
-      String description,
+    /// Duration of the video.
+    Duration? duration,
 
-      /// Duration of the video.
-      Duration? duration,
+    /// Available thumbnails for this video.
+    ThumbnailSet thumbnails,
 
-      /// Available thumbnails for this video.
-      ThumbnailSet thumbnails,
+    /// Search keywords used for this video.
+    UnmodifiableListView<String> keywords,
 
-      /// Search keywords used for this video.
-      UnmodifiableListView<String> keywords,
+    /// Engagement statistics for this video.
+    Engagement engagement,
 
-      /// Engagement statistics for this video.
-      Engagement engagement,
-
-      /// Returns true if this is a live stream.
-      //ignore: avoid_positional_boolean_parameters
-      bool isLive,
-      [
-      /// Used internally.
-      /// Shouldn't be used in the code.
-      @internal WatchPage? watchPage,]) = _Video;
+    /// Returns true if this is a live stream.
+    //ignore: avoid_positional_boolean_parameters
+    bool isLive, [
+    /// Used internally.
+    /// Shouldn't be used in the code.
+    @internal WatchPage? watchPage,
+  ]) = _Video;
 
   const Video._();
 }

@@ -24,19 +24,23 @@ class CommentsList extends BasePagedList<Comment> {
     }
 
     return CommentsList(
-        page.comments!
-            .map((e) => Comment(
-                e.author,
-                ChannelId(e.channelId),
-                e.text,
-                e.likeCount ?? 0,
-                e.publishTime,
-                e.repliesCount ?? 0,
-                e.isHearted,
-                e.continuation,),)
-            .toList(growable: false),
-        totalLength,
-        page,
-        _httpClient,);
+      page.comments!
+          .map(
+            (e) => Comment(
+              e.author,
+              ChannelId(e.channelId),
+              e.text,
+              e.likeCount ?? 0,
+              e.publishTime,
+              e.repliesCount ?? 0,
+              e.isHearted,
+              e.continuation,
+            ),
+          )
+          .toList(growable: false),
+      totalLength,
+      page,
+      _httpClient,
+    );
   }
 }

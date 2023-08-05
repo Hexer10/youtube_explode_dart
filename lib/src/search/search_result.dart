@@ -49,34 +49,34 @@ class SearchResult with _$SearchResult {
 
   /// Metadata related to a search query result (playlist)
   const factory SearchResult.playlist(
+    /// PlaylistId.
+    PlaylistId id,
 
-      /// PlaylistId.
-      PlaylistId id,
+    /// Playlist title.
+    String title,
 
-      /// Playlist title.
-      String title,
+    /// Playlist video count, cannot be greater than 50.
+    int videoCount,
 
-      /// Playlist video count, cannot be greater than 50.
-      int videoCount,
-
-      /// Video thumbnail
-      List<Thumbnail> thumbnails,) = SearchPlaylist;
+    /// Video thumbnail
+    List<Thumbnail> thumbnails,
+  ) = SearchPlaylist;
 
   /// Metadata related to a search query result (channel)
   const factory SearchResult.channel(
+    /// Channel id.
+    ChannelId id,
 
-      /// Channel id.
-      ChannelId id,
+    /// Channel name.
+    String name,
 
-      /// Channel name.
-      String name,
+    /// Description snippet.
+    /// Can be empty.
+    String description,
 
-      /// Description snippet.
-      /// Can be empty.
-      String description,
-
-      /// Channel uploaded videos.
-      int videoCount,) = SearchChannel;
+    /// Channel uploaded videos.
+    int videoCount,
+  ) = SearchChannel;
 }
 
 @Deprecated('Use SearchPlaylist')
