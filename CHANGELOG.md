@@ -1,3 +1,6 @@
+## 2.0.2
+- Remove unused left-over code.
+
 ## 2.0.1
 - Linter fixes.
 

@@ -33,21 +33,3 @@ class ClosedCaptionManifest {
         .toList();
   }
 }
-
-bool x(bool autoGen, bool isAuto) {
-  if (!autoGen) {
-    return !isAuto;
-  }
-  return true;
-}
-/*
-A = 0
-B = 1
-
-A B
-0 0 -> 1 |
-0 1 -> 0 -> 1 | 1 ->
-1 0 -> 1
-1 1 -> 1
-
- */
