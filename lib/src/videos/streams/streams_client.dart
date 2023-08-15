@@ -1,231 +1,272 @@
-import '../../exceptions/exceptions.dart';
+import 'dart:convert';
+
+import 'package:collection/collection.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:youtube_explode_dart/src/reverse_engineering/models/stream_info_provider.dart';
+
 import '../../extensions/helpers_extension.dart';
-import '../../reverse_engineering/cipher/cipher_operations.dart';
-import '../../reverse_engineering/clients/embedded_player_client.dart';
-import '../../reverse_engineering/dash_manifest.dart';
-import '../../reverse_engineering/heuristics.dart';
-import '../../reverse_engineering/models/stream_info_provider.dart';
-import '../../reverse_engineering/pages/watch_page.dart';
-import '../../reverse_engineering/player/player_source.dart';
-import '../../reverse_engineering/youtube_http_client.dart';
-import '../video_id.dart';
-import 'streams.dart';
 
-/// Queries related to media streams of YouTube videos.
-class StreamsClient {
-  final YoutubeHttpClient _httpClient;
+///
+class PlayerResponse {
+  // Json parsed map
+  JsonMap root;
 
-  /// Initializes an instance of [StreamsClient]
-  StreamsClient(this._httpClient);
+  ///
+  late final String playabilityStatus =
+      root.get('playabilityStatus')!.getT<String>('status')!;
 
-  Future<DashManifest> _getDashManifest(
-      Uri dashManifestUrl, Iterable<CipherOperation> cipherOperations) {
-    var signature =
-        DashManifest.getSignatureFromUrl(dashManifestUrl.toString());
-    if (!signature.isNullOrWhiteSpace) {
-      signature = cipherOperations.decipher(signature!);
-      dashManifestUrl = dashManifestUrl.setQueryParam('signature', signature);
+  ///
+  bool get isVideoAvailable => playabilityStatus.toLowerCase() != 'error';
+
+  ///
+  bool get isVideoPlayable => playabilityStatus.toLowerCase() == 'ok';
+
+  ///
+  String get videoTitle => root.get('videoDetails')!.getT<String>('title')!;
+
+  ///
+  String get videoAuthor => root.get('videoDetails')!.getT<String>('author')!;
+
+  ///
+  DateTime? get videoUploadDate => root
+      .get('microformat')
+      ?.get('playerMicroformatRenderer')
+      ?.getT<String>('uploadDate')
+      ?.parseDateTime();
+
+  ///
+  DateTime? get videoPublishDate => root
+      .get('microformat')
+      ?.get('playerMicroformatRenderer')
+      ?.getT<String>('publishDate')
+      ?.parseDateTime();
+
+  ///
+  String get videoChannelId =>
+      root.get('videoDetails')!.getT<String>('channelId')!;
+
+  ///
+  Duration get videoDuration => Duration(
+      seconds:
+          int.parse(root.get('videoDetails')!.getT<String>('lengthSeconds')!));
+
+  ///
+  List<String> get videoKeywords =>
+      root
+          .get('videoDetails')
+          ?.getT<List<dynamic>>('keywords')
+          ?.cast<String>() ??
+      const [];
+
+  ///
+  String get videoDescription =>
+      root.get('videoDetails')!.getT<String>('shortDescription')!;
+
+  ///
+  int get videoViewCount =>
+      int.parse(root.get('videoDetails')!.getT<String>('viewCount')!);
+
+  ///
+  String? get previewVideoId =>
+      root
+          .get('playabilityStatus')
+          ?.get('errorScreen')
+          ?.get('playerLegacyDesktopYpcTrailerRenderer')
+          ?.getT<String>('trailerVideoId') ??
+      Uri.splitQueryString(root
+              .get('playabilityStatus')
+              ?.get('errorScreen')
+              ?.get('')
+              ?.get('ypcTrailerRenderer')
+              ?.getT<String>('playerVars') ??
+          '')['video_id'] ??
+      root
+          .get('playabilityStatus')
+          ?.get("errorScreen")
+          ?.get("ypcTrailerRenderer")
+          ?.getT<String>("playerResponse")
+          // From https://github.com/Tyrrrz/YoutubeExplode
+          // YouTube uses weird base64-like encoding here that I don't know how to deal with.
+          // It's supposed to have JSON inside, but if extracted as is, it contains garbage.
+          // Luckily, some of the text gets decoded correctly, which is enough for us to
+          // extract the preview video ID using regex.
+          ?.replaceAll('-', '+')
+          .replaceAll('_', '/')
+          .pipe(base64.decode)
+          .pipe(utf8.decode)
+          .pipe((value) =>
+              RegExp(r'video_id=(.{11})').firstMatch(value)?.group(1))
+          ?.nullIfWhitespace;
+
+  ///
+  bool get isLive => root.get('videoDetails')?.getT<bool>('isLive') ?? false;
+
+  ///
+  String? get hlsManifestUrl =>
+      root.get('streamingData')?.getT<String>('hlsManifestUrl');
+
+  ///
+  String? get dashManifestUrl =>
+      root.get('streamingData')?.getT<String>('dashManifestUrl');
+
+  ///
+  late final List<StreamInfoProvider> muxedStreams = root
+          .get('streamingData')
+          ?.getList('formats')
+          ?.map((e) => _StreamInfo(e, StreamSource.muxed))
+          .cast<StreamInfoProvider>()
+          .toList() ??
+      const <StreamInfoProvider>[];
+
+  ///
+  late final List<StreamInfoProvider> adaptiveStreams = root
+          .get('streamingData')
+          ?.getList('adaptiveFormats')
+          ?.map((e) => _StreamInfo(e, StreamSource.adaptive))
+          .cast<StreamInfoProvider>()
+          .toList() ??
+      const [];
+
+  ///
+  late final List<StreamInfoProvider> streams = [
+    ...muxedStreams,
+    ...adaptiveStreams
+  ];
+
+  ///
+  late final List<ClosedCaptionTrack> closedCaptionTrack = root
+          .get('captions')
+          ?.get('playerCaptionsTracklistRenderer')
+          ?.getList('captionTracks')
+          ?.map((e) => ClosedCaptionTrack(e))
+          .cast<ClosedCaptionTrack>()
+          .toList() ??
+      const [];
+
+  ///
+  late final String? videoPlayabilityError =
+      root.get('playabilityStatus')?.getT<String>('reason');
+
+  PlayerResponse(this.root);
+
+  ///
+  PlayerResponse.parse(String raw) : root = json.decode(raw);
+}
+
+///
+class ClosedCaptionTrack {
+  // Json parsed class
+  final JsonMap root;
+
+  ///
+  String get url => root.getT<String>('baseUrl')!;
+
+  ///
+  String get languageCode => root.getT<String>('languageCode')!;
+
+  ///
+  String? get languageName => root.get('name')!.getT<String>('simpleText');
+
+  ///
+  bool get autoGenerated =>
+      root.getT<String>('vssId')!.toLowerCase().startsWith('a.');
+
+  ///
+  ClosedCaptionTrack(this.root);
+}
+
+class _StreamInfo extends StreamInfoProvider {
+  static final _contentLenExp = RegExp(r'[\?&]clen=(\d+)');
+
+  /// Json parsed map
+  final JsonMap root;
+
+  @override
+  late final int? bitrate = root.getT<int>('bitrate');
+
+  @override
+  late final String container = codec.subtype;
+
+  @override
+  late final int? contentLength = int.tryParse(
+      root.getT<String>('contentLength') ??
+          _contentLenExp.firstMatch(url)?.group(1) ??
+          '');
+
+  @override
+  late final int? framerate = root.getT<int>('fps');
+
+  @override
+  late final String? signature =
+      Uri.splitQueryString(root.getT<String>('signatureCipher') ?? '')['s'];
+
+  @override
+  late final String? signatureParameter = Uri.splitQueryString(
+          root.getT<String>('cipher') ?? '')['sp'] ??
+      Uri.splitQueryString(root.getT<String>('signatureCipher') ?? '')['sp'];
+
+  @override
+  late final int tag = root.getT<int>('itag')!;
+
+  @override
+  late final String url = root.getT<String>('url') ??
+      Uri.splitQueryString(root.getT<String>('cipher') ?? '')['url'] ??
+      Uri.splitQueryString(root.getT<String>('signatureCipher') ?? '')['url']!;
+
+  @override
+  late final String? videoCodec = isAudioOnly
+      ? null
+      : codecs?.split(',').firstOrNull?.trim().nullIfWhitespace;
+
+  @override
+  late final int? videoHeight = root.getT<int>('height');
+
+  @override
+  @Deprecated('Use qualityLabel')
+  String get videoQualityLabel => qualityLabel;
+
+  @override
+  late final String qualityLabel = root.getT<String>('qualityLabel') ??
+      'tiny'; // Not sure if 'tiny' is the correct placeholder.
+
+  @override
+  late final int? videoWidth = root.getT<int>('width');
+
+  late final bool isAudioOnly = codec.type == 'audio';
+
+  @override
+  late final MediaType codec = _getMimeType()!;
+
+  MediaType? _getMimeType() {
+    var mime = root.getT<String>('mimeType');
+    if (mime == null) {
+      return null;
     }
-    return DashManifest.get(_httpClient, dashManifestUrl);
+    return MediaType.parse(mime);
   }
 
-  Future<StreamContext> _getStreamContextFromEmbeddedClient(
-      VideoId videoId) async {
-    final page = await EmbeddedPlayerClient.get(_httpClient, videoId.value);
+  late final String? codecs = codec.parameters['codecs']?.toLowerCase();
 
-    return StreamContext(page.streams.toList(), const []);
+  @override
+  late final String? audioCodec =
+      isAudioOnly ? codecs : _getAudioCodec(codecs?.split(','))?.trim();
+
+  String? _getAudioCodec(List<String>? codecs) {
+    if (codecs == null) {
+      return null;
+    }
+    if (codecs.length == 1) {
+      return null;
+    }
+    return codecs.last;
   }
 
-  Future<StreamContext> _getStreamContextFromWatchPage(VideoId videoId) async {
-    final watchPage = await WatchPage.get(_httpClient, videoId.toString());
+  @override
+  final StreamSource source;
 
-    final playerConfig = watchPage.playerConfig;
+  _StreamInfo(this.root, this.source);
+}
 
-    var playerResponse =
-        watchPage.playerResponse ?? playerConfig?.playerResponse;
-    if (playerResponse == null) {
-      throw VideoUnplayableException.unplayable(videoId);
-    }
-
-    var previewVideoId = playerResponse.previewVideoId;
-    if (!previewVideoId.isNullOrWhiteSpace) {
-      throw VideoRequiresPurchaseException.preview(
-          videoId, VideoId(previewVideoId!));
-    }
-
-    var playerSourceUrl = watchPage.sourceUrl ?? playerConfig?.sourceUrl;
-    var playerSource = !playerSourceUrl.isNullOrWhiteSpace
-        ? await PlayerSource.get(_httpClient, playerSourceUrl!)
-        : null;
-    var cipherOperations =
-        playerSource?.getCipherOperations() ?? const <CipherOperation>[];
-
-    if (!playerResponse.isVideoPlayable) {
-      throw VideoUnplayableException.unplayable(videoId,
-          reason: playerResponse.videoPlayabilityError ?? '');
-    }
-
-    if (playerResponse.isLive) {
-      throw VideoUnplayableException.liveStream(videoId);
-    }
-
-    var streamInfoProviders = <StreamInfoProvider>[
-      ...playerResponse.streams,
-    ];
-
-    var dashManifestUrl = playerResponse.dashManifestUrl;
-    if (!(dashManifestUrl?.isNullOrWhiteSpace ?? true)) {
-      var dashManifest =
-          await _getDashManifest(Uri.parse(dashManifestUrl!), cipherOperations);
-      streamInfoProviders.addAll(dashManifest.streams);
-    }
-    return StreamContext(streamInfoProviders, cipherOperations);
-  }
-
-  Future<StreamManifest> _getManifest(StreamContext streamContext) async {
-    // To make sure there are no duplicates streams, group them by tag
-    var streams = <int, StreamInfo>{};
-
-    for (final streamInfo in streamContext.streamInfoProviders) {
-      var tag = streamInfo.tag;
-      var url = Uri.parse(streamInfo.url);
-
-      // Signature
-      var signature = streamInfo.signature;
-      var signatureParameter = streamInfo.signatureParameter ?? 'signature';
-
-      if (!signature.isNullOrWhiteSpace) {
-        signature = streamContext.cipherOperations.decipher(signature!);
-        url = url.setQueryParam(signatureParameter, signature);
-      }
-
-      // Content length - Dont try to get content length of a dash stream.
-      var contentLength = streamInfo.source == StreamSource.dash
-          ? 0
-          : streamInfo.contentLength ??
-              await _httpClient.getContentLength(url, validate: false) ??
-              0;
-
-      if (contentLength == 0 && streamInfo.source != StreamSource.dash) {
-        continue;
-      }
-      // Common
-      var container = StreamContainer.parse(streamInfo.container!);
-      var fileSize = FileSize(contentLength);
-      var bitrate = Bitrate(streamInfo.bitrate ?? 0);
-
-      var audioCodec = streamInfo.audioCodec;
-      var videoCodec = streamInfo.videoCodec;
-
-      // Muxed or Video-only
-      if (!videoCodec.isNullOrWhiteSpace) {
-        var framerate = Framerate(streamInfo.framerate ?? 24);
-        var videoQuality = VideoQualityUtil.fromLabel(streamInfo.qualityLabel);
-
-        var videoWidth = streamInfo.videoWidth;
-        var videoHeight = streamInfo.videoHeight;
-        var videoResolution = videoWidth != -1 && videoHeight != -1
-            ? VideoResolution(videoWidth ?? 0, videoHeight ?? 0)
-            : videoQuality.toVideoResolution();
-
-        // Muxed
-        if (!audioCodec.isNullOrWhiteSpace &&
-            streamInfo.source != StreamSource.adaptive) {
-          streams[tag] = MuxedStreamInfo(
-            tag,
-            url,
-            container,
-            fileSize,
-            bitrate,
-            audioCodec!,
-            videoCodec!,
-            streamInfo.qualityLabel,
-            videoQuality,
-            videoResolution,
-            framerate,
-            streamInfo.codec,
-          );
-          continue;
-        }
-
-        // Video only
-        streams[tag] = VideoOnlyStreamInfo(
-            tag,
-            url,
-            container,
-            fileSize,
-            bitrate,
-            videoCodec!,
-            streamInfo.qualityLabel,
-            videoQuality,
-            videoResolution,
-            framerate,
-            streamInfo.fragments ?? const [],
-            streamInfo.codec);
-        continue;
-      }
-      // Audio-only
-      if (!audioCodec.isNullOrWhiteSpace) {
-        streams[tag] = AudioOnlyStreamInfo(
-            tag,
-            url,
-            container,
-            fileSize,
-            bitrate,
-            audioCodec!,
-            streamInfo.qualityLabel,
-            streamInfo.fragments ?? const [],
-            streamInfo.codec);
-      }
-
-      // #if DEBUG
-      // throw FatalFailureException("Stream info doesn't contain audio/video codec information.");
-    }
-
-    return StreamManifest(streams.values);
-  }
-
-  /// Gets the manifest that contains information
-  /// about available streams in the specified video.
-  Future<StreamManifest> getManifest(dynamic videoId) async {
-    videoId = VideoId.fromString(videoId);
-
-    try {
-      final context = await _getStreamContextFromEmbeddedClient(videoId);
-      return _getManifest(context);
-    } on YoutubeExplodeException {
-      //TODO: ignore
-    }
-    final context = await _getStreamContextFromWatchPage(videoId);
-
-    return _getManifest(context);
-  }
-
-  /// Gets the HTTP Live Stream (HLS) manifest URL
-  /// for the specified video (if it's a live video stream).
-  Future<String> getHttpLiveStreamUrl(VideoId videoId) async {
-    final watchPage = await WatchPage.get(_httpClient, videoId.value);
-
-    final playerResponse = watchPage.playerResponse;
-
-    if (playerResponse == null) {
-      throw TransientFailureException(
-          'Couldn\'t extract the playerResponse from the Watch Page!');
-    }
-
-    if (!playerResponse.isVideoPlayable) {
-      throw VideoUnplayableException.unplayable(videoId,
-          reason: playerResponse.videoPlayabilityError ?? '');
-    }
-
-    var hlsManifest = playerResponse.hlsManifestUrl;
-    if (hlsManifest == null) {
-      throw VideoUnplayableException.notLiveStream(videoId);
-    }
-    return hlsManifest;
-  }
-
-  /// Gets the actual stream which is identified by the specified metadata.
-  Stream<List<int>> get(StreamInfo streamInfo) =>
-      _httpClient.getStream(streamInfo);
+extension PipeExt<T extends Object?> on T {
+  R pipe<R>(R Function(T value) f) => f(this);
 }
