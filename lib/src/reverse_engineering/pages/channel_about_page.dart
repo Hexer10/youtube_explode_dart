@@ -117,6 +117,19 @@ class _InitialData extends InitialData {
             ),
           )
           .toList() ??
+      content
+          .getList('links')
+          ?.map((e) => e['channelExternalLinkViewModel'])
+          .whereNotNull()
+          .cast<Map<String, dynamic>>()
+          .map((e) {
+        return ChannelLink(
+          e.get('title')?.getT<String>('content') ?? '',
+          Uri.parse('https://${e.get('link')!.getT<String>('content')!}'),
+          // Youtube doesn't provide icons anymore.
+          Uri(),
+        );
+      }).toList() ??
       [];
 
   late final int? viewCount =

@@ -24,6 +24,8 @@ mixin _$ChannelLink {
   Uri get url => throw _privateConstructorUsedError;
 
   /// Link Icon URL.
+  @Deprecated(
+      'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
   Uri get icon => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -37,7 +39,12 @@ abstract class $ChannelLinkCopyWith<$Res> {
           ChannelLink value, $Res Function(ChannelLink) then) =
       _$ChannelLinkCopyWithImpl<$Res, ChannelLink>;
   @useResult
-  $Res call({String title, Uri url, Uri icon});
+  $Res call(
+      {String title,
+      Uri url,
+      @Deprecated(
+          'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
+      Uri icon});
 }
 
 /// @nodoc
@@ -82,7 +89,12 @@ abstract class _$$_ChannelLinkCopyWith<$Res>
       __$$_ChannelLinkCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title, Uri url, Uri icon});
+  $Res call(
+      {String title,
+      Uri url,
+      @Deprecated(
+          'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
+      Uri icon});
 }
 
 /// @nodoc
@@ -120,7 +132,12 @@ class __$$_ChannelLinkCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ChannelLink implements _ChannelLink {
-  const _$_ChannelLink(this.title, this.url, this.icon);
+  const _$_ChannelLink(
+      this.title,
+      this.url,
+      @Deprecated(
+          'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
+      this.icon);
 
   /// Link title.
   @override
@@ -133,6 +150,8 @@ class _$_ChannelLink implements _ChannelLink {
 
   /// Link Icon URL.
   @override
+  @Deprecated(
+      'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
   final Uri icon;
 
   @override
@@ -162,7 +181,11 @@ class _$_ChannelLink implements _ChannelLink {
 
 abstract class _ChannelLink implements ChannelLink {
   const factory _ChannelLink(
-      final String title, final Uri url, final Uri icon) = _$_ChannelLink;
+      final String title,
+      final Uri url,
+      @Deprecated(
+          'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
+      final Uri icon) = _$_ChannelLink;
 
   @override
 
@@ -176,6 +199,8 @@ abstract class _ChannelLink implements ChannelLink {
   @override
 
   /// Link Icon URL.
+  @Deprecated(
+      'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
   Uri get icon;
   @override
   @JsonKey(ignore: true)
