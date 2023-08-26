@@ -1,3 +1,6 @@
+## 2.0.2
+- Implement YT Handles.
+
 ## 2.0.1
 - Linter fixes.
 
