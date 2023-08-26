@@ -6,6 +6,7 @@ library youtube_explode.channels;
 export 'channel.dart';
 export 'channel_about.dart';
 export 'channel_client.dart';
+export 'channel_handle.dart';
 export 'channel_id.dart';
 export 'channel_link.dart';
 export 'channel_uploads_list.dart';

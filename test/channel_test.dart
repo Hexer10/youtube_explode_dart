@@ -41,6 +41,11 @@ void main() {
     expect(channel.id.value, 'UCEnBXANsKmyj2r9xVyKoDiQ');
   });
 
+  test('Get metadata of a channel by handle', () async {
+    final channel = await yt!.channels.getByHandle(ChannelHandle('@Hexer10'));
+    expect(channel.id.value, 'UCqKbtOLx4NCBh5KKMSmbX0g');
+  });
+
   test('Get metadata of a channel by a video', () async {
     final channel = await yt!.channels.getByVideo(VideoId('TW_yxPcodhk'));
     expect(channel.id.value, 'UCqKbtOLx4NCBh5KKMSmbX0g');

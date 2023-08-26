@@ -8,6 +8,7 @@ import '../reverse_engineering/pages/watch_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
 import '../videos/video_id.dart';
+import 'channel_handle.dart';
 import 'channels.dart';
 
 /// Queries related to YouTube channels.
@@ -42,6 +43,22 @@ class ChannelClient {
     final channelPage = await ChannelPage.getByUsername(
       _httpClient,
       (username as Username).value,
+    );
+    return Channel(
+      ChannelId(channelPage.channelId),
+      channelPage.channelTitle,
+      channelPage.channelLogoUrl,
+      channelPage.channelBannerUrl,
+      channelPage.subscribersCount,
+    );
+  }
+
+  Future<Channel> getByHandle(dynamic handle) async {
+    handle = ChannelHandle.fromString(handle);
+
+    final channelPage = await ChannelPage.getByHandle(
+      _httpClient,
+      (handle as ChannelHandle).value,
     );
     return Channel(
       ChannelId(channelPage.channelId),

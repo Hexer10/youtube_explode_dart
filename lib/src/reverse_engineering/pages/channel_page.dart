@@ -78,6 +78,31 @@ class ChannelPage extends YoutubePage<_InitialData> {
       throw FatalFailureException('', 0);
     });
   }
+
+  ///
+  static Future<ChannelPage> getByHandle(
+    YoutubeHttpClient httpClient,
+    String handle,
+  ) {
+    final url = 'https://www.youtube.com/$handle?hl=en';
+
+    return retry(httpClient, () async {
+      try {
+        final raw = await httpClient.getString(url);
+        final result = ChannelPage.parse(raw);
+
+        if (!result.isOk) {
+          throw TransientFailureException('Channel page is broken');
+        }
+        return result;
+      } on FatalFailureException catch (e) {
+        if (e.statusCode != 404) {
+          rethrow;
+        }
+      }
+      throw FatalFailureException('', 0);
+    });
+  }
 }
 
 class _InitialData extends InitialData {
