@@ -1,7 +1,7 @@
 ## 2.0.2
 - Implement YT Handles.
 - Deprecated ChannelLink icon's uri, they are no longer provided by YT.
-
+- Remove unused left-over code.
 
 ## 2.0.1
 - Linter fixes.
