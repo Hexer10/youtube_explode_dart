@@ -220,7 +220,7 @@ extension GetOrNullMap on Map {
   }
 
   /// Get a value inside a map.
-  /// If it is null this returns null, if of another type this throws.
+  /// If it is null this returns null, or another type this throws.
   T? getT<T extends Object>(String key) {
     final v = this[key];
     if (v == null) {

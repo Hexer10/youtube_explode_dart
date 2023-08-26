@@ -39,7 +39,7 @@ class ClosedCaptionTrackInfo with _$ClosedCaptionTrackInfo {
   }
 
   @override
-  String toString() => 'CC Track ($language)';
+  String toString() => 'CC Track ($language, ${format.formatCode})';
 
   ///
   factory ClosedCaptionTrackInfo.fromJson(Map<String, dynamic> json) =>

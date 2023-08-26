@@ -41,7 +41,7 @@ class ClosedCaption {
       parts.firstWhereOrNull((e) => e.offset >= offset);
 
   @override
-  String toString() => 'Text: $text';
+  String toString() => 'Text($offset): $text';
 
   ///
   factory ClosedCaption.fromJson(Map<String, dynamic> json) =>

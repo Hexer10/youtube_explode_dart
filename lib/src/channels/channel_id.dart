@@ -32,11 +32,6 @@ class ChannelId with _$ChannelId {
     return ChannelId(obj.toString());
   }
 
-/*  ChannelId(String value) : value = parseChannelId(value) ?? '' {
-    if (this.value.isEmpty) {
-      throw ArgumentError.value(value);
-    }*/
-
   /// Returns true if the given id is a valid channel id.
   static bool validateChannelId(String id) {
     if (id.isNullOrWhiteSpace) {
