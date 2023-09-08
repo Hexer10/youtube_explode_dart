@@ -58,7 +58,7 @@ class ChannelPage extends YoutubePage<_InitialData> {
     YoutubeHttpClient httpClient,
     String username,
   ) {
-    var url = 'https://www.youtube.com/user/$username?hl=en';
+    var url = 'https://www.youtube.com/@$username';
 
     return retry(httpClient, () async {
       try {
