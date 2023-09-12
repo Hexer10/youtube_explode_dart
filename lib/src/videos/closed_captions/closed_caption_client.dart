@@ -59,15 +59,17 @@ class ClosedCaptionClient {
     final response =
         await re.ClosedCaptionClient.get(_httpClient, trackInfo.url);
 
-    final captions =
-        response.closedCaptions.where((e) => !e.text.isNullOrWhiteSpace).map(
-              (e) => ClosedCaption(
-                e.text,
-                e.offset,
-                e.duration,
-                e.parts.map((f) => ClosedCaptionPart(f.text, f.offset)),
-              ),
-            );
+    final captions = [
+      for (final e in response.closedCaptions)
+        if (!e.text.isNullOrWhiteSpace)
+          ClosedCaption(
+            e.text,
+            e.offset,
+            e.duration,
+            e.parts.map((f) => ClosedCaptionPart(f.text, f.offset)),
+          ),
+    ];
+
     return ClosedCaptionTrack(captions);
   }
 

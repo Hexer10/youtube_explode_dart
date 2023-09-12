@@ -1,3 +1,7 @@
+## 2.0.3
+- Better performance for iterating through closed captions elements. #251
+
+
 ## 2.0.2
 - Implement YT Handles.
 - Deprecated ChannelLink icon's uri, they are no longer provided by YT.
