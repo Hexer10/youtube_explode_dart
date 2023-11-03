@@ -49,7 +49,7 @@ void main() {
     final videos = await yt!.playlists
         .getVideos(
           PlaylistId(
-            'https://www.youtube.com/playlist?list=PLCSusC_jlo14J0uBgFqfHsKu7gc5W2HyM',
+            'https://www.youtube.com/playlist?list=PLn4GvABOzCQursVQ7qMU9CkNaKz4RgrVM',
           ),
         )
         .toList();
