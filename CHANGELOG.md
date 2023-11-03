@@ -1,6 +1,6 @@
 ## 2.0.3
 - Better performance for iterating through closed captions elements. #251
-
+- Refactor else-if into switch expression. #240
 
 ## 2.0.2
 - Implement YT Handles.
