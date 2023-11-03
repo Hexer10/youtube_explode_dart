@@ -1,5 +1,6 @@
 import '../channels/channel_id.dart';
 import '../common/common.dart';
+import '../extensions/helpers_extension.dart';
 import '../reverse_engineering/pages/playlist_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import '../videos/video.dart';
@@ -56,8 +57,8 @@ class PlaylistClient {
           video.title,
           video.author,
           ChannelId(video.channelId),
-          null,
-          null,
+          video.uploadDateRaw.toDateTime(),
+          video.uploadDateRaw,
           null,
           video.description,
           video.duration,

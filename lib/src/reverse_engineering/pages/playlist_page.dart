@@ -215,5 +215,15 @@ class _Video {
       root.get('lengthText')?.getT<String>('simpleText')?.toDuration();
 
   int get viewCount =>
-      root.get('viewCountText')?.getT<String>('simpleText').parseInt() ?? 0;
+      root.get('viewCountText')?.getT<String>('simpleText').parseInt() ??
+      _videoInfo?.split('•').elementAtSafe(0)?.stripNonDigits().parseInt() ??
+      0;
+
+  String? get uploadDateRaw => _videoInfo?.split('•').elementAtSafe(1);
+
+  String? get _videoInfo => root
+      .get('videoInfo')
+      ?.getT<List<dynamic>>('runs')!
+      .cast<Map<dynamic, dynamic>>()
+      .parseRuns();
 }

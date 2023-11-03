@@ -86,6 +86,31 @@ extension StringUtility on String {
   }
 
   DateTime parseDateTime() => DateTime.parse(this);
+
+  static final _viewCountExp = RegExp(r'^(\d+\.?\d+?)([KMB])? views$');
+
+  /// Parse view count from a string formatted as an integer and its magnitude.
+  /// Example: 5 views, 1.5K views, 2.3M views, 3.4B views.
+  /// If this fails returns null.
+  int? parseViewCount() {
+    final match = _viewCountExp.firstMatch(this);
+    if (match == null) {
+      return null;
+    }
+    if (match.groupCount != 2) {
+      return null;
+    }
+    final count = double.tryParse(match.group(1) ?? '1');
+    final unitStr = match.group(2);
+
+    final unit = switch (unitStr) {
+      'B' => 1000000000,
+      'M' => 1000000,
+      'K' => 1000,
+      _ => 1
+    };
+    return (count! * unit).toInt();
+  }
 }
 
 /// Utility for Strings.
