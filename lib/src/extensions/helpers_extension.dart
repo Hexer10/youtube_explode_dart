@@ -178,25 +178,18 @@ extension StringUtility2 on String? {
 
     // Try to get the unit
     final unit = parts[1];
-    Duration time;
-    if (unit.startsWith('second')) {
-      time = Duration(seconds: qty);
-    } else if (unit.startsWith('minute')) {
-      time = Duration(minutes: qty);
-    } else if (unit.startsWith('hour')) {
-      time = Duration(hours: qty);
-    } else if (unit.startsWith('day')) {
-      time = Duration(days: qty);
-    } else if (unit.startsWith('week')) {
-      time = Duration(days: qty * 7);
-    } else if (unit.startsWith('month')) {
-      time = Duration(days: qty * 30);
-    } else if (unit.startsWith('year')) {
-      time = Duration(days: qty * 365);
-    } else {
-      throw StateError("Couldn't parse $unit unit of time. "
-          'Please report this to the project page!');
-    }
+
+    final time = switch (unit) {
+      _ when unit.startsWith('second') => Duration(seconds: qty),
+      _ when unit.startsWith('minute') => Duration(minutes: qty),
+      _ when unit.startsWith('hour') => Duration(hours: qty),
+      _ when unit.startsWith('day') => Duration(days: qty),
+      _ when unit.startsWith('week') => Duration(days: qty * 7),
+      _ when unit.startsWith('month') => Duration(days: qty * 30),
+      _ when unit.startsWith('year') => Duration(days: qty * 365),
+      _ => throw StateError("Couldn't parse $unit unit of time. "
+          'Please report this to the project page!')
+    };
 
     return DateTime.now().subtract(time);
   }
