@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
@@ -176,7 +179,7 @@ class _InitialData extends InitialData {
 
   int? _getLikes() {
     if (root['contents'] != null) {
-      final likes = root
+      final topLevelButtons = root
           .get('contents')
           ?.get('twoColumnWatchNextResults')
           ?.get('results')
@@ -186,8 +189,22 @@ class _InitialData extends InitialData {
           ?.get('videoPrimaryInfoRenderer')
           ?.get('videoActions')
           ?.get('menuRenderer')
-          ?.getList('topLevelButtons')
-          ?.firstWhereOrNull((e) => e['toggleButtonRenderer'] != null)
+          ?.getList('topLevelButtons');
+
+      if (topLevelButtons == null) {
+        return null;
+      }
+
+      final likes = topLevelButtons
+          .elementAtOrNull(0)
+          ?.get('segmentedLikeDislikeButtonViewModel')
+          ?.get('likeButtonViewModel')
+          ?.get('likeButtonViewModel')
+          ?.get('toggleButtonViewModel')
+          ?.get('toggleButtonViewModel')
+          ?.get('defaultButtonViewModel')
+          ?.get('buttonViewModel')?.getT<String>('accessibilityText') ?? topLevelButtons
+          .firstWhereOrNull((e) => e['toggleButtonRenderer'] != null)
           ?.get('toggleButtonRenderer')
           ?.get('defaultText')
           ?.get('accessibility')
