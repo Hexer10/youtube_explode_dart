@@ -1,4 +1,4 @@
-include: package:lint/strict.yaml
+include: package:lints/recommended.yaml
 
 analyzer:
   errors:
