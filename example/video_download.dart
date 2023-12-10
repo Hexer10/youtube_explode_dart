@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:console/console.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // Initialize the YoutubeExplode instance.
@@ -65,7 +64,6 @@ Future<void> download(String id) async {
   stdout.writeln(msg);
 
   // Listen for data received.
-  final progressBar = ProgressBar();
   await for (final data in audioStream) {
     // Keep track of the current downloaded data.
     count += data.length;
@@ -73,8 +71,7 @@ Future<void> download(String id) async {
     // Calculate the current progress.
     final progress = ((count / len) * 100).ceil();
 
-    // Update the progressbar.
-    progressBar.update(progress);
+    print(progress.toStringAsFixed(2));
 
     // Write to file.
     output.add(data);

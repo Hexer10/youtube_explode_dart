@@ -67,14 +67,15 @@ void main() {
       PlaylistId('PL601B2E69B03FAB9D'),
     }) {
       test('PlaylistID - ${val.value}', () async {
-        expect(yt!. playlists.getVideos(val), emits(isNotNull));
+        expect(yt!.playlists.getVideos(val), emits(isNotNull));
       });
     }
   });
 
   test('Get videos of YT music playlist', () async {
-    final playlistVideosCount = await yt!.playlists.getVideos('RDCLAK5uy_m9Rw_g5eCJtMhuRgP1eqU3H-XW7UL6uWQ').length;
-    print('OK');
+    final playlistVideosCount = await yt!.playlists
+        .getVideos('RDCLAK5uy_m9Rw_g5eCJtMhuRgP1eqU3H-XW7UL6uWQ')
+        .length;
     expect(playlistVideosCount, greaterThan(100));
   });
 }
