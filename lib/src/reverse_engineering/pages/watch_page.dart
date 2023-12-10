@@ -193,20 +193,22 @@ class _InitialData extends InitialData {
       }
 
       final likes = topLevelButtons
-          .elementAtOrNull(0)
-          ?.get('segmentedLikeDislikeButtonViewModel')
-          ?.get('likeButtonViewModel')
-          ?.get('likeButtonViewModel')
-          ?.get('toggleButtonViewModel')
-          ?.get('toggleButtonViewModel')
-          ?.get('defaultButtonViewModel')
-          ?.get('buttonViewModel')?.getT<String>('accessibilityText') ?? topLevelButtons
-          .firstWhereOrNull((e) => e['toggleButtonRenderer'] != null)
-          ?.get('toggleButtonRenderer')
-          ?.get('defaultText')
-          ?.get('accessibility')
-          ?.get('accessibilityData')
-          ?.getT<String>('label');
+              .elementAtOrNull(0)
+              ?.get('segmentedLikeDislikeButtonViewModel')
+              ?.get('likeButtonViewModel')
+              ?.get('likeButtonViewModel')
+              ?.get('toggleButtonViewModel')
+              ?.get('toggleButtonViewModel')
+              ?.get('defaultButtonViewModel')
+              ?.get('buttonViewModel')
+              ?.getT<String>('accessibilityText') ??
+          topLevelButtons
+              .firstWhereOrNull((e) => e['toggleButtonRenderer'] != null)
+              ?.get('toggleButtonRenderer')
+              ?.get('defaultText')
+              ?.get('accessibility')
+              ?.get('accessibilityData')
+              ?.getT<String>('label');
 
       return likes.parseInt();
     }
