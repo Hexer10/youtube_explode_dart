@@ -13,6 +13,8 @@ class PlaylistPage extends YoutubePage<_InitialData> {
   ///
   final String playlistId;
 
+  final String? _visitorData;
+
   late final List<_Video> videos = initialData.playlistVideos;
 
   late final String? title = initialData.title;
@@ -26,19 +28,29 @@ class PlaylistPage extends YoutubePage<_InitialData> {
   late final int? videoCount = initialData.videoCount;
 
   /// InitialData
-  PlaylistPage.id(this.playlistId, _InitialData initialData)
+  PlaylistPage.id(this.playlistId, _InitialData initialData,
+      [this._visitorData])
       : super.fromInitialData(initialData);
 
   ///
   Future<PlaylistPage?> nextPage(YoutubeHttpClient httpClient) async {
-    if (initialData.continuationToken?.isEmpty == null) {
+    if (initialData.continuationToken?.isEmpty ?? true) {
       return null;
     }
 
-    final data =
-        await httpClient.sendPost('browse', initialData.continuationToken!);
+    final data = await httpClient.sendContinuation(
+        'browse', initialData.continuationToken!, headers: {
+      'x-youtube-client-name': '1',
+      'x-goog-visitor-id': _visitorData ?? ''
+    });
+    final newInitialData = _InitialData(data);
+    if (newInitialData.continuationToken != null &&
+        newInitialData.continuationToken == initialData.continuationToken) {
+      // Avoid sending always the same request.
+      return null;
+    }
 
-    return PlaylistPage.id(playlistId, _InitialData(data));
+    return PlaylistPage.id(playlistId, _InitialData(data), _visitorData);
   }
 
   ///
@@ -49,17 +61,53 @@ class PlaylistPage extends YoutubePage<_InitialData> {
     final url = 'https://www.youtube.com/playlist?list=$id&hl=en&persist_hl=1';
     return retry(httpClient, () async {
       final raw = await httpClient.getString(url);
-      return PlaylistPage.parse(raw, id);
+      final page = PlaylistPage.parse(raw, id);
+      if (page.initialData.exists) {
+        return page;
+      }
+
+      // Try to fetch using the browse API
+      final data = await httpClient.sendPost('browse', {
+        'browseId': page.initialData.browseId!,
+      }, headers: {
+        'x-youtube-client-name': '1',
+        'x-goog-visitor-id': page.initialData.visitorData ?? '',
+      });
+      return PlaylistPage.id(
+          id, _InitialData(data), page.initialData.visitorData);
     });
   }
 
   ///
   PlaylistPage.parse(String raw, this.playlistId)
-      : super(parser.parse(raw), (root) => _InitialData(root));
+      : _visitorData = null,
+        super(parser.parse(raw), (root) => _InitialData(root));
 }
 
 class _InitialData extends InitialData {
   _InitialData(super.root);
+
+  String? get visitorData => root
+      .get('responseContext')
+      ?.get('webResponseContextExtensionData')
+      ?.get('ytConfigData')
+      ?.getT<String>('visitorData');
+
+  String? get browseId => root
+      .get('responseContext')
+      ?.getList('serviceTrackingParams')
+      ?.firstWhereOrNull((e) => e['service'] == 'GFEEDBACK')
+      ?.getList('params')
+      ?.firstWhereOrNull((e) => e['key'] == 'browse_id')
+      ?.getT<String>('value');
+
+  bool get exists =>
+      root
+          .getList('alerts')
+          ?.firstOrNull
+          ?.get('alertRenderer')
+          ?.getT<String>('type') !=
+      'ERROR';
 
   late final String? title = root
       .get('metadata')
@@ -119,6 +167,11 @@ class _InitialData extends InitialData {
 
   List<JsonMap>? get playlistVideosContent =>
       root
+          .getList('onResponseReceivedActions')
+          ?.firstOrNull
+          ?.get('appendContinuationItemsAction')
+          ?.getList('continuationItems') ??
+      root
           .get('contents')
           ?.get('twoColumnBrowseResultsRenderer')
           ?.getList('tabs')
@@ -132,12 +185,7 @@ class _InitialData extends InitialData {
           ?.getList('contents')
           ?.firstOrNull
           ?.get('playlistVideoListRenderer')
-          ?.getList('contents') ??
-      root
-          .getList('onResponseReceivedActions')
-          ?.firstOrNull
-          ?.get('appendContinuationItemsAction')
-          ?.getList('continuationItems');
+          ?.getList('contents');
 
   late final List<JsonMap>? videosContent = root
           .get('contents')

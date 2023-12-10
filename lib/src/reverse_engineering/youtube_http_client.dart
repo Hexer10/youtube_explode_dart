@@ -253,9 +253,21 @@ class YoutubeHttpClient extends http.BaseClient {
     return int.tryParse(response.headers['content-length'] ?? '');
   }
 
+  Future<JsonMap> sendContinuation(
+    String action,
+    String token, {
+    Map<String, String>? headers,
+  }) async =>
+      sendPost(action, {'continuation': token}, headers: headers);
+
   /// Sends a call to the youtube api endpoint.
-  Future<JsonMap> sendPost(String action, String token) async {
+  Future<JsonMap> sendPost(String action, Map<String, dynamic> data,
+      {Map<String, String>? headers}) {
     assert(action == 'next' || action == 'browse' || action == 'search');
+
+    final url = Uri.parse(
+      'https://www.youtube.com/youtubei/v1/$action?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8',
+    );
 
     final body = {
       'context': const {
@@ -267,15 +279,11 @@ class YoutubeHttpClient extends http.BaseClient {
           'clientVersion': "2.20220921.00.00",
         },
       },
-      'continuation': token,
+      ...data,
     };
 
-    final url = Uri.parse(
-      'https://www.youtube.com/youtubei/v1/$action?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8',
-    );
-
     return retry<JsonMap>(this, () async {
-      final raw = await post(url, body: json.encode(body));
+      final raw = await post(url, body: json.encode(body), headers: headers);
       if (_closed) throw HttpClientClosedException();
 
       //final now = DateTime.now();
@@ -309,7 +317,7 @@ class YoutubeHttpClient extends http.BaseClient {
     });
 
     //print(request);
-    //print(StackTrace.current);
+    // print(StackTrace.current);
     return _httpClient.send(request);
   }
 }

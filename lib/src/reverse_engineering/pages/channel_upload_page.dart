@@ -27,7 +27,7 @@ class ChannelUploadPage extends YoutubePage<_InitialData> {
       return null;
     }
 
-    final data = await httpClient.sendPost('browse', initialData.token);
+    final data = await httpClient.sendContinuation('browse', initialData.token);
     return ChannelUploadPage.id(channelId, _InitialData(data));
   }
 

@@ -35,7 +35,7 @@ class CommentsClient {
       return null;
     }
 
-    final data = await httpClient.sendPost('next', continuation);
+    final data = await httpClient.sendContinuation('next', continuation);
     return CommentsClient(data);
   }
 
@@ -44,7 +44,7 @@ class CommentsClient {
     YoutubeHttpClient httpClient,
     String token,
   ) async {
-    final data = await httpClient.sendPost('next', token);
+    final data = await httpClient.sendContinuation('next', token);
     return CommentsClient(data);
   }
 
@@ -129,7 +129,7 @@ onResponseReceivedEndpoints[1].reloadContinuationItemsCommand.continuationItems[
       return null;
     }
 
-    final data = await httpClient.sendPost('next', _continuationToken!);
+    final data = await httpClient.sendContinuation('next', _continuationToken!);
     return CommentsClient(data);
   }
 }

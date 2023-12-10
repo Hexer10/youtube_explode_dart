@@ -29,7 +29,7 @@ class SearchPage extends YoutubePage<_InitialData> {
     }
 
     final data =
-        await httpClient.sendPost('search', initialData.continuationToken!);
+        await httpClient.sendContinuation('search', initialData.continuationToken!);
     return SearchPage.id(queryString, _InitialData(data));
   }
 
