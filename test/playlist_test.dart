@@ -73,9 +73,9 @@ void main() {
   });
 
   test('Get videos of YT music playlist', () async {
-    final playlistVideosCount = await yt!.playlists
+    final videos = await yt!.playlists
         .getVideos('RDCLAK5uy_m9Rw_g5eCJtMhuRgP1eqU3H-XW7UL6uWQ')
-        .length;
-    expect(playlistVideosCount, greaterThan(100));
+        .toList();
+    expect(videos.length, greaterThan(100));
   }, timeout: const Timeout(Duration(minutes: 2)));
 }
