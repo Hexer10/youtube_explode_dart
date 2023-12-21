@@ -1,3 +1,6 @@
+## 2.0.4
+- Fix issue when parsing dates formatted as "Streamed <q> <unit> ago" due to a leading whitespace. #265
+
 ## 2.0.3
 - Better performance for iterating through closed captions elements. #251
 - Add publishDate and viewCount for playlists. #240
