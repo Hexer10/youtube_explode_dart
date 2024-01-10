@@ -1,3 +1,5 @@
+import 'video_type.dart';
+
 import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';
@@ -137,14 +139,16 @@ class ChannelClient {
   ///
   /// Use .nextPage() to fetch the next batch of videos.
   Future<ChannelUploadsList> getUploadsFromPage(
-    dynamic channelId, [
+    dynamic channelId, {
     VideoSorting videoSorting = VideoSorting.newest,
-  ]) async {
+    VideoType videoType = VideoType.normal,
+  }) async {
     channelId = ChannelId.fromString(channelId);
     final page = await ChannelUploadPage.get(
       _httpClient,
       (channelId as ChannelId).value,
       videoSorting.code,
+      videoType,
     );
 
     final channel = await get(channelId);

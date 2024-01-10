@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:html/parser.dart' as parser;
+import '../../channels/video_type.dart';
 
 import '../../channels/channel_video.dart';
 import '../../exceptions/exceptions.dart';
@@ -15,10 +16,12 @@ class ChannelUploadPage extends YoutubePage<_InitialData> {
   ///
   final String channelId;
 
+  final VideoType type;
+
   late final List<ChannelVideo> uploads = initialData.uploads;
 
   /// InitialData
-  ChannelUploadPage.id(this.channelId, super.initialData)
+  ChannelUploadPage.id(this.channelId, this.type, super.initialData)
       : super.fromInitialData();
 
   ///
@@ -28,7 +31,7 @@ class ChannelUploadPage extends YoutubePage<_InitialData> {
     }
 
     final data = await httpClient.sendContinuation('browse', initialData.token);
-    return ChannelUploadPage.id(channelId, _InitialData(data));
+    return ChannelUploadPage.id(channelId, type, _InitialData(data, type));
   }
 
   ///
@@ -36,22 +39,25 @@ class ChannelUploadPage extends YoutubePage<_InitialData> {
     YoutubeHttpClient httpClient,
     String channelId,
     String sorting,
+    VideoType type,
   ) {
     final url =
-        'https://www.youtube.com/channel/$channelId/videos?view=0&sort=$sorting&flow=grid';
+        'https://www.youtube.com/channel/$channelId/${type.name}?view=0&sort=$sorting&flow=grid';
     return retry(httpClient, () async {
       final raw = await httpClient.getString(url);
-      return ChannelUploadPage.parse(raw, channelId);
+      return ChannelUploadPage.parse(raw, channelId, type);
     });
   }
 
   ///
-  ChannelUploadPage.parse(String raw, this.channelId)
-      : super(parser.parse(raw), (root) => _InitialData(root));
+  ChannelUploadPage.parse(String raw, this.channelId, this.type)
+      : super(parser.parse(raw), (root) => _InitialData(root, type));
 }
 
 class _InitialData extends InitialData {
-  _InitialData(super.root);
+  _InitialData(super.root, this.type);
+
+  final VideoType type;
 
   late final JsonMap? continuationContext = getContinuationContext();
 
@@ -175,8 +181,10 @@ class _InitialData extends InitialData {
     if (content.containsKey('gridVideoRenderer')) {
       video = content.get('gridVideoRenderer');
     } else if (content.containsKey('richItemRenderer')) {
-      video =
-          content.get('richItemRenderer')?.get('content')?.get('videoRenderer');
+      video = content
+          .get('richItemRenderer')
+          ?.get('content')
+          ?.get(type.youtubeRenderText);
     }
 
     if (video == null) {
