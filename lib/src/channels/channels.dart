@@ -13,3 +13,4 @@ export 'channel_uploads_list.dart';
 export 'channel_video.dart';
 export 'username.dart';
 export 'video_sorting.dart';
+export 'video_type.dart';
