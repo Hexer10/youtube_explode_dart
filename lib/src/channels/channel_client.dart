@@ -1,5 +1,3 @@
-import 'video_type.dart';
-
 import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
 import '../playlists/playlists.dart';
@@ -136,6 +134,7 @@ class ChannelClient {
 
   /// Enumerates videos uploaded by the specified channel.
   /// This fetches thru all the uploads pages of the channel.
+  /// The content by default is sorted by time of upload.
   ///
   /// Use .nextPage() to fetch the next batch of videos.
   Future<ChannelUploadsList> getUploadsFromPage(

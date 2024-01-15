@@ -1,6 +1,6 @@
-/// The type of the video you want to get.
-///
-/// Will filter only by the type you want.
+import 'package:meta/meta.dart';
+
+/// Video types provided by Youtube
 enum VideoType {
   /// Default horizontal video
   normal('videos', 'videoRenderer'),
@@ -9,6 +9,9 @@ enum VideoType {
   shorts('shorts', 'reelItemRenderer');
 
   final String name;
+
+  @internal
   final String youtubeRenderText;
+
   const VideoType(this.name, this.youtubeRenderText);
 }
