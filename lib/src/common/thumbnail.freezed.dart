@@ -12,7 +12,7 @@ part of 'thumbnail.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Thumbnail {
@@ -73,21 +73,22 @@ class _$ThumbnailCopyWithImpl<$Res, $Val extends Thumbnail>
 }
 
 /// @nodoc
-abstract class _$$_ThumbnailCopyWith<$Res> implements $ThumbnailCopyWith<$Res> {
-  factory _$$_ThumbnailCopyWith(
-          _$_Thumbnail value, $Res Function(_$_Thumbnail) then) =
-      __$$_ThumbnailCopyWithImpl<$Res>;
+abstract class _$$ThumbnailImplCopyWith<$Res>
+    implements $ThumbnailCopyWith<$Res> {
+  factory _$$ThumbnailImplCopyWith(
+          _$ThumbnailImpl value, $Res Function(_$ThumbnailImpl) then) =
+      __$$ThumbnailImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({Uri url, int height, int width});
 }
 
 /// @nodoc
-class __$$_ThumbnailCopyWithImpl<$Res>
-    extends _$ThumbnailCopyWithImpl<$Res, _$_Thumbnail>
-    implements _$$_ThumbnailCopyWith<$Res> {
-  __$$_ThumbnailCopyWithImpl(
-      _$_Thumbnail _value, $Res Function(_$_Thumbnail) _then)
+class __$$ThumbnailImplCopyWithImpl<$Res>
+    extends _$ThumbnailCopyWithImpl<$Res, _$ThumbnailImpl>
+    implements _$$ThumbnailImplCopyWith<$Res> {
+  __$$ThumbnailImplCopyWithImpl(
+      _$ThumbnailImpl _value, $Res Function(_$ThumbnailImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -97,7 +98,7 @@ class __$$_ThumbnailCopyWithImpl<$Res>
     Object? height = null,
     Object? width = null,
   }) {
-    return _then(_$_Thumbnail(
+    return _then(_$ThumbnailImpl(
       null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -116,8 +117,8 @@ class __$$_ThumbnailCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Thumbnail implements _Thumbnail {
-  const _$_Thumbnail(this.url, this.height, this.width);
+class _$ThumbnailImpl implements _Thumbnail {
+  const _$ThumbnailImpl(this.url, this.height, this.width);
 
   /// Image url.
   @override
@@ -137,10 +138,10 @@ class _$_Thumbnail implements _Thumbnail {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Thumbnail &&
+            other is _$ThumbnailImpl &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.height, height) || other.height == height) &&
             (identical(other.width, width) || other.width == width));
@@ -152,13 +153,13 @@ class _$_Thumbnail implements _Thumbnail {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ThumbnailCopyWith<_$_Thumbnail> get copyWith =>
-      __$$_ThumbnailCopyWithImpl<_$_Thumbnail>(this, _$identity);
+  _$$ThumbnailImplCopyWith<_$ThumbnailImpl> get copyWith =>
+      __$$ThumbnailImplCopyWithImpl<_$ThumbnailImpl>(this, _$identity);
 }
 
 abstract class _Thumbnail implements Thumbnail {
   const factory _Thumbnail(final Uri url, final int height, final int width) =
-      _$_Thumbnail;
+      _$ThumbnailImpl;
 
   @override
 
@@ -174,6 +175,6 @@ abstract class _Thumbnail implements Thumbnail {
   int get width;
   @override
   @JsonKey(ignore: true)
-  _$$_ThumbnailCopyWith<_$_Thumbnail> get copyWith =>
+  _$$ThumbnailImplCopyWith<_$ThumbnailImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

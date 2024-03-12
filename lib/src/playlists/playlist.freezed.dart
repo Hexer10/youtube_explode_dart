@@ -12,7 +12,7 @@ part of 'playlist.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Playlist {
@@ -142,10 +142,11 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
 }
 
 /// @nodoc
-abstract class _$$_PlaylistCopyWith<$Res> implements $PlaylistCopyWith<$Res> {
-  factory _$$_PlaylistCopyWith(
-          _$_Playlist value, $Res Function(_$_Playlist) then) =
-      __$$_PlaylistCopyWithImpl<$Res>;
+abstract class _$$PlaylistImplCopyWith<$Res>
+    implements $PlaylistCopyWith<$Res> {
+  factory _$$PlaylistImplCopyWith(
+          _$PlaylistImpl value, $Res Function(_$PlaylistImpl) then) =
+      __$$PlaylistImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -166,11 +167,11 @@ abstract class _$$_PlaylistCopyWith<$Res> implements $PlaylistCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_PlaylistCopyWithImpl<$Res>
-    extends _$PlaylistCopyWithImpl<$Res, _$_Playlist>
-    implements _$$_PlaylistCopyWith<$Res> {
-  __$$_PlaylistCopyWithImpl(
-      _$_Playlist _value, $Res Function(_$_Playlist) _then)
+class __$$PlaylistImplCopyWithImpl<$Res>
+    extends _$PlaylistCopyWithImpl<$Res, _$PlaylistImpl>
+    implements _$$PlaylistImplCopyWith<$Res> {
+  __$$PlaylistImplCopyWithImpl(
+      _$PlaylistImpl _value, $Res Function(_$PlaylistImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -184,7 +185,7 @@ class __$$_PlaylistCopyWithImpl<$Res>
     Object? engagement = null,
     Object? videoCount = freezed,
   }) {
-    return _then(_$_Playlist(
+    return _then(_$PlaylistImpl(
       null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -219,8 +220,8 @@ class __$$_PlaylistCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Playlist extends _Playlist {
-  const _$_Playlist(this.id, this.title, this.author, this.description,
+class _$PlaylistImpl extends _Playlist {
+  const _$PlaylistImpl(this.id, this.title, this.author, this.description,
       this.thumbnails, this.engagement, this.videoCount)
       : super._();
 
@@ -260,10 +261,10 @@ class _$_Playlist extends _Playlist {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Playlist &&
+            other is _$PlaylistImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.author, author) || other.author == author) &&
@@ -284,8 +285,8 @@ class _$_Playlist extends _Playlist {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PlaylistCopyWith<_$_Playlist> get copyWith =>
-      __$$_PlaylistCopyWithImpl<_$_Playlist>(this, _$identity);
+  _$$PlaylistImplCopyWith<_$PlaylistImpl> get copyWith =>
+      __$$PlaylistImplCopyWithImpl<_$PlaylistImpl>(this, _$identity);
 }
 
 abstract class _Playlist extends Playlist {
@@ -296,7 +297,7 @@ abstract class _Playlist extends Playlist {
       final String description,
       final ThumbnailSet thumbnails,
       final Engagement engagement,
-      final int? videoCount) = _$_Playlist;
+      final int? videoCount) = _$PlaylistImpl;
   const _Playlist._() : super._();
 
   @override
@@ -331,6 +332,6 @@ abstract class _Playlist extends Playlist {
   int? get videoCount;
   @override
   @JsonKey(ignore: true)
-  _$$_PlaylistCopyWith<_$_Playlist> get copyWith =>
+  _$$PlaylistImplCopyWith<_$PlaylistImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

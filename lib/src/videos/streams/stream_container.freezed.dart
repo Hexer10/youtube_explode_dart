@@ -12,7 +12,7 @@ part of 'stream_container.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 StreamContainer _$StreamContainerFromJson(Map<String, dynamic> json) {
   return _StreamContainer.fromJson(json);
@@ -64,22 +64,22 @@ class _$StreamContainerCopyWithImpl<$Res, $Val extends StreamContainer>
 }
 
 /// @nodoc
-abstract class _$$_StreamContainerCopyWith<$Res>
+abstract class _$$StreamContainerImplCopyWith<$Res>
     implements $StreamContainerCopyWith<$Res> {
-  factory _$$_StreamContainerCopyWith(
-          _$_StreamContainer value, $Res Function(_$_StreamContainer) then) =
-      __$$_StreamContainerCopyWithImpl<$Res>;
+  factory _$$StreamContainerImplCopyWith(_$StreamContainerImpl value,
+          $Res Function(_$StreamContainerImpl) then) =
+      __$$StreamContainerImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String name});
 }
 
 /// @nodoc
-class __$$_StreamContainerCopyWithImpl<$Res>
-    extends _$StreamContainerCopyWithImpl<$Res, _$_StreamContainer>
-    implements _$$_StreamContainerCopyWith<$Res> {
-  __$$_StreamContainerCopyWithImpl(
-      _$_StreamContainer _value, $Res Function(_$_StreamContainer) _then)
+class __$$StreamContainerImplCopyWithImpl<$Res>
+    extends _$StreamContainerCopyWithImpl<$Res, _$StreamContainerImpl>
+    implements _$$StreamContainerImplCopyWith<$Res> {
+  __$$StreamContainerImplCopyWithImpl(
+      _$StreamContainerImpl _value, $Res Function(_$StreamContainerImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -87,7 +87,7 @@ class __$$_StreamContainerCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
   }) {
-    return _then(_$_StreamContainer(
+    return _then(_$StreamContainerImpl(
       null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -98,11 +98,11 @@ class __$$_StreamContainerCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_StreamContainer extends _StreamContainer {
-  const _$_StreamContainer(this.name) : super._();
+class _$StreamContainerImpl extends _StreamContainer {
+  const _$StreamContainerImpl(this.name) : super._();
 
-  factory _$_StreamContainer.fromJson(Map<String, dynamic> json) =>
-      _$$_StreamContainerFromJson(json);
+  factory _$StreamContainerImpl.fromJson(Map<String, dynamic> json) =>
+      _$$StreamContainerImplFromJson(json);
 
   /// Container name.
   /// Can be used as file extension
@@ -110,10 +110,10 @@ class _$_StreamContainer extends _StreamContainer {
   final String name;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_StreamContainer &&
+            other is _$StreamContainerImpl &&
             (identical(other.name, name) || other.name == name));
   }
 
@@ -124,23 +124,24 @@ class _$_StreamContainer extends _StreamContainer {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_StreamContainerCopyWith<_$_StreamContainer> get copyWith =>
-      __$$_StreamContainerCopyWithImpl<_$_StreamContainer>(this, _$identity);
+  _$$StreamContainerImplCopyWith<_$StreamContainerImpl> get copyWith =>
+      __$$StreamContainerImplCopyWithImpl<_$StreamContainerImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_StreamContainerToJson(
+    return _$$StreamContainerImplToJson(
       this,
     );
   }
 }
 
 abstract class _StreamContainer extends StreamContainer {
-  const factory _StreamContainer(final String name) = _$_StreamContainer;
+  const factory _StreamContainer(final String name) = _$StreamContainerImpl;
   const _StreamContainer._() : super._();
 
   factory _StreamContainer.fromJson(Map<String, dynamic> json) =
-      _$_StreamContainer.fromJson;
+      _$StreamContainerImpl.fromJson;
 
   @override
 
@@ -149,6 +150,6 @@ abstract class _StreamContainer extends StreamContainer {
   String get name;
   @override
   @JsonKey(ignore: true)
-  _$$_StreamContainerCopyWith<_$_StreamContainer> get copyWith =>
+  _$$StreamContainerImplCopyWith<_$StreamContainerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -12,7 +12,7 @@ part of 'video.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Video {
@@ -215,9 +215,10 @@ class _$VideoCopyWithImpl<$Res, $Val extends Video>
 }
 
 /// @nodoc
-abstract class _$$_VideoCopyWith<$Res> implements $VideoCopyWith<$Res> {
-  factory _$$_VideoCopyWith(_$_Video value, $Res Function(_$_Video) then) =
-      __$$_VideoCopyWithImpl<$Res>;
+abstract class _$$VideoImplCopyWith<$Res> implements $VideoCopyWith<$Res> {
+  factory _$$VideoImplCopyWith(
+          _$VideoImpl value, $Res Function(_$VideoImpl) then) =
+      __$$VideoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -247,9 +248,11 @@ abstract class _$$_VideoCopyWith<$Res> implements $VideoCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_VideoCopyWithImpl<$Res> extends _$VideoCopyWithImpl<$Res, _$_Video>
-    implements _$$_VideoCopyWith<$Res> {
-  __$$_VideoCopyWithImpl(_$_Video _value, $Res Function(_$_Video) _then)
+class __$$VideoImplCopyWithImpl<$Res>
+    extends _$VideoCopyWithImpl<$Res, _$VideoImpl>
+    implements _$$VideoImplCopyWith<$Res> {
+  __$$VideoImplCopyWithImpl(
+      _$VideoImpl _value, $Res Function(_$VideoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -270,7 +273,7 @@ class __$$_VideoCopyWithImpl<$Res> extends _$VideoCopyWithImpl<$Res, _$_Video>
     Object? isLive = null,
     Object? watchPage = freezed,
   }) {
-    return _then(_$_Video(
+    return _then(_$VideoImpl(
       null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -333,8 +336,8 @@ class __$$_VideoCopyWithImpl<$Res> extends _$VideoCopyWithImpl<$Res, _$_Video>
 
 /// @nodoc
 
-class _$_Video extends _Video {
-  const _$_Video(
+class _$VideoImpl extends _Video {
+  const _$VideoImpl(
       this.id,
       this.title,
       this.author,
@@ -416,10 +419,10 @@ class _$_Video extends _Video {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Video &&
+            other is _$VideoImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.author, author) || other.author == author) &&
@@ -466,8 +469,8 @@ class _$_Video extends _Video {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_VideoCopyWith<_$_Video> get copyWith =>
-      __$$_VideoCopyWithImpl<_$_Video>(this, _$identity);
+  _$$VideoImplCopyWith<_$VideoImpl> get copyWith =>
+      __$$VideoImplCopyWithImpl<_$VideoImpl>(this, _$identity);
 }
 
 abstract class _Video extends Video {
@@ -485,7 +488,7 @@ abstract class _Video extends Video {
       final UnmodifiableListView<String> keywords,
       final Engagement engagement,
       final bool isLive,
-      [@internal final WatchPage? watchPage]) = _$_Video;
+      [@internal final WatchPage? watchPage]) = _$VideoImpl;
   const _Video._() : super._();
 
   @override
@@ -549,6 +552,6 @@ abstract class _Video extends Video {
   WatchPage? get watchPage;
   @override
   @JsonKey(ignore: true)
-  _$$_VideoCopyWith<_$_Video> get copyWith =>
+  _$$VideoImplCopyWith<_$VideoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

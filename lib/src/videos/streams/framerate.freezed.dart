@@ -12,7 +12,7 @@ part of 'framerate.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Framerate _$FramerateFromJson(Map<String, dynamic> json) {
   return _Framerate.fromJson(json);
@@ -62,21 +62,22 @@ class _$FramerateCopyWithImpl<$Res, $Val extends Framerate>
 }
 
 /// @nodoc
-abstract class _$$_FramerateCopyWith<$Res> implements $FramerateCopyWith<$Res> {
-  factory _$$_FramerateCopyWith(
-          _$_Framerate value, $Res Function(_$_Framerate) then) =
-      __$$_FramerateCopyWithImpl<$Res>;
+abstract class _$$FramerateImplCopyWith<$Res>
+    implements $FramerateCopyWith<$Res> {
+  factory _$$FramerateImplCopyWith(
+          _$FramerateImpl value, $Res Function(_$FramerateImpl) then) =
+      __$$FramerateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({num framesPerSecond});
 }
 
 /// @nodoc
-class __$$_FramerateCopyWithImpl<$Res>
-    extends _$FramerateCopyWithImpl<$Res, _$_Framerate>
-    implements _$$_FramerateCopyWith<$Res> {
-  __$$_FramerateCopyWithImpl(
-      _$_Framerate _value, $Res Function(_$_Framerate) _then)
+class __$$FramerateImplCopyWithImpl<$Res>
+    extends _$FramerateCopyWithImpl<$Res, _$FramerateImpl>
+    implements _$$FramerateImplCopyWith<$Res> {
+  __$$FramerateImplCopyWithImpl(
+      _$FramerateImpl _value, $Res Function(_$FramerateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -84,7 +85,7 @@ class __$$_FramerateCopyWithImpl<$Res>
   $Res call({
     Object? framesPerSecond = null,
   }) {
-    return _then(_$_Framerate(
+    return _then(_$FramerateImpl(
       null == framesPerSecond
           ? _value.framesPerSecond
           : framesPerSecond // ignore: cast_nullable_to_non_nullable
@@ -95,21 +96,21 @@ class __$$_FramerateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Framerate extends _Framerate {
-  const _$_Framerate(this.framesPerSecond) : super._();
+class _$FramerateImpl extends _Framerate {
+  const _$FramerateImpl(this.framesPerSecond) : super._();
 
-  factory _$_Framerate.fromJson(Map<String, dynamic> json) =>
-      _$$_FramerateFromJson(json);
+  factory _$FramerateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FramerateImplFromJson(json);
 
   /// Framerate as frames per second
   @override
   final num framesPerSecond;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Framerate &&
+            other is _$FramerateImpl &&
             (identical(other.framesPerSecond, framesPerSecond) ||
                 other.framesPerSecond == framesPerSecond));
   }
@@ -121,23 +122,23 @@ class _$_Framerate extends _Framerate {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FramerateCopyWith<_$_Framerate> get copyWith =>
-      __$$_FramerateCopyWithImpl<_$_Framerate>(this, _$identity);
+  _$$FramerateImplCopyWith<_$FramerateImpl> get copyWith =>
+      __$$FramerateImplCopyWithImpl<_$FramerateImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FramerateToJson(
+    return _$$FramerateImplToJson(
       this,
     );
   }
 }
 
 abstract class _Framerate extends Framerate {
-  const factory _Framerate(final num framesPerSecond) = _$_Framerate;
+  const factory _Framerate(final num framesPerSecond) = _$FramerateImpl;
   const _Framerate._() : super._();
 
   factory _Framerate.fromJson(Map<String, dynamic> json) =
-      _$_Framerate.fromJson;
+      _$FramerateImpl.fromJson;
 
   @override
 
@@ -145,6 +146,6 @@ abstract class _Framerate extends Framerate {
   num get framesPerSecond;
   @override
   @JsonKey(ignore: true)
-  _$$_FramerateCopyWith<_$_Framerate> get copyWith =>
+  _$$FramerateImplCopyWith<_$FramerateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

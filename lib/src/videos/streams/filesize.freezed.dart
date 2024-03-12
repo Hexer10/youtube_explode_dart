@@ -12,7 +12,7 @@ part of 'filesize.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 FileSize _$FileSizeFromJson(Map<String, dynamic> json) {
   return _FileSize.fromJson(json);
@@ -62,21 +62,22 @@ class _$FileSizeCopyWithImpl<$Res, $Val extends FileSize>
 }
 
 /// @nodoc
-abstract class _$$_FileSizeCopyWith<$Res> implements $FileSizeCopyWith<$Res> {
-  factory _$$_FileSizeCopyWith(
-          _$_FileSize value, $Res Function(_$_FileSize) then) =
-      __$$_FileSizeCopyWithImpl<$Res>;
+abstract class _$$FileSizeImplCopyWith<$Res>
+    implements $FileSizeCopyWith<$Res> {
+  factory _$$FileSizeImplCopyWith(
+          _$FileSizeImpl value, $Res Function(_$FileSizeImpl) then) =
+      __$$FileSizeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int totalBytes});
 }
 
 /// @nodoc
-class __$$_FileSizeCopyWithImpl<$Res>
-    extends _$FileSizeCopyWithImpl<$Res, _$_FileSize>
-    implements _$$_FileSizeCopyWith<$Res> {
-  __$$_FileSizeCopyWithImpl(
-      _$_FileSize _value, $Res Function(_$_FileSize) _then)
+class __$$FileSizeImplCopyWithImpl<$Res>
+    extends _$FileSizeCopyWithImpl<$Res, _$FileSizeImpl>
+    implements _$$FileSizeImplCopyWith<$Res> {
+  __$$FileSizeImplCopyWithImpl(
+      _$FileSizeImpl _value, $Res Function(_$FileSizeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -84,7 +85,7 @@ class __$$_FileSizeCopyWithImpl<$Res>
   $Res call({
     Object? totalBytes = null,
   }) {
-    return _then(_$_FileSize(
+    return _then(_$FileSizeImpl(
       null == totalBytes
           ? _value.totalBytes
           : totalBytes // ignore: cast_nullable_to_non_nullable
@@ -95,21 +96,21 @@ class __$$_FileSizeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_FileSize extends _FileSize {
-  const _$_FileSize(this.totalBytes) : super._();
+class _$FileSizeImpl extends _FileSize {
+  const _$FileSizeImpl(this.totalBytes) : super._();
 
-  factory _$_FileSize.fromJson(Map<String, dynamic> json) =>
-      _$$_FileSizeFromJson(json);
+  factory _$FileSizeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FileSizeImplFromJson(json);
 
   /// Total bytes.
   @override
   final int totalBytes;
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FileSize &&
+            other is _$FileSizeImpl &&
             (identical(other.totalBytes, totalBytes) ||
                 other.totalBytes == totalBytes));
   }
@@ -121,22 +122,23 @@ class _$_FileSize extends _FileSize {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FileSizeCopyWith<_$_FileSize> get copyWith =>
-      __$$_FileSizeCopyWithImpl<_$_FileSize>(this, _$identity);
+  _$$FileSizeImplCopyWith<_$FileSizeImpl> get copyWith =>
+      __$$FileSizeImplCopyWithImpl<_$FileSizeImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FileSizeToJson(
+    return _$$FileSizeImplToJson(
       this,
     );
   }
 }
 
 abstract class _FileSize extends FileSize {
-  const factory _FileSize(final int totalBytes) = _$_FileSize;
+  const factory _FileSize(final int totalBytes) = _$FileSizeImpl;
   const _FileSize._() : super._();
 
-  factory _FileSize.fromJson(Map<String, dynamic> json) = _$_FileSize.fromJson;
+  factory _FileSize.fromJson(Map<String, dynamic> json) =
+      _$FileSizeImpl.fromJson;
 
   @override
 
@@ -144,6 +146,6 @@ abstract class _FileSize extends FileSize {
   int get totalBytes;
   @override
   @JsonKey(ignore: true)
-  _$$_FileSizeCopyWith<_$_FileSize> get copyWith =>
+  _$$FileSizeImplCopyWith<_$FileSizeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

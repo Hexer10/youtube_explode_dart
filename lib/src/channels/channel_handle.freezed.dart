@@ -12,7 +12,7 @@ part of 'channel_handle.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ChannelHandle {
@@ -58,22 +58,22 @@ class _$ChannelHandleCopyWithImpl<$Res, $Val extends ChannelHandle>
 }
 
 /// @nodoc
-abstract class _$$_ChannelHandleCopyWith<$Res>
+abstract class _$$ChannelHandleImplCopyWith<$Res>
     implements $ChannelHandleCopyWith<$Res> {
-  factory _$$_ChannelHandleCopyWith(
-          _$_ChannelHandle value, $Res Function(_$_ChannelHandle) then) =
-      __$$_ChannelHandleCopyWithImpl<$Res>;
+  factory _$$ChannelHandleImplCopyWith(
+          _$ChannelHandleImpl value, $Res Function(_$ChannelHandleImpl) then) =
+      __$$ChannelHandleImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String value});
 }
 
 /// @nodoc
-class __$$_ChannelHandleCopyWithImpl<$Res>
-    extends _$ChannelHandleCopyWithImpl<$Res, _$_ChannelHandle>
-    implements _$$_ChannelHandleCopyWith<$Res> {
-  __$$_ChannelHandleCopyWithImpl(
-      _$_ChannelHandle _value, $Res Function(_$_ChannelHandle) _then)
+class __$$ChannelHandleImplCopyWithImpl<$Res>
+    extends _$ChannelHandleCopyWithImpl<$Res, _$ChannelHandleImpl>
+    implements _$$ChannelHandleImplCopyWith<$Res> {
+  __$$ChannelHandleImplCopyWithImpl(
+      _$ChannelHandleImpl _value, $Res Function(_$ChannelHandleImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -81,7 +81,7 @@ class __$$_ChannelHandleCopyWithImpl<$Res>
   $Res call({
     Object? value = null,
   }) {
-    return _then(_$_ChannelHandle(
+    return _then(_$ChannelHandleImpl(
       null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -92,8 +92,8 @@ class __$$_ChannelHandleCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ChannelHandle implements _ChannelHandle {
-  const _$_ChannelHandle(this.value);
+class _$ChannelHandleImpl implements _ChannelHandle {
+  const _$ChannelHandleImpl(this.value);
 
   /// Handle as string.
   @override
@@ -105,10 +105,10 @@ class _$_ChannelHandle implements _ChannelHandle {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ChannelHandle &&
+            other is _$ChannelHandleImpl &&
             (identical(other.value, value) || other.value == value));
   }
 
@@ -118,12 +118,12 @@ class _$_ChannelHandle implements _ChannelHandle {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ChannelHandleCopyWith<_$_ChannelHandle> get copyWith =>
-      __$$_ChannelHandleCopyWithImpl<_$_ChannelHandle>(this, _$identity);
+  _$$ChannelHandleImplCopyWith<_$ChannelHandleImpl> get copyWith =>
+      __$$ChannelHandleImplCopyWithImpl<_$ChannelHandleImpl>(this, _$identity);
 }
 
 abstract class _ChannelHandle implements ChannelHandle {
-  const factory _ChannelHandle(final String value) = _$_ChannelHandle;
+  const factory _ChannelHandle(final String value) = _$ChannelHandleImpl;
 
   @override
 
@@ -131,6 +131,6 @@ abstract class _ChannelHandle implements ChannelHandle {
   String get value;
   @override
   @JsonKey(ignore: true)
-  _$$_ChannelHandleCopyWith<_$_ChannelHandle> get copyWith =>
+  _$$ChannelHandleImplCopyWith<_$ChannelHandleImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

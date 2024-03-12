@@ -12,7 +12,7 @@ part of 'channel.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Channel {
@@ -103,10 +103,10 @@ class _$ChannelCopyWithImpl<$Res, $Val extends Channel>
 }
 
 /// @nodoc
-abstract class _$$_ChannelCopyWith<$Res> implements $ChannelCopyWith<$Res> {
-  factory _$$_ChannelCopyWith(
-          _$_Channel value, $Res Function(_$_Channel) then) =
-      __$$_ChannelCopyWithImpl<$Res>;
+abstract class _$$ChannelImplCopyWith<$Res> implements $ChannelCopyWith<$Res> {
+  factory _$$ChannelImplCopyWith(
+          _$ChannelImpl value, $Res Function(_$ChannelImpl) then) =
+      __$$ChannelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -121,10 +121,11 @@ abstract class _$$_ChannelCopyWith<$Res> implements $ChannelCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ChannelCopyWithImpl<$Res>
-    extends _$ChannelCopyWithImpl<$Res, _$_Channel>
-    implements _$$_ChannelCopyWith<$Res> {
-  __$$_ChannelCopyWithImpl(_$_Channel _value, $Res Function(_$_Channel) _then)
+class __$$ChannelImplCopyWithImpl<$Res>
+    extends _$ChannelCopyWithImpl<$Res, _$ChannelImpl>
+    implements _$$ChannelImplCopyWith<$Res> {
+  __$$ChannelImplCopyWithImpl(
+      _$ChannelImpl _value, $Res Function(_$ChannelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -136,7 +137,7 @@ class __$$_ChannelCopyWithImpl<$Res>
     Object? bannerUrl = null,
     Object? subscribersCount = freezed,
   }) {
-    return _then(_$_Channel(
+    return _then(_$ChannelImpl(
       null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -163,8 +164,8 @@ class __$$_ChannelCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Channel extends _Channel {
-  const _$_Channel(
+class _$ChannelImpl extends _Channel {
+  const _$ChannelImpl(
       this.id, this.title, this.logoUrl, this.bannerUrl, this.subscribersCount)
       : super._();
 
@@ -194,10 +195,10 @@ class _$_Channel extends _Channel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Channel &&
+            other is _$ChannelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl) &&
@@ -214,8 +215,8 @@ class _$_Channel extends _Channel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ChannelCopyWith<_$_Channel> get copyWith =>
-      __$$_ChannelCopyWithImpl<_$_Channel>(this, _$identity);
+  _$$ChannelImplCopyWith<_$ChannelImpl> get copyWith =>
+      __$$ChannelImplCopyWithImpl<_$ChannelImpl>(this, _$identity);
 }
 
 abstract class _Channel extends Channel {
@@ -224,7 +225,7 @@ abstract class _Channel extends Channel {
       final String title,
       final String logoUrl,
       final String bannerUrl,
-      final int? subscribersCount) = _$_Channel;
+      final int? subscribersCount) = _$ChannelImpl;
   const _Channel._() : super._();
 
   @override
@@ -249,6 +250,6 @@ abstract class _Channel extends Channel {
   int? get subscribersCount;
   @override
   @JsonKey(ignore: true)
-  _$$_ChannelCopyWith<_$_Channel> get copyWith =>
+  _$$ChannelImplCopyWith<_$ChannelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

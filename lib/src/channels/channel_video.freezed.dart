@@ -12,7 +12,7 @@ part of 'channel_video.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ChannelVideo {
@@ -115,11 +115,11 @@ class _$ChannelVideoCopyWithImpl<$Res, $Val extends ChannelVideo>
 }
 
 /// @nodoc
-abstract class _$$_ChannelVideoCopyWith<$Res>
+abstract class _$$ChannelVideoImplCopyWith<$Res>
     implements $ChannelVideoCopyWith<$Res> {
-  factory _$$_ChannelVideoCopyWith(
-          _$_ChannelVideo value, $Res Function(_$_ChannelVideo) then) =
-      __$$_ChannelVideoCopyWithImpl<$Res>;
+  factory _$$ChannelVideoImplCopyWith(
+          _$ChannelVideoImpl value, $Res Function(_$ChannelVideoImpl) then) =
+      __$$ChannelVideoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -135,11 +135,11 @@ abstract class _$$_ChannelVideoCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ChannelVideoCopyWithImpl<$Res>
-    extends _$ChannelVideoCopyWithImpl<$Res, _$_ChannelVideo>
-    implements _$$_ChannelVideoCopyWith<$Res> {
-  __$$_ChannelVideoCopyWithImpl(
-      _$_ChannelVideo _value, $Res Function(_$_ChannelVideo) _then)
+class __$$ChannelVideoImplCopyWithImpl<$Res>
+    extends _$ChannelVideoCopyWithImpl<$Res, _$ChannelVideoImpl>
+    implements _$$ChannelVideoImplCopyWith<$Res> {
+  __$$ChannelVideoImplCopyWithImpl(
+      _$ChannelVideoImpl _value, $Res Function(_$ChannelVideoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -152,7 +152,7 @@ class __$$_ChannelVideoCopyWithImpl<$Res>
     Object? videoUploadDate = null,
     Object? videoViews = null,
   }) {
-    return _then(_$_ChannelVideo(
+    return _then(_$ChannelVideoImpl(
       null == videoId
           ? _value.videoId
           : videoId // ignore: cast_nullable_to_non_nullable
@@ -183,8 +183,8 @@ class __$$_ChannelVideoCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ChannelVideo implements _ChannelVideo {
-  const _$_ChannelVideo(this.videoId, this.videoTitle, this.videoDuration,
+class _$ChannelVideoImpl implements _ChannelVideo {
+  const _$ChannelVideoImpl(this.videoId, this.videoTitle, this.videoDuration,
       this.videoThumbnail, this.videoUploadDate, this.videoViews);
 
   /// Video ID.
@@ -218,10 +218,10 @@ class _$_ChannelVideo implements _ChannelVideo {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ChannelVideo &&
+            other is _$ChannelVideoImpl &&
             (identical(other.videoId, videoId) || other.videoId == videoId) &&
             (identical(other.videoTitle, videoTitle) ||
                 other.videoTitle == videoTitle) &&
@@ -242,8 +242,8 @@ class _$_ChannelVideo implements _ChannelVideo {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ChannelVideoCopyWith<_$_ChannelVideo> get copyWith =>
-      __$$_ChannelVideoCopyWithImpl<_$_ChannelVideo>(this, _$identity);
+  _$$ChannelVideoImplCopyWith<_$ChannelVideoImpl> get copyWith =>
+      __$$ChannelVideoImplCopyWithImpl<_$ChannelVideoImpl>(this, _$identity);
 }
 
 abstract class _ChannelVideo implements ChannelVideo {
@@ -253,7 +253,7 @@ abstract class _ChannelVideo implements ChannelVideo {
       final Duration videoDuration,
       final String videoThumbnail,
       final String videoUploadDate,
-      final int videoViews) = _$_ChannelVideo;
+      final int videoViews) = _$ChannelVideoImpl;
 
   @override
 
@@ -282,6 +282,6 @@ abstract class _ChannelVideo implements ChannelVideo {
   int get videoViews;
   @override
   @JsonKey(ignore: true)
-  _$$_ChannelVideoCopyWith<_$_ChannelVideo> get copyWith =>
+  _$$ChannelVideoImplCopyWith<_$ChannelVideoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

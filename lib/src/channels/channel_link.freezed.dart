@@ -12,7 +12,7 @@ part of 'channel_link.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ChannelLink {
@@ -82,11 +82,11 @@ class _$ChannelLinkCopyWithImpl<$Res, $Val extends ChannelLink>
 }
 
 /// @nodoc
-abstract class _$$_ChannelLinkCopyWith<$Res>
+abstract class _$$ChannelLinkImplCopyWith<$Res>
     implements $ChannelLinkCopyWith<$Res> {
-  factory _$$_ChannelLinkCopyWith(
-          _$_ChannelLink value, $Res Function(_$_ChannelLink) then) =
-      __$$_ChannelLinkCopyWithImpl<$Res>;
+  factory _$$ChannelLinkImplCopyWith(
+          _$ChannelLinkImpl value, $Res Function(_$ChannelLinkImpl) then) =
+      __$$ChannelLinkImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -98,11 +98,11 @@ abstract class _$$_ChannelLinkCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ChannelLinkCopyWithImpl<$Res>
-    extends _$ChannelLinkCopyWithImpl<$Res, _$_ChannelLink>
-    implements _$$_ChannelLinkCopyWith<$Res> {
-  __$$_ChannelLinkCopyWithImpl(
-      _$_ChannelLink _value, $Res Function(_$_ChannelLink) _then)
+class __$$ChannelLinkImplCopyWithImpl<$Res>
+    extends _$ChannelLinkCopyWithImpl<$Res, _$ChannelLinkImpl>
+    implements _$$ChannelLinkImplCopyWith<$Res> {
+  __$$ChannelLinkImplCopyWithImpl(
+      _$ChannelLinkImpl _value, $Res Function(_$ChannelLinkImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -112,7 +112,7 @@ class __$$_ChannelLinkCopyWithImpl<$Res>
     Object? url = null,
     Object? icon = null,
   }) {
-    return _then(_$_ChannelLink(
+    return _then(_$ChannelLinkImpl(
       null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -131,8 +131,8 @@ class __$$_ChannelLinkCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ChannelLink implements _ChannelLink {
-  const _$_ChannelLink(
+class _$ChannelLinkImpl implements _ChannelLink {
+  const _$ChannelLinkImpl(
       this.title,
       this.url,
       @Deprecated(
@@ -160,10 +160,10 @@ class _$_ChannelLink implements _ChannelLink {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ChannelLink &&
+            other is _$ChannelLinkImpl &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.icon, icon) || other.icon == icon));
@@ -175,8 +175,8 @@ class _$_ChannelLink implements _ChannelLink {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ChannelLinkCopyWith<_$_ChannelLink> get copyWith =>
-      __$$_ChannelLinkCopyWithImpl<_$_ChannelLink>(this, _$identity);
+  _$$ChannelLinkImplCopyWith<_$ChannelLinkImpl> get copyWith =>
+      __$$ChannelLinkImplCopyWithImpl<_$ChannelLinkImpl>(this, _$identity);
 }
 
 abstract class _ChannelLink implements ChannelLink {
@@ -185,7 +185,7 @@ abstract class _ChannelLink implements ChannelLink {
       final Uri url,
       @Deprecated(
           'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
-      final Uri icon) = _$_ChannelLink;
+      final Uri icon) = _$ChannelLinkImpl;
 
   @override
 
@@ -204,6 +204,6 @@ abstract class _ChannelLink implements ChannelLink {
   Uri get icon;
   @override
   @JsonKey(ignore: true)
-  _$$_ChannelLinkCopyWith<_$_ChannelLink> get copyWith =>
+  _$$ChannelLinkImplCopyWith<_$ChannelLinkImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

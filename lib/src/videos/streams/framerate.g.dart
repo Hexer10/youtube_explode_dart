@@ -8,11 +8,12 @@ part of 'framerate.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Framerate _$$_FramerateFromJson(Map<String, dynamic> json) => _$_Framerate(
+_$FramerateImpl _$$FramerateImplFromJson(Map<String, dynamic> json) =>
+    _$FramerateImpl(
       json['framesPerSecond'] as num,
     );
 
-Map<String, dynamic> _$$_FramerateToJson(_$_Framerate instance) =>
+Map<String, dynamic> _$$FramerateImplToJson(_$FramerateImpl instance) =>
     <String, dynamic>{
       'framesPerSecond': instance.framesPerSecond,
     };

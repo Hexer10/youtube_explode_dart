@@ -12,7 +12,7 @@ part of 'search_result.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SearchResult {
@@ -128,10 +128,10 @@ class _$SearchResultCopyWithImpl<$Res, $Val extends SearchResult>
 }
 
 /// @nodoc
-abstract class _$$SearchVideoCopyWith<$Res> {
-  factory _$$SearchVideoCopyWith(
-          _$SearchVideo value, $Res Function(_$SearchVideo) then) =
-      __$$SearchVideoCopyWithImpl<$Res>;
+abstract class _$$SearchVideoImplCopyWith<$Res> {
+  factory _$$SearchVideoImplCopyWith(
+          _$SearchVideoImpl value, $Res Function(_$SearchVideoImpl) then) =
+      __$$SearchVideoImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {VideoId id,
@@ -149,11 +149,11 @@ abstract class _$$SearchVideoCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$SearchVideoCopyWithImpl<$Res>
-    extends _$SearchResultCopyWithImpl<$Res, _$SearchVideo>
-    implements _$$SearchVideoCopyWith<$Res> {
-  __$$SearchVideoCopyWithImpl(
-      _$SearchVideo _value, $Res Function(_$SearchVideo) _then)
+class __$$SearchVideoImplCopyWithImpl<$Res>
+    extends _$SearchResultCopyWithImpl<$Res, _$SearchVideoImpl>
+    implements _$$SearchVideoImplCopyWith<$Res> {
+  __$$SearchVideoImplCopyWithImpl(
+      _$SearchVideoImpl _value, $Res Function(_$SearchVideoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -170,7 +170,7 @@ class __$$SearchVideoCopyWithImpl<$Res>
     Object? isLive = null,
     Object? channelId = null,
   }) {
-    return _then(_$SearchVideo(
+    return _then(_$SearchVideoImpl(
       null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -225,8 +225,8 @@ class __$$SearchVideoCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SearchVideo extends SearchVideo {
-  const _$SearchVideo(
+class _$SearchVideoImpl extends SearchVideo {
+  const _$SearchVideoImpl(
       this.id,
       this.title,
       this.author,
@@ -293,10 +293,10 @@ class _$SearchVideo extends SearchVideo {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SearchVideo &&
+            other is _$SearchVideoImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.author, author) || other.author == author) &&
@@ -332,8 +332,8 @@ class _$SearchVideo extends SearchVideo {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SearchVideoCopyWith<_$SearchVideo> get copyWith =>
-      __$$SearchVideoCopyWithImpl<_$SearchVideo>(this, _$identity);
+  _$$SearchVideoImplCopyWith<_$SearchVideoImpl> get copyWith =>
+      __$$SearchVideoImplCopyWithImpl<_$SearchVideoImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -463,7 +463,7 @@ abstract class SearchVideo extends SearchResult {
       final List<Thumbnail> thumbnails,
       final String? uploadDate,
       final bool isLive,
-      final String channelId) = _$SearchVideo;
+      final String channelId) = _$SearchVideoImpl;
   const SearchVideo._() : super._();
 
   @override
@@ -498,15 +498,15 @@ abstract class SearchVideo extends SearchResult {
   /// Channel id
   String get channelId;
   @JsonKey(ignore: true)
-  _$$SearchVideoCopyWith<_$SearchVideo> get copyWith =>
+  _$$SearchVideoImplCopyWith<_$SearchVideoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SearchPlaylistCopyWith<$Res> {
-  factory _$$SearchPlaylistCopyWith(
-          _$SearchPlaylist value, $Res Function(_$SearchPlaylist) then) =
-      __$$SearchPlaylistCopyWithImpl<$Res>;
+abstract class _$$SearchPlaylistImplCopyWith<$Res> {
+  factory _$$SearchPlaylistImplCopyWith(_$SearchPlaylistImpl value,
+          $Res Function(_$SearchPlaylistImpl) then) =
+      __$$SearchPlaylistImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {PlaylistId id,
@@ -518,11 +518,11 @@ abstract class _$$SearchPlaylistCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$SearchPlaylistCopyWithImpl<$Res>
-    extends _$SearchResultCopyWithImpl<$Res, _$SearchPlaylist>
-    implements _$$SearchPlaylistCopyWith<$Res> {
-  __$$SearchPlaylistCopyWithImpl(
-      _$SearchPlaylist _value, $Res Function(_$SearchPlaylist) _then)
+class __$$SearchPlaylistImplCopyWithImpl<$Res>
+    extends _$SearchResultCopyWithImpl<$Res, _$SearchPlaylistImpl>
+    implements _$$SearchPlaylistImplCopyWith<$Res> {
+  __$$SearchPlaylistImplCopyWithImpl(
+      _$SearchPlaylistImpl _value, $Res Function(_$SearchPlaylistImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -533,7 +533,7 @@ class __$$SearchPlaylistCopyWithImpl<$Res>
     Object? videoCount = null,
     Object? thumbnails = null,
   }) {
-    return _then(_$SearchPlaylist(
+    return _then(_$SearchPlaylistImpl(
       null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -564,8 +564,8 @@ class __$$SearchPlaylistCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SearchPlaylist extends SearchPlaylist {
-  const _$SearchPlaylist(
+class _$SearchPlaylistImpl extends SearchPlaylist {
+  const _$SearchPlaylistImpl(
       this.id, this.title, this.videoCount, final List<Thumbnail> thumbnails)
       : _thumbnails = thumbnails,
         super._();
@@ -599,10 +599,10 @@ class _$SearchPlaylist extends SearchPlaylist {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SearchPlaylist &&
+            other is _$SearchPlaylistImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.videoCount, videoCount) ||
@@ -618,8 +618,9 @@ class _$SearchPlaylist extends SearchPlaylist {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SearchPlaylistCopyWith<_$SearchPlaylist> get copyWith =>
-      __$$SearchPlaylistCopyWithImpl<_$SearchPlaylist>(this, _$identity);
+  _$$SearchPlaylistImplCopyWith<_$SearchPlaylistImpl> get copyWith =>
+      __$$SearchPlaylistImplCopyWithImpl<_$SearchPlaylistImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -740,7 +741,7 @@ abstract class SearchPlaylist extends SearchResult {
       final PlaylistId id,
       final String title,
       final int videoCount,
-      final List<Thumbnail> thumbnails) = _$SearchPlaylist;
+      final List<Thumbnail> thumbnails) = _$SearchPlaylistImpl;
   const SearchPlaylist._() : super._();
 
   @override
@@ -757,15 +758,15 @@ abstract class SearchPlaylist extends SearchResult {
   /// Video thumbnail
   List<Thumbnail> get thumbnails;
   @JsonKey(ignore: true)
-  _$$SearchPlaylistCopyWith<_$SearchPlaylist> get copyWith =>
+  _$$SearchPlaylistImplCopyWith<_$SearchPlaylistImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SearchChannelCopyWith<$Res> {
-  factory _$$SearchChannelCopyWith(
-          _$SearchChannel value, $Res Function(_$SearchChannel) then) =
-      __$$SearchChannelCopyWithImpl<$Res>;
+abstract class _$$SearchChannelImplCopyWith<$Res> {
+  factory _$$SearchChannelImplCopyWith(
+          _$SearchChannelImpl value, $Res Function(_$SearchChannelImpl) then) =
+      __$$SearchChannelImplCopyWithImpl<$Res>;
   @useResult
   $Res call({ChannelId id, String name, String description, int videoCount});
 
@@ -773,11 +774,11 @@ abstract class _$$SearchChannelCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$SearchChannelCopyWithImpl<$Res>
-    extends _$SearchResultCopyWithImpl<$Res, _$SearchChannel>
-    implements _$$SearchChannelCopyWith<$Res> {
-  __$$SearchChannelCopyWithImpl(
-      _$SearchChannel _value, $Res Function(_$SearchChannel) _then)
+class __$$SearchChannelImplCopyWithImpl<$Res>
+    extends _$SearchResultCopyWithImpl<$Res, _$SearchChannelImpl>
+    implements _$$SearchChannelImplCopyWith<$Res> {
+  __$$SearchChannelImplCopyWithImpl(
+      _$SearchChannelImpl _value, $Res Function(_$SearchChannelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -788,7 +789,7 @@ class __$$SearchChannelCopyWithImpl<$Res>
     Object? description = null,
     Object? videoCount = null,
   }) {
-    return _then(_$SearchChannel(
+    return _then(_$SearchChannelImpl(
       null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -819,8 +820,9 @@ class __$$SearchChannelCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SearchChannel extends SearchChannel {
-  const _$SearchChannel(this.id, this.name, this.description, this.videoCount)
+class _$SearchChannelImpl extends SearchChannel {
+  const _$SearchChannelImpl(
+      this.id, this.name, this.description, this.videoCount)
       : super._();
 
   /// Channel id.
@@ -846,10 +848,10 @@ class _$SearchChannel extends SearchChannel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SearchChannel &&
+            other is _$SearchChannelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
@@ -865,8 +867,8 @@ class _$SearchChannel extends SearchChannel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SearchChannelCopyWith<_$SearchChannel> get copyWith =>
-      __$$SearchChannelCopyWithImpl<_$SearchChannel>(this, _$identity);
+  _$$SearchChannelImplCopyWith<_$SearchChannelImpl> get copyWith =>
+      __$$SearchChannelImplCopyWithImpl<_$SearchChannelImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -984,7 +986,7 @@ class _$SearchChannel extends SearchChannel {
 
 abstract class SearchChannel extends SearchResult {
   const factory SearchChannel(final ChannelId id, final String name,
-      final String description, final int videoCount) = _$SearchChannel;
+      final String description, final int videoCount) = _$SearchChannelImpl;
   const SearchChannel._() : super._();
 
   @override
@@ -1002,6 +1004,6 @@ abstract class SearchChannel extends SearchResult {
   /// Channel uploaded videos.
   int get videoCount;
   @JsonKey(ignore: true)
-  _$$SearchChannelCopyWith<_$SearchChannel> get copyWith =>
+  _$$SearchChannelImplCopyWith<_$SearchChannelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -12,7 +12,7 @@ part of 'engagement.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Engagement {
@@ -74,22 +74,22 @@ class _$EngagementCopyWithImpl<$Res, $Val extends Engagement>
 }
 
 /// @nodoc
-abstract class _$$_EngagementCopyWith<$Res>
+abstract class _$$EngagementImplCopyWith<$Res>
     implements $EngagementCopyWith<$Res> {
-  factory _$$_EngagementCopyWith(
-          _$_Engagement value, $Res Function(_$_Engagement) then) =
-      __$$_EngagementCopyWithImpl<$Res>;
+  factory _$$EngagementImplCopyWith(
+          _$EngagementImpl value, $Res Function(_$EngagementImpl) then) =
+      __$$EngagementImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int viewCount, int? likeCount, int? dislikeCount});
 }
 
 /// @nodoc
-class __$$_EngagementCopyWithImpl<$Res>
-    extends _$EngagementCopyWithImpl<$Res, _$_Engagement>
-    implements _$$_EngagementCopyWith<$Res> {
-  __$$_EngagementCopyWithImpl(
-      _$_Engagement _value, $Res Function(_$_Engagement) _then)
+class __$$EngagementImplCopyWithImpl<$Res>
+    extends _$EngagementCopyWithImpl<$Res, _$EngagementImpl>
+    implements _$$EngagementImplCopyWith<$Res> {
+  __$$EngagementImplCopyWithImpl(
+      _$EngagementImpl _value, $Res Function(_$EngagementImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -99,7 +99,7 @@ class __$$_EngagementCopyWithImpl<$Res>
     Object? likeCount = freezed,
     Object? dislikeCount = freezed,
   }) {
-    return _then(_$_Engagement(
+    return _then(_$EngagementImpl(
       null == viewCount
           ? _value.viewCount
           : viewCount // ignore: cast_nullable_to_non_nullable
@@ -118,8 +118,8 @@ class __$$_EngagementCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Engagement extends _Engagement {
-  const _$_Engagement(this.viewCount, this.likeCount, this.dislikeCount)
+class _$EngagementImpl extends _Engagement {
+  const _$EngagementImpl(this.viewCount, this.likeCount, this.dislikeCount)
       : super._();
 
   /// View count.
@@ -140,10 +140,10 @@ class _$_Engagement extends _Engagement {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Engagement &&
+            other is _$EngagementImpl &&
             (identical(other.viewCount, viewCount) ||
                 other.viewCount == viewCount) &&
             (identical(other.likeCount, likeCount) ||
@@ -159,14 +159,14 @@ class _$_Engagement extends _Engagement {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EngagementCopyWith<_$_Engagement> get copyWith =>
-      __$$_EngagementCopyWithImpl<_$_Engagement>(this, _$identity);
+  _$$EngagementImplCopyWith<_$EngagementImpl> get copyWith =>
+      __$$EngagementImplCopyWithImpl<_$EngagementImpl>(this, _$identity);
 }
 
 abstract class _Engagement extends Engagement {
   const factory _Engagement(
           final int viewCount, final int? likeCount, final int? dislikeCount) =
-      _$_Engagement;
+      _$EngagementImpl;
   const _Engagement._() : super._();
 
   @override
@@ -183,6 +183,6 @@ abstract class _Engagement extends Engagement {
   int? get dislikeCount;
   @override
   @JsonKey(ignore: true)
-  _$$_EngagementCopyWith<_$_Engagement> get copyWith =>
+  _$$EngagementImplCopyWith<_$EngagementImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
