@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 /// Metadata about video are sorted with [ChannelClient.getUploadsFromPage]
 enum VideoSorting {
   newest._('dd'),
@@ -6,6 +8,7 @@ enum VideoSorting {
 
   /// Code used to fetch the video.
   /// Used internally.
+  @internal
   final String code;
 
   const VideoSorting._(this.code);

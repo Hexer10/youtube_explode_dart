@@ -172,7 +172,10 @@ extension StringUtility2 on String? {
       // Streamed x y ago
       parts = parts.skip(1).toList();
     }
-    assert(parts.length == 3);
+
+    if (parts.length != 3) {
+      return null;
+    }
 
     final qty = int.parse(parts.first);
 
