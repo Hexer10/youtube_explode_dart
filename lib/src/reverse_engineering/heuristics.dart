@@ -26,48 +26,13 @@ extension VideoQualityUtil on VideoQuality {
     }
     label = label.toLowerCase();
 
-    if (label.startsWith('144')) {
-      return VideoQuality.low144;
-    }
+    for (var entry in _resolutionMap.entries.toList().reversed) {
+      var videoQuality = entry.key;
+      var videoResolution = entry.value;
 
-    if (label.startsWith('240')) {
-      return VideoQuality.low144;
-    }
-
-    if (label.startsWith('360')) {
-      return VideoQuality.medium360;
-    }
-
-    if (label.startsWith('480')) {
-      return VideoQuality.medium480;
-    }
-
-    if (label.startsWith('720')) {
-      return VideoQuality.high720;
-    }
-
-    if (label.startsWith('1080')) {
-      return VideoQuality.high1080;
-    }
-
-    if (label.startsWith('1440')) {
-      return VideoQuality.high1440;
-    }
-
-    if (label.startsWith('2160')) {
-      return VideoQuality.high2160;
-    }
-
-    if (label.startsWith('2880')) {
-      return VideoQuality.high2880;
-    }
-
-    if (label.startsWith('3072')) {
-      return VideoQuality.high3072;
-    }
-
-    if (label.startsWith('4320')) {
-      return VideoQuality.high4320;
+      if (label.startsWith(videoResolution.height.toString())) {
+        return videoQuality;
+      }
     }
 
     return VideoQuality.unknown;
