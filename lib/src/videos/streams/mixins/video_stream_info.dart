@@ -1,4 +1,4 @@
-import 'streams.dart';
+import '../streams.dart';
 
 /// YouTube media stream that contains video.
 mixin VideoStreamInfo on StreamInfo {

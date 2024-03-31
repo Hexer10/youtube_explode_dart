@@ -1,9 +1,10 @@
 import 'package:http_parser/http_parser.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../reverse_engineering/models/fragment.dart';
-import 'stream_info.dart';
-import 'streams.dart';
+import '../../../reverse_engineering/models/fragment.dart';
+import '../mixins/stream_info.dart';
+import '../models/audio_track.dart';
+import '../streams.dart';
 
 part 'audio_only_stream_info.g.dart';
 
@@ -38,17 +39,19 @@ class AudioOnlyStreamInfo with StreamInfo, AudioStreamInfo {
   @override
   final String qualityLabel;
 
-  AudioOnlyStreamInfo(
-    this.tag,
-    this.url,
-    this.container,
-    this.size,
-    this.bitrate,
-    this.audioCodec,
-    this.qualityLabel,
-    this.fragments,
-    this.codec,
-  );
+  @override
+  final AudioTrack? audioTrack;
+
+  AudioOnlyStreamInfo(this.tag,
+      this.url,
+      this.container,
+      this.size,
+      this.bitrate,
+      this.audioCodec,
+      this.qualityLabel,
+      this.fragments,
+      this.codec,
+      this.audioTrack);
 
   @override
   String toString() => 'Audio-only ($tag | $container)';

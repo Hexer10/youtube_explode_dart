@@ -21,6 +21,9 @@ AudioOnlyStreamInfo _$AudioOnlyStreamInfoFromJson(Map<String, dynamic> json) =>
           .map((e) => Fragment.fromJson(e as Map<String, dynamic>))
           .toList(),
       mediaTypeFromJson(json['codec'] as String),
+      json['audioTrack'] == null
+          ? null
+          : AudioTrack.fromJson(json['audioTrack'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AudioOnlyStreamInfoToJson(
@@ -35,4 +38,5 @@ Map<String, dynamic> _$AudioOnlyStreamInfoToJson(
       'codec': mediaTypeToJson(instance.codec),
       'fragments': instance.fragments,
       'qualityLabel': instance.qualityLabel,
+      'audioTrack': instance.audioTrack,
     };

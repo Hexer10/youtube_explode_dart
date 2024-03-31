@@ -1,5 +1,6 @@
 import 'package:http_parser/http_parser.dart';
 
+import '../../videos/streams/models/audio_track.dart';
 import 'fragment.dart';
 
 enum StreamSource { muxed, adaptive, dash }
@@ -59,4 +60,7 @@ abstract class StreamInfoProvider {
 
   ///
   List<Fragment>? get fragments => null;
+
+  ///
+  AudioTrack? get audioTrack => null;
 }

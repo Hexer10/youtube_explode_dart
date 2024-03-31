@@ -1,16 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http_parser/http_parser.dart';
 
-import '../../reverse_engineering/models/fragment.dart';
-import 'audio_stream_info.dart';
-import 'bitrate.dart';
-import 'filesize.dart';
-import 'framerate.dart';
-import 'stream_container.dart';
-import 'stream_info.dart';
-import 'video_quality.dart';
-import 'video_resolution.dart';
-import 'video_stream_info.dart';
+import '../../../reverse_engineering/models/fragment.dart';
+import '../models/audio_track.dart';
+import '../streams.dart';
+import '../mixins/stream_info.dart';
 
 part 'muxed_stream_info.g.dart';
 
@@ -93,4 +87,8 @@ class MuxedStreamInfo with StreamInfo, AudioStreamInfo, VideoStreamInfo {
 
   @override
   Map<String, dynamic> toJson() => _$MuxedStreamInfoToJson(this);
+
+  /// Muxed streams do not provide info about the language.
+  @override
+  AudioTrack? get audioTrack => null;
 }

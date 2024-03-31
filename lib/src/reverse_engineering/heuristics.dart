@@ -1,6 +1,6 @@
 import '../extensions/helpers_extension.dart';
-import '../videos/streams/video_quality.dart';
-import '../videos/streams/video_resolution.dart';
+import '../videos/streams/models/video_quality.dart';
+import '../videos/streams/models/video_resolution.dart';
 
 const _resolutionMap = <VideoQuality, VideoResolution>{
   VideoQuality.low144: VideoResolution(256, 144),

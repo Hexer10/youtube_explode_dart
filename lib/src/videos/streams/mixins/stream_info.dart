@@ -1,7 +1,8 @@
 import 'package:http_parser/http_parser.dart';
 
-import '../../reverse_engineering/models/fragment.dart';
-import '../videos.dart';
+import '../../../reverse_engineering/models/fragment.dart';
+import '../../videos.dart';
+import '../models/audio_track.dart';
 
 /// Generic YouTube media stream.
 mixin StreamInfo {
@@ -63,6 +64,7 @@ extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
         if (e is VideoOnlyStreamInfo) 'video only',
         if (e is MuxedStreamInfo) 'muxed',
         e.size,
+        if (e case AudioStreamInfo(:AudioTrack audioTrack)) audioTrack.displayName,
       ]);
     }
     return column.toString();
