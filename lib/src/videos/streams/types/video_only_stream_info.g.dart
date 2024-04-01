@@ -10,6 +10,7 @@ part of 'video_only_stream_info.dart';
 
 VideoOnlyStreamInfo _$VideoOnlyStreamInfoFromJson(Map<String, dynamic> json) =>
     VideoOnlyStreamInfo(
+      VideoId.fromJson(json['videoId'] as Map<String, dynamic>),
       json['tag'] as int,
       Uri.parse(json['url'] as String),
       StreamContainer.fromJson(json['container'] as Map<String, dynamic>),
@@ -29,6 +30,7 @@ VideoOnlyStreamInfo _$VideoOnlyStreamInfoFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$VideoOnlyStreamInfoToJson(
         VideoOnlyStreamInfo instance) =>
     <String, dynamic>{
+      'videoId': instance.videoId,
       'tag': instance.tag,
       'url': instance.url.toString(),
       'container': instance.container,

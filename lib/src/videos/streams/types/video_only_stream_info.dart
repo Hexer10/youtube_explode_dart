@@ -11,6 +11,9 @@ part 'video_only_stream_info.g.dart';
 @JsonSerializable()
 class VideoOnlyStreamInfo with StreamInfo, VideoStreamInfo {
   @override
+  final VideoId videoId;
+
+  @override
   final int tag;
 
   @override
@@ -51,6 +54,7 @@ class VideoOnlyStreamInfo with StreamInfo, VideoStreamInfo {
   final MediaType codec;
 
   VideoOnlyStreamInfo(
+    this.videoId,
     this.tag,
     this.url,
     this.container,

@@ -7,6 +7,4 @@ mixin AudioStreamInfo on StreamInfo {
 
   /// Audio track which describes the language of the audio.
   AudioTrack? get audioTrack;
-
-
 }

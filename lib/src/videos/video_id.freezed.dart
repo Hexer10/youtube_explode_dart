@@ -14,11 +14,16 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+VideoId _$VideoIdFromJson(Map<String, dynamic> json) {
+  return _VideoId.fromJson(json);
+}
+
 /// @nodoc
 mixin _$VideoId {
   /// ID as string.
   String get value => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $VideoIdCopyWith<VideoId> get copyWith => throw _privateConstructorUsedError;
 }
@@ -88,9 +93,12 @@ class __$$VideoIdImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$VideoIdImpl extends _VideoId {
   const _$VideoIdImpl(this.value) : super._();
+
+  factory _$VideoIdImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VideoIdImplFromJson(json);
 
   /// ID as string.
   @override
@@ -104,6 +112,7 @@ class _$VideoIdImpl extends _VideoId {
             (identical(other.value, value) || other.value == value));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
@@ -112,11 +121,20 @@ class _$VideoIdImpl extends _VideoId {
   @pragma('vm:prefer-inline')
   _$$VideoIdImplCopyWith<_$VideoIdImpl> get copyWith =>
       __$$VideoIdImplCopyWithImpl<_$VideoIdImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$VideoIdImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _VideoId extends VideoId {
   const factory _VideoId(final String value) = _$VideoIdImpl;
   const _VideoId._() : super._();
+
+  factory _VideoId.fromJson(Map<String, dynamic> json) = _$VideoIdImpl.fromJson;
 
   @override
 
