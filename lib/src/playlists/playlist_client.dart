@@ -36,7 +36,7 @@ class PlaylistClient {
   Stream<Video> getVideos(dynamic id) async* {
     id = PlaylistId.fromString(id);
     final encounteredVideoIds = <String>{};
-
+    var prevLength = 0;
     PlaylistPage? page = await PlaylistPage.get(_httpClient, id.value);
 
     while (page != null) {
@@ -68,6 +68,10 @@ class PlaylistClient {
           false,
         );
       }
+      if (encounteredVideoIds.length == prevLength) {
+        break;
+      }
+      prevLength = encounteredVideoIds.length;
       page = await page.nextPage(_httpClient);
     }
   }
