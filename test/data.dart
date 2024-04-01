@@ -1,7 +1,7 @@
 // From: https://github.com/Tyrrrz/YoutubeExplode/blob/master/YoutubeExplode.Tests/TestData/VideoIds.cs
 
 enum VideoIdData {
-  normal('9bZkp7q19f0'),
+  normal('mKdjycj-7eE'),
   unlisted('UGh4_HsibAE'),
   private('pb_hHv3fByo'),
   deleted('qld9w0b-1ao'),
