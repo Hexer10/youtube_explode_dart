@@ -120,15 +120,20 @@ class StreamClient {
       {required bool fullManifest}) async* {
     try {
       // Use await for instead of yield* to catch exceptions
-      await for (final stream in _getStream(videoId, VideoController.androidTestSuiteClient)) {
+      await for (final stream
+          in _getStream(videoId, VideoController.androidTestSuiteClient)) {
         yield stream;
       }
       if (fullManifest) {
-        await for (final stream in _getStream(videoId, VideoController.androidClient)) {
+        await for (final stream
+            in _getStream(videoId, VideoController.androidClient)) {
           yield stream;
         }
       }
-    } on VideoUnplayableException {
+    } on VideoUnplayableException catch (e) {
+      if (e is VideoRequiresPurchaseException) {
+        rethrow;
+      }
       yield* _getCipherStream(videoId);
     }
   }
