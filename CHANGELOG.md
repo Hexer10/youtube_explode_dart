@@ -1,3 +1,10 @@
+## 2.2.0
+- Implement shorts filter. Thanks to @igormidev #269.
+- Implement `AudioTrack`s in `StreamInfo` to find the language of an audio track.
+- Added `fullManifest` optional parameter for `StreamClient.getManifest` to fetch a manifest with more streams, including all the languages provided by YouTube.
+- Fix issue where 1440p videos would be detected as 144p.
+- Fix endless loop with fetching some playlists.
+
 ## 2.1.0
 - BREAKING CHANGE: 
     - In `getUploadsFromPage`: the `videoSorting` parameter is now a named parameter
