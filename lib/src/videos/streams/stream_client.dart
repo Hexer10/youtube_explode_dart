@@ -119,9 +119,14 @@ class StreamClient {
   Stream<StreamInfo> _getStreams(VideoId videoId,
       {required bool fullManifest}) async* {
     try {
-      yield* _getStream(videoId, VideoController.androidTestSuiteClient);
+      // Use await for instead of yield* to catch exceptions
+      await for (final stream in _getStream(videoId, VideoController.androidTestSuiteClient)) {
+        yield stream;
+      }
       if (fullManifest) {
-        yield* _getStream(videoId, VideoController.androidClient);
+        await for (final stream in _getStream(videoId, VideoController.androidClient)) {
+          yield stream;
+        }
       }
     } on VideoUnplayableException {
       yield* _getCipherStream(videoId);
