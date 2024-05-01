@@ -6,16 +6,17 @@ import '../../extensions/helpers_extension.dart';
 import 'initial_data.dart';
 
 /// Generic class to handle the various youtube pages.
+@internal
 abstract class YoutubePage<T extends InitialData> {
-  @protected
+  @internal
   final Document? root;
 
-  @protected
+  @internal
   late final T initialData = _defaultInitialData ?? _getInitialData();
 
   final T? _defaultInitialData;
 
-  @protected
+  @internal
   final T Function(JsonMap)? initialDataBuilder;
 
   T _getInitialData() {

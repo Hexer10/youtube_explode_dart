@@ -30,7 +30,7 @@ class CommentsClient {
           () async => WatchPage.get(httpClient, video.id.value),
         );
 
-    final continuation = watchPage.commentsContinuation;
+    final continuation = watchPage.initialData.commentsContinuation;
     if (continuation == null) {
       return null;
     }
@@ -195,4 +195,35 @@ class _Comment {
 
   @override
   String toString() => '$author: $text';
+}
+
+
+extension _CommentsDataExtension on WatchPageInitialData {
+
+  /*
+  contents.twoColumnWatchNextResults.results.results.contents[3].itemSectionRenderer.contents[0].continuationItemRenderer.continuationEndpoint.continuationCommand.token
+   */
+  JsonMap? getContinuationContext() {
+    if (root['contents'] != null) {
+      return root
+          .get('contents')
+          ?.get('twoColumnWatchNextResults')
+          ?.get('results')
+          ?.get('results')
+          ?.getList('contents')
+          ?.lastWhereOrNull((e) => e['itemSectionRenderer'] != null)
+          ?.get('itemSectionRenderer')
+          ?.getList('contents')
+          ?.firstOrNull
+          ?.get('continuationItemRenderer')
+          ?.get('continuationEndpoint')
+          ?.get('continuationCommand');
+    }
+    return null;
+  }
+
+
+
+  String? get commentsContinuation =>
+      getContinuationContext()?.getT<String>('token');
 }

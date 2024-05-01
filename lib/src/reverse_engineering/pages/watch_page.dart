@@ -12,7 +12,7 @@ import '../player/player_response.dart';
 import 'player_config_base.dart';
 
 ///
-class WatchPage extends YoutubePage<_InitialData> {
+class WatchPage extends YoutubePage<WatchPageInitialData> {
   static final RegExp _videoLikeExp =
       RegExp(r'"label"\s*:\s*"([\d,\.]+) likes"');
   static final RegExp _videoDislikeExp =
@@ -86,8 +86,6 @@ class WatchPage extends YoutubePage<_InitialData> {
             '0',
       );
 
-  String? get commentsContinuation => initialData.commentsContinuation;
-
   static final _playerConfigExp = RegExp(r'ytplayer\.config\s*=\s*(\{.*\})');
 
   late final WatchPlayerConfig? playerConfig = getPlayerConfig();
@@ -124,7 +122,7 @@ class WatchPage extends YoutubePage<_InitialData> {
   ///
   WatchPage.parse(String raw, this.visitorInfoLive, this.ysc)
       : root = parser.parse(raw),
-        super(parser.parse(raw), (root) => _InitialData(root));
+        super(parser.parse(raw), (root) => WatchPageInitialData(root));
 
   ///
   static Future<WatchPage> get(YoutubeHttpClient httpClient, String videoId) {
@@ -168,8 +166,8 @@ class WatchPlayerConfig implements PlayerConfigBase {
       PlayerResponse.parse(root.get('args')!.getT<String>('playerResponse')!);
 }
 
-class _InitialData extends InitialData {
-  _InitialData(super.root);
+class WatchPageInitialData extends InitialData {
+  WatchPageInitialData(super.root);
 
   late final int? likesCount = _getLikes();
   late final int? disLikesCount = _getDislikes();
@@ -240,29 +238,4 @@ class _InitialData extends InitialData {
     }
     return null;
   }
-
-  /*
-  contents.twoColumnWatchNextResults.results.results.contents[3].itemSectionRenderer.contents[0].continuationItemRenderer.continuationEndpoint.continuationCommand.token
-   */
-  JsonMap? getContinuationContext() {
-    if (root['contents'] != null) {
-      return root
-          .get('contents')
-          ?.get('twoColumnWatchNextResults')
-          ?.get('results')
-          ?.get('results')
-          ?.getList('contents')
-          ?.lastWhereOrNull((e) => e['itemSectionRenderer'] != null)
-          ?.get('itemSectionRenderer')
-          ?.getList('contents')
-          ?.firstOrNull
-          ?.get('continuationItemRenderer')
-          ?.get('continuationEndpoint')
-          ?.get('continuationCommand');
-    }
-    return null;
-  }
-
-  late final String commentsContinuation =
-      getContinuationContext()?.getT<String>('token') ?? '';
 }
