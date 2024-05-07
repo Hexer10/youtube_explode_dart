@@ -14,8 +14,8 @@ class RelatedVideosClient {
 
   Iterable<Video> relatedVideos() sync* {
     final results = contents
-            .where((e) => e.containsKey('compactVideoRenderer'))
-            .map((e) => e['compactVideoRenderer']);
+        .where((e) => e.containsKey('compactVideoRenderer'))
+        .map((e) => e['compactVideoRenderer']);
 
     for (final video in results) {
       if (video
@@ -114,7 +114,8 @@ class RelatedVideosClient {
 
     final contents = watchPage.initialData.getRelatedVideosContent();
     if (contents == null) {
-      File('local/${video.id}-related_videos.json').writeAsString(json.encode(watchPage.initialData.root));
+      File('local/${video.id}-related_videos.json')
+          .writeAsString(json.encode(watchPage.initialData.root));
       return null;
     }
     return RelatedVideosClient(contents);

@@ -64,7 +64,8 @@ extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
         if (e is VideoOnlyStreamInfo) 'video only',
         if (e is MuxedStreamInfo) 'muxed',
         e.size,
-        if (e case AudioStreamInfo(:AudioTrack audioTrack)) audioTrack.displayName,
+        if (e case AudioStreamInfo(:AudioTrack audioTrack))
+          audioTrack.displayName,
       ]);
     }
     return column.toString();

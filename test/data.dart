@@ -70,8 +70,6 @@ enum VideoIdData {
     ageRestrictedSexual,
   ];
 
-
-
   // Cannot fetch metadata or streams.
   static const invalid = [
     deleted,

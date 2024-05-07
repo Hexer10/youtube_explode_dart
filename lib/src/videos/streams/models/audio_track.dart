@@ -11,6 +11,6 @@ class AudioTrack with _$AudioTrack {
       required String id,
       required bool audioIsDefault}) = _AudioTrack;
 
-  factory AudioTrack.fromJson(Map<String, Object?> json)
-  => _$AudioTrackFromJson(json);
+  factory AudioTrack.fromJson(Map<String, Object?> json) =>
+      _$AudioTrackFromJson(json);
 }

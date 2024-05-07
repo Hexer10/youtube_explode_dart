@@ -197,7 +197,6 @@ class _Comment {
   String toString() => '$author: $text';
 }
 
-
 extension _CommentsDataExtension on WatchPageInitialData {
   JsonMap? getContinuationContext() {
     if (root['contents'] != null) {
@@ -217,8 +216,6 @@ extension _CommentsDataExtension on WatchPageInitialData {
     }
     return null;
   }
-
-
 
   String? get commentsContinuation =>
       getContinuationContext()?.getT<String>('token');

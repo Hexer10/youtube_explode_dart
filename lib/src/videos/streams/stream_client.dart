@@ -79,7 +79,7 @@ class StreamClient {
         // Muxed
         if (!audioCodec.isNullOrWhiteSpace &&
             stream.source != StreamSource.adaptive) {
-          assert(stream.audioTrack== null);
+          assert(stream.audioTrack == null);
           yield MuxedStreamInfo(
             itag,
             url,
@@ -116,17 +116,16 @@ class StreamClient {
         // Audio-only
       } else if (!audioCodec.isNullOrWhiteSpace) {
         yield AudioOnlyStreamInfo(
-          itag,
-          url,
-          container,
-          fileSize,
-          bitrate,
-          audioCodec!,
-          stream.qualityLabel,
-          stream.fragments ?? const [],
-          stream.codec,
-          stream.audioTrack
-        );
+            itag,
+            url,
+            container,
+            fileSize,
+            bitrate,
+            audioCodec!,
+            stream.qualityLabel,
+            stream.fragments ?? const [],
+            stream.codec,
+            stream.audioTrack);
       } else {
         throw YoutubeExplodeException('Could not extract stream codec');
       }

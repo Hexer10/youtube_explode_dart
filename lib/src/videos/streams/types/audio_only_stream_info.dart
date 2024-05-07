@@ -42,7 +42,8 @@ class AudioOnlyStreamInfo with StreamInfo, AudioStreamInfo {
   @override
   final AudioTrack? audioTrack;
 
-  AudioOnlyStreamInfo(this.tag,
+  AudioOnlyStreamInfo(
+      this.tag,
       this.url,
       this.container,
       this.size,

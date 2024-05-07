@@ -78,7 +78,7 @@ void main() {
     }
   });
 
-  group('Get related videos of a video', ()  {
+  group('Get related videos of a video', () {
     for (final val in VideoIdData.validWatchpage) {
       test('VideoId - $val', () async {
         final video = await yt!.videos.get(val.id);
