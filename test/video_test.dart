@@ -77,4 +77,25 @@ void main() {
       });
     }
   });
+
+  group('Get related videos of a video', ()  {
+    for (final val in VideoIdData.validWatchpage) {
+      test('VideoId - $val', () async {
+        final video = await yt!.videos.get(val.id);
+        final relatedVideos = await yt!.videos.getRelatedVideos(video);
+        expect(relatedVideos, isNotNull);
+        expect(relatedVideos, isNotEmpty);
+      });
+    }
+  });
+
+  test('Get multiple pages of related videos', () async {
+    final video = await yt!.videos.get(VideoIdData.withHighQualityStreams.id);
+    var relatedVideos = await yt!.videos.getRelatedVideos(video);
+    expect(relatedVideos, isNotNull);
+    expect(relatedVideos, isNotEmpty);
+    relatedVideos = await relatedVideos!.nextPage();
+    expect(relatedVideos, isNotNull);
+    expect(relatedVideos, isNotEmpty);
+  });
 }

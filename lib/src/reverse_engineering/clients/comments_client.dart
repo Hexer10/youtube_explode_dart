@@ -199,10 +199,6 @@ class _Comment {
 
 
 extension _CommentsDataExtension on WatchPageInitialData {
-
-  /*
-  contents.twoColumnWatchNextResults.results.results.contents[3].itemSectionRenderer.contents[0].continuationItemRenderer.continuationEndpoint.continuationCommand.token
-   */
   JsonMap? getContinuationContext() {
     if (root['contents'] != null) {
       return root

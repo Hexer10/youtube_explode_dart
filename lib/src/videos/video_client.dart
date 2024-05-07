@@ -1,6 +1,7 @@
 import '../channels/channel_id.dart';
 import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
+import '../reverse_engineering/clients/related_videos_client.dart';
 import '../reverse_engineering/pages/watch_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
 import 'videos.dart';
@@ -70,4 +71,17 @@ class VideoClient {
   /// Get a [Video] instance from a [videoId]
   Future<Video> get(dynamic videoId) async =>
       _getVideoFromWatchPage(VideoId.fromString(videoId));
+
+  /// Returns a [RelatedVideosList] or null if no related videos were found.
+  Future<RelatedVideosList?> getRelatedVideos(Video video) async {
+    // Try 3 times before giving up
+    for (var i = 0; i < 3; i++) {
+      final client = await RelatedVideosClient.get(_httpClient, video);
+      if (client != null) {
+        return RelatedVideosList(
+            client.relatedVideos().toList(), client, _httpClient);
+      }
+    }
+    return null;
+  }
 }
