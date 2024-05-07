@@ -24,7 +24,7 @@ void main() {
 
   group('Get metadata of any channel', () {
     for (final val in {
-      'UC46807r_RiRjH8IU-h_DrDQ',
+      'UCqKbtOLx4NCBh5KKMSmbX0g',
       'UCJ6td3C9QlPO9O_J5dF4ZzA',
       'UCiGm_E4ZwYSHV3bcW1pnSeQ',
     }) {
@@ -64,7 +64,7 @@ void main() {
 
   group('Get the videos of any youtube channel', () {
     for (final val in {
-      'UC46807r_RiRjH8IU-h_DrDQ',
+      'UCqKbtOLx4NCBh5KKMSmbX0g',
       'UCJ6td3C9QlPO9O_J5dF4ZzA',
       'UCiGm_E4ZwYSHV3bcW1pnSeQ',
     }) {
@@ -77,13 +77,13 @@ void main() {
 
   test('Get videos of a youtube channel from the uploads page', () async {
     final videos =
-        await yt!.channels.getUploadsFromPage('UC46807r_RiRjH8IU-h_DrDQ');
+        await yt!.channels.getUploadsFromPage('UCqKbtOLx4NCBh5KKMSmbX0g');
     expect(videos, hasLength(30));
   });
 
   test('Get next page youtube channel uploads page', () async {
     final videos =
-        await yt!.channels.getUploadsFromPage('UC46807r_RiRjH8IU-h_DrDQ');
+        await yt!.channels.getUploadsFromPage('UCqKbtOLx4NCBh5KKMSmbX0g');
     final nextPage = await videos.nextPage();
     expect(nextPage!.length, greaterThanOrEqualTo(20));
   });

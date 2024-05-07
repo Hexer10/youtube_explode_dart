@@ -5,7 +5,7 @@ void main() {
   group('These are valid channel ids', () {
     for (final val in {
       [ChannelId('UCEnBXANsKmyj2r9xVyKoDiQ'), 'UCEnBXANsKmyj2r9xVyKoDiQ'],
-      [ChannelId('UC46807r_RiRjH8IU-h_DrDQ'), 'UC46807r_RiRjH8IU-h_DrDQ'],
+      [ChannelId('UCqKbtOLx4NCBh5KKMSmbX0g'), 'UCqKbtOLx4NCBh5KKMSmbX0g'],
     }) {
       test('ChannelID - ${val[0]}', () {
         expect((val[0] as ChannelId).value, val[1]);
