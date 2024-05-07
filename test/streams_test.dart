@@ -1,3 +1,4 @@
+import 'package:test/expect.dart';
 import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -26,6 +27,12 @@ void main() {
         timeout: const Timeout(Duration(seconds: 90)),
       );
     }
+  });
+
+  test('Get full manifest of a video', () async {
+    final manifest = await yt!.videos.streamsClient
+        .getManifest(VideoIdData.normal.id, fullManifest: true);
+    expect(manifest.streams.length, greaterThan(50));
   });
 
   test('Stream of paid videos throw VideoRequiresPurchaseException', () {

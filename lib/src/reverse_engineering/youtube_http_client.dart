@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
 
 import '../exceptions/exceptions.dart';
@@ -142,6 +143,7 @@ class YoutubeHttpClient extends http.BaseClient {
     bool validate = true,
     int start = 0,
     int errorCount = 0,
+    required StreamClient streamClient,
   }) {
     if (streamInfo.fragments.isNotEmpty) {
       // DASH(fragmented) stream
@@ -156,6 +158,7 @@ class YoutubeHttpClient extends http.BaseClient {
     // Normal stream
     return _getStream(
       streamInfo,
+      streamClient: streamClient,
       headers: headers,
       validate: validate,
       start: start,
@@ -187,24 +190,45 @@ class YoutubeHttpClient extends http.BaseClient {
     bool validate = true,
     int start = 0,
     int errorCount = 0,
+    required StreamClient streamClient,
   }) async* {
-    final url = streamInfo.url;
+    var url = streamInfo.url;
     var bytesCount = start;
-
     while (!_closed && bytesCount != streamInfo.size.totalBytes) {
       try {
-        final response = await retry(this, () {
+        final response = await retry(this, () async {
           final from = bytesCount;
           final to = (streamInfo.isThrottled
-                  ? (bytesCount + 9898989)
+                  ? (bytesCount + 10379935)
                   : streamInfo.size.totalBytes) -
               1;
-          final request =
-              http.Request('get', url.setQueryParam('range', '$from-$to'));
+
+          late final http.Request request;
+          if (url.queryParameters['c'] == 'ANDROID') {
+            request = http.Request('get', url);
+            request.headers['Range'] = 'bytes=$from-$to';
+          } else {
+            request =
+                http.Request('get', url.setQueryParam('range', '$from-$to'));
+          }
           return send(request);
         });
         if (validate) {
-          _validateResponse(response, response.statusCode);
+          try {
+            _validateResponse(response, response.statusCode);
+          } on FatalFailureException {
+            final newManifest =
+                await streamClient.getManifest(streamInfo.videoId);
+            final stream = newManifest.streams
+                .firstWhereOrNull((e) => e.tag == streamInfo.tag);
+            if (stream == null) {
+              print(
+                  'Error: Could not find the stream in the new manifest (due to Youtube error)');
+              rethrow;
+            }
+            url = stream.url;
+            continue;
+          }
         }
         final stream = StreamController<List<int>>();
         response.stream.listen(
@@ -227,6 +251,7 @@ class YoutubeHttpClient extends http.BaseClient {
         await Future.delayed(const Duration(milliseconds: 500));
         yield* _getStream(
           streamInfo,
+          streamClient: streamClient,
           headers: headers,
           validate: validate,
           start: bytesCount,
@@ -316,7 +341,7 @@ class YoutubeHttpClient extends http.BaseClient {
       }
     });
 
-    //print(request);
+    // print(request);
     // print(StackTrace.current);
     return _httpClient.send(request);
   }

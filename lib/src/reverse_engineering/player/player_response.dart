@@ -96,8 +96,8 @@ class PlayerResponse {
           // extract the preview video ID using regex.
           ?.replaceAll('-', '+')
           .replaceAll('_', '/')
-          .pipe(base64.decode)
-          .pipe(utf8.decode)
+          .pipe((e) => base64.decode(e))
+          .pipe((e) => utf8.decode(e, allowMalformed: true))
           .pipe(
             (value) => RegExp('video_id=(.{11})').firstMatch(value)?.group(1),
           )

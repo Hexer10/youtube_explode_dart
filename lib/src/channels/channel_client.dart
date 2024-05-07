@@ -93,6 +93,8 @@ class ChannelClient {
   /// Gets the info found on a YouTube Channel About page.
   /// [username] must be either a [Username] or a string
   /// which is parsed to a [Username]
+  ///
+  /// WARNING: As of v2.2.0 this is broken due to yt updates.
   Future<ChannelAbout> getAboutPageByUsername(dynamic username) async {
     username = Username.fromString(username);
 

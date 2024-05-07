@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http_parser/http_parser.dart';
 
 import '../../../reverse_engineering/models/fragment.dart';
+import '../../video_id.dart';
 import '../models/audio_track.dart';
 import '../streams.dart';
 import '../mixins/stream_info.dart';
@@ -11,6 +12,9 @@ part 'muxed_stream_info.g.dart';
 /// YouTube media stream that contains both audio and video.
 @JsonSerializable()
 class MuxedStreamInfo with StreamInfo, AudioStreamInfo, VideoStreamInfo {
+  @override
+  final VideoId videoId;
+
   @override
   final int tag;
 
@@ -64,6 +68,7 @@ class MuxedStreamInfo with StreamInfo, AudioStreamInfo, VideoStreamInfo {
 
   /// Initializes an instance of [MuxedStreamInfo]
   MuxedStreamInfo(
+    this.videoId,
     this.tag,
     this.url,
     this.container,

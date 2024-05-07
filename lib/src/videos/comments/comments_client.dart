@@ -12,6 +12,8 @@ class CommentsClient {
 
   /// Returns a [List<Comment>] containing the first batch of comments or null if the video has comments disabled.
   /// You can use [CommentsList.nextPage()] to get the next batch of comments.
+  ///
+  /// WARNING: As of v2.2.0 this is broken due to yt updates.
   Future<CommentsList?> getComments(Video video) async {
     if (video.watchPage == null) {
       return null;

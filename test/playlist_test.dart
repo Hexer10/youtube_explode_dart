@@ -77,5 +77,5 @@ void main() {
         .getVideos('RDCLAK5uy_m9Rw_g5eCJtMhuRgP1eqU3H-XW7UL6uWQ')
         .toList();
     expect(videos.length, greaterThan(100));
-  }, timeout: const Timeout(Duration(minutes: 2)));
+  });
 }

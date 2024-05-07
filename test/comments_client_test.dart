@@ -12,13 +12,13 @@ void main() {
   });
 
   test('Get comments of a video', () async {
-    const videoUrl = 'https://www.youtube.com/watch?v=TW_yxPcodhk';
+    const videoUrl = 'https://www.youtube.com/watch?v=Y50XtEOQHxI';
     final video = await yt!.videos.get(VideoId(videoUrl));
     final comments = (await yt!.videos.commentsClient.getComments(video))!;
     expect(comments.length, greaterThanOrEqualTo(1));
     expect(comments.totalLength, greaterThanOrEqualTo(1));
     expect(comments.first.isHearted, false);
-  });
+  }, skip: 'Currently broken');
 
   test('Comments of video with no comments should be empty', () async {
     const videoUrl = 'https://www.youtube.com/watch?v=A3egPTy9hhA';
