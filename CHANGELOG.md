@@ -1,3 +1,6 @@
+## 2.1.1
+- Implement `VideoClient.get` to fetch a list of related videos given another Video.
+
 ## 2.1.0
 - BREAKING CHANGE: 
     - In `getUploadsFromPage`: the `videoSorting` parameter is now a named parameter

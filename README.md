@@ -60,6 +60,18 @@ var author = video.author; // "Jim Browning"
 var duration = video.duration; // Instance of Duration - 0:19:48.00000
 ```
 
+#### Get a list of related videos
+```dart
+var video = yt.videos.get('https://youtube.com/watch?v=Dpp1sIL1m5Q');
+var relatedVideos = await yt.videos.getRelatedVideos(video); // video must be a Video instance.
+print(relatedVideos); //prints the list of related videos
+
+// to get the next page of related videos
+relatedVideos = await relatedVideos.nextPage();
+```
+
+If no related video is found `getRelatedVideos` or `nextPage` will return null.
+
 ### Downloading a video stream
 Every YouTube video has a number of streams available. These streams may have different containers, video quality, bitrate, etc.
 
