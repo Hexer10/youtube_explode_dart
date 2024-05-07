@@ -114,8 +114,6 @@ class RelatedVideosClient {
 
     final contents = watchPage.initialData.getRelatedVideosContent();
     if (contents == null) {
-      File('local/${video.id}-related_videos.json')
-          .writeAsString(json.encode(watchPage.initialData.root));
       return null;
     }
     return RelatedVideosClient(contents);
