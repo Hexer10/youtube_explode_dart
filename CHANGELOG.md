@@ -1,3 +1,6 @@
+## 2.2.2
+- Fix video extraction. Thanks to @bigzhu #287.
+
 ## 2.2.1
 - Implement `VideoClient.get` to fetch a list of related videos given another Video.
 
