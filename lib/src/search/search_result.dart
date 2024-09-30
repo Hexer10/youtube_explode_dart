@@ -76,6 +76,9 @@ class SearchResult with _$SearchResult {
 
     /// Channel uploaded videos.
     int videoCount,
+
+    /// Channel thumbnails.
+    List<Thumbnail> thumbnails,
   ) = SearchChannel;
 }
 

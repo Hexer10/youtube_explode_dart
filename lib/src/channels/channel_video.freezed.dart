@@ -35,7 +35,9 @@ mixin _$ChannelVideo {
   /// Video view count.
   int get videoViews => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChannelVideo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChannelVideoCopyWith<ChannelVideo> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -67,6 +69,8 @@ class _$ChannelVideoCopyWithImpl<$Res, $Val extends ChannelVideo>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ChannelVideo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -105,6 +109,8 @@ class _$ChannelVideoCopyWithImpl<$Res, $Val extends ChannelVideo>
     ) as $Val);
   }
 
+  /// Create a copy of ChannelVideo
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VideoIdCopyWith<$Res> get videoId {
@@ -142,6 +148,8 @@ class __$$ChannelVideoImplCopyWithImpl<$Res>
       _$ChannelVideoImpl _value, $Res Function(_$ChannelVideoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ChannelVideo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -239,7 +247,9 @@ class _$ChannelVideoImpl implements _ChannelVideo {
   int get hashCode => Object.hash(runtimeType, videoId, videoTitle,
       videoDuration, videoThumbnail, videoUploadDate, videoViews);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChannelVideo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChannelVideoImplCopyWith<_$ChannelVideoImpl> get copyWith =>
@@ -255,33 +265,35 @@ abstract class _ChannelVideo implements ChannelVideo {
       final String videoUploadDate,
       final int videoViews) = _$ChannelVideoImpl;
 
-  @override
-
   /// Video ID.
-  VideoId get videoId;
   @override
+  VideoId get videoId;
 
   /// Video title.
-  String get videoTitle;
   @override
+  String get videoTitle;
 
   /// Video duration
-  Duration get videoDuration;
   @override
+  Duration get videoDuration;
 
   /// Video thumbnail
-  String get videoThumbnail;
   @override
+  String get videoThumbnail;
 
   /// Video upload date.
   /// Formatted like 10 hours ago
-  String get videoUploadDate;
   @override
+  String get videoUploadDate;
 
   /// Video view count.
-  int get videoViews;
   @override
-  @JsonKey(ignore: true)
+  int get videoViews;
+
+  /// Create a copy of ChannelVideo
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChannelVideoImplCopyWith<_$ChannelVideoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -26,8 +26,12 @@ mixin _$Language {
   /// Full English name of this language. This could be an empty string.
   String get name => throw _privateConstructorUsedError;
 
+  /// Serializes this Language to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Language
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LanguageCopyWith<Language> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +54,8 @@ class _$LanguageCopyWithImpl<$Res, $Val extends Language>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Language
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -88,6 +94,8 @@ class __$$LanguageImplCopyWithImpl<$Res>
       _$LanguageImpl _value, $Res Function(_$LanguageImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Language
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -137,11 +145,13 @@ class _$LanguageImpl extends _Language {
             (identical(other.name, name) || other.name == name));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, code, name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Language
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LanguageImplCopyWith<_$LanguageImpl> get copyWith =>
@@ -163,16 +173,18 @@ abstract class _Language extends Language {
   factory _Language.fromJson(Map<String, dynamic> json) =
       _$LanguageImpl.fromJson;
 
-  @override
-
   /// ISO 639-1 code of this language.
-  String get code;
   @override
+  String get code;
 
   /// Full English name of this language. This could be an empty string.
-  String get name;
   @override
-  @JsonKey(ignore: true)
+  String get name;
+
+  /// Create a copy of Language
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LanguageImplCopyWith<_$LanguageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

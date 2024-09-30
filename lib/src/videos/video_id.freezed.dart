@@ -23,8 +23,12 @@ mixin _$VideoId {
   /// ID as string.
   String get value => throw _privateConstructorUsedError;
 
+  /// Serializes this VideoId to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VideoId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VideoIdCopyWith<VideoId> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -46,6 +50,8 @@ class _$VideoIdCopyWithImpl<$Res, $Val extends VideoId>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VideoId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -78,6 +84,8 @@ class __$$VideoIdImplCopyWithImpl<$Res>
       _$VideoIdImpl _value, $Res Function(_$VideoIdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VideoId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -112,11 +120,13 @@ class _$VideoIdImpl extends _VideoId {
             (identical(other.value, value) || other.value == value));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VideoId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VideoIdImplCopyWith<_$VideoIdImpl> get copyWith =>
@@ -136,12 +146,14 @@ abstract class _VideoId extends VideoId {
 
   factory _VideoId.fromJson(Map<String, dynamic> json) = _$VideoIdImpl.fromJson;
 
-  @override
-
   /// ID as string.
-  String get value;
   @override
-  @JsonKey(ignore: true)
+  String get value;
+
+  /// Create a copy of VideoId
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VideoIdImplCopyWith<_$VideoIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

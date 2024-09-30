@@ -24,8 +24,12 @@ mixin _$StreamContainer {
   /// Can be used as file extension
   String get name => throw _privateConstructorUsedError;
 
+  /// Serializes this StreamContainer to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StreamContainer
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $StreamContainerCopyWith<StreamContainer> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +53,8 @@ class _$StreamContainerCopyWithImpl<$Res, $Val extends StreamContainer>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of StreamContainer
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -82,6 +88,8 @@ class __$$StreamContainerImplCopyWithImpl<$Res>
       _$StreamContainerImpl _value, $Res Function(_$StreamContainerImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StreamContainer
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -117,11 +125,13 @@ class _$StreamContainerImpl extends _StreamContainer {
             (identical(other.name, name) || other.name == name));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StreamContainer
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StreamContainerImplCopyWith<_$StreamContainerImpl> get copyWith =>
@@ -143,13 +153,15 @@ abstract class _StreamContainer extends StreamContainer {
   factory _StreamContainer.fromJson(Map<String, dynamic> json) =
       _$StreamContainerImpl.fromJson;
 
-  @override
-
   /// Container name.
   /// Can be used as file extension
-  String get name;
   @override
-  @JsonKey(ignore: true)
+  String get name;
+
+  /// Create a copy of StreamContainer
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StreamContainerImplCopyWith<_$StreamContainerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
