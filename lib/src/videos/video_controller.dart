@@ -7,18 +7,21 @@ import '../reverse_engineering/player/player_response.dart';
 @internal
 class VideoController {
   /// Used to fetch streams without signature deciphering, but has limited streams.
-  static const androidTestSuiteClient = {
-    'context': {
-      'client': {
-        'clientName': 'ANDROID_CREATOR',
-        'clientVersion': '24.24.100',
-        'androidSdkVersion': 30,
-        // 'userAgent':
-        // 'com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip',
-        'hl': 'en',
-        'gl': 'US',
-        'utcOffsetMinutes': 0,
-      },
+  static const iosClient = {
+    "context": {
+      "client": {
+        "clientName": "IOS",
+        "clientVersion": "19.29.1",
+        "deviceMake": "Apple",
+        "deviceModel": "iPhone16,2",
+        "hl": "en",
+        "osName": "iPhone",
+        "osVersion": "17.5.1.21F90",
+        "timeZone": "UTC",
+        "userAgent": "com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)",
+        "gl": "US",
+        "utcOffsetMinutes": 0
+      }
     },
   };
 

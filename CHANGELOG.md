@@ -1,3 +1,6 @@
+## 2.2.3
+- Impersonate ios client to extract manifest.
+
 ## 2.2.2
 - Fix video extraction. Thanks to @bigzhu #287.
 
