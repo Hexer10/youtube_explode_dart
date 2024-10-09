@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 
 import '../exceptions/exceptions.dart';
 import '../extensions/helpers_extension.dart';
@@ -12,6 +13,7 @@ import '../videos/streams/streams.dart';
 /// HttpClient wrapper for YouTube
 class YoutubeHttpClient extends http.BaseClient {
   final http.Client _httpClient;
+  final _logger = Logger('YoutubeExplode.HttpClient');
 
   // Flag to interrupt receiving stream.
   bool _closed = false;
@@ -341,8 +343,7 @@ class YoutubeHttpClient extends http.BaseClient {
       }
     });
 
-    // print(request);
-    // print(StackTrace.current);
+    _logger.fine('Sending request: ${request.url}', null, StackTrace.current);
     return _httpClient.send(request);
   }
 }

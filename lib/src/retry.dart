@@ -37,5 +37,8 @@ int getExceptionCost(Exception e) {
   if (e is FatalFailureException) {
     return 3;
   }
+  if (e is VideoUnplayableException) {
+    return 4;
+  }
   return 1;
 }

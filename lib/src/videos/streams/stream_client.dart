@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:logging/logging.dart';
+
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
@@ -8,13 +10,14 @@ import '../../reverse_engineering/heuristics.dart';
 import '../../reverse_engineering/models/stream_info_provider.dart';
 import '../../reverse_engineering/pages/watch_page.dart';
 import '../../reverse_engineering/youtube_http_client.dart';
-import '../video_controller.dart';
 import '../video_id.dart';
+import '../youtube_api_client.dart';
 import 'stream_controller.dart';
 import 'streams.dart';
 
 /// Queries related to media streams of YouTube videos.
 class StreamClient {
+  final _logger = Logger('YoutubeExplode.StreamsClient');
   final YoutubeHttpClient _httpClient;
   final StreamController _controller;
 
@@ -26,48 +29,71 @@ class StreamClient {
   /// Gets the manifest that contains information
   /// about available streams in the specified video.
   ///
-  /// If [fullManifest] is set to `true`, more streams types will be fetched
-  /// and track of different languages (if present) will be included.
+  /// See [YoutubeApiClient] for all the possible clients.
+  /// By default ios and android_music are used.
+  ///
+  /// If the extraction fails an empty list is returned, to diagnose the issue enabled the logging from the `logging` package, and open an issue with the output.
+  /// For example:
+  /// ```dart
+  /// Logger.root.level = Level.ALL
+  /// Logger.root.onRecord.listen(print);
+  /// // run yt related code ...
+  ///
+  /// ```
   Future<StreamManifest> getManifest(dynamic videoId,
-      {bool fullManifest = false}) {
+      {@Deprecated(
+          'Use the ytClient parameter instead passing the proper [YoutubeApiClient]s')
+      bool fullManifest = false,
+      List<YoutubeApiClient> ytClients = const [
+        YoutubeApiClient.androidMusic,
+        YoutubeApiClient.iosClient,
+      ]}) async {
     videoId = VideoId.fromString(videoId);
 
-    return retry(_httpClient, () async {
-      final streams =
-          await _getStreams(videoId, fullManifest: fullManifest).toList();
-      if (streams.isEmpty) {
-        throw VideoUnavailableException(
-          'Video "$videoId" does not contain any playable streams.',
-        );
-      }
+    final uniqueStreams = LinkedHashSet<StreamInfo>(
+      equals: (a, b) {
+        if (a.runtimeType != b.runtimeType) return false;
+        if (a is AudioStreamInfo && b is AudioStreamInfo) {
+          return a.tag == b.tag && a.audioTrack == b.audioTrack;
+        }
+        return a.tag == b.tag;
+      },
+      hashCode: (e) {
+        if (e is AudioStreamInfo) {
+          return e.tag.hashCode ^ e.audioTrack.hashCode;
+        }
+        return e.tag.hashCode;
+      },
+    );
 
-      final response = await _httpClient.head(streams.first.url);
-      if (response.statusCode == 403) {
-        throw YoutubeExplodeException(
-          'Video $videoId returned 403 (stream: ${streams.first.tag}',
-        );
-      }
-
-      // Remove duplicate streams (must have same tag and audioTrack (if it's an audio stream))
-      final uniqueStreams = LinkedHashSet<StreamInfo>(
-        equals: (a, b) {
-          if (a.runtimeType != b.runtimeType) return false;
-          if (a is AudioStreamInfo && b is AudioStreamInfo) {
-            return a.tag == b.tag && a.audioTrack == b.audioTrack;
+    for (final client in ytClients) {
+      _logger.fine(
+          'Getting stream manifest for video $videoId with client: ${client.payload['context']['client']['clientName']}');
+      try {
+        await retry(_httpClient, () async {
+          final streams = await _getStreams(videoId, ytClient: client).toList();
+          if (streams.isEmpty) {
+            throw VideoUnavailableException(
+              'Video "$videoId" does not contain any playable streams.',
+            );
           }
-          return a.tag == b.tag;
-        },
-        hashCode: (e) {
-          if (e is AudioStreamInfo) {
-            return e.tag.hashCode ^ e.audioTrack.hashCode;
-          }
-          return e.tag.hashCode;
-        },
-      );
-      uniqueStreams.addAll(streams);
 
-      return StreamManifest(uniqueStreams.toList());
-    });
+          final response = await _httpClient.head(streams.first.url);
+          if (response.statusCode == 403) {
+            throw YoutubeExplodeException(
+              'Video $videoId returned 403 (stream: ${streams.first.tag})',
+            );
+          }
+          uniqueStreams.addAll(streams);
+        });
+      } on YoutubeExplodeException catch (e, s) {
+        _logger.severe(
+            'Failed to get stream manifest for video $videoId with client: ${client.payload['context']['client']['clientName']}. Reason: $e\n',
+            e,
+            s);
+      }
+    }
+    return StreamManifest(uniqueStreams.toList());
   }
 
   /// Gets the HTTP Live Stream (HLS) manifest URL
@@ -117,29 +143,15 @@ class StreamClient {
   }
 
   Stream<StreamInfo> _getStreams(VideoId videoId,
-      {required bool fullManifest}) async* {
-    try {
-      // Use await for instead of yield* to catch exceptions
-      await for (final stream
-          in _getStream(videoId, VideoController.iosClient)) {
-        yield stream;
-      }
-      if (fullManifest) {
-        await for (final stream
-            in _getStream(videoId, VideoController.androidClient)) {
-          yield stream;
-        }
-      }
-    } on VideoUnplayableException catch (e) {
-      if (e is VideoRequiresPurchaseException) {
-        rethrow;
-      }
-      yield* _getCipherStream(videoId);
+      {required YoutubeApiClient ytClient}) async* {
+    // Use await for instead of yield* to catch exceptions
+    await for (final stream in _getStream(videoId, ytClient)) {
+      yield stream;
     }
   }
 
-  Stream<StreamInfo> _getStream(VideoId videoId,
-      Map<String, Map<String, Map<String, Object>>> ytClient) async* {
+  Stream<StreamInfo> _getStream(
+      VideoId videoId, YoutubeApiClient ytClient) async* {
     final playerResponse =
         await _controller.getPlayerResponse(videoId, ytClient);
     if (!playerResponse.previewVideoId.isNullOrWhiteSpace) {
@@ -166,23 +178,6 @@ class StreamClient {
           await _controller.getDashManifest(playerResponse.dashManifestUrl!);
       yield* _parseStreamInfo(dashManifest.streams, videoId);
     }
-  }
-
-  Stream<StreamInfo> _getCipherStream(VideoId videoId) async* {
-    final cipherManifest = await _getCipherManifest();
-    final playerResponse = await _controller.getPlayerResponseWithSignature(
-      videoId,
-      cipherManifest.signatureTimestamp,
-    );
-
-    if (!playerResponse.isVideoPlayable) {
-      throw VideoUnplayableException.unplayable(
-        videoId,
-        reason: playerResponse.videoPlayabilityError ?? '',
-      );
-    }
-
-    yield* _parseStreamInfo(playerResponse.streams, videoId);
   }
 
   Stream<StreamInfo> _parseStreamInfo(

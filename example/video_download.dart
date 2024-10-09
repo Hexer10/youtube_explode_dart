@@ -44,6 +44,7 @@ Future<void> download(String id) async {
       .replaceAll('"', '')
       .replaceAll('<', '')
       .replaceAll('>', '')
+      .replaceAll(':', '')
       .replaceAll('|', '');
   final file = File('downloads/$fileName');
 
