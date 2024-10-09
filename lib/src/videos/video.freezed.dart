@@ -62,7 +62,9 @@ mixin _$Video {
   @internal
   WatchPage? get watchPage => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Video
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VideoCopyWith<Video> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -103,6 +105,8 @@ class _$VideoCopyWithImpl<$Res, $Val extends Video>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Video
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -181,6 +185,8 @@ class _$VideoCopyWithImpl<$Res, $Val extends Video>
     ) as $Val);
   }
 
+  /// Create a copy of Video
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VideoIdCopyWith<$Res> get id {
@@ -189,6 +195,8 @@ class _$VideoCopyWithImpl<$Res, $Val extends Video>
     });
   }
 
+  /// Create a copy of Video
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ChannelIdCopyWith<$Res> get channelId {
@@ -197,6 +205,8 @@ class _$VideoCopyWithImpl<$Res, $Val extends Video>
     });
   }
 
+  /// Create a copy of Video
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ThumbnailSetCopyWith<$Res> get thumbnails {
@@ -205,6 +215,8 @@ class _$VideoCopyWithImpl<$Res, $Val extends Video>
     });
   }
 
+  /// Create a copy of Video
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $EngagementCopyWith<$Res> get engagement {
@@ -255,6 +267,8 @@ class __$$VideoImplCopyWithImpl<$Res>
       _$VideoImpl _value, $Res Function(_$VideoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Video
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -466,7 +480,9 @@ class _$VideoImpl extends _Video {
       isLive,
       watchPage);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Video
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VideoImplCopyWith<_$VideoImpl> get copyWith =>
@@ -491,67 +507,69 @@ abstract class _Video extends Video {
       [@internal final WatchPage? watchPage]) = _$VideoImpl;
   const _Video._() : super._();
 
-  @override
-
   /// Video ID.
-  VideoId get id;
   @override
+  VideoId get id;
 
   /// Video title.
-  String get title;
   @override
+  String get title;
 
   /// Video author.
-  String get author;
   @override
+  String get author;
 
   /// Video author Id.
-  ChannelId get channelId;
   @override
+  ChannelId get channelId;
 
   /// Video upload date.
   /// Note: For search queries it is calculated with:
   ///   DateTime.now() - how much time is was published.
+  @override
   DateTime? get uploadDate;
   @override
   String? get uploadDateRaw;
-  @override
 
   /// Video publish date.
-  DateTime? get publishDate;
   @override
+  DateTime? get publishDate;
 
   /// Video description.
-  String get description;
   @override
+  String get description;
 
   /// Duration of the video.
-  Duration? get duration;
   @override
+  Duration? get duration;
 
   /// Available thumbnails for this video.
-  ThumbnailSet get thumbnails;
   @override
+  ThumbnailSet get thumbnails;
 
   /// Search keywords used for this video.
-  UnmodifiableListView<String> get keywords;
   @override
+  UnmodifiableListView<String> get keywords;
 
   /// Engagement statistics for this video.
-  Engagement get engagement;
   @override
+  Engagement get engagement;
 
   /// Returns true if this is a live stream.
 //ignore: avoid_positional_boolean_parameters
-  bool get isLive;
   @override
+  bool get isLive;
 
   /// Used internally.
   /// Shouldn't be used in the code.
+  @override
   @internal
   WatchPage? get watchPage;
+
+  /// Create a copy of Video
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VideoImplCopyWith<_$VideoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

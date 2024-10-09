@@ -23,8 +23,12 @@ mixin _$Framerate {
   /// Framerate as frames per second
   num get framesPerSecond => throw _privateConstructorUsedError;
 
+  /// Serializes this Framerate to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Framerate
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FramerateCopyWith<Framerate> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -47,6 +51,8 @@ class _$FramerateCopyWithImpl<$Res, $Val extends Framerate>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Framerate
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -80,6 +86,8 @@ class __$$FramerateImplCopyWithImpl<$Res>
       _$FramerateImpl _value, $Res Function(_$FramerateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Framerate
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -115,11 +123,13 @@ class _$FramerateImpl extends _Framerate {
                 other.framesPerSecond == framesPerSecond));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, framesPerSecond);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Framerate
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FramerateImplCopyWith<_$FramerateImpl> get copyWith =>
@@ -140,12 +150,14 @@ abstract class _Framerate extends Framerate {
   factory _Framerate.fromJson(Map<String, dynamic> json) =
       _$FramerateImpl.fromJson;
 
-  @override
-
   /// Framerate as frames per second
-  num get framesPerSecond;
   @override
-  @JsonKey(ignore: true)
+  num get framesPerSecond;
+
+  /// Create a copy of Framerate
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FramerateImplCopyWith<_$FramerateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

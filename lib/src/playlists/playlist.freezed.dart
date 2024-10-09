@@ -39,7 +39,9 @@ mixin _$Playlist {
   /// Total videos in this playlist.
   int? get videoCount => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Playlist
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PlaylistCopyWith<Playlist> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -73,6 +75,8 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Playlist
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -116,6 +120,8 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
     ) as $Val);
   }
 
+  /// Create a copy of Playlist
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PlaylistIdCopyWith<$Res> get id {
@@ -124,6 +130,8 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
     });
   }
 
+  /// Create a copy of Playlist
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ThumbnailSetCopyWith<$Res> get thumbnails {
@@ -132,6 +140,8 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
     });
   }
 
+  /// Create a copy of Playlist
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $EngagementCopyWith<$Res> get engagement {
@@ -174,6 +184,8 @@ class __$$PlaylistImplCopyWithImpl<$Res>
       _$PlaylistImpl _value, $Res Function(_$PlaylistImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Playlist
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -282,7 +294,9 @@ class _$PlaylistImpl extends _Playlist {
   int get hashCode => Object.hash(runtimeType, id, title, author, description,
       thumbnails, engagement, videoCount);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Playlist
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PlaylistImplCopyWith<_$PlaylistImpl> get copyWith =>
@@ -300,38 +314,40 @@ abstract class _Playlist extends Playlist {
       final int? videoCount) = _$PlaylistImpl;
   const _Playlist._() : super._();
 
-  @override
-
   /// Playlist ID.
-  PlaylistId get id;
   @override
+  PlaylistId get id;
 
   /// Playlist title.
-  String get title;
   @override
+  String get title;
 
   /// Playlist author.
   /// Can be null if it's a system playlist (e.g. Video Mix, Topics, etc.).
-  String get author;
   @override
+  String get author;
 
   /// Playlist description.
-  String get description;
   @override
+  String get description;
 
   /// Available thumbnails for this playlist.
   /// Can be null if the playlist is empty.
-  ThumbnailSet get thumbnails;
   @override
+  ThumbnailSet get thumbnails;
 
   /// Engagement statistics.
-  Engagement get engagement;
   @override
+  Engagement get engagement;
 
   /// Total videos in this playlist.
-  int? get videoCount;
   @override
-  @JsonKey(ignore: true)
+  int? get videoCount;
+
+  /// Create a copy of Playlist
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlaylistImplCopyWith<_$PlaylistImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

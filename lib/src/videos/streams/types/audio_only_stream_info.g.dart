@@ -11,7 +11,7 @@ part of 'audio_only_stream_info.dart';
 AudioOnlyStreamInfo _$AudioOnlyStreamInfoFromJson(Map<String, dynamic> json) =>
     AudioOnlyStreamInfo(
       VideoId.fromJson(json['videoId'] as Map<String, dynamic>),
-      json['tag'] as int,
+      (json['tag'] as num).toInt(),
       Uri.parse(json['url'] as String),
       StreamContainer.fromJson(json['container'] as Map<String, dynamic>),
       FileSize.fromJson(json['size'] as Map<String, dynamic>),

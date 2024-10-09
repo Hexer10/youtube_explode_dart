@@ -28,7 +28,9 @@ mixin _$ChannelLink {
       'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
   Uri get icon => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChannelLink
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChannelLinkCopyWith<ChannelLink> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -57,6 +59,8 @@ class _$ChannelLinkCopyWithImpl<$Res, $Val extends ChannelLink>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ChannelLink
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -105,6 +109,8 @@ class __$$ChannelLinkImplCopyWithImpl<$Res>
       _$ChannelLinkImpl _value, $Res Function(_$ChannelLinkImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ChannelLink
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -172,7 +178,9 @@ class _$ChannelLinkImpl implements _ChannelLink {
   @override
   int get hashCode => Object.hash(runtimeType, title, url, icon);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChannelLink
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChannelLinkImplCopyWith<_$ChannelLinkImpl> get copyWith =>
@@ -187,23 +195,25 @@ abstract class _ChannelLink implements ChannelLink {
           'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
       final Uri icon) = _$ChannelLinkImpl;
 
-  @override
-
   /// Link title.
-  String get title;
   @override
+  String get title;
 
   /// Link URL.
   /// Already decoded with the YouTube shortener already taken out.
-  Uri get url;
   @override
+  Uri get url;
 
   /// Link Icon URL.
+  @override
   @Deprecated(
       'As of at least 26-08-2023 YT no longer provides icons for links, so this URI is always empty')
   Uri get icon;
+
+  /// Create a copy of ChannelLink
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChannelLinkImplCopyWith<_$ChannelLinkImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

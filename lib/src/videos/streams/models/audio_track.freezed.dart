@@ -24,8 +24,12 @@ mixin _$AudioTrack {
   String get id => throw _privateConstructorUsedError;
   bool get audioIsDefault => throw _privateConstructorUsedError;
 
+  /// Serializes this AudioTrack to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AudioTrack
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AudioTrackCopyWith<AudioTrack> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +53,8 @@ class _$AudioTrackCopyWithImpl<$Res, $Val extends AudioTrack>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AudioTrack
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$AudioTrackImplCopyWithImpl<$Res>
       _$AudioTrackImpl _value, $Res Function(_$AudioTrackImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AudioTrack
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,11 +159,13 @@ class _$AudioTrackImpl implements _AudioTrack {
                 other.audioIsDefault == audioIsDefault));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, displayName, id, audioIsDefault);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AudioTrack
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AudioTrackImplCopyWith<_$AudioTrackImpl> get copyWith =>
@@ -184,8 +194,11 @@ abstract class _AudioTrack implements AudioTrack {
   String get id;
   @override
   bool get audioIsDefault;
+
+  /// Create a copy of AudioTrack
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AudioTrackImplCopyWith<_$AudioTrackImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

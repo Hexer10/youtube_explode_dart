@@ -10,8 +10,8 @@ part of 'video_resolution.dart';
 
 VideoResolution _$VideoResolutionFromJson(Map<String, dynamic> json) =>
     VideoResolution(
-      json['width'] as int,
-      json['height'] as int,
+      (json['width'] as num).toInt(),
+      (json['height'] as num).toInt(),
     );
 
 Map<String, dynamic> _$VideoResolutionToJson(VideoResolution instance) =>

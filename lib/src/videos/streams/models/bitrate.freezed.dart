@@ -23,8 +23,12 @@ mixin _$Bitrate {
   /// Bits per second.
   int get bitsPerSecond => throw _privateConstructorUsedError;
 
+  /// Serializes this Bitrate to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Bitrate
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BitrateCopyWith<Bitrate> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -46,6 +50,8 @@ class _$BitrateCopyWithImpl<$Res, $Val extends Bitrate>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Bitrate
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -78,6 +84,8 @@ class __$$BitrateImplCopyWithImpl<$Res>
       _$BitrateImpl _value, $Res Function(_$BitrateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Bitrate
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -113,11 +121,13 @@ class _$BitrateImpl extends _Bitrate {
                 other.bitsPerSecond == bitsPerSecond));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, bitsPerSecond);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Bitrate
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BitrateImplCopyWith<_$BitrateImpl> get copyWith =>
@@ -137,12 +147,14 @@ abstract class _Bitrate extends Bitrate {
 
   factory _Bitrate.fromJson(Map<String, dynamic> json) = _$BitrateImpl.fromJson;
 
-  @override
-
   /// Bits per second.
-  int get bitsPerSecond;
   @override
-  @JsonKey(ignore: true)
+  int get bitsPerSecond;
+
+  /// Create a copy of Bitrate
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BitrateImplCopyWith<_$BitrateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

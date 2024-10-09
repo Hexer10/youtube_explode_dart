@@ -38,7 +38,9 @@ mixin _$ChannelAbout {
   /// Channel links.
   List<ChannelLink> get channelLinks => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChannelAbout
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChannelAboutCopyWith<ChannelAbout> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -69,6 +71,8 @@ class _$ChannelAboutCopyWithImpl<$Res, $Val extends ChannelAbout>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ChannelAbout
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -139,6 +143,8 @@ class __$$ChannelAboutImplCopyWithImpl<$Res>
       _$ChannelAboutImpl _value, $Res Function(_$ChannelAboutImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ChannelAbout
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -275,7 +281,9 @@ class _$ChannelAboutImpl implements _ChannelAbout {
       country,
       const DeepCollectionEquality().hash(_channelLinks));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChannelAbout
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChannelAboutImplCopyWith<_$ChannelAboutImpl> get copyWith =>
@@ -292,37 +300,39 @@ abstract class _ChannelAbout implements ChannelAbout {
       final String? country,
       final List<ChannelLink> channelLinks) = _$ChannelAboutImpl;
 
-  @override
-
   /// Full channel description.
-  String? get description;
   @override
+  String? get description;
 
   /// Channel view count.
-  int? get viewCount;
   @override
+  int? get viewCount;
 
   /// Channel join date.
   /// Formatted as: Gen 01, 2000
-  String? get joinDate;
   @override
+  String? get joinDate;
 
   /// Channel title.
-  String get title;
   @override
+  String get title;
 
   /// Channel thumbnails.
-  List<Thumbnail> get thumbnails;
   @override
+  List<Thumbnail> get thumbnails;
 
   /// Channel country.
-  String? get country;
   @override
+  String? get country;
 
   /// Channel links.
-  List<ChannelLink> get channelLinks;
   @override
-  @JsonKey(ignore: true)
+  List<ChannelLink> get channelLinks;
+
+  /// Create a copy of ChannelAbout
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChannelAboutImplCopyWith<_$ChannelAboutImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

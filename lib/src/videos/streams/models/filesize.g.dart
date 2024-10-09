@@ -10,7 +10,7 @@ part of 'filesize.dart';
 
 _$FileSizeImpl _$$FileSizeImplFromJson(Map<String, dynamic> json) =>
     _$FileSizeImpl(
-      json['totalBytes'] as int,
+      (json['totalBytes'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$FileSizeImplToJson(_$FileSizeImpl instance) =>

@@ -31,7 +31,9 @@ mixin _$Channel {
   /// The (approximate) channel subscriber's count.
   int? get subscribersCount => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Channel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChannelCopyWith<Channel> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -60,6 +62,8 @@ class _$ChannelCopyWithImpl<$Res, $Val extends Channel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Channel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -93,6 +97,8 @@ class _$ChannelCopyWithImpl<$Res, $Val extends Channel>
     ) as $Val);
   }
 
+  /// Create a copy of Channel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ChannelIdCopyWith<$Res> get id {
@@ -128,6 +134,8 @@ class __$$ChannelImplCopyWithImpl<$Res>
       _$ChannelImpl _value, $Res Function(_$ChannelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Channel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -212,7 +220,9 @@ class _$ChannelImpl extends _Channel {
   int get hashCode =>
       Object.hash(runtimeType, id, title, logoUrl, bannerUrl, subscribersCount);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Channel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChannelImplCopyWith<_$ChannelImpl> get copyWith =>
@@ -228,28 +238,30 @@ abstract class _Channel extends Channel {
       final int? subscribersCount) = _$ChannelImpl;
   const _Channel._() : super._();
 
-  @override
-
   /// Channel ID.
-  ChannelId get id;
   @override
+  ChannelId get id;
 
   /// Channel title.
-  String get title;
   @override
+  String get title;
 
   /// URL of the channel's logo image.
-  String get logoUrl;
   @override
+  String get logoUrl;
 
   /// URL of the channel's banner image.
-  String get bannerUrl;
   @override
+  String get bannerUrl;
 
   /// The (approximate) channel subscriber's count.
-  int? get subscribersCount;
   @override
-  @JsonKey(ignore: true)
+  int? get subscribersCount;
+
+  /// Create a copy of Channel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChannelImplCopyWith<_$ChannelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

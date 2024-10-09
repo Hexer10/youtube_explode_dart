@@ -11,7 +11,7 @@ part of 'closed_caption_part.dart';
 ClosedCaptionPart _$ClosedCaptionPartFromJson(Map<String, dynamic> json) =>
     ClosedCaptionPart(
       json['text'] as String,
-      Duration(microseconds: json['offset'] as int),
+      Duration(microseconds: (json['offset'] as num).toInt()),
     );
 
 Map<String, dynamic> _$ClosedCaptionPartToJson(ClosedCaptionPart instance) =>
