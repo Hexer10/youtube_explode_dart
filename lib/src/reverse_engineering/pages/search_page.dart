@@ -117,7 +117,7 @@ class _InitialData extends InitialData {
 
   // Contains only [SearchVideo] or [SearchPlaylist]
   late final List<SearchResult> searchContent =
-      getContentContext()?.map(_parseContent).whereNotNull().toList() ??
+      getContentContext()?.map(_parseContent).nonNulls.toList() ??
           const [];
 
   List<SearchResult> get relatedVideos =>
@@ -132,7 +132,7 @@ class _InitialData extends InitialData {
           )
           .firstOrNull
           ?.map(_parseContent)
-          .whereNotNull()
+          .nonNulls
           .toList() ??
       const [];
 

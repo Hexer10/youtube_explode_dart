@@ -61,7 +61,6 @@ class YoutubeApiClient {
         'Origin': 'https://www.youtube.com',
       });
 
-
   /// This provides also muxed streams but seems less reliable than [ios].
   static const android = YoutubeApiClient({
     'context': {
@@ -70,14 +69,13 @@ class YoutubeApiClient {
         'clientVersion': '19.09.37',
         'androidSdkVersion': 30,
         'userAgent':
-        'com.google.android.youtube/19.09.37 (Linux; U; Android 11) gzip',
+            'com.google.android.youtube/19.09.37 (Linux; U; Android 11) gzip',
         'hl': 'en',
         'timeZone': 'UTC',
         'utcOffsetMinutes': 0,
       },
     },
   }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
-
 
   /// Has limited streams but doesn't require signature deciphering.
   /// As opposed to [android], this works only for music.
@@ -95,7 +93,6 @@ class YoutubeApiClient {
       },
     },
   }, 'https://music.youtube.com/youtubei/v1/player?key=AIzaSyAOghZGza2MQSZkY_zfZ370N-PUdXEo8AI&prettyPrint=false');
-
 
   static const webCreator = YoutubeApiClient({
     'context': {

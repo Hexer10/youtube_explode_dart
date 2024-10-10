@@ -3,7 +3,6 @@ import 'package:meta/meta.dart';
 import '../../youtube_explode_dart.dart';
 import '../reverse_engineering/pages/watch_page.dart';
 import '../reverse_engineering/player/player_response.dart';
-import 'youtube_api_client.dart';
 
 @internal
 class VideoController {
