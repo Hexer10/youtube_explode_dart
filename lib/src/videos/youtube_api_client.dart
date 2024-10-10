@@ -5,8 +5,19 @@ class YoutubeApiClient {
 
   const YoutubeApiClient(this.payload, this.apiUrl, {this.headers = const {}});
 
+  YoutubeApiClient.fromJson(Map<String, dynamic> json)
+      : payload = json['payload'],
+        apiUrl = json['apiUrl'],
+        headers = json['headers'];
+
+  Map<String, dynamic> toJson() => {
+        'payload': payload,
+        'apiUrl': apiUrl,
+        'headers': headers,
+      };
+
   /// Has limited streams but doesn't require signature deciphering.
-  static const iosClient = YoutubeApiClient({
+  static const ios = YoutubeApiClient({
     'context': {
       'client': {
         'clientName': 'IOS',
@@ -23,25 +34,53 @@ class YoutubeApiClient {
         'utcOffsetMinutes': 0
       }
     },
-  }, 'https://www.youtube.com/youtubei/v1/player?key=AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc');
+  }, 'https://www.youtube.com/youtubei/v1/player?key=AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc&prettyPrint=false');
 
-/*  static const tvSimply = YoutubeApiClient({
+  /// Work even of restricted videos and provides low quality muxed streams, but requires signature deciphering.
+  /// Does not work if the video has the embedding disabled.
+  static const tvSimplyEmbedded = YoutubeApiClient(
+      {
+        'context': {
+          'client': {
+            'clientName': 'TVHTML5_SIMPLY_EMBEDDED_PLAYER',
+            'clientVersion': '2.0',
+            'hl': 'en',
+            'timeZone': 'UTC',
+            'gl': 'US',
+            'utcOffsetMinutes': 0
+          }
+        },
+        "thirdParty": {"embedUrl": "https://www.youtube.com/"},
+        "contentCheckOk": true,
+        "racyCheckOk": true
+      },
+      'https://www.youtube.com/youtubei/v1/player?prettyPrint=false',
+      headers: {
+        'Sec-Fetch-Mode': 'navigate',
+        'Content-Type': 'application/json',
+        'Origin': 'https://www.youtube.com',
+      });
+
+
+  /// This provides also muxed streams but seems less reliable than [ios].
+  static const android = YoutubeApiClient({
     'context': {
       'client': {
-        'clientName': 'TVHTML5_SIMPLY',
-        'clientVersion': '1.1',
-
+        'clientName': 'ANDROID',
+        'clientVersion': '19.09.37',
+        'androidSdkVersion': 30,
+        'userAgent':
+        'com.google.android.youtube/19.09.37 (Linux; U; Android 11) gzip',
         'hl': 'en',
         'timeZone': 'UTC',
-        'gl': 'US',
-        'utcOffsetMinutes': 0
-      }
+        'utcOffsetMinutes': 0,
+      },
     },
-  }, 'https://www.youtube.com/youtubei/v1/player?key=AIzaSyBAETezhkwP0ZWA02RsqT1zu78Fpt0bC_s');
-  */
+  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
+
 
   /// Has limited streams but doesn't require signature deciphering.
-  /// As opposed to [iosClient], this works only for music videos but supports muxed streams.
+  /// As opposed to [android], this works only for music.
   static const androidMusic = YoutubeApiClient({
     'context': {
       'client': {
@@ -55,23 +94,30 @@ class YoutubeApiClient {
         'utcOffsetMinutes': 0,
       },
     },
-  }, 'https://music.youtube.com/youtubei/v1/player?key=AIzaSyAOghZGza2MQSZkY_zfZ370N-PUdXEo8AI');
+  }, 'https://music.youtube.com/youtubei/v1/player?key=AIzaSyAOghZGza2MQSZkY_zfZ370N-PUdXEo8AI&prettyPrint=false');
 
-  /// Used to to fetch all the video streams (but has signature deciphering).
-  /// Currently not working due to YouTube update.
-/*
-  static const androidClient = {
+
+  static const webCreator = YoutubeApiClient({
     'context': {
       'client': {
-        'clientName': 'ANDROID',
-        'clientVersion': '19.09.37',
-        'androidSdkVersion': 30,
-        'userAgent':
-            'com.google.android.youtube/19.09.37 (Linux; U; Android 11) gzip',
+        'clientName': 'WEB_CREATOR',
+        'clientVersion': '1.20240723.03.00',
         'hl': 'en',
         'timeZone': 'UTC',
         'utcOffsetMinutes': 0,
       },
     },
-  };*/
+  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
+
+  static const mediaConnect = YoutubeApiClient({
+    'context': {
+      'client': {
+        'clientName': 'MEDIA_CONNECT_FRONTEND',
+        'clientVersion': '0.1',
+        'hl': 'en',
+        'timeZone': 'UTC',
+        'utcOffsetMinutes': 0,
+      },
+    },
+  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
 }

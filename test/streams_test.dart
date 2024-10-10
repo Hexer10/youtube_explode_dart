@@ -50,7 +50,6 @@ void main() {
     );
   });
 
-  // Seems that youtube broke something and now this throws VideoUnplayableException instead of VideoUnavailableException
   group('Stream of unavailable videos throws VideoUnplayableException', () {
     for (final val in VideoIdData.invalid) {
       test('VideoId - $val', () {

@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import '../../retry.dart';
-import '../cipher/cipher_manifest.dart';
 import '../youtube_http_client.dart';
 
 ///
 class PlayerSource {
   final String root;
-  late final CipherManifest? cipherManifest = CipherManifest.decode(root);
 
   ///
   PlayerSource(this.root);

@@ -5,8 +5,9 @@ library youtube_explode.videos;
 
 export 'closed_captions/closed_captions.dart';
 export 'comments/comments.dart';
+export 'related_videos_list.dart';
 export 'streams/streams.dart';
 export 'video.dart';
 export 'video_client.dart';
 export 'video_id.dart';
-export 'related_videos_list.dart';
+export 'youtube_api_client.dart';

@@ -5,7 +5,6 @@ import 'package:logging/logging.dart';
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
-import '../../reverse_engineering/cipher/cipher_manifest.dart';
 import '../../reverse_engineering/heuristics.dart';
 import '../../reverse_engineering/models/stream_info_provider.dart';
 import '../../reverse_engineering/pages/watch_page.dart';
@@ -24,18 +23,17 @@ class StreamClient {
   /// Initializes an instance of [StreamClient]
   StreamClient(this._httpClient) : _controller = StreamController(_httpClient);
 
-  CipherManifest? _cipherManifest;
-
   /// Gets the manifest that contains information
   /// about available streams in the specified video.
   ///
-  /// See [YoutubeApiClient] for all the possible clients.
-  /// By default ios and android_music are used.
+  /// See [YoutubeApiClient] for all the possible clients that can be set using the [ytClients] parameter.
+  /// If [ytClients] is null the library automatically manages the clients, otherwise only the clients provided are used.
+  /// Currently by default the ios and android clients are used, if the extraction fails the tvSimply client is used instead (as of `v2.3.0 not yet supported due to signature deciphering not implemented).
   ///
-  /// If the extraction fails an empty list is returned, to diagnose the issue enabled the logging from the `logging` package, and open an issue with the output.
+  /// If the extraction fails an exception is thrown, to diagnose the issue enable the logging from the `logging` package, and open an issue with the output.
   /// For example:
   /// ```dart
-  /// Logger.root.level = Level.ALL
+  /// Logger.root.level = Level.FINER;
   /// Logger.root.onRecord.listen(print);
   /// // run yt related code ...
   ///
@@ -44,11 +42,10 @@ class StreamClient {
       {@Deprecated(
           'Use the ytClient parameter instead passing the proper [YoutubeApiClient]s')
       bool fullManifest = false,
-      List<YoutubeApiClient> ytClients = const [
-        YoutubeApiClient.androidMusic,
-        YoutubeApiClient.iosClient,
-      ]}) async {
+      List<YoutubeApiClient>? ytClients}) async {
     videoId = VideoId.fromString(videoId);
+    final clients =
+        ytClients ?? [YoutubeApiClient.ios, YoutubeApiClient.android];
 
     final uniqueStreams = LinkedHashSet<StreamInfo>(
       equals: (a, b) {
@@ -66,7 +63,9 @@ class StreamClient {
       },
     );
 
-    for (final client in ytClients) {
+    Object? lastException;
+
+    for (final client in clients) {
       _logger.fine(
           'Getting stream manifest for video $videoId with client: ${client.payload['context']['client']['clientName']}');
       try {
@@ -86,12 +85,26 @@ class StreamClient {
           }
           uniqueStreams.addAll(streams);
         });
-      } on YoutubeExplodeException catch (e, s) {
+      } catch (e, s) {
         _logger.severe(
             'Failed to get stream manifest for video $videoId with client: ${client.payload['context']['client']['clientName']}. Reason: $e\n',
             e,
             s);
+        lastException = e;
       }
+    }
+
+    // If the user has not provided any client retry with the tvSimply client.
+    // TODO: Enable when signature deciphering is implemented
+    /*
+        if (uniqueStreams.isEmpty && ytClients == null) {
+              return getManifest(videoId,
+          ytClients: [YoutubeApiClient.tvSimplyEmbedded]);
+    }*/
+    if (uniqueStreams.isEmpty) {
+      throw lastException ??
+          VideoUnavailableException(
+              'Video "$videoId" has no available streams');
     }
     return StreamManifest(uniqueStreams.toList());
   }
@@ -127,21 +140,6 @@ class StreamClient {
   Stream<List<int>> get(StreamInfo streamInfo) =>
       _httpClient.getStream(streamInfo, streamClient: this);
 
-  Future<CipherManifest> _getCipherManifest() async {
-    if (_cipherManifest != null) {
-      return _cipherManifest!;
-    }
-
-    final playerSource = await _controller.getPlayerSource();
-    final manifest = playerSource.cipherManifest;
-    if (manifest == null) {
-      throw YoutubeExplodeException(
-        'Could not find the cipher operations manifest.',
-      );
-    }
-    return _cipherManifest = manifest;
-  }
-
   Stream<StreamInfo> _getStreams(VideoId videoId,
       {required YoutubeApiClient ytClient}) async* {
     // Use await for instead of yield* to catch exceptions
@@ -152,8 +150,10 @@ class StreamClient {
 
   Stream<StreamInfo> _getStream(
       VideoId videoId, YoutubeApiClient ytClient) async* {
+    final watchPage = await WatchPage.get(_httpClient, videoId.value);
     final playerResponse =
-        await _controller.getPlayerResponse(videoId, ytClient);
+        await _controller.getPlayerResponse(videoId, ytClient, watchPage);
+
     if (!playerResponse.previewVideoId.isNullOrWhiteSpace) {
       throw VideoRequiresPurchaseException.preview(
         videoId,
@@ -171,27 +171,20 @@ class StreamClient {
         reason: playerResponse.videoPlayabilityError ?? '',
       );
     }
-    yield* _parseStreamInfo(playerResponse.streams, videoId);
+    yield* _parseStreamInfo(playerResponse.streams, watchPage);
 
     if (!playerResponse.dashManifestUrl.isNullOrWhiteSpace) {
       final dashManifest =
           await _controller.getDashManifest(playerResponse.dashManifestUrl!);
-      yield* _parseStreamInfo(dashManifest.streams, videoId);
+      yield* _parseStreamInfo(dashManifest.streams, watchPage);
     }
   }
 
   Stream<StreamInfo> _parseStreamInfo(
-      Iterable<StreamInfoProvider> streams, VideoId videoId) async* {
+      Iterable<StreamInfoProvider> streams, WatchPage watchPage) async* {
     for (final stream in streams) {
       final itag = stream.tag;
       var url = Uri.parse(stream.url);
-      if (!stream.signature.isNullOrWhiteSpace) {
-        final cipherManifest = await _getCipherManifest();
-        url = url.setQueryParam(
-          stream.signatureParameter!,
-          cipherManifest.decipher(stream.signature!),
-        );
-      }
 
       final contentLength = stream.contentLength ??
           (await _httpClient.getContentLength(url, validate: false)) ??
@@ -225,7 +218,7 @@ class StreamClient {
             stream.source != StreamSource.adaptive) {
           assert(stream.audioTrack == null);
           yield MuxedStreamInfo(
-            videoId,
+            watchPage.videoId,
             itag,
             url,
             container,
@@ -244,7 +237,7 @@ class StreamClient {
 
         // Video only
         yield VideoOnlyStreamInfo(
-          videoId,
+          watchPage.videoId,
           itag,
           url,
           container,
@@ -262,7 +255,7 @@ class StreamClient {
         // Audio-only
       } else if (!audioCodec.isNullOrWhiteSpace) {
         yield AudioOnlyStreamInfo(
-            videoId,
+            watchPage.videoId,
             itag,
             url,
             container,
