@@ -43,7 +43,9 @@ mixin _$Comment {
   @internal
   String? get continuation => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CommentCopyWith<Comment> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -75,6 +77,8 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -123,6 +127,8 @@ class _$CommentCopyWithImpl<$Res, $Val extends Comment>
     ) as $Val);
   }
 
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ChannelIdCopyWith<$Res> get channelId {
@@ -161,6 +167,8 @@ class __$$CommentImplCopyWithImpl<$Res>
       _$CommentImpl _value, $Res Function(_$CommentImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -288,7 +296,9 @@ class _$CommentImpl implements _Comment {
   int get hashCode => Object.hash(runtimeType, author, channelId, text,
       likeCount, publishedTime, replyCount, isHearted, continuation);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CommentImplCopyWith<_$CommentImpl> get copyWith =>
@@ -306,43 +316,45 @@ abstract class _Comment implements Comment {
       final bool isHearted,
       @internal final String? continuation) = _$CommentImpl;
 
-  @override
-
   /// Comment author name.
-  String get author;
   @override
+  String get author;
 
   /// Comment author channel id.
-  ChannelId get channelId;
   @override
+  ChannelId get channelId;
 
   /// Comment text.
-  String get text;
   @override
+  String get text;
 
   /// Comment likes count.
-  int get likeCount;
   @override
+  int get likeCount;
 
   /// Published time as string. (For example: "2 years ago")
-  String get publishedTime;
   @override
+  String get publishedTime;
 
   /// Comment reply count.
-  int get replyCount;
   @override
+  int get replyCount;
 
   /// True if the comment is hearted by the creator.
 //ignore: avoid_positional_boolean_parameters
-  bool get isHearted;
   @override
+  bool get isHearted;
 
   /// Used internally.
   /// Shouldn't be used in the code.
+  @override
   @internal
   String? get continuation;
+
+  /// Create a copy of Comment
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CommentImplCopyWith<_$CommentImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

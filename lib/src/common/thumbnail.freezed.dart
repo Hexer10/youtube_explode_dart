@@ -25,7 +25,9 @@ mixin _$Thumbnail {
   /// Image width.
   int get width => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Thumbnail
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ThumbnailCopyWith<Thumbnail> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,6 +50,8 @@ class _$ThumbnailCopyWithImpl<$Res, $Val extends Thumbnail>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Thumbnail
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -91,6 +95,8 @@ class __$$ThumbnailImplCopyWithImpl<$Res>
       _$ThumbnailImpl _value, $Res Function(_$ThumbnailImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Thumbnail
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -150,7 +156,9 @@ class _$ThumbnailImpl implements _Thumbnail {
   @override
   int get hashCode => Object.hash(runtimeType, url, height, width);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Thumbnail
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ThumbnailImplCopyWith<_$ThumbnailImpl> get copyWith =>
@@ -161,20 +169,22 @@ abstract class _Thumbnail implements Thumbnail {
   const factory _Thumbnail(final Uri url, final int height, final int width) =
       _$ThumbnailImpl;
 
-  @override
-
   /// Image url.
-  Uri get url;
   @override
+  Uri get url;
 
   /// Image height.
-  int get height;
   @override
+  int get height;
 
   /// Image width.
-  int get width;
   @override
-  @JsonKey(ignore: true)
+  int get width;
+
+  /// Create a copy of Thumbnail
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ThumbnailImplCopyWith<_$ThumbnailImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

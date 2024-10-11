@@ -23,8 +23,12 @@ mixin _$FileSize {
   /// Total bytes.
   int get totalBytes => throw _privateConstructorUsedError;
 
+  /// Serializes this FileSize to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FileSize
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FileSizeCopyWith<FileSize> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -47,6 +51,8 @@ class _$FileSizeCopyWithImpl<$Res, $Val extends FileSize>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of FileSize
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -80,6 +86,8 @@ class __$$FileSizeImplCopyWithImpl<$Res>
       _$FileSizeImpl _value, $Res Function(_$FileSizeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FileSize
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -115,11 +123,13 @@ class _$FileSizeImpl extends _FileSize {
                 other.totalBytes == totalBytes));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, totalBytes);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FileSize
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FileSizeImplCopyWith<_$FileSizeImpl> get copyWith =>
@@ -140,12 +150,14 @@ abstract class _FileSize extends FileSize {
   factory _FileSize.fromJson(Map<String, dynamic> json) =
       _$FileSizeImpl.fromJson;
 
-  @override
-
   /// Total bytes.
-  int get totalBytes;
   @override
-  @JsonKey(ignore: true)
+  int get totalBytes;
+
+  /// Create a copy of FileSize
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FileSizeImplCopyWith<_$FileSizeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

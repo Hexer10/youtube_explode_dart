@@ -125,6 +125,9 @@ class _$SearchResultCopyWithImpl<$Res, $Val extends SearchResult>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -156,6 +159,8 @@ class __$$SearchVideoImplCopyWithImpl<$Res>
       _$SearchVideoImpl _value, $Res Function(_$SearchVideoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -214,6 +219,8 @@ class __$$SearchVideoImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VideoIdCopyWith<$Res> get id {
@@ -329,7 +336,9 @@ class _$SearchVideoImpl extends SearchVideo {
       isLive,
       channelId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SearchVideoImplCopyWith<_$SearchVideoImpl> get copyWith =>
@@ -466,9 +475,8 @@ abstract class SearchVideo extends SearchResult {
       final String channelId) = _$SearchVideoImpl;
   const SearchVideo._() : super._();
 
-  @override
-
   /// Video ID.
+  @override
   VideoId get id;
 
   /// Video title.
@@ -497,7 +505,10 @@ abstract class SearchVideo extends SearchResult {
 
   /// Channel id
   String get channelId;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SearchVideoImplCopyWith<_$SearchVideoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -525,6 +536,8 @@ class __$$SearchPlaylistImplCopyWithImpl<$Res>
       _$SearchPlaylistImpl _value, $Res Function(_$SearchPlaylistImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -553,6 +566,8 @@ class __$$SearchPlaylistImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PlaylistIdCopyWith<$Res> get id {
@@ -615,7 +630,9 @@ class _$SearchPlaylistImpl extends SearchPlaylist {
   int get hashCode => Object.hash(runtimeType, id, title, videoCount,
       const DeepCollectionEquality().hash(_thumbnails));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SearchPlaylistImplCopyWith<_$SearchPlaylistImpl> get copyWith =>
@@ -744,9 +761,8 @@ abstract class SearchPlaylist extends SearchResult {
       final List<Thumbnail> thumbnails) = _$SearchPlaylistImpl;
   const SearchPlaylist._() : super._();
 
-  @override
-
   /// PlaylistId.
+  @override
   PlaylistId get id;
 
   /// Playlist title.
@@ -757,7 +773,10 @@ abstract class SearchPlaylist extends SearchResult {
 
   /// Video thumbnail
   List<Thumbnail> get thumbnails;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SearchPlaylistImplCopyWith<_$SearchPlaylistImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -781,6 +800,8 @@ class __$$SearchChannelImplCopyWithImpl<$Res>
       _$SearchChannelImpl _value, $Res Function(_$SearchChannelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -809,6 +830,8 @@ class __$$SearchChannelImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ChannelIdCopyWith<$Res> get id {
@@ -864,7 +887,9 @@ class _$SearchChannelImpl extends SearchChannel {
   int get hashCode =>
       Object.hash(runtimeType, id, name, description, videoCount);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SearchChannelImplCopyWith<_$SearchChannelImpl> get copyWith =>
@@ -989,9 +1014,8 @@ abstract class SearchChannel extends SearchResult {
       final String description, final int videoCount) = _$SearchChannelImpl;
   const SearchChannel._() : super._();
 
-  @override
-
   /// Channel id.
+  @override
   ChannelId get id;
 
   /// Channel name.
@@ -1003,7 +1027,10 @@ abstract class SearchChannel extends SearchResult {
 
   /// Channel uploaded videos.
   int get videoCount;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SearchChannelImplCopyWith<_$SearchChannelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

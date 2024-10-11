@@ -19,7 +19,9 @@ mixin _$ChannelId {
   /// ID as a string.
   String get value => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChannelId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChannelIdCopyWith<ChannelId> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,6 +44,8 @@ class _$ChannelIdCopyWithImpl<$Res, $Val extends ChannelId>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ChannelId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,6 +79,8 @@ class __$$ChannelIdImplCopyWithImpl<$Res>
       _$ChannelIdImpl _value, $Res Function(_$ChannelIdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ChannelId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -109,7 +115,9 @@ class _$ChannelIdImpl extends _ChannelId {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChannelId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChannelIdImplCopyWith<_$ChannelIdImpl> get copyWith =>
@@ -120,12 +128,14 @@ abstract class _ChannelId extends ChannelId {
   const factory _ChannelId(final String value) = _$ChannelIdImpl;
   const _ChannelId._() : super._();
 
-  @override
-
   /// ID as a string.
-  String get value;
   @override
-  @JsonKey(ignore: true)
+  String get value;
+
+  /// Create a copy of ChannelId
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChannelIdImplCopyWith<_$ChannelIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
