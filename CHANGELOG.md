@@ -1,5 +1,7 @@
+## 2.3.0+1
+- Updated changelog.
+
 ## 2.3.0
-- BREAKING CHANGE: Now if the manifest cannot be fetched an exception is not thrown but an empty list is returned.
 - Implement `YoutubeApiClient` interface.
 - Add `ytClient` parameter to `StreamClient.getManifest`.
 - Implement more youtube api clients, see `StreamClient.getManifest` documentation or `youtube_api_client.dart` for more information.
