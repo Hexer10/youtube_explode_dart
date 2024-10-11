@@ -1,4 +1,3 @@
-import 'package:test/expect.dart';
 import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -31,7 +30,7 @@ void main() {
 
   test('Get full manifest of a video', () async {
     final manifest = await yt!.videos.streamsClient
-        .getManifest(VideoIdData.normal.id, fullManifest: true);
+        .getManifest(VideoIdData.normal.id);
     expect(manifest.streams.length, greaterThan(50));
   });
 
@@ -50,7 +49,6 @@ void main() {
     );
   });
 
-  // Seems that youtube broke something and now this throws VideoUnplayableException instead of VideoUnavailableException
   group('Stream of unavailable videos throws VideoUnplayableException', () {
     for (final val in VideoIdData.invalid) {
       test('VideoId - $val', () {

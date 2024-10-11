@@ -1,3 +1,14 @@
+## 2.3.0+1
+- Updated changelog.
+
+## 2.3.0
+- Implement `YoutubeApiClient` interface.
+- Add `ytClient` parameter to `StreamClient.getManifest`.
+- Implement more youtube api clients, see `StreamClient.getManifest` documentation or `youtube_api_client.dart` for more information.
+
+## 2.2.3
+- Impersonate ios client to extract manifest.
+
 ## 2.2.2
 - Fix video extraction. Thanks to @bigzhu #287.
 

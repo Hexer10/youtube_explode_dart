@@ -72,7 +72,7 @@ class _InitialData extends InitialData {
     if (content.isEmpty) {
       return const <ChannelVideo>[];
     }
-    return content.map(_parseContent).whereNotNull().toList();
+    return content.map(_parseContent).nonNulls.toList();
   }
 
   List<JsonMap> getContentContext() {

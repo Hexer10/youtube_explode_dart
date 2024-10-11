@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 
 import '../exceptions/exceptions.dart';
 import '../extensions/helpers_extension.dart';
@@ -12,6 +13,7 @@ import '../videos/streams/streams.dart';
 /// HttpClient wrapper for YouTube
 class YoutubeHttpClient extends http.BaseClient {
   final http.Client _httpClient;
+  final _logger = Logger('YoutubeExplode.HttpClient');
 
   // Flag to interrupt receiving stream.
   bool _closed = false;
@@ -20,17 +22,11 @@ class YoutubeHttpClient extends http.BaseClient {
 
   static const Map<String, String> _defaultHeaders = {
     'user-agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.18 Safari/537.36',
     'cookie': 'CONSENT=YES+cb',
     'accept':
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    'accept-language': 'en-US,en;q=0.9',
-    'sec-fetch-dest': 'document',
-    'sec-fetch-mode': 'navigate',
-    'sec-fetch-site': 'none',
-    'sec-fetch-user': '?1',
-    'sec-gpc': '1',
-    'upgrade-insecure-requests': '1',
+    'accept-language': 'en-US,en;q=0.5',
   };
 
   /// Initialize an instance of [YoutubeHttpClient]
@@ -341,8 +337,8 @@ class YoutubeHttpClient extends http.BaseClient {
       }
     });
 
-    // print(request);
-    // print(StackTrace.current);
+    _logger.fine('Sending request: $request', null, StackTrace.current);
+    _logger.finer('Request headers: ${request.headers}');
     return _httpClient.send(request);
   }
 }

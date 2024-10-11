@@ -6,7 +6,6 @@ export 'models/framerate.dart';
 export 'types/muxed_stream_info.dart';
 export 'stream_client.dart';
 export 'models/stream_container.dart';
-export 'stream_context.dart';
 export 'mixins/stream_info.dart' hide mediaTypeFromJson, mediaTypeToJson;
 export 'stream_manifest.dart';
 export 'types/video_only_stream_info.dart';

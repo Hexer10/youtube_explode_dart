@@ -120,7 +120,7 @@ class _InitialData extends InitialData {
       content
           .getList('links')
           ?.map((e) => e['channelExternalLinkViewModel'])
-          .whereNotNull()
+          .nonNulls
           .cast<Map<String, dynamic>>()
           .map((e) {
         return ChannelLink(
