@@ -18,6 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SearchResult {
   /// Video ID.
   Object get id => throw _privateConstructorUsedError;
+
+  /// Video thumbnail
+  List<Thumbnail> get thumbnails => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
@@ -35,8 +38,8 @@ mixin _$SearchResult {
     required TResult Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)
         playlist,
-    required TResult Function(
-            ChannelId id, String name, String description, int videoCount)
+    required TResult Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)
         channel,
   }) =>
       throw _privateConstructorUsedError;
@@ -57,8 +60,8 @@ mixin _$SearchResult {
     TResult? Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)?
         playlist,
-    TResult? Function(
-            ChannelId id, String name, String description, int videoCount)?
+    TResult? Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)?
         channel,
   }) =>
       throw _privateConstructorUsedError;
@@ -79,8 +82,8 @@ mixin _$SearchResult {
     TResult Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)?
         playlist,
-    TResult Function(
-            ChannelId id, String name, String description, int videoCount)?
+    TResult Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)?
         channel,
     required TResult orElse(),
   }) =>
@@ -107,6 +110,12 @@ mixin _$SearchResult {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Create a copy of SearchResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $SearchResultCopyWith<SearchResult> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -114,6 +123,8 @@ abstract class $SearchResultCopyWith<$Res> {
   factory $SearchResultCopyWith(
           SearchResult value, $Res Function(SearchResult) then) =
       _$SearchResultCopyWithImpl<$Res, SearchResult>;
+  @useResult
+  $Res call({List<Thumbnail> thumbnails});
 }
 
 /// @nodoc
@@ -128,13 +139,27 @@ class _$SearchResultCopyWithImpl<$Res, $Val extends SearchResult>
 
   /// Create a copy of SearchResult
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? thumbnails = null,
+  }) {
+    return _then(_value.copyWith(
+      thumbnails: null == thumbnails
+          ? _value.thumbnails
+          : thumbnails // ignore: cast_nullable_to_non_nullable
+              as List<Thumbnail>,
+    ) as $Val);
+  }
 }
 
 /// @nodoc
-abstract class _$$SearchVideoImplCopyWith<$Res> {
+abstract class _$$SearchVideoImplCopyWith<$Res>
+    implements $SearchResultCopyWith<$Res> {
   factory _$$SearchVideoImplCopyWith(
           _$SearchVideoImpl value, $Res Function(_$SearchVideoImpl) then) =
       __$$SearchVideoImplCopyWithImpl<$Res>;
+  @override
   @useResult
   $Res call(
       {VideoId id,
@@ -362,8 +387,8 @@ class _$SearchVideoImpl extends SearchVideo {
     required TResult Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)
         playlist,
-    required TResult Function(
-            ChannelId id, String name, String description, int videoCount)
+    required TResult Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)
         channel,
   }) {
     return video(id, title, author, description, duration, viewCount,
@@ -388,8 +413,8 @@ class _$SearchVideoImpl extends SearchVideo {
     TResult? Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)?
         playlist,
-    TResult? Function(
-            ChannelId id, String name, String description, int videoCount)?
+    TResult? Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)?
         channel,
   }) {
     return video?.call(id, title, author, description, duration, viewCount,
@@ -414,8 +439,8 @@ class _$SearchVideoImpl extends SearchVideo {
     TResult Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)?
         playlist,
-    TResult Function(
-            ChannelId id, String name, String description, int videoCount)?
+    TResult Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)?
         channel,
     required TResult orElse(),
   }) {
@@ -495,6 +520,7 @@ abstract class SearchVideo extends SearchResult {
   int get viewCount;
 
   /// Video thumbnail
+  @override
   List<Thumbnail> get thumbnails;
 
   /// Video upload date - As string: 5 years ago.
@@ -508,16 +534,19 @@ abstract class SearchVideo extends SearchResult {
 
   /// Create a copy of SearchResult
   /// with the given fields replaced by the non-null parameter values.
+  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SearchVideoImplCopyWith<_$SearchVideoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SearchPlaylistImplCopyWith<$Res> {
+abstract class _$$SearchPlaylistImplCopyWith<$Res>
+    implements $SearchResultCopyWith<$Res> {
   factory _$$SearchPlaylistImplCopyWith(_$SearchPlaylistImpl value,
           $Res Function(_$SearchPlaylistImpl) then) =
       __$$SearchPlaylistImplCopyWithImpl<$Res>;
+  @override
   @useResult
   $Res call(
       {PlaylistId id,
@@ -657,8 +686,8 @@ class _$SearchPlaylistImpl extends SearchPlaylist {
     required TResult Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)
         playlist,
-    required TResult Function(
-            ChannelId id, String name, String description, int videoCount)
+    required TResult Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)
         channel,
   }) {
     return playlist(id, title, videoCount, thumbnails);
@@ -682,8 +711,8 @@ class _$SearchPlaylistImpl extends SearchPlaylist {
     TResult? Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)?
         playlist,
-    TResult? Function(
-            ChannelId id, String name, String description, int videoCount)?
+    TResult? Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)?
         channel,
   }) {
     return playlist?.call(id, title, videoCount, thumbnails);
@@ -707,8 +736,8 @@ class _$SearchPlaylistImpl extends SearchPlaylist {
     TResult Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)?
         playlist,
-    TResult Function(
-            ChannelId id, String name, String description, int videoCount)?
+    TResult Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)?
         channel,
     required TResult orElse(),
   }) {
@@ -772,22 +801,31 @@ abstract class SearchPlaylist extends SearchResult {
   int get videoCount;
 
   /// Video thumbnail
+  @override
   List<Thumbnail> get thumbnails;
 
   /// Create a copy of SearchResult
   /// with the given fields replaced by the non-null parameter values.
+  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SearchPlaylistImplCopyWith<_$SearchPlaylistImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SearchChannelImplCopyWith<$Res> {
+abstract class _$$SearchChannelImplCopyWith<$Res>
+    implements $SearchResultCopyWith<$Res> {
   factory _$$SearchChannelImplCopyWith(
           _$SearchChannelImpl value, $Res Function(_$SearchChannelImpl) then) =
       __$$SearchChannelImplCopyWithImpl<$Res>;
+  @override
   @useResult
-  $Res call({ChannelId id, String name, String description, int videoCount});
+  $Res call(
+      {ChannelId id,
+      String name,
+      String description,
+      int videoCount,
+      List<Thumbnail> thumbnails});
 
   $ChannelIdCopyWith<$Res> get id;
 }
@@ -809,6 +847,7 @@ class __$$SearchChannelImplCopyWithImpl<$Res>
     Object? name = null,
     Object? description = null,
     Object? videoCount = null,
+    Object? thumbnails = null,
   }) {
     return _then(_$SearchChannelImpl(
       null == id
@@ -827,6 +866,10 @@ class __$$SearchChannelImplCopyWithImpl<$Res>
           ? _value.videoCount
           : videoCount // ignore: cast_nullable_to_non_nullable
               as int,
+      null == thumbnails
+          ? _value._thumbnails
+          : thumbnails // ignore: cast_nullable_to_non_nullable
+              as List<Thumbnail>,
     ));
   }
 
@@ -844,9 +887,10 @@ class __$$SearchChannelImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SearchChannelImpl extends SearchChannel {
-  const _$SearchChannelImpl(
-      this.id, this.name, this.description, this.videoCount)
-      : super._();
+  const _$SearchChannelImpl(this.id, this.name, this.description,
+      this.videoCount, final List<Thumbnail> thumbnails)
+      : _thumbnails = thumbnails,
+        super._();
 
   /// Channel id.
   @override
@@ -865,9 +909,20 @@ class _$SearchChannelImpl extends SearchChannel {
   @override
   final int videoCount;
 
+  /// Channel thumbnails.
+  final List<Thumbnail> _thumbnails;
+
+  /// Channel thumbnails.
+  @override
+  List<Thumbnail> get thumbnails {
+    if (_thumbnails is EqualUnmodifiableListView) return _thumbnails;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_thumbnails);
+  }
+
   @override
   String toString() {
-    return 'SearchResult.channel(id: $id, name: $name, description: $description, videoCount: $videoCount)';
+    return 'SearchResult.channel(id: $id, name: $name, description: $description, videoCount: $videoCount, thumbnails: $thumbnails)';
   }
 
   @override
@@ -880,12 +935,14 @@ class _$SearchChannelImpl extends SearchChannel {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.videoCount, videoCount) ||
-                other.videoCount == videoCount));
+                other.videoCount == videoCount) &&
+            const DeepCollectionEquality()
+                .equals(other._thumbnails, _thumbnails));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, description, videoCount);
+  int get hashCode => Object.hash(runtimeType, id, name, description,
+      videoCount, const DeepCollectionEquality().hash(_thumbnails));
 
   /// Create a copy of SearchResult
   /// with the given fields replaced by the non-null parameter values.
@@ -913,11 +970,11 @@ class _$SearchChannelImpl extends SearchChannel {
     required TResult Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)
         playlist,
-    required TResult Function(
-            ChannelId id, String name, String description, int videoCount)
+    required TResult Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)
         channel,
   }) {
-    return channel(id, name, description, videoCount);
+    return channel(id, name, description, videoCount, thumbnails);
   }
 
   @override
@@ -938,11 +995,11 @@ class _$SearchChannelImpl extends SearchChannel {
     TResult? Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)?
         playlist,
-    TResult? Function(
-            ChannelId id, String name, String description, int videoCount)?
+    TResult? Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)?
         channel,
   }) {
-    return channel?.call(id, name, description, videoCount);
+    return channel?.call(id, name, description, videoCount, thumbnails);
   }
 
   @override
@@ -963,13 +1020,13 @@ class _$SearchChannelImpl extends SearchChannel {
     TResult Function(PlaylistId id, String title, int videoCount,
             List<Thumbnail> thumbnails)?
         playlist,
-    TResult Function(
-            ChannelId id, String name, String description, int videoCount)?
+    TResult Function(ChannelId id, String name, String description,
+            int videoCount, List<Thumbnail> thumbnails)?
         channel,
     required TResult orElse(),
   }) {
     if (channel != null) {
-      return channel(id, name, description, videoCount);
+      return channel(id, name, description, videoCount, thumbnails);
     }
     return orElse();
   }
@@ -1010,8 +1067,12 @@ class _$SearchChannelImpl extends SearchChannel {
 }
 
 abstract class SearchChannel extends SearchResult {
-  const factory SearchChannel(final ChannelId id, final String name,
-      final String description, final int videoCount) = _$SearchChannelImpl;
+  const factory SearchChannel(
+      final ChannelId id,
+      final String name,
+      final String description,
+      final int videoCount,
+      final List<Thumbnail> thumbnails) = _$SearchChannelImpl;
   const SearchChannel._() : super._();
 
   /// Channel id.
@@ -1028,8 +1089,13 @@ abstract class SearchChannel extends SearchResult {
   /// Channel uploaded videos.
   int get videoCount;
 
+  /// Channel thumbnails.
+  @override
+  List<Thumbnail> get thumbnails;
+
   /// Create a copy of SearchResult
   /// with the given fields replaced by the non-null parameter values.
+  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SearchChannelImplCopyWith<_$SearchChannelImpl> get copyWith =>
       throw _privateConstructorUsedError;

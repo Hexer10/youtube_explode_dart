@@ -240,6 +240,9 @@ class _InitialData extends InitialData {
                 .getT<String>('text')
                 .parseInt() ??
             -1,
+        (renderer.get('thumbnail')?.getList('thumbnails') ?? const [])
+            .map((e) => Thumbnail(Uri.parse('https:${e['url']}'), e['height'], e['width']))
+            .toList(),
       );
     }
     // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
