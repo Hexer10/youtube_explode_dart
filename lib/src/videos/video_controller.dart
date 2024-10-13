@@ -12,25 +12,26 @@ class VideoController {
   VideoController(this.httpClient);
 
   Future<PlayerResponse> getPlayerResponse(
-      VideoId videoId, YoutubeApiClient client, WatchPage watchPage) async {
+      VideoId videoId, YoutubeApiClient client,
+      {WatchPage? watchPage}) async {
     final payload = client.payload;
     assert(payload['context'] != null, 'client must contain a context');
     assert(payload['context']!['client'] != null,
         'client must contain a context.client');
 
     final userAgent = payload['context']!['client']!['userAgent'] as String?;
-    final ytCfg = watchPage.ytCfg;
+    final ytCfg = watchPage?.ytCfg;
 
     final content = await httpClient.postString(
       client.apiUrl,
       body: {
         ...payload,
         'videoId': videoId.value,
-        if (ytCfg.containsKey('STS'))
+        if (ytCfg?.containsKey('STS') ?? false)
           'playbackContext': {
             'contentPlaybackContext': {
               'html5Preference': 'HTML5_PREF_WANTS',
-              'signatureTimestamp': ytCfg['STS'].toString()
+              'signatureTimestamp': ytCfg!['STS'].toString()
             }
           },
       },
@@ -39,12 +40,13 @@ class VideoController {
         'X-Youtube-Client-Name': payload['context']!['client']!['clientName'],
         'X-Youtube-Client-Version':
             payload['context']!['client']!['clientVersion'],
-        'X-Goog-Visitor-Id': ytCfg['INNERTUBE_CONTEXT']['client']
-            ['visitorData'],
+        if (ytCfg != null)
+          'X-Goog-Visitor-Id': ytCfg['INNERTUBE_CONTEXT']['client']
+              ['visitorData'],
         'Origin': 'https://www.youtube.com',
         'Sec-Fetch-Mode': 'navigate',
         'Content-Type': 'application/json',
-        'Cookie': watchPage.cookieString,
+        if (watchPage != null) 'Cookie': watchPage.cookieString,
         ...client.headers,
       },
     );

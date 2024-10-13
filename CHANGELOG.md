@@ -1,6 +1,8 @@
 ## 2.3.1
 - Implement small JSEngine to decipher stream signatures.
-
+- Add channel thumbnails in search results. Thanks to  BinaryQuantumSoul. #289
+- Add `requireWatchPage` parameter to `getManifest` to fetch streams without having to get the watchpage.
+ 
 ## 2.3.0+1
 - Updated changelog.
 
