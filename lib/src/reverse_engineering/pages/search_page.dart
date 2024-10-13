@@ -117,8 +117,7 @@ class _InitialData extends InitialData {
 
   // Contains only [SearchVideo] or [SearchPlaylist]
   late final List<SearchResult> searchContent =
-      getContentContext()?.map(_parseContent).nonNulls.toList() ??
-          const [];
+      getContentContext()?.map(_parseContent).nonNulls.toList() ?? const [];
 
   List<SearchResult> get relatedVideos =>
       getContentContext()

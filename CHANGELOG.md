@@ -1,3 +1,6 @@
+## 2.3.1
+- Implement small JSEngine to decipher stream signatures.
+
 ## 2.3.0+1
 - Updated changelog.
 

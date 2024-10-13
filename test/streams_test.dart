@@ -29,8 +29,8 @@ void main() {
   });
 
   test('Get full manifest of a video', () async {
-    final manifest = await yt!.videos.streamsClient
-        .getManifest(VideoIdData.normal.id);
+    final manifest =
+        await yt!.videos.streamsClient.getManifest(VideoIdData.normal.id);
     expect(manifest.streams.length, greaterThan(50));
   });
 

@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
+import '../../js/js_engine.dart';
 import '../../retry.dart';
 import '../../reverse_engineering/heuristics.dart';
 import '../../reverse_engineering/models/stream_info_provider.dart';
@@ -28,7 +29,7 @@ class StreamClient {
   ///
   /// See [YoutubeApiClient] for all the possible clients that can be set using the [ytClients] parameter.
   /// If [ytClients] is null the library automatically manages the clients, otherwise only the clients provided are used.
-  /// Currently by default the ios and android clients are used, if the extraction fails the tvSimply client is used instead (as of `v2.3.0 not yet supported due to signature deciphering not implemented).
+  /// Currently by default the ios and android clients are used, if the extraction fails the tvSimply client is used instead.
   ///
   /// If the extraction fails an exception is thrown, to diagnose the issue enable the logging from the `logging` package, and open an issue with the output.
   /// For example:
@@ -94,13 +95,11 @@ class StreamClient {
       }
     }
 
-    // If the user has not provided any client retry with the tvSimply client.
-    // TODO: Enable when signature deciphering is implemented
-    /*
-        if (uniqueStreams.isEmpty && ytClients == null) {
-              return getManifest(videoId,
+    // If the user has not provided any client retry with the tvSimplyEmbedded client, which works also in some restricted videos.
+    if (uniqueStreams.isEmpty && ytClients == null) {
+      return getManifest(videoId,
           ytClients: [YoutubeApiClient.tvSimplyEmbedded]);
-    }*/
+    }
     if (uniqueStreams.isEmpty) {
       throw lastException ??
           VideoUnavailableException(
@@ -180,11 +179,38 @@ class StreamClient {
     }
   }
 
+  Future<String> _getDecipherFunction(WatchPage watchPage) async {
+    final playerScript = await _httpClient.getString(watchPage.sourceUrl);
+    final funcNameExp = RegExp(
+        r'function\(\w+\)\{[^}]*\.slice\(0,0\).*?return\s?\w+?\.join\(""\)};',
+        dotAll: true);
+    final funcMatch = funcNameExp.firstMatch(playerScript);
+    return funcMatch!.group(0)!.replaceFirst('function', 'function main');
+  }
+
+  final _sigCache = <String, String>{};
+
   Stream<StreamInfo> _parseStreamInfo(
       Iterable<StreamInfoProvider> streams, WatchPage watchPage) async* {
+    String? funcCode;
+
     for (final stream in streams) {
       final itag = stream.tag;
       var url = Uri.parse(stream.url);
+
+      if (url.queryParameters.containsKey('n')) {
+        final nParam = url.queryParameters['n']!;
+        late final String deciphered;
+        if (_sigCache.containsKey(nParam)) {
+          deciphered = _sigCache[nParam]!;
+        } else {
+          funcCode ??= await _getDecipherFunction(watchPage);
+          deciphered = _sigCache[nParam] = JSEngine.run(funcCode, [nParam]);
+          _logger.fine(
+              'Deciphered signature: ${url.queryParameters['n']} -> $deciphered');
+        }
+        url = url.setQueryParam('n', deciphered);
+      }
 
       final contentLength = stream.contentLength ??
           (await _httpClient.getContentLength(url, validate: false)) ??
