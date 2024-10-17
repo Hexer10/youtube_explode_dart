@@ -27,19 +27,19 @@ class StreamContainer with _$StreamContainer {
   /// 3rd Generation Partnership Project (.3gpp).
   static const StreamContainer tgpp = StreamContainer._internal('3gpp');
 
+  /// M3U8 (.m3u8).
+  static const StreamContainer m3u8 = StreamContainer._internal('m3u8');
+
   /// Parse a container from name.
   factory StreamContainer.parse(String name) {
-    if (name.toLowerCase() == 'mp4') {
-      return StreamContainer.mp4;
-    }
-    if (name.toLowerCase() == 'webm') {
-      return StreamContainer.webM;
-    }
-    if (name.toLowerCase() == '3gpp') {
-      return StreamContainer.tgpp;
-    }
-
-    throw ArgumentError.value(name, 'name', 'Valid values: mp4, webm, 3gpp');
+    return switch (name.toLowerCase()) {
+      'mp4' => StreamContainer.mp4,
+      'webm' => StreamContainer.webM,
+      '3gpp' => StreamContainer.tgpp,
+      'm3u8' => StreamContainer.m3u8,
+      _ => throw ArgumentError.value(
+          name, 'name', 'Valid values: mp4, webm, 3gpp'),
+    };
   }
 
   @override

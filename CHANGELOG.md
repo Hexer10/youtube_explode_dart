@@ -1,3 +1,7 @@
+## 2.3.2
+- Implement HLS streams parsing.
+- Add safari, tv, and androidVr yt clients.
+
 ## 2.3.1
 - Implement small JSEngine to decipher stream signatures.
 - Add channel thumbnails in search results. Thanks to  BinaryQuantumSoul. #289

@@ -1,3 +1,4 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http_parser/http_parser.dart';
 
 import '../../../reverse_engineering/models/fragment.dart';
@@ -29,7 +30,7 @@ mixin StreamInfo {
   /// Stream bitrate.
   Bitrate get bitrate;
 
-  /// DASH streams contain multiple stream fragments.
+  /// DASH/HLS streams contain multiple stream fragments.
   List<Fragment> get fragments;
 
   /// Streams codec.
@@ -66,7 +67,34 @@ extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
   /// Print a formatted text of all the streams. Like youtube-dl -F option.
   String describe() {
     final column = _Column(['format code', 'extension', 'resolution', 'note']);
-    for (final e in this) {
+    // Sort the streams:
+    // - First audio only streams.
+    // - Then sort by resolution.
+    // - Then sort by extension.
+    final sorted = toList()
+      ..sort((a, b) {
+        final aIsOnlyAudio = (a is AudioOnlyStreamInfo) || (a is HlsAudioStreamInfo);
+        final bIsOnlyAudio = (b is AudioOnlyStreamInfo) || (b is HlsAudioStreamInfo);
+        if (aIsOnlyAudio && !bIsOnlyAudio) {
+          return -1;
+        } else if (!aIsOnlyAudio && bIsOnlyAudio) {
+          return 1;
+        }
+        if (a is AudioStreamInfo && b is! AudioStreamInfo) {
+          return -1;
+        } else if (a is! AudioStreamInfo && b is AudioStreamInfo) {
+          return 1;
+        }
+        if (a is VideoStreamInfo && b is VideoStreamInfo) {
+          final resolution = a.videoResolution.compareTo(b.videoResolution);
+          if (resolution != 0) {
+            return resolution;
+          }
+        }
+        return a.container.name.compareTo(b.container.name);
+      });
+
+    for (final e in sorted) {
       column.write([
         e.tag,
         e.container.name,
@@ -75,8 +103,9 @@ extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
         e.bitrate,
         e.codec.parameters['codecs'],
         if (e is VideoStreamInfo) e.framerate,
-        if (e is VideoOnlyStreamInfo) 'video only',
-        if (e is MuxedStreamInfo) 'muxed',
+        if (e is VideoOnlyStreamInfo || e is HlsVideoStreamInfo ) 'video only',
+        // if (e is AudioOnlyStreamInfo) 'audio only',
+        if (e is MuxedStreamInfo || e is HlsMuxedStreamInfo) 'muxed',
         e.size,
         if (e case AudioStreamInfo(:AudioTrack audioTrack))
           audioTrack.displayName,

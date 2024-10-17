@@ -3,7 +3,7 @@ import 'package:http_parser/http_parser.dart';
 import '../../videos/streams/models/audio_track.dart';
 import 'fragment.dart';
 
-enum StreamSource { muxed, adaptive, dash }
+enum StreamSource { muxed, adaptive, dash, hls }
 
 ///
 abstract class StreamInfoProvider {
@@ -47,7 +47,7 @@ abstract class StreamInfoProvider {
   String? get videoQualityLabel => null;
 
   ///
-  String get qualityLabel;
+  String? get qualityLabel;
 
   ///
   int? get videoWidth => null;
@@ -63,4 +63,8 @@ abstract class StreamInfoProvider {
 
   ///
   AudioTrack? get audioTrack => null;
+
+  bool get audioOnly => false;
+
+  bool get videoOnly => false;
 }

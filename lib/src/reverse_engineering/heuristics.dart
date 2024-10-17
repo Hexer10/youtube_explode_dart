@@ -3,6 +3,7 @@ import '../videos/streams/models/video_quality.dart';
 import '../videos/streams/models/video_resolution.dart';
 
 const _resolutionMap = <VideoQuality, VideoResolution>{
+  VideoQuality.unknown: VideoResolution(-1, -1),
   VideoQuality.low144: VideoResolution(256, 144),
   VideoQuality.low240: VideoResolution(426, 240),
   VideoQuality.medium360: VideoResolution(640, 360),
@@ -26,23 +27,23 @@ extension VideoQualityUtil on VideoQuality {
     }
     label = label.toLowerCase();
 
-    if (label.startsWith('240')) {
+    if (label.startsWith('240') || label == '426x240') {
       return VideoQuality.low144;
     }
 
-    if (label.startsWith('360')) {
+    if (label.startsWith('360') || label == '640x360') {
       return VideoQuality.medium360;
     }
 
-    if (label.startsWith('480')) {
+    if (label.startsWith('480') || label == '854x480') {
       return VideoQuality.medium480;
     }
 
-    if (label.startsWith('720')) {
+    if (label.startsWith('720') || label == '1280x720') {
       return VideoQuality.high720;
     }
 
-    if (label.startsWith('1080')) {
+    if (label.startsWith('1080') || label == '1920x1080') {
       return VideoQuality.high1080;
     }
 
@@ -66,7 +67,7 @@ extension VideoQualityUtil on VideoQuality {
       return VideoQuality.high4320;
     }
 
-    if (label.startsWith('144')) {
+    if (label.startsWith('144') || label == '256x144') {
       return VideoQuality.low144;
     }
 

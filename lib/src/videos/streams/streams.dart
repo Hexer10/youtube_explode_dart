@@ -12,3 +12,6 @@ export 'types/video_only_stream_info.dart';
 export 'models/video_quality.dart';
 export 'models/video_resolution.dart';
 export 'mixins/video_stream_info.dart';
+export 'types/hls/hls_audio_stream_info.dart';
+export 'types/hls/hls_video_stream_info.dart';
+export 'types/hls/hls_muxed_stream_info.dart';

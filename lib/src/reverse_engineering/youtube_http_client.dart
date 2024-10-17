@@ -8,12 +8,14 @@ import 'package:logging/logging.dart';
 import '../exceptions/exceptions.dart';
 import '../extensions/helpers_extension.dart';
 import '../retry.dart';
+import '../videos/streams/mixins/hls_stream_info.dart';
 import '../videos/streams/streams.dart';
+import 'hls_manifest.dart';
 
 /// HttpClient wrapper for YouTube
 class YoutubeHttpClient extends http.BaseClient {
   final http.Client _httpClient;
-  final _logger = Logger('YoutubeExplode.HttpClient');
+  static final _logger = Logger('YoutubeExplode.HttpClient');
 
   // Flag to interrupt receiving stream.
   bool _closed = false;
@@ -149,6 +151,11 @@ class YoutubeHttpClient extends http.BaseClient {
         validate: validate,
         start: start,
         errorCount: errorCount,
+      );
+    }
+    if (streamInfo is HlsStreamInfo) {
+      return _getHlsStream(
+        streamInfo
       );
     }
     // Normal stream
@@ -313,6 +320,16 @@ class YoutubeHttpClient extends http.BaseClient {
       return json.decode(raw.body);
     });
   }
+
+  Stream<List<int>> _getHlsStream(HlsStreamInfo stream) async* {
+    final videoIndex = await getString(stream.url);
+    final video = HlsManifest.parseVideoSegments(videoIndex);
+    for (final segment in video) {
+      final data = await get(Uri.parse(segment.url));
+      yield data.bodyBytes;
+    }
+  }
+
 
   @override
   void close() {

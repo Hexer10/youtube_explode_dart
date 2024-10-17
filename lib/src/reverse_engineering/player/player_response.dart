@@ -119,7 +119,6 @@ class PlayerResponse {
           .get('streamingData')
           ?.getList('formats')
           ?.map((e) => _StreamInfo(e, StreamSource.muxed))
-          .cast<StreamInfoProvider>()
           .toList() ??
       const <StreamInfoProvider>[];
 
@@ -128,7 +127,6 @@ class PlayerResponse {
           .get('streamingData')
           ?.getList('adaptiveFormats')
           ?.map((e) => _StreamInfo(e, StreamSource.adaptive))
-          .cast<StreamInfoProvider>()
           .toList() ??
       const [];
 
@@ -233,8 +231,7 @@ class _StreamInfo extends StreamInfoProvider {
   String get videoQualityLabel => qualityLabel;
 
   @override
-  late final String qualityLabel = root.getT<String>('qualityLabel') ??
-      'tiny'; // Not sure if 'tiny' is the correct placeholder.
+  late final String qualityLabel = root.getT<String>('qualityLabel') ?? '';
 
   @override
   late final int? videoWidth = root.getT<int>('width');

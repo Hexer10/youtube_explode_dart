@@ -17,7 +17,7 @@ import 'streams.dart';
 
 /// Queries related to media streams of YouTube videos.
 class StreamClient {
-  final _logger = Logger('YoutubeExplode.StreamsClient');
+  static final _logger = Logger('YoutubeExplode.StreamsClient');
   final YoutubeHttpClient _httpClient;
   final StreamController _controller;
 
@@ -143,6 +143,8 @@ class StreamClient {
   }
 
   /// Gets the actual stream which is identified by the specified metadata.
+  /// Usually this downloads the bytes of the stream.
+  /// For HLS streams all the fragments are concatenated into a single stream.
   Stream<List<int>> get(StreamInfo streamInfo) =>
       _httpClient.getStream(streamInfo, streamClient: this);
 
@@ -191,6 +193,12 @@ class StreamClient {
       yield* _parseStreamInfo(dashManifest.streams,
           watchPage: watchPage, videoId: videoId);
     }
+    if (!playerResponse.hlsManifestUrl.isNullOrWhiteSpace) {
+      final hlsManifest =
+          await _controller.getHlsManifest(playerResponse.hlsManifestUrl!);
+      yield* _parseStreamInfo(hlsManifest.streams,
+          watchPage: watchPage, videoId: videoId);
+    }
   }
 
   Future<String> _getDecipherFunction(WatchPage watchPage) async {
@@ -221,7 +229,7 @@ class StreamClient {
           deciphered = _sigCache[nParam]!;
         } else {
           funcCode ??= await _getDecipherFunction(
-              watchPage ?? await WatchPage.get(_httpClient, videoId!.value));
+              watchPage ??= await WatchPage.get(_httpClient, videoId!.value));
           deciphered = _sigCache[nParam] = JSEngine.run(funcCode, [nParam]);
           _logger.fine(
               'Deciphered signature: ${url.queryParameters['n']} -> $deciphered');
@@ -243,6 +251,69 @@ class StreamClient {
 
       final audioCodec = stream.audioCodec;
       final videoCodec = stream.videoCodec;
+
+
+      // HLS
+      if (stream.source == StreamSource.hls) {
+        if (stream.audioOnly) {
+          yield HlsAudioStreamInfo(
+            videoId ?? watchPage!.videoId,
+            itag,
+            url,
+            container,
+            fileSize,
+            bitrate,
+            '',
+            '',
+            stream.codec,
+          );
+          continue;
+        }
+
+        final framerate = Framerate(stream.framerate ?? 24);
+        // TODO: Implement quality from itag
+        final videoQuality = VideoQualityUtil.fromLabel(stream.qualityLabel);
+        final videoWidth = stream.videoWidth;
+        final videoHeight = stream.videoHeight;
+        final videoResolution = videoWidth != null && videoHeight != null
+            ? VideoResolution(videoWidth, videoHeight)
+            : videoQuality.toVideoResolution();
+
+        if (stream.videoOnly) {
+          yield HlsVideoStreamInfo(
+            videoId ?? watchPage!.videoId,
+            itag,
+            url,
+            container,
+            fileSize,
+            bitrate,
+            videoCodec ?? '',
+            videoQuality.qualityString,
+            videoQuality,
+            videoResolution,
+            framerate,
+            stream.codec,
+            0,
+          );
+        } else {
+          yield HlsMuxedStreamInfo(
+            videoId ?? watchPage!.videoId,
+            itag,
+            url,
+            container,
+            fileSize,
+            bitrate,
+            audioCodec!,
+            videoCodec!,
+            videoQuality.qualityString,
+            videoQuality,
+            videoResolution,
+            framerate,
+            stream.codec,
+          );
+        }
+        continue;
+      }
 
       // Muxed or Video-only
       if (!videoCodec.isNullOrWhiteSpace) {
@@ -269,7 +340,7 @@ class StreamClient {
             bitrate,
             audioCodec!,
             videoCodec!,
-            stream.qualityLabel,
+            videoQuality.qualityString,
             videoQuality,
             videoResolution,
             framerate,
@@ -287,7 +358,7 @@ class StreamClient {
           fileSize,
           bitrate,
           videoCodec!,
-          stream.qualityLabel,
+          videoQuality.qualityString,
           videoQuality,
           videoResolution,
           framerate,
@@ -305,7 +376,7 @@ class StreamClient {
             fileSize,
             bitrate,
             audioCodec!,
-            stream.qualityLabel,
+            stream.qualityLabel!,
             stream.fragments ?? const [],
             stream.codec,
             stream.audioTrack);

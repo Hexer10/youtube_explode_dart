@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'mixins/hls_stream_info.dart';
 import 'streams.dart';
 
 /// Manifest that contains information about available media streams
@@ -23,7 +24,7 @@ class StreamManifest {
       UnmodifiableListView(streams.whereType<VideoStreamInfo>());
 
   /// Gets muxed streams (contain both audio and video).
-  /// Note that muxed streams are limited in quality and don't go beyond 720p30.
+  /// Note that muxed streams are limited in quality and don't go beyond 360p30.
   late final UnmodifiableListView<MuxedStreamInfo> muxed =
       UnmodifiableListView(streams.whereType<MuxedStreamInfo>());
 
@@ -35,6 +36,11 @@ class StreamManifest {
   /// These streams have the widest range of qualities available.
   late final UnmodifiableListView<VideoOnlyStreamInfo> videoOnly =
       UnmodifiableListView(streams.whereType<VideoOnlyStreamInfo>());
+
+  /// Gets hls streams (contain both audio and video).
+  /// Note that the content is not directly downloadable but returns a file with a list of the video fragments urls (this library can handle and download them).
+  late final UnmodifiableListView<HlsStreamInfo> hls =
+      UnmodifiableListView(streams.whereType<HlsStreamInfo>());
 
   @override
   String toString() => streams.describe();
