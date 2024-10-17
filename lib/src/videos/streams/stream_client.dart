@@ -252,7 +252,6 @@ class StreamClient {
       final audioCodec = stream.audioCodec;
       final videoCodec = stream.videoCodec;
 
-
       // HLS
       if (stream.source == StreamSource.hls) {
         if (stream.audioOnly) {

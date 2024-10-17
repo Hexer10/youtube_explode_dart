@@ -154,9 +154,7 @@ class YoutubeHttpClient extends http.BaseClient {
       );
     }
     if (streamInfo is HlsStreamInfo) {
-      return _getHlsStream(
-        streamInfo
-      );
+      return _getHlsStream(streamInfo);
     }
     // Normal stream
     return _getStream(
@@ -329,7 +327,6 @@ class YoutubeHttpClient extends http.BaseClient {
       yield data.bodyBytes;
     }
   }
-
 
   @override
   void close() {

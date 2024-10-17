@@ -1,4 +1,3 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http_parser/http_parser.dart';
 
 import '../../../reverse_engineering/models/fragment.dart';
@@ -73,8 +72,10 @@ extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
     // - Then sort by extension.
     final sorted = toList()
       ..sort((a, b) {
-        final aIsOnlyAudio = (a is AudioOnlyStreamInfo) || (a is HlsAudioStreamInfo);
-        final bIsOnlyAudio = (b is AudioOnlyStreamInfo) || (b is HlsAudioStreamInfo);
+        final aIsOnlyAudio =
+            (a is AudioOnlyStreamInfo) || (a is HlsAudioStreamInfo);
+        final bIsOnlyAudio =
+            (b is AudioOnlyStreamInfo) || (b is HlsAudioStreamInfo);
         if (aIsOnlyAudio && !bIsOnlyAudio) {
           return -1;
         } else if (!aIsOnlyAudio && bIsOnlyAudio) {
@@ -103,7 +104,7 @@ extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
         e.bitrate,
         e.codec.parameters['codecs'],
         if (e is VideoStreamInfo) e.framerate,
-        if (e is VideoOnlyStreamInfo || e is HlsVideoStreamInfo ) 'video only',
+        if (e is VideoOnlyStreamInfo || e is HlsVideoStreamInfo) 'video only',
         // if (e is AudioOnlyStreamInfo) 'audio only',
         if (e is MuxedStreamInfo || e is HlsMuxedStreamInfo) 'muxed',
         e.size,

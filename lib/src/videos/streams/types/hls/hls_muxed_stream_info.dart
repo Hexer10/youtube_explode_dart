@@ -13,7 +13,8 @@ part 'hls_muxed_stream_info.g.dart';
 /// YouTube media stream that contains both audio and video, in HLS format.
 /// This is not directly downloadable but returns a file with a list of the video fragments urls.
 @JsonSerializable()
-class HlsMuxedStreamInfo with StreamInfo, AudioStreamInfo, VideoStreamInfo, HlsStreamInfo {
+class HlsMuxedStreamInfo
+    with StreamInfo, AudioStreamInfo, VideoStreamInfo, HlsStreamInfo {
   @override
   final VideoId videoId;
 
@@ -70,20 +71,20 @@ class HlsMuxedStreamInfo with StreamInfo, AudioStreamInfo, VideoStreamInfo, HlsS
 
   /// Initializes an instance of [HlsMuxedStreamInfo]
   HlsMuxedStreamInfo(
-      this.videoId,
-      this.tag,
-      this.url,
-      this.container,
-      this.size,
-      this.bitrate,
-      this.audioCodec,
-      this.videoCodec,
-      this.qualityLabel,
-      this.videoQuality,
-      this.videoResolution,
-      this.framerate,
-      this.codec,
-      );
+    this.videoId,
+    this.tag,
+    this.url,
+    this.container,
+    this.size,
+    this.bitrate,
+    this.audioCodec,
+    this.videoCodec,
+    this.qualityLabel,
+    this.videoQuality,
+    this.videoResolution,
+    this.framerate,
+    this.codec,
+  );
 
   @override
   String toString() =>

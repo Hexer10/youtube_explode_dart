@@ -49,20 +49,19 @@ class HlsAudioStreamInfo with StreamInfo, AudioStreamInfo, HlsStreamInfo {
 
   /// Initializes an instance of [HlsAudioStreamInfo]
   HlsAudioStreamInfo(
-      this.videoId,
-      this.tag,
-      this.url,
-      this.container,
-      this.size,
-      this.bitrate,
-      this.audioCodec,
-      this.qualityLabel,
-      this.codec,
-      );
+    this.videoId,
+    this.tag,
+    this.url,
+    this.container,
+    this.size,
+    this.bitrate,
+    this.audioCodec,
+    this.qualityLabel,
+    this.codec,
+  );
 
   @override
-  String toString() =>
-      '[HLS] Audio-only ($tag | $container)';
+  String toString() => '[HLS] Audio-only ($tag | $container)';
 
   factory HlsAudioStreamInfo.fromJson(Map<String, dynamic> json) =>
       _$HlsAudioStreamInfoFromJson(json);

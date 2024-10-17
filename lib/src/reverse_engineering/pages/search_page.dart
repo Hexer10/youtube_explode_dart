@@ -241,7 +241,8 @@ class _InitialData extends InitialData {
                 .parseInt() ??
             -1,
         (renderer.get('thumbnail')?.getList('thumbnails') ?? const [])
-            .map((e) => Thumbnail(Uri.parse('https:${e['url']}'), e['height'], e['width']))
+            .map((e) => Thumbnail(
+                Uri.parse('https:${e['url']}'), e['height'], e['width']))
             .toList(),
       );
     }

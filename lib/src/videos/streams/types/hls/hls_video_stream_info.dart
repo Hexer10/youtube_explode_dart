@@ -4,7 +4,6 @@ import 'package:http_parser/http_parser.dart';
 import '../../../../reverse_engineering/models/fragment.dart';
 import '../../../video_id.dart';
 import '../../mixins/hls_stream_info.dart';
-import '../../models/audio_track.dart';
 import '../../streams.dart';
 import '../../mixins/stream_info.dart';
 
@@ -79,8 +78,7 @@ class HlsVideoStreamInfo with StreamInfo, VideoStreamInfo, HlsStreamInfo {
       this.videoResolution,
       this.framerate,
       this.codec,
-      this.audioItag
-      );
+      this.audioItag);
 
   @override
   String toString() =>

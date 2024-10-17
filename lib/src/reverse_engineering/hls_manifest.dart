@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:http_parser/src/media_type.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:logging/logging.dart';
 
 import 'models/stream_info_provider.dart';
