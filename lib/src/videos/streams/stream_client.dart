@@ -29,19 +29,23 @@ class StreamClient {
   ///
   /// See [YoutubeApiClient] for all the possible clients that can be set using the [ytClients] parameter.
   /// If [ytClients] is null the library automatically manages the clients, otherwise only the clients provided are used.
-  /// Currently by default the [YoutubeApiClient.android] and [YoutubeApiClient.ios] clients are used, if the extraction fails the [YoutubeApiClient.tvSimplyEmbedded] client is used instead.
+  /// Currently by default the [YoutubeApiClient.tv] and [YoutubeApiClient.ios] clients are used, if the extraction fails the [YoutubeApiClient.tvSimplyEmbedded] client is used instead.
   ///
   /// If [requireWatchPage] (default: true) is set to false the watch page is not used to extract the streams (so the process can be faster) but
   /// it COULD be less reliable (not tested thoroughly).
   /// If the extracted streams require signature decoding for which the watch page is required, the client will automatically fetch the watch page anyways (e.g. [YoutubeApiClient.tvSimplyEmbedded]).
   ///
   /// If the extraction fails an exception is thrown, to diagnose the issue enable the logging from the `logging` package, and open an issue with the output.
-  /// For example:
+  /// For example add at the beginning of your code:
   /// ```dart
   /// Logger.root.level = Level.FINER;
-  /// Logger.root.onRecord.listen(print);
-  /// // run yt related code ...
-  ///
+  /// Logger.root.onRecord.listen((e)  {
+  ///   print(e);
+  ///    if (e.error != null) {
+  ///     print(e.error);
+  ///     print(e.stackTrace);
+  ///   }
+  /// });
   /// ```
   Future<StreamManifest> getManifest(dynamic videoId,
       {@Deprecated(
@@ -51,7 +55,7 @@ class StreamClient {
       bool requireWatchPage = true}) async {
     videoId = VideoId.fromString(videoId);
     final clients =
-        ytClients ?? [YoutubeApiClient.ios, YoutubeApiClient.android];
+        ytClients ?? [YoutubeApiClient.ios, YoutubeApiClient.tv];
 
     final uniqueStreams = LinkedHashSet<StreamInfo>(
       equals: (a, b) {
@@ -292,7 +296,7 @@ class StreamClient {
             videoResolution,
             framerate,
             stream.codec,
-            0,
+            stream.audioItag,
           );
         } else {
           yield HlsMuxedStreamInfo(

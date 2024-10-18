@@ -62,6 +62,7 @@ class YoutubeApiClient {
       });
 
   /// This provides also muxed streams but seems less reliable than [ios].
+  /// If you require an android client use [androidVr] instead.
   static const android = YoutubeApiClient({
     'context': {
       'client': {

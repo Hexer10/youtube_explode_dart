@@ -25,9 +25,11 @@ class HlsVideoStreamInfo with StreamInfo, VideoStreamInfo, HlsStreamInfo {
   @override
   final StreamContainer container;
 
+  /// For HLS streams this is an approximation.
   @override
   final FileSize size;
 
+  /// For HLS streams this is an approximation.
   @override
   final Bitrate bitrate;
 
@@ -51,7 +53,7 @@ class HlsVideoStreamInfo with StreamInfo, VideoStreamInfo, HlsStreamInfo {
   @override
   final Framerate framerate;
 
-  /// Muxed streams never have fragments.
+  /// Always empty.
   @override
   List<Fragment> get fragments => const [];
 
@@ -63,6 +65,9 @@ class HlsVideoStreamInfo with StreamInfo, VideoStreamInfo, HlsStreamInfo {
   /// Stream codec.
   @override
   final String qualityLabel;
+
+  @override
+  final int? audioItag;
 
   /// Initializes an instance of [HlsVideoStreamInfo]
   HlsVideoStreamInfo(
@@ -89,7 +94,4 @@ class HlsVideoStreamInfo with StreamInfo, VideoStreamInfo, HlsStreamInfo {
 
   @override
   Map<String, dynamic> toJson() => _$HlsVideoStreamInfoToJson(this);
-
-  @override
-  final int audioItag;
 }

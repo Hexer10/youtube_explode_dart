@@ -67,4 +67,6 @@ abstract class StreamInfoProvider {
   bool get audioOnly => false;
 
   bool get videoOnly => false;
+
+  int? get audioItag => null;
 }

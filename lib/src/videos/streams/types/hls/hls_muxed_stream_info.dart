@@ -28,9 +28,13 @@ class HlsMuxedStreamInfo
   final StreamContainer container;
 
   @override
+
+  /// For HLS streams this is an approximation.
   final FileSize size;
 
   @override
+
+  /// For HLS streams this is an approximation.
   final Bitrate bitrate;
 
   @override
@@ -56,7 +60,7 @@ class HlsMuxedStreamInfo
   @override
   final Framerate framerate;
 
-  /// Muxed streams never have fragments.
+  /// Always empty.
   @override
   List<Fragment> get fragments => const [];
 

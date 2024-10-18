@@ -26,15 +26,19 @@ class HlsAudioStreamInfo with StreamInfo, AudioStreamInfo, HlsStreamInfo {
   final StreamContainer container;
 
   @override
+
+  /// For HLS streams this is an approximation.
   final FileSize size;
 
   @override
+
+  /// For HLS streams this is an approximation.
   final Bitrate bitrate;
 
   @override
   final String audioCodec;
 
-  /// This is always empty for hls streams
+  /// Always empty.
   @override
   List<Fragment> get fragments => const [];
 

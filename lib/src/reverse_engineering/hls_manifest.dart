@@ -47,9 +47,25 @@ class HlsManifest {
   List<_StreamInfo> get streams {
     final streams = <_StreamInfo>[];
     for (final video in videos) {
+      final type = video.params['TYPE'];
+      if (type != null && type != 'AUDIO') {
+        // TODO: type 'SUBTITLES' not supported.
+        continue;
+      }
       // The tag is the number after the /itag/ segment in the url
       final videoParts = video.url.split('/');
       final itag = int.parse(videoParts[videoParts.indexOf('itag') + 1]);
+
+      var bandwidth = int.tryParse(video.params['BANDWIDTH'] ?? '');
+      final codecs = video.params['CODECS']?.replaceAll('"', '').split(',');
+      final audioCodec = codecs?.first;
+      final videoCodec = codecs?.last;
+      final resolution = video.params['RESOLUTION']?.split('x');
+      final videoWidth = int.tryParse(resolution?[0] ?? '');
+      final videoHeight = int.tryParse(resolution?[1] ?? '');
+      final framerate = int.tryParse(video.params['FRAME-RATE'] ?? '');
+      final audioItag = int.tryParse(video.params['AUDIO']?.trimQuotes() ?? '');
+
       // To find the file size look for the segments after the sgoap and sgovp parameters (audio + video)
       // Then URL decode the value and find the clen= parameter
       String? sgoap;
@@ -68,20 +84,16 @@ class HlsManifest {
       if (sgoap != null) {
         audioClen =
             int.parse(RegExp(r'clen=(\d+)').firstMatch(sgoap)!.group(1)!);
+        if (bandwidth == null) {
+          final dur = double.parse(
+              RegExp(r'dur=(\d+\.\d+)').firstMatch(sgoap)!.group(1)!);
+          bandwidth = (audioClen / dur).round() * 8;
+        }
       }
       if (sgovp != null) {
         videoClen =
             int.parse(RegExp(r'clen=(\d+)').firstMatch(sgovp)!.group(1)!);
       }
-
-      final bandwidth = int.tryParse(video.params['BANDWIDTH'] ?? '');
-      final codecs = video.params['CODECS']?.replaceAll('"', '').split(',');
-      final audioCodec = codecs?.first;
-      final videoCodec = codecs?.last;
-      final resolution = video.params['RESOLUTION']?.split('x');
-      final videoWidth = int.tryParse(resolution?[0] ?? '');
-      final videoHeight = int.tryParse(resolution?[1] ?? '');
-      final framerate = int.tryParse(video.params['FRAME-RATE'] ?? '');
 
       streams.add(
         _StreamInfo(
@@ -97,6 +109,7 @@ class HlsManifest {
           bandwidth ?? 0,
           videoClen == null,
           audioClen == null,
+          audioItag,
         ),
       );
     }
@@ -123,17 +136,6 @@ class HlsManifest {
   }
 }
 
-/*
-BANDWIDTH=202508,CODECS="mp4a.40.5,avc1.4d400c",RESOLUTION=256x144,FRAME-RATE=30,VIDEO-RANGE=SDR,CLOSED-CAPTIONS=NONE
-The hls stream provide the following information:
-- BANDWIDTH: bytes
-- CODECS: comma separated list of codecs
-- RESOLUTION: width x height
-- FRAME-RATE: frames per second
-
-from the url:
-- itag
- */
 class _StreamInfo extends StreamInfoProvider {
   @override
   final int tag;
@@ -177,6 +179,9 @@ class _StreamInfo extends StreamInfoProvider {
   @override
   final bool videoOnly;
 
+  @override
+  final int? audioItag;
+
   _StreamInfo(
     this.tag,
     this.url,
@@ -190,6 +195,7 @@ class _StreamInfo extends StreamInfoProvider {
     this.bitrate,
     this.audioOnly,
     this.videoOnly,
+    this.audioItag,
   ) : codec = MediaType('application', 'vnd.apple.mpegurl', {
           'codecs': [
             if (audioCodec != null) audioCodec,
@@ -199,4 +205,8 @@ class _StreamInfo extends StreamInfoProvider {
 
   @override
   StreamSource get source => StreamSource.hls;
+}
+
+extension on String {
+  String trimQuotes() => substring(1, length - 1);
 }
