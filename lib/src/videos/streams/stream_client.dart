@@ -29,7 +29,7 @@ class StreamClient {
   ///
   /// See [YoutubeApiClient] for all the possible clients that can be set using the [ytClients] parameter.
   /// If [ytClients] is null the library automatically manages the clients, otherwise only the clients provided are used.
-  /// Currently by default the [YoutubeApiClient.tv] and [YoutubeApiClient.ios] clients are used, if the extraction fails the [YoutubeApiClient.tvSimplyEmbedded] client is used instead.
+  /// Currently by default the  [YoutubeApiClient.ios] clients is used, if the extraction fails [YoutubeApiClient.tvSimplyEmbedded] and [YoutubeApiClient.tv] clients are used instead.
   ///
   /// If [requireWatchPage] (default: true) is set to false the watch page is not used to extract the streams (so the process can be faster) but
   /// it COULD be less reliable (not tested thoroughly).
@@ -54,8 +54,7 @@ class StreamClient {
       List<YoutubeApiClient>? ytClients,
       bool requireWatchPage = true}) async {
     videoId = VideoId.fromString(videoId);
-    final clients =
-        ytClients ?? [YoutubeApiClient.ios, YoutubeApiClient.tv];
+    final clients = ytClients ?? [YoutubeApiClient.ios];
 
     final uniqueStreams = LinkedHashSet<StreamInfo>(
       equals: (a, b) {
@@ -106,10 +105,10 @@ class StreamClient {
       }
     }
 
-    // If the user has not provided any client retry with the tvSimplyEmbedded client, which works also in some restricted videos.
+    // If the user has not provided any client retry with the tvSimplyEmbedded and client, which work also in some restricted videos.
     if (uniqueStreams.isEmpty && ytClients == null) {
       return getManifest(videoId,
-          ytClients: [YoutubeApiClient.tvSimplyEmbedded]);
+          ytClients: [YoutubeApiClient.tvSimplyEmbedded, YoutubeApiClient.tv]);
     }
     if (uniqueStreams.isEmpty) {
       throw lastException ??
