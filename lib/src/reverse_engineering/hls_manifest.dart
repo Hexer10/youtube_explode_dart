@@ -119,18 +119,25 @@ class HlsManifest {
   static List<SegmentInfo> parseVideoSegments(String hlsFile) {
     final lines = hlsFile.trim().split('\n');
     assert(lines[0] == '#EXTM3U');
-    assert(lines[1] == '#EXT-X-VERSION:3');
+    assert(lines[1].startsWith('#EXT-X-VERSION:'));
+    final extXVersion = int.parse(lines[1].substring('#EXT-X-VERSION:'.length));
+    if (extXVersion != 3 && extXVersion != 6) {
+      throw Exception('Unsupported HLS version: $extXVersion');
+    }
     assert(lines[2] == '#EXT-X-PLAYLIST-TYPE:VOD');
-    assert(lines[3].startsWith('#EXT-X-TARGETDURATION:'));
     final segments = <SegmentInfo>[];
-    for (var i = 4; i < lines.length; i += 2) {
+    for (var i = 3; i < lines.length; i ++) {
       if (lines[i] == '#EXT-X-ENDLIST') {
         break;
+      }
+      if (lines[i].startsWith('#EXT-X-MAP') || lines[i].startsWith('#EXT-X-TARGETDURATION')) {
+        continue;
       }
       final duration = double.parse(
           lines[i].substring('#EXTINF:'.length, lines[i].length - 1));
       final url = lines[i + 1];
       segments.add((url: url, duration: duration));
+      i++;
     }
     return segments;
   }

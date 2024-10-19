@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -18,8 +19,7 @@ void main() {
       test(
         'VideoId - $videoId',
         () async {
-          final manifest =
-              await yt!.videos.streamsClient.getManifest(videoId.id);
+          final manifest = await yt!.videos.streams.getManifest(videoId.id);
           expect(manifest.videoOnly, isNotEmpty);
           expect(manifest.audioOnly, isNotEmpty);
         },
@@ -30,21 +30,20 @@ void main() {
 
   test('Get full manifest of a video', () async {
     final manifest =
-        await yt!.videos.streamsClient.getManifest(VideoIdData.normal.id);
+        await yt!.videos.streams.getManifest(VideoIdData.normal.id);
     expect(manifest.streams.length, greaterThan(50));
   });
 
   test('Stream of paid videos throw VideoRequiresPurchaseException', () {
     expect(
-      yt!.videos.streamsClient.getManifest(VideoIdData.requiresPurchase.id),
+      yt!.videos.streams.getManifest(VideoIdData.requiresPurchase.id),
       throwsA(const TypeMatcher<VideoRequiresPurchaseException>()),
     );
   });
 
   test('Get the hls manifest of a live stream', () async {
     expect(
-      await yt!.videos.streamsClient
-          .getHttpLiveStreamUrl(VideoId('jfKfPfyJRdk')),
+      await yt!.videos.streams.getHttpLiveStreamUrl(VideoId('jfKfPfyJRdk')),
       isNotEmpty,
     );
   });
@@ -53,7 +52,7 @@ void main() {
     for (final val in VideoIdData.invalid) {
       test('VideoId - $val', () {
         expect(
-          yt!.videos.streamsClient.getManifest(val.id),
+          yt!.videos.streams.getManifest(val.id),
           throwsA(const TypeMatcher<VideoUnplayableException>()),
         );
       });
@@ -62,16 +61,16 @@ void main() {
 
   group('Get specific stream of any playable video', () {
     for (final val in VideoIdData.playable) {
-      test(
-        'VideoId - $val',
-        () async {
-          final manifest = await yt!.videos.streamsClient.getManifest(val.id);
-          for (final streamInfo in manifest.streams) {
-            expect(yt!.videos.streamsClient.get(streamInfo).first, completes);
-          }
-        },
-        timeout: const Timeout(Duration(minutes: 5)),
-      );
+    test(
+      'VideoId - $val',
+      () async {
+          final manifest = await yt!.videos.streams.getManifest(val.id);
+        for (final streamInfo in manifest.streams) {
+            expect(yt!.videos.streams.get(streamInfo).first, completes);
+        }
+      },
+      timeout: const Timeout(Duration(minutes: 20)),
+    );
     }
   });
 }

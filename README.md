@@ -2,7 +2,6 @@
 This is a port of the [YoutubeExplode] library from C#, most of the functions, doc comments, readme information, is taken from YoutubeExplode repository.
 
 ![Pub Version](https://img.shields.io/pub/v/youtube_explode_dart)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Hexer10/youtube_explode_dart/dart.yml?branch=master)
 ![License](https://img.shields.io/github/license/Hexer10/youtube_explode_dart)
 ![Lint](https://img.shields.io/badge/style-lint-4BC0F5.svg)
 
@@ -86,7 +85,7 @@ You can request the stream manifest to get available streams for a particular vi
 ```dart
 var yt = YoutubeExplode();
 
-var manifest = yt.videos.streamsClient.getManifest('Dpp1sIL1m5Q');
+var manifest = yt.videos.streams.getManifest('Dpp1sIL1m5Q');
 ```
 
 Once you get the manifest, you can filter through the streams and choose the one you're interested in downloading:
@@ -107,7 +106,7 @@ Finally, you can get the actual `Stream` object represented by the metadata:
 ```dart
 if (streamInfo != null) {
   // Get the actual stream
-  var stream = yt.video.streamClient.get(streamInfo);
+  var stream = yt.video.streams.get(streamInfo);
   
   // Open a file for writing.
   var file = File(filePath);
@@ -170,12 +169,12 @@ Similarly, to streams, you can extract closed captions by getting the manifest a
 ```
 
 ### Getting comments
-You can easily get the video comments of a given video, the return value of `commentsClient.getComments(video)` is a list-like object which behaves exactly like a `List` but has an additional method `nextPage()` which is used in order to get the next comments, it returns null when there are no comments to be fetched anymore.
+You can easily get the video comments of a given video, the return value of `comments.getComments(video)` is a list-like object which behaves exactly like a `List` but has an additional method `nextPage()` which is used in order to get the next comments, it returns null when there are no comments to be fetched anymore.
 
 ```dart
-var comments = await yt.videos.commentsClient.getComments(video);
+var comments = await yt.videos.comments.getComments(video);
 
-var replies = await yt.videos.commentsClient.getReplies(comment); // Fetch the comment replies 
+var replies = await yt.videos.comments.getReplies(comment); // Fetch the comment replies 
 ```
 
 

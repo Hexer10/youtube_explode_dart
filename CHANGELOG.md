@@ -1,3 +1,6 @@
+## 2.3.4
+- Better HLS support
+
 ## 2.3.3
 - Re-implement sig deciphering.
 
