@@ -1,3 +1,6 @@
+## 2.3.3
+- Re-implement sig deciphering.
+
 ## 2.3.2
 - Implement HLS streams parsing.
 - Add safari, tv, and androidVr yt clients.
