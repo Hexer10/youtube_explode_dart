@@ -15,6 +15,13 @@ class JSEngine {
     };
   }
 
+  void parse(String code) {
+    final parsed = parsejs(code);
+    for (final node in parsed.body) {
+      resolveNode(node);
+    }
+  }
+
   /// Parses the js code and runs the first function in the code returning the result
   /// The [params] are added to the context to be accessed from the function.
   static dynamic run(String code, [List<dynamic> params = const []]) {

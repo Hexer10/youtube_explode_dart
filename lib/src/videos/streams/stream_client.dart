@@ -6,6 +6,7 @@ import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../js/js_engine.dart';
 import '../../retry.dart';
+import '../../reverse_engineering/cipher/cipher_manifest.dart';
 import '../../reverse_engineering/heuristics.dart';
 import '../../reverse_engineering/models/stream_info_provider.dart';
 import '../../reverse_engineering/pages/watch_page.dart';
@@ -204,8 +205,14 @@ class StreamClient {
     }
   }
 
+  String? _playerScript;
+  Future<String> _getPlayerScript([WatchPage? page]) async {
+    page ??= await WatchPage.get(_httpClient, '');
+    return _playerScript ??= await _httpClient.getString(page.sourceUrl);
+  }
+
   Future<String> _getDecipherFunction(WatchPage watchPage) async {
-    final playerScript = await _httpClient.getString(watchPage.sourceUrl);
+    final playerScript = await _getPlayerScript(watchPage);
     final funcNameExp = RegExp(
         r'function\(\w+\)\{[^}]*\.slice\(0,0\).*?return\s?\w+?\.join\(""\)};',
         dotAll: true);
@@ -213,13 +220,14 @@ class StreamClient {
     return funcMatch!.group(0)!.replaceFirst('function', 'function main');
   }
 
-  final _sigCache = <String, String>{};
+  final _nSigCache = <String, String>{};
 
   Stream<StreamInfo> _parseStreamInfo(Iterable<StreamInfoProvider> streams,
       {WatchPage? watchPage, VideoId? videoId}) async* {
     assert(watchPage != null || videoId != null,
         'Either watchPage or videoId must be provided');
     String? funcCode;
+    CipherManifest? cipherManifest;
 
     for (final stream in streams) {
       final itag = stream.tag;
@@ -228,16 +236,29 @@ class StreamClient {
       if (url.queryParameters.containsKey('n')) {
         final nParam = url.queryParameters['n']!;
         late final String deciphered;
-        if (_sigCache.containsKey(nParam)) {
-          deciphered = _sigCache[nParam]!;
+        if (_nSigCache.containsKey(nParam)) {
+          deciphered = _nSigCache[nParam]!;
         } else {
           funcCode ??= await _getDecipherFunction(
               watchPage ??= await WatchPage.get(_httpClient, videoId!.value));
-          deciphered = _sigCache[nParam] = JSEngine.run(funcCode, [nParam]);
+          deciphered = _nSigCache[nParam] = JSEngine.run(funcCode, [nParam]);
           _logger.fine(
-              'Deciphered signature: ${url.queryParameters['n']} -> $deciphered');
+              'Deciphered n-sig: ${url.queryParameters['n']} -> $deciphered');
         }
         url = url.setQueryParam('n', deciphered);
+      }
+      if (stream.signatureParameter != null) {
+        cipherManifest ??=
+            CipherManifest.decode(await _getPlayerScript(watchPage));
+        final sig = stream.signature!;
+        final sigParam = stream.signatureParameter!;
+        if (cipherManifest != null) {
+          final sigDeciphered = cipherManifest.decipher(sig);
+          url = url.setQueryParam(sigParam, sigDeciphered);
+          _logger.fine('Deciphered signature: $sig -> $sigDeciphered');
+        } else {
+          _logger.warning('Could not decipher signature: $sig');
+        }
       }
 
       final contentLength = stream.contentLength ??

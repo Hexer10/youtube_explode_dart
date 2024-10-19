@@ -1045,7 +1045,7 @@ class IndexExpression extends Expression {
   }
 
   @override
-  String toString() => 'IndexExpression';
+  String toString() => 'IndexExpression($object[$property])';
 
   @override
   visitBy<T>(Visitor<T> v) => v.visitIndex(this);
@@ -1066,7 +1066,7 @@ class NameExpression extends Expression {
   forEach(callback) => callback(name);
 
   @override
-  String toString() => 'NameExpression';
+  String toString() => 'NameExpression(${name.value})';
 
   @override
   visitBy<T>(Visitor<T> v) => v.visitNameExpression(this);
