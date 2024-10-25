@@ -3,6 +3,7 @@ import 'package:http_parser/http_parser.dart';
 import '../../../reverse_engineering/models/fragment.dart';
 import '../../videos.dart';
 import '../models/audio_track.dart';
+import 'hls_stream_info.dart';
 
 /// Generic YouTube media stream.
 mixin StreamInfo {
@@ -110,8 +111,8 @@ extension StreamInfoIterableExt<T extends StreamInfo> on Iterable<T> {
           '${e.qualityLabel}${e.framerate.framesPerSecond}'
         else
           e.qualityLabel,
-        e.bitrate,
-        e.size,
+        '${e is HlsStreamInfo ? '~' : ''}${e.bitrate}',
+        '${e is HlsStreamInfo ? '~' : ''}${e.size}',
         e.codec.parameters['codecs'],
         if (e is VideoOnlyStreamInfo || e is HlsVideoStreamInfo) 'video only',
         // if (e is AudioOnlyStreamInfo) 'audio only',
