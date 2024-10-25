@@ -326,19 +326,16 @@ class JSEngine {
   }
 
   bool toBoolean(dynamic value) {
-    if (value is bool) {
-      return value;
-    }
-    if (value is num) {
-      return value != 0;
-    }
-    if (value is String) {
-      return value.isNotEmpty;
-    }
-    if (value is List) {
-      return value.isNotEmpty;
-    }
-    return true;
+    return switch(value) {
+      NaN() => false,
+      null => false,
+      DateTime() => true,
+      List() => true,
+      bool() => value,
+      num() => value != 0,
+      String() => value.isNotEmpty,
+      _ => true,
+    };
   }
 
   dynamic resolveBinaryExpression(BinaryExpression expr) {
@@ -414,6 +411,7 @@ class JSEngine {
     final arg = resolveExpression(expr.argument);
     return switch (expr.operator) {
       '-' => -arg,
+      '!' => !toBoolean(arg),
       _ => throw UnimplementedError('Unknown unary operator: ${expr.operator}'),
     };
   }

@@ -896,7 +896,7 @@ class BinaryExpression extends Expression {
   }
 
   @override
-  String toString() => 'BinaryExpression';
+  String toString() => 'BinaryExpression("$left" $operator "$right")';
 
   @override
   visitBy<T>(Visitor<T> v) => v.visitBinary(this);
@@ -1022,7 +1022,7 @@ class MemberExpression extends Expression {
   }
 
   @override
-  String toString() => 'MemberExpression';
+  String toString() => 'Member($object.$property)';
 
   @override
   visitBy<T>(Visitor<T> v) => v.visitMember(this);
@@ -1108,7 +1108,7 @@ class LiteralExpression extends Expression {
   forEach(callback) {}
 
   @override
-  String toString() => 'LiteralExpression';
+  String toString() => 'Lit($value)';
 
   @override
   visitBy<T>(Visitor<T> v) => v.visitLiteral(this);
