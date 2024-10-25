@@ -36,31 +36,6 @@ class YoutubeApiClient {
     },
   }, 'https://www.youtube.com/youtubei/v1/player?key=AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc&prettyPrint=false');
 
-  /// Work even of restricted videos and provides low quality muxed streams, but requires signature deciphering.
-  /// Does not work if the video has the embedding disabled.
-  static const tvSimplyEmbedded = YoutubeApiClient(
-      {
-        'context': {
-          'client': {
-            'clientName': 'TVHTML5_SIMPLY_EMBEDDED_PLAYER',
-            'clientVersion': '2.0',
-            'hl': 'en',
-            'timeZone': 'UTC',
-            'gl': 'US',
-            'utcOffsetMinutes': 0
-          }
-        },
-        'thirdParty': {'embedUrl': 'https://www.youtube.com/'},
-        'contentCheckOk': true,
-        'racyCheckOk': true
-      },
-      'https://www.youtube.com/youtubei/v1/player?prettyPrint=false',
-      headers: {
-        'Sec-Fetch-Mode': 'navigate',
-        'Content-Type': 'application/json',
-        'Origin': 'https://www.youtube.com',
-      });
-
   /// This provides also muxed streams but seems less reliable than [ios].
   /// If you require an android client use [androidVr] instead.
   static const android = YoutubeApiClient({
@@ -95,6 +70,46 @@ class YoutubeApiClient {
     },
   }, 'https://music.youtube.com/youtubei/v1/player?key=AIzaSyAOghZGza2MQSZkY_zfZ370N-PUdXEo8AI&prettyPrint=false');
 
+  /// This client also provide high quality muxed stream in the HLS manifest.
+  /// The streams are in m3u8 format.
+  static const safari = YoutubeApiClient({
+    'context': {
+      'client': {
+        'clientName': 'WEB',
+        'clientVersion': '2.20240726.00.00',
+        'userAgent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15,gzip(gfe)',
+        'hl': 'en',
+        'timeZone': 'UTC',
+        'utcOffsetMinutes': 0,
+      },
+    },
+  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
+
+  /// Used to bypass same restriction on videos.
+  static const tv = YoutubeApiClient(
+      {
+        'context': {
+          'client': {
+            'clientName': 'TVHTML5',
+            'clientVersion': '7.20240724.13.00',
+            'hl': 'en',
+            'timeZone': 'UTC',
+            'gl': 'US',
+            'utcOffsetMinutes': 0
+          }
+        },
+        "contentCheckOk": true,
+        "racyCheckOk": true
+      },
+      'https://www.youtube.com/youtubei/v1/player?prettyPrint=false',
+      headers: {
+        'Sec-Fetch-Mode': 'navigate',
+        'Content-Type': 'application/json',
+        'Origin': 'https://www.youtube.com',
+      });
+
+  /// Provides high quality videos (not only VR).
   static const androidVr = YoutubeApiClient({
     'context': {
       'client': {
@@ -104,19 +119,6 @@ class YoutubeApiClient {
         'osVersion': '12',
         'osName': 'Android',
         'androidSdkVersion': '32',
-        'hl': 'en',
-        'timeZone': 'UTC',
-        'utcOffsetMinutes': 0,
-      },
-    },
-  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
-
-  @Deprecated('Currently this has been disabled on youtube')
-  static const webCreator = YoutubeApiClient({
-    'context': {
-      'client': {
-        'clientName': 'WEB_CREATOR',
-        'clientVersion': '1.20240723.03.00',
         'hl': 'en',
         'timeZone': 'UTC',
         'utcOffsetMinutes': 0,
@@ -136,15 +138,12 @@ class YoutubeApiClient {
     },
   }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
 
-  /// This client also provide high quality muxed stream in the HLS manifest.
-  /// The streams are in m3u8 format.
-  static const safari = YoutubeApiClient({
+  @Deprecated('Youtube always requires authentication for this client')
+  static const webCreator = YoutubeApiClient({
     'context': {
       'client': {
-        'clientName': 'WEB',
-        'clientVersion': '2.20240726.00.00',
-        'userAgent':
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15,gzip(gfe)',
+        'clientName': 'WEB_CREATOR',
+        'clientVersion': '1.20240723.03.00',
         'hl': 'en',
         'timeZone': 'UTC',
         'utcOffsetMinutes': 0,
@@ -152,20 +151,24 @@ class YoutubeApiClient {
     },
   }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
 
-  static const tv = YoutubeApiClient(
+  /// Work even of restricted videos and provides low quality muxed streams, but requires signature deciphering.
+  /// Does not work if the video has the embedding disabled.
+  @Deprecated('Youtube always requires authentication for this client')
+  static const tvSimplyEmbedded = YoutubeApiClient(
       {
         'context': {
           'client': {
-            'clientName': 'TVHTML5',
-            'clientVersion': '7.20240724.13.00',
+            'clientName': 'TVHTML5_SIMPLY_EMBEDDED_PLAYER',
+            'clientVersion': '2.0',
             'hl': 'en',
             'timeZone': 'UTC',
             'gl': 'US',
             'utcOffsetMinutes': 0
           }
         },
-        "contentCheckOk": true,
-        "racyCheckOk": true
+        'thirdParty': {'embedUrl': 'https://www.youtube.com/'},
+        'contentCheckOk': true,
+        'racyCheckOk': true
       },
       'https://www.youtube.com/youtubei/v1/player?prettyPrint=false',
       headers: {

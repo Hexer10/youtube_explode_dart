@@ -30,7 +30,9 @@ class StreamClient {
   ///
   /// See [YoutubeApiClient] for all the possible clients that can be set using the [ytClients] parameter.
   /// If [ytClients] is null the library automatically manages the clients, otherwise only the clients provided are used.
-  /// Currently by default the  [YoutubeApiClient.ios] clients is used, if the extraction fails [YoutubeApiClient.tvSimplyEmbedded] and [YoutubeApiClient.tv] clients are used instead.
+  /// Currently by default the  [YoutubeApiClient.ios] clients is used, if the extraction fails the [YoutubeApiClient.tv] client is used instead.
+  ///
+  /// Note that age restricted videos are no longer support due to the changes in the YouTube API.
   ///
   /// If [requireWatchPage] (default: true) is set to false the watch page is not used to extract the streams (so the process can be faster) but
   /// it COULD be less reliable (not tested thoroughly).
