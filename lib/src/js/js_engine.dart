@@ -326,7 +326,7 @@ class JSEngine {
   }
 
   bool toBoolean(dynamic value) {
-    return switch(value) {
+    return switch (value) {
       NaN() => false,
       null => false,
       DateTime() => true,

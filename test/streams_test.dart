@@ -61,16 +61,16 @@ void main() {
 
   group('Get specific stream of any playable video', () {
     for (final val in VideoIdData.playable) {
-    test(
-      'VideoId - $val',
-      () async {
+      test(
+        'VideoId - $val',
+        () async {
           final manifest = await yt!.videos.streams.getManifest(val.id);
-        for (final streamInfo in manifest.streams) {
+          for (final streamInfo in manifest.streams) {
             expect(yt!.videos.streams.get(streamInfo).first, completes);
-        }
-      },
-      timeout: const Timeout(Duration(minutes: 20)),
-    );
+          }
+        },
+        timeout: const Timeout(Duration(minutes: 20)),
+      );
     }
   });
 }

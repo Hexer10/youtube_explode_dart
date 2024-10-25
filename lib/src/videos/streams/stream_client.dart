@@ -36,7 +36,7 @@ class StreamClient {
   ///
   /// If [requireWatchPage] (default: true) is set to false the watch page is not used to extract the streams (so the process can be faster) but
   /// it COULD be less reliable (not tested thoroughly).
-  /// If the extracted streams require signature decoding for which the watch page is required, the client will automatically fetch the watch page anyways (e.g. [YoutubeApiClient.tvSimplyEmbedded]).
+  /// If the extracted streams require signature decoding for which the watch page is required, the client will automatically fetch the watch page anyways (e.g. [YoutubeApiClient.tv]).
   ///
   /// If the extraction fails an exception is thrown, to diagnose the issue enable the logging from the `logging` package, and open an issue with the output.
   /// For example add at the beginning of your code:
@@ -108,10 +108,10 @@ class StreamClient {
       }
     }
 
-    // If the user has not provided any client retry with the tvSimplyEmbedded and client, which work also in some restricted videos.
+    // If the user has not provided any client retry with the tv which work also in some restricted videos.
     if (uniqueStreams.isEmpty && ytClients == null) {
       return getManifest(videoId,
-          ytClients: [YoutubeApiClient.tvSimplyEmbedded, YoutubeApiClient.tv]);
+          ytClients: [YoutubeApiClient.tv]);
     }
     if (uniqueStreams.isEmpty) {
       throw lastException ??

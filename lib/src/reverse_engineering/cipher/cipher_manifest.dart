@@ -1,5 +1,3 @@
-import 'package:collection/collection.dart';
-
 import '../../extensions/helpers_extension.dart';
 import 'cipher_operations.dart';
 
@@ -90,7 +88,7 @@ final class CipherManifest {
             return const ReverseCipherOperation();
           }
         })
-        .whereNotNull()
+        .nonNulls
         .toList();
     return CipherManifest(signatureTimestamp, ops);
   }

@@ -126,11 +126,12 @@ class HlsManifest {
     }
     assert(lines[2] == '#EXT-X-PLAYLIST-TYPE:VOD');
     final segments = <SegmentInfo>[];
-    for (var i = 3; i < lines.length; i ++) {
+    for (var i = 3; i < lines.length; i++) {
       if (lines[i] == '#EXT-X-ENDLIST') {
         break;
       }
-      if (lines[i].startsWith('#EXT-X-MAP') || lines[i].startsWith('#EXT-X-TARGETDURATION')) {
+      if (lines[i].startsWith('#EXT-X-MAP') ||
+          lines[i].startsWith('#EXT-X-TARGETDURATION')) {
         continue;
       }
       final duration = double.parse(

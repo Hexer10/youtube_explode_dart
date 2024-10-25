@@ -5,7 +5,7 @@ Future<void> main() async {
 
   // Get the video metadata.
   final video = await yt.videos.get('fRh_vgS2dFE');
-  print(video.title);              // ^ You can pass both video URLs or video IDs.
+  print(video.title); // ^ You can pass both video URLs or video IDs.
 
   final manifest = await yt.videos.streams.getManifest('fRh_vgS2dFE',
       // You can also pass a list of preferred clients, otherwise the library will handle it:
