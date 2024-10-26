@@ -110,8 +110,7 @@ class StreamClient {
 
     // If the user has not provided any client retry with the tv which work also in some restricted videos.
     if (uniqueStreams.isEmpty && ytClients == null) {
-      return getManifest(videoId,
-          ytClients: [YoutubeApiClient.tv]);
+      return getManifest(videoId, ytClients: [YoutubeApiClient.tv]);
     }
     if (uniqueStreams.isEmpty) {
       throw lastException ??

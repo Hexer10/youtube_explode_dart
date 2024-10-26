@@ -138,6 +138,19 @@ class YoutubeApiClient {
     },
   }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
 
+  /// Sometimes includes low quality streams (eg. 144p12).
+  static const mweb = YoutubeApiClient({
+    'context': {
+      'client': {
+        'clientName': 'MWEB',
+        'clientVersion': '2.20240726.01.00',
+        'hl': 'en',
+        'timeZone': 'UTC',
+        'utcOffsetMinutes': 0,
+      },
+    },
+  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
+
   @Deprecated('Youtube always requires authentication for this client')
   static const webCreator = YoutubeApiClient({
     'context': {

@@ -1,3 +1,5 @@
+## 2.3.6
+
 ## 2.3.5
 - Deprecated `YoutubeApiClient.tvSimpleEmbedded`.
 - Improve JSEngine
