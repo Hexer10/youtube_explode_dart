@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a bug report, make sure to follow the template otherwise the issue might be closed.
-title: "[BUG]"
+title: "[BUG] "
 labels: bug
 assignees: ''
 
@@ -11,6 +11,8 @@ assignees: ''
 
 **Describe the bug**
 A clear and concise description of what the bug is.
+
+If you fail to fetch video streams make sure that you can open the same video on a non logged-in browser in incognito mode.
 
 **To Reproduce**
 Include the code which doesn't work in the code markdown...
