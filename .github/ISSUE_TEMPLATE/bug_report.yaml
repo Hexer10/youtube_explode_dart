@@ -56,6 +56,8 @@ body:
       description: |
         Please make sure to check all the following boxes before submitting the issue.
       options:
+        - label: I have provided a descriptive title
+          required: true
         - label: I have searched the issues of this repository and believe that this is not a duplicate
           required: true
         - label: I have tested with the latest version of the library
