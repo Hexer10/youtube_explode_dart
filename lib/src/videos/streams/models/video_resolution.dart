@@ -37,4 +37,31 @@ class VideoResolution implements Comparable<VideoResolution> {
     }
     return -1;
   }
+
+  @override
+  operator ==(Object other) {
+    if (other is VideoResolution) {
+      return width == other.width && height == other.height;
+    }
+    return false;
+  }
+
+  operator >(VideoResolution other) {
+    return compareTo(other) > 0;
+  }
+
+  operator <(VideoResolution other) {
+    return compareTo(other) < 0;
+  }
+
+  operator >=(VideoResolution other) {
+    return compareTo(other) >= 0;
+  }
+
+  operator <=(VideoResolution other) {
+    return compareTo(other) <= 0;
+  }
+
+  @override
+  int get hashCode => width.hashCode ^ height.hashCode;
 }
