@@ -1,4 +1,6 @@
 ## 2.3.6
+- Update search playlists parsing due to yt changes.
+- Implement >,<,== operators for `VideoResolution`.
 
 ## 2.3.5
 - Deprecated `YoutubeApiClient.tvSimpleEmbedded`.
