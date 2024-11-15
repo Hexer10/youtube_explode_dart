@@ -87,7 +87,6 @@ class YoutubeApiClient {
     },
   }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
 
-
   /// This client also provide high quality muxed stream in the HLS manifest.
   /// The streams are in m3u8 format.
   static const safari = YoutubeApiClient({
