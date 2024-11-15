@@ -246,6 +246,31 @@ class _InitialData extends InitialData {
             .toList(),
       );
     }
+    if (content['lockupViewModel'] != null) {
+      final viewModel = content.get('lockupViewModel')!;
+
+      final type = viewModel.getT<String>('contentType');
+      if (type != 'LOCKUP_CONTENT_TYPE_PLAYLIST') {
+        return null;
+      }
+
+      final thumbnails = viewModel
+          .getJson<List<dynamic>>(
+              'contentImage/collectionThumbnailViewModel/primaryThumbnail/thumbnailViewModel/image/sources')!
+          .cast<Map<String, dynamic>>();
+      return SearchPlaylist(
+          PlaylistId(viewModel.getT<String>('contentId')!),
+          viewModel.getJson<String>(
+              'metadata/lockupMetadataViewModel/title/content')!,
+          viewModel
+              .getJson<String>(
+                  'contentImage/collectionThumbnailViewModel/primaryThumbnail/thumbnailViewModel/overlays/0/thumbnailOverlayBadgeViewModel/thumbnailBadges/0/thumbnailBadgeViewModel/text')!
+              .parseInt()!,
+          thumbnails
+              .map((e) =>
+                  Thumbnail(Uri.parse(e['url']), e['height'], e['width']))
+              .toList());
+    }
     // Here ignore 'horizontalCardListRenderer' & 'shelfRenderer'
     return null;
   }

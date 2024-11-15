@@ -70,6 +70,24 @@ class YoutubeApiClient {
     },
   }, 'https://music.youtube.com/youtubei/v1/player?key=AIzaSyAOghZGza2MQSZkY_zfZ370N-PUdXEo8AI&prettyPrint=false');
 
+  /// Provides high quality videos (not only VR).
+  static const androidVr = YoutubeApiClient({
+    'context': {
+      'client': {
+        'clientName': 'ANDROID_VR',
+        'clientVersion': '1.56.21',
+        'deviceModel': 'Quest 3',
+        'osVersion': '12',
+        'osName': 'Android',
+        'androidSdkVersion': '32',
+        'hl': 'en',
+        'timeZone': 'UTC',
+        'utcOffsetMinutes': 0,
+      },
+    },
+  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
+
+
   /// This client also provide high quality muxed stream in the HLS manifest.
   /// The streams are in m3u8 format.
   static const safari = YoutubeApiClient({
@@ -108,23 +126,6 @@ class YoutubeApiClient {
         'Content-Type': 'application/json',
         'Origin': 'https://www.youtube.com',
       });
-
-  /// Provides high quality videos (not only VR).
-  static const androidVr = YoutubeApiClient({
-    'context': {
-      'client': {
-        'clientName': 'ANDROID_VR',
-        'clientVersion': '1.56.21',
-        'deviceModel': 'Quest 3',
-        'osVersion': '12',
-        'osName': 'Android',
-        'androidSdkVersion': '32',
-        'hl': 'en',
-        'timeZone': 'UTC',
-        'utcOffsetMinutes': 0,
-      },
-    },
-  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
 
   static const mediaConnect = YoutubeApiClient({
     'context': {

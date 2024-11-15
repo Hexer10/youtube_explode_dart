@@ -45,6 +45,7 @@ void main() {
   test('Search only playlists', () async {
     final playlists =
         await yt!.search.searchContent('Banana', filter: TypeFilters.playlist);
+    expect(playlists, isNotEmpty);
     expect(playlists, everyElement(isA<SearchPlaylist>()));
   });
 

@@ -272,6 +272,29 @@ extension GetOrNullMap on Map {
 
     return v.toList().cast<Map<String, dynamic>>();
   }
+
+  /// Access a value by using the json selection, for example contents/column/1/id
+  T? getJson<T>(String jsonPath) {
+    final parts = jsonPath.split('/');
+    dynamic value = this;
+    for (final part in parts) {
+      if (value is Map<String, dynamic>) {
+        value = value[part];
+      } else if (value is List<dynamic>) {
+        final index = int.tryParse(part);
+        if (index == null) {
+          return null;
+        }
+        if (index >= value.length) {
+          return null;
+        }
+        value = value[index];
+      } else {
+        return null;
+      }
+    }
+    return value as T;
+  }
 }
 
 ///
