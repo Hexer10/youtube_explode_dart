@@ -185,6 +185,12 @@ class _InitialData extends InitialData {
           .get('richItemRenderer')
           ?.get('content')
           ?.get(type.youtubeRenderText);
+      if (type == VideoType.shorts) {
+        video = video
+            ?.get('onTap')
+            ?.get('innertubeCommand')
+            ?.get('reelWatchEndpoint');
+      }
     }
 
     if (video == null) {
