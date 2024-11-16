@@ -6,7 +6,7 @@ enum VideoType {
   normal('videos', 'videoRenderer'),
 
   /// Youtube shorts video
-  shorts('shorts', 'reelItemRenderer');
+  shorts('shorts', 'shortsLockupViewModel');
 
   final String name;
 
