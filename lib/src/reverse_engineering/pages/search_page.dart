@@ -265,7 +265,7 @@ class _InitialData extends InitialData {
           viewModel
               .getJson<String>(
                   'contentImage/collectionThumbnailViewModel/primaryThumbnail/thumbnailViewModel/overlays/0/thumbnailOverlayBadgeViewModel/thumbnailBadges/0/thumbnailBadgeViewModel/text')!
-              .parseInt()!,
+              .parseInt() ?? 0,
           thumbnails
               .map((e) =>
                   Thumbnail(Uri.parse(e['url']), e['height'], e['width']))
