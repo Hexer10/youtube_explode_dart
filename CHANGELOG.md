@@ -1,3 +1,6 @@
+## 2.3.7
+- Fixes JSON parsing for shorts data
+
 ## 2.3.6
 - Update search playlists parsing due to yt changes.
 - Implement >,<,== operators for `VideoResolution`.
