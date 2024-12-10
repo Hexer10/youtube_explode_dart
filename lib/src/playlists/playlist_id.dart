@@ -59,18 +59,8 @@ class PlaylistId with _$PlaylistId {
       return true;
     }
 
-    if (!playlistId.startsWith('PL') &&
-        !playlistId.startsWith('RD') &&
-        !playlistId.startsWith('UL') &&
-        !playlistId.startsWith('UU') &&
-        !playlistId.startsWith('PU') &&
-        !playlistId.startsWith('OL') &&
-        !playlistId.startsWith('LL') &&
-        !playlistId.startsWith('FL')) {
-      return false;
-    }
-
-    if (playlistId.length < 13) {
+    // Playlist IDs vary greatly in length, but they are at least 2 characters long
+    if (playlistId.length < 2) {
       return false;
     }
 
