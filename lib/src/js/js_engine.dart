@@ -338,6 +338,19 @@ class JSEngine {
     };
   }
 
+  String typeof(dynamic value) {
+    return switch(value) {
+      NaN() => 'number',
+      DateTime() => 'object',
+      List() => 'object',
+      bool() => 'boolean',
+      num() => 'number',
+      String() => 'string',
+      null => 'undefined',
+      _ => 'undefined',
+    };
+  }
+
   dynamic resolveBinaryExpression(BinaryExpression expr) {
     // && returns the first falsy value or the last value
     // || returns the first truthy value or the last value
@@ -412,7 +425,9 @@ class JSEngine {
     return switch (expr.operator) {
       '-' => -arg,
       '!' => !toBoolean(arg),
-      _ => throw UnimplementedError('Unknown unary operator: ${expr.operator}'),
+      'typeof' => typeof(arg),
+      _ => throw UnimplementedError(
+          'Unknown unary operator: ${expr.operator} on ${arg}'),
     };
   }
 
