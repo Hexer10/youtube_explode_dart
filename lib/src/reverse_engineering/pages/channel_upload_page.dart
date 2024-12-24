@@ -189,7 +189,7 @@ class _InitialData extends InitialData {
         video = video
             ?.get('onTap')
             ?.get('innertubeCommand')
-            ?.get('reelWatchEndpoint');
+            ?.get(type.youtubeRenderText);
       }
     }
 
