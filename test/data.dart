@@ -66,8 +66,10 @@ enum VideoIdData {
   // Videos whose streams can be fetched.
   static const playable = [
     ...VideoIdData.validWatchpage,
+/*
+    Currently YT has disabled unlogged clients from fetching age restricted videos.
     ageRestrictedViolent,
-    ageRestrictedSexual,
+    ageRestrictedSexual,*/
   ];
 
   // Cannot fetch metadata or streams.

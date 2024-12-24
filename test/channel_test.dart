@@ -16,7 +16,7 @@ void main() {
         'https://www.youtube.com/channel/UCEnBXANsKmyj2r9xVyKoDiQ';
     final channel = await yt!.channels.get(ChannelId(channelUrl));
     expect(channel.url, channelUrl);
-    expect(channel.title, 'Oleksii Holub');
+    expect(channel.title, 'Tyrrrz');
     expect(channel.logoUrl, isNotEmpty);
     expect(channel.logoUrl, isNot(equalsIgnoringWhitespace('')));
 

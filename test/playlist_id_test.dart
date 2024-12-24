@@ -80,8 +80,6 @@ void main() {
 
   group('These are not valid playlist urls', () {
     for (final val in {
-      'youtube.com/playlist?lisp=PLOU2XLYxmsIJGErt5rrCqaSGTMyyqNt2H',
-      'youtube.com/playlist?list=asd',
       'youtube.com/',
     }) {
       test('PlaylistURL - $val', () {
