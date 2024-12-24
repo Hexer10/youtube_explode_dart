@@ -263,9 +263,10 @@ class _InitialData extends InitialData {
           viewModel.getJson<String>(
               'metadata/lockupMetadataViewModel/title/content')!,
           viewModel
-              .getJson<String>(
-                  'contentImage/collectionThumbnailViewModel/primaryThumbnail/thumbnailViewModel/overlays/0/thumbnailOverlayBadgeViewModel/thumbnailBadges/0/thumbnailBadgeViewModel/text')!
-              .parseInt() ?? 0,
+                  .getJson<String>(
+                      'contentImage/collectionThumbnailViewModel/primaryThumbnail/thumbnailViewModel/overlays/0/thumbnailOverlayBadgeViewModel/thumbnailBadges/0/thumbnailBadgeViewModel/text')!
+                  .parseInt() ??
+              0,
           thumbnails
               .map((e) =>
                   Thumbnail(Uri.parse(e['url']), e['height'], e['width']))

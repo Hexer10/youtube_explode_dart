@@ -339,7 +339,7 @@ class JSEngine {
   }
 
   String typeof(dynamic value) {
-    return switch(value) {
+    return switch (value) {
       NaN() => 'number',
       DateTime() => 'object',
       List() => 'object',
@@ -427,7 +427,7 @@ class JSEngine {
       '!' => !toBoolean(arg),
       'typeof' => typeof(arg),
       _ => throw UnimplementedError(
-          'Unknown unary operator: ${expr.operator} on ${arg}'),
+          'Unknown unary operator: ${expr.operator} on $arg'),
     };
   }
 
