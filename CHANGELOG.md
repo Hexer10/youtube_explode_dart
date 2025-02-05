@@ -1,3 +1,7 @@
+## 2.3.9
+- Fix HLS extraction.
+- Fix JSEngine: -, * operators.
+
 ## 2.3.8
 - Simplify Playlist ID matching logic by @khaled-0 in https://github.com/Hexer10/youtube_explode_dart/pull/316
 - Fix Parsing JSON response for shorts by @JorWo in https://github.com/Hexer10/youtube_explode_dart/pull/313
