@@ -54,6 +54,7 @@ class JSEngine {
       ExpressionStatement() => resolveExpression(statement.expression),
       BlockStatement() => statement.body.forEach(resolveStatement),
       ForStatement() => resolveForStatement(statement),
+      // NOTE: this actually doesnt make the called function return (unless the return is the last statement), but it helps with the dechipering since YT sometimes introduces early returns to mess with the dechiperer.
       ReturnStatement() => context['return'] =
           resolveExpression(statement.argument!),
       SwitchStatement() => resolveSwitchStatement(statement),
@@ -374,8 +375,8 @@ class JSEngine {
     try {
       final res = switch (expr.operator) {
         '+' => left + right,
-        '-' => left - right,
-        '*' => left * right,
+        '-' => coerceToNumber(left) - coerceToNumber(right),
+        '*' => coerceToNumber(left) * coerceToNumber(right),
         '/' => coerceToNumber(left) / coerceToNumber(right),
         '%' => coerceToNumber(left) % coerceToNumber(right),
         '<' => coerceToNumber(left) < coerceToNumber(right),
