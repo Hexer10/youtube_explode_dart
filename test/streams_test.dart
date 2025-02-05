@@ -1,4 +1,3 @@
-import 'package:logging/logging.dart';
 import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 

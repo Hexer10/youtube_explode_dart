@@ -28,7 +28,7 @@ class HlsManifest {
     assert(idx != -1, 'Could not find #EXT-X-INDEPENDENT-SEGMENTS section');
     final videos = <VideoInfo>[];
     final expr = RegExp('([^,]+)=("[^"]*"|[^,]*)');
-    for (var i = idx+1; i < lines.length; i += 1) {
+    for (var i = idx + 1; i < lines.length; i += 1) {
       final line = lines[i];
       final params = {
         for (final match in expr.allMatches(line, line.indexOf(':') + 1))
