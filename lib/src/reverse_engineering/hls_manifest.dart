@@ -18,10 +18,17 @@ class HlsManifest {
   static HlsManifest parse(String hlsFile) {
     final lines = hlsFile.trim().split('\n');
     assert(lines[0] == '#EXTM3U');
-    assert(lines[1] == '#EXT-X-INDEPENDENT-SEGMENTS');
+    var idx = -1;
+    for (var i = 1; i < lines.length; i++) {
+      if (lines[i].startsWith('#EXT-X-INDEPENDENT-SEGMENTS')) {
+        idx = i;
+        break;
+      }
+    }
+    assert(idx != -1, 'Could not find #EXT-X-INDEPENDENT-SEGMENTS section');
     final videos = <VideoInfo>[];
     final expr = RegExp('([^,]+)=("[^"]*"|[^,]*)');
-    for (var i = 2; i < lines.length; i += 1) {
+    for (var i = idx+1; i < lines.length; i += 1) {
       final line = lines[i];
       final params = {
         for (final match in expr.allMatches(line, line.indexOf(':') + 1))
