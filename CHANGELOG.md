@@ -1,3 +1,8 @@
+## 2.3.10
+- Update dev_dependencies
+- Fix #328. Shorts extraction from channel uploads.
+- Skip tests that always fail on GitHub actions.
+
 ## 2.3.9
 - Fix HLS extraction.
 - Fix JSEngine: -, * operators.
