@@ -1,6 +1,8 @@
 import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
+import 'skip_gh.dart';
+
 void main() {
   YoutubeExplode? yt;
   setUpAll(() {
@@ -14,14 +16,14 @@ void main() {
   test('Get closed captions of a video', () async {
     final manifest = await yt!.videos.closedCaptions.getManifest('WOxr2dmLHLo');
     expect(manifest.tracks, isNotEmpty);
-  });
+  }, skip: skipGH);
   test('Get closed caption track of a video', () async {
     final manifest = await yt!.videos.closedCaptions.getManifest('WOxr2dmLHLo');
     final trackInfo = manifest.tracks.first;
     final track = await yt!.videos.closedCaptions.get(trackInfo);
 
     expect(track.captions, isNotEmpty);
-  });
+  }, skip: skipGH);
 
   test('Get closed auto translated caption track file of a video', () async {
     final manifest = await yt!.videos.closedCaptions.getManifest('WOxr2dmLHLo');
@@ -31,7 +33,7 @@ void main() {
         .getSubTitles(trackInfo.autoTranslate('it'));
 
     expect(subtitles, isNotEmpty);
-  });
+  }, skip: skipGH);
   test('Get closed caption track at a specific time', () async {
     final manifest = await yt!.videos.closedCaptions.getManifest('qfJthDvcZ08');
     final trackInfo = manifest.getByLanguage(
@@ -51,7 +53,7 @@ void main() {
     expect(caption, isNotNull);
     expect(caption?.parts, isEmpty);
     expect(caption?.text, "But what if you don't have a captions file");
-  });
+  }, skip: skipGH);
 
   test('Get auto-generated closed caption track at a specific time', () async {
     final manifest = await yt!.videos.closedCaptions.getManifest('ppJy5uGZLi4');
@@ -77,5 +79,5 @@ void main() {
       ),
     ); // Seems like sometimes the text changes.
     expect(captionPart?.text, anyOf(' about', ' some', ' are'));
-  });
+  }, skip: skipGH);
 }

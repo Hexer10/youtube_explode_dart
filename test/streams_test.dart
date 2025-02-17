@@ -2,6 +2,7 @@ import 'package:test/test.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'data.dart';
+import 'skip_gh.dart';
 
 void main() {
   YoutubeExplode? yt;
@@ -25,13 +26,13 @@ void main() {
         timeout: const Timeout(Duration(seconds: 90)),
       );
     }
-  });
+  }, skip: skipGH);
 
   test('Get full manifest of a video', () async {
     final manifest =
         await yt!.videos.streams.getManifest(VideoIdData.normal.id);
     expect(manifest.streams.length, greaterThan(50));
-  });
+  }, skip: skipGH);
 
   test('Stream of paid videos throw VideoRequiresPurchaseException', () {
     expect(
@@ -45,7 +46,7 @@ void main() {
       await yt!.videos.streams.getHttpLiveStreamUrl(VideoId('jfKfPfyJRdk')),
       isNotEmpty,
     );
-  });
+  }, skip: skipGH);
 
   group('Stream of unavailable videos throws VideoUnplayableException', () {
     for (final val in VideoIdData.invalid) {
@@ -71,5 +72,5 @@ void main() {
         timeout: const Timeout(Duration(minutes: 20)),
       );
     }
-  });
+  }, skip: skipGH);
 }
