@@ -1,5 +1,5 @@
 /// Provides all the APIs implemented by this library.
-library youtube_explode;
+library;
 
 export 'src/channels/channels.dart';
 export 'src/common/common.dart';

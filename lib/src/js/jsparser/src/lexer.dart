@@ -1,5 +1,5 @@
 // ignore_for_file: constant_identifier_names
-library lexer;
+library;
 
 import 'package:unicode/unicode.dart' as unicode;
 
@@ -120,9 +120,9 @@ bool isLetter(int x) =>
     x > 127 && isFancyLetter(x);
 
 bool isFancyLetter(int x) =>
-    unicode.isUppercaseLetter(x) ||
-    unicode.isLowercaseLetter(x) ||
-    unicode.isTitlecaseLetter(x) ||
+    unicode.isUpperCaseLetter(x) ||
+    unicode.isLowerCaseLetter(x) ||
+    unicode.isTitleCaseLetter(x) ||
     unicode.isModifierLetter(x) ||
     unicode.isOtherLetter(x) ||
     unicode.isLetterNumber(x);

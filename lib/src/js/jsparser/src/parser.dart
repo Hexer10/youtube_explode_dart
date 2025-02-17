@@ -1,4 +1,4 @@
-library parser;
+library;
 
 import 'ast.dart';
 import 'lexer.dart';

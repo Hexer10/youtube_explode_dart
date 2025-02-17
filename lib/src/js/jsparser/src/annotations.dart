@@ -1,4 +1,4 @@
-library scope;
+library;
 
 import 'ast.dart';
 

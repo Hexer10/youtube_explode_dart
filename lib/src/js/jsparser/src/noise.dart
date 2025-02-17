@@ -1,4 +1,4 @@
-library noise;
+library;
 
 import 'charcode.dart' as char;
 import 'lexer.dart' show isEOL, isWhitespace;

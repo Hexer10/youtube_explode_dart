@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_renaming_method_parameters
 
-library ast;
+library;
 
 part 'ast_visitor.dart';
 

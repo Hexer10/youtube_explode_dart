@@ -1,7 +1,7 @@
 /// APIs related to YouTube videos.
 ///
 /// {@category Videos}
-library youtube_explode.videos;
+library;
 
 export 'closed_captions/closed_captions.dart';
 export 'comments/comments.dart';

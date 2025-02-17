@@ -161,7 +161,7 @@ extension StringUtility2 on String? {
     return false;
   }
 
-  /// Format: <quantity> <unit> ago (5 years ago)
+  /// Format: {quantity} {unit} ago (5 years ago)
   DateTime? toDateTime() {
     if (this == null) {
       return null;
@@ -253,7 +253,7 @@ extension GetOrNullMap on Map {
     return v;
   }
 
-  /// Get a List<Map<String, dynamic>>> from a map.
+  /// Get a [List<Map<String, dynamic>>>] from a map.
   List<Map<String, dynamic>>? getList(String key, [String? orKey]) {
     var v = this[key];
     if (v == null) {

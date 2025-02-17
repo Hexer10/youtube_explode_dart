@@ -1,7 +1,7 @@
 /// APIs related to YouTube playlists.
 ///
 /// {@category Playlists}
-library youtube_explode.playlists;
+library;
 
 export 'playlist.dart';
 export 'playlist_client.dart';

@@ -1,7 +1,7 @@
 /// APIs related to YouTube channels.
 ///
 /// {@category Channels}
-library youtube_explode.channels;
+library;
 
 export 'channel.dart';
 export 'channel_about.dart';

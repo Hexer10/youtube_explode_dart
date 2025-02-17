@@ -1,4 +1,4 @@
-library jsparser;
+library;
 
 import 'src/annotations.dart';
 import 'src/ast.dart';
