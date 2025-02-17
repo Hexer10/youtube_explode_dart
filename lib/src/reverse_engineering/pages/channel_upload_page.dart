@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:html/parser.dart' as parser;
-import '../../channels/video_type.dart';
 
 import '../../channels/channel_video.dart';
+import '../../channels/video_type.dart';
 import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
@@ -185,11 +187,18 @@ class _InitialData extends InitialData {
           .get('richItemRenderer')
           ?.get('content')
           ?.get(type.youtubeRenderText);
-      if (type == VideoType.shorts) {
-        video = video
-            ?.get('onTap')
-            ?.get('innertubeCommand')
-            ?.get(type.youtubeRenderText);
+      if (type == VideoType.shorts && video != null) {
+        print(json.encode(video));
+        return ChannelVideo(
+            VideoId(video.getJson<String>(
+                'onTap/innertubeCommand/reelWatchEndpoint/videoId')!),
+            video.getJson<String>('overlayMetadata/primaryText/content')!,
+            Duration.zero,
+            video.getJson<String>('thumbnail/sources/0/url')!,
+            '',
+            video
+                .getJson<String>('overlayMetadata/secondaryText/content')!
+                .parseInt()!);
       }
     }
 

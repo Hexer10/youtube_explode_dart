@@ -4,7 +4,7 @@ import '../videos/video_id.dart';
 
 part 'channel_video.freezed.dart';
 
-/// Metadata related to a search query result (playlist)
+/// Metadata related to content from a channel's page (video)
 @freezed
 class ChannelVideo with _$ChannelVideo {
   const factory ChannelVideo(
@@ -14,13 +14,13 @@ class ChannelVideo with _$ChannelVideo {
     /// Video title.
     String videoTitle,
 
-    /// Video duration
+    /// Video duration, this is always zero for shorts.
     Duration videoDuration,
 
     /// Video thumbnail
     String videoThumbnail,
 
-    /// Video upload date.
+    /// Video upload date. This is always empty for shorts.
     /// Formatted like 10 hours ago
     String videoUploadDate,
 
