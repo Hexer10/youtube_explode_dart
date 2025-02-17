@@ -22,7 +22,7 @@ HlsVideoStreamInfo _$HlsVideoStreamInfoFromJson(Map<String, dynamic> json) =>
       VideoResolution.fromJson(json['videoResolution'] as Map<String, dynamic>),
       Framerate.fromJson(json['framerate'] as Map<String, dynamic>),
       mediaTypeFromJson(json['codec'] as String),
-      (json['audioItag'] as num).toInt(),
+      (json['audioItag'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$HlsVideoStreamInfoToJson(HlsVideoStreamInfo instance) =>

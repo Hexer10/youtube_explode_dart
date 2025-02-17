@@ -22,13 +22,13 @@ mixin _$ChannelVideo {
   /// Video title.
   String get videoTitle => throw _privateConstructorUsedError;
 
-  /// Video duration
+  /// Video duration, this is always zero for shorts.
   Duration get videoDuration => throw _privateConstructorUsedError;
 
   /// Video thumbnail
   String get videoThumbnail => throw _privateConstructorUsedError;
 
-  /// Video upload date.
+  /// Video upload date. This is always empty for shorts.
   /// Formatted like 10 hours ago
   String get videoUploadDate => throw _privateConstructorUsedError;
 
@@ -203,7 +203,7 @@ class _$ChannelVideoImpl implements _ChannelVideo {
   @override
   final String videoTitle;
 
-  /// Video duration
+  /// Video duration, this is always zero for shorts.
   @override
   final Duration videoDuration;
 
@@ -211,7 +211,7 @@ class _$ChannelVideoImpl implements _ChannelVideo {
   @override
   final String videoThumbnail;
 
-  /// Video upload date.
+  /// Video upload date. This is always empty for shorts.
   /// Formatted like 10 hours ago
   @override
   final String videoUploadDate;
@@ -273,7 +273,7 @@ abstract class _ChannelVideo implements ChannelVideo {
   @override
   String get videoTitle;
 
-  /// Video duration
+  /// Video duration, this is always zero for shorts.
   @override
   Duration get videoDuration;
 
@@ -281,7 +281,7 @@ abstract class _ChannelVideo implements ChannelVideo {
   @override
   String get videoThumbnail;
 
-  /// Video upload date.
+  /// Video upload date. This is always empty for shorts.
   /// Formatted like 10 hours ago
   @override
   String get videoUploadDate;
