@@ -91,4 +91,11 @@ void main() {
     final nextPage = await videos.nextPage();
     expect(nextPage!.length, greaterThanOrEqualTo(20));
   });
+
+  test('Get shorts of a youtube channel from the uploads page', () async {
+    final shorts = await yt!.channels.getUploadsFromPage(
+        'UCMawD8L365TRdcqhQiTDLKA',
+        videoType: VideoType.shorts);
+    expect(shorts, isNotEmpty);
+  });
 }
