@@ -223,8 +223,7 @@ class YoutubeHttpClient extends http.BaseClient {
             final stream = newManifest.streams
                 .firstWhereOrNull((e) => e.tag == streamInfo.tag);
             if (stream == null) {
-              print(
-                  'Error: Could not find the stream in the new manifest (due to Youtube error)');
+              _logger.severe('Error: Could not find the stream in the new manifest (due to Youtube error)');
               rethrow;
             }
             url = stream.url;

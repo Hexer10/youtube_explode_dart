@@ -188,7 +188,6 @@ class _InitialData extends InitialData {
           ?.get('content')
           ?.get(type.youtubeRenderText);
       if (type == VideoType.shorts && video != null) {
-        print(json.encode(video));
         return ChannelVideo(
             VideoId(video.getJson<String>(
                 'onTap/innertubeCommand/reelWatchEndpoint/videoId')!),
