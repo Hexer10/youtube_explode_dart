@@ -1,3 +1,7 @@
+## 2.4.0
+- Update IOS client.
+- Implement visitor data extraction. Port from: https://github.com/Tyrrrz/YoutubeExplode/commit/84e29bb
+
 ## 2.3.10
 - Update dev_dependencies
 - Fix #328. Shorts extraction from channel uploads.
