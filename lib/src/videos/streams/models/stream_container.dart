@@ -5,7 +5,7 @@ part 'stream_container.g.dart';
 
 /// Stream container.
 @freezed
-class StreamContainer with _$StreamContainer {
+sealed class StreamContainer with _$StreamContainer {
   /// Initializes an instance of [StreamContainer]
   const factory StreamContainer._internal(
     /// Container name.
@@ -13,8 +13,7 @@ class StreamContainer with _$StreamContainer {
     String name,
   ) = _StreamContainer;
 
-  factory StreamContainer.fromJson(Map<String, dynamic> json) =>
-      StreamContainer.parse(json['name'] as String);
+  factory StreamContainer.fromJson(Map<String, dynamic> json) => StreamContainer.parse(json['name'] as String);
 
   const StreamContainer._();
 
@@ -37,8 +36,7 @@ class StreamContainer with _$StreamContainer {
       'webm' => StreamContainer.webM,
       '3gpp' => StreamContainer.tgpp,
       'm3u8' => StreamContainer.m3u8,
-      _ => throw ArgumentError.value(
-          name, 'name', 'Valid values: mp4, webm, 3gpp'),
+      _ => throw ArgumentError.value(name, 'name', 'Valid values: mp4, webm, 3gpp'),
     };
   }
 

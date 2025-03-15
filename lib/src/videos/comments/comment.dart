@@ -6,7 +6,7 @@ part 'comment.freezed.dart';
 
 /// YouTube comment metadata.
 @freezed
-class Comment with _$Comment {
+sealed class Comment with _$Comment {
   /// Initializes an instance of [Comment]
   const factory Comment(
     /// Comment author name.

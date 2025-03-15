@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,91 +10,60 @@ part of 'thumbnail.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Thumbnail {
   /// Image url.
-  Uri get url => throw _privateConstructorUsedError;
+  Uri get url;
 
   /// Image height.
-  int get height => throw _privateConstructorUsedError;
+  int get height;
 
   /// Image width.
-  int get width => throw _privateConstructorUsedError;
+  int get width;
 
   /// Create a copy of Thumbnail
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ThumbnailCopyWith<Thumbnail> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ThumbnailCopyWith<$Res> {
-  factory $ThumbnailCopyWith(Thumbnail value, $Res Function(Thumbnail) then) =
-      _$ThumbnailCopyWithImpl<$Res, Thumbnail>;
-  @useResult
-  $Res call({Uri url, int height, int width});
-}
-
-/// @nodoc
-class _$ThumbnailCopyWithImpl<$Res, $Val extends Thumbnail>
-    implements $ThumbnailCopyWith<$Res> {
-  _$ThumbnailCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Thumbnail
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $ThumbnailCopyWith<Thumbnail> get copyWith =>
+      _$ThumbnailCopyWithImpl<Thumbnail>(this as Thumbnail, _$identity);
+
   @override
-  $Res call({
-    Object? url = null,
-    Object? height = null,
-    Object? width = null,
-  }) {
-    return _then(_value.copyWith(
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as Uri,
-      height: null == height
-          ? _value.height
-          : height // ignore: cast_nullable_to_non_nullable
-              as int,
-      width: null == width
-          ? _value.width
-          : width // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Thumbnail &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.width, width) || other.width == width));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, url, height, width);
+
+  @override
+  String toString() {
+    return 'Thumbnail(url: $url, height: $height, width: $width)';
   }
 }
 
 /// @nodoc
-abstract class _$$ThumbnailImplCopyWith<$Res>
-    implements $ThumbnailCopyWith<$Res> {
-  factory _$$ThumbnailImplCopyWith(
-          _$ThumbnailImpl value, $Res Function(_$ThumbnailImpl) then) =
-      __$$ThumbnailImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ThumbnailCopyWith<$Res> {
+  factory $ThumbnailCopyWith(Thumbnail value, $Res Function(Thumbnail) _then) =
+      _$ThumbnailCopyWithImpl;
   @useResult
   $Res call({Uri url, int height, int width});
 }
 
 /// @nodoc
-class __$$ThumbnailImplCopyWithImpl<$Res>
-    extends _$ThumbnailCopyWithImpl<$Res, _$ThumbnailImpl>
-    implements _$$ThumbnailImplCopyWith<$Res> {
-  __$$ThumbnailImplCopyWithImpl(
-      _$ThumbnailImpl _value, $Res Function(_$ThumbnailImpl) _then)
-      : super(_value, _then);
+class _$ThumbnailCopyWithImpl<$Res> implements $ThumbnailCopyWith<$Res> {
+  _$ThumbnailCopyWithImpl(this._self, this._then);
+
+  final Thumbnail _self;
+  final $Res Function(Thumbnail) _then;
 
   /// Create a copy of Thumbnail
   /// with the given fields replaced by the non-null parameter values.
@@ -104,17 +74,17 @@ class __$$ThumbnailImplCopyWithImpl<$Res>
     Object? height = null,
     Object? width = null,
   }) {
-    return _then(_$ThumbnailImpl(
-      null == url
-          ? _value.url
+    return _then(_self.copyWith(
+      url: null == url
+          ? _self.url
           : url // ignore: cast_nullable_to_non_nullable
               as Uri,
-      null == height
-          ? _value.height
+      height: null == height
+          ? _self.height
           : height // ignore: cast_nullable_to_non_nullable
               as int,
-      null == width
-          ? _value.width
+      width: null == width
+          ? _self.width
           : width // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -123,8 +93,8 @@ class __$$ThumbnailImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ThumbnailImpl implements _Thumbnail {
-  const _$ThumbnailImpl(this.url, this.height, this.width);
+class _Thumbnail implements Thumbnail {
+  const _Thumbnail(this.url, this.height, this.width);
 
   /// Image url.
   @override
@@ -138,16 +108,19 @@ class _$ThumbnailImpl implements _Thumbnail {
   @override
   final int width;
 
+  /// Create a copy of Thumbnail
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Thumbnail(url: $url, height: $height, width: $width)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ThumbnailCopyWith<_Thumbnail> get copyWith =>
+      __$ThumbnailCopyWithImpl<_Thumbnail>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ThumbnailImpl &&
+            other is _Thumbnail &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.height, height) || other.height == height) &&
             (identical(other.width, width) || other.width == width));
@@ -156,35 +129,54 @@ class _$ThumbnailImpl implements _Thumbnail {
   @override
   int get hashCode => Object.hash(runtimeType, url, height, width);
 
+  @override
+  String toString() {
+    return 'Thumbnail(url: $url, height: $height, width: $width)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ThumbnailCopyWith<$Res>
+    implements $ThumbnailCopyWith<$Res> {
+  factory _$ThumbnailCopyWith(
+          _Thumbnail value, $Res Function(_Thumbnail) _then) =
+      __$ThumbnailCopyWithImpl;
+  @override
+  @useResult
+  $Res call({Uri url, int height, int width});
+}
+
+/// @nodoc
+class __$ThumbnailCopyWithImpl<$Res> implements _$ThumbnailCopyWith<$Res> {
+  __$ThumbnailCopyWithImpl(this._self, this._then);
+
+  final _Thumbnail _self;
+  final $Res Function(_Thumbnail) _then;
+
   /// Create a copy of Thumbnail
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ThumbnailImplCopyWith<_$ThumbnailImpl> get copyWith =>
-      __$$ThumbnailImplCopyWithImpl<_$ThumbnailImpl>(this, _$identity);
+  $Res call({
+    Object? url = null,
+    Object? height = null,
+    Object? width = null,
+  }) {
+    return _then(_Thumbnail(
+      null == url
+          ? _self.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as Uri,
+      null == height
+          ? _self.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as int,
+      null == width
+          ? _self.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
 
-abstract class _Thumbnail implements Thumbnail {
-  const factory _Thumbnail(final Uri url, final int height, final int width) =
-      _$ThumbnailImpl;
-
-  /// Image url.
-  @override
-  Uri get url;
-
-  /// Image height.
-  @override
-  int get height;
-
-  /// Image width.
-  @override
-  int get width;
-
-  /// Create a copy of Thumbnail
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ThumbnailImplCopyWith<_$ThumbnailImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

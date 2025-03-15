@@ -6,7 +6,7 @@ part 'channel.freezed.dart';
 
 /// YouTube channel metadata.
 @freezed
-class Channel with _$Channel {
+sealed class Channel with _$Channel {
   ///
   const factory Channel(
     /// Channel ID.

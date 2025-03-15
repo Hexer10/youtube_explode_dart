@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,75 +10,47 @@ part of 'channel_id.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ChannelId {
   /// ID as a string.
-  String get value => throw _privateConstructorUsedError;
+  String get value;
 
   /// Create a copy of ChannelId
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $ChannelIdCopyWith<ChannelId> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$ChannelIdCopyWithImpl<ChannelId>(this as ChannelId, _$identity);
 
-/// @nodoc
-abstract class $ChannelIdCopyWith<$Res> {
-  factory $ChannelIdCopyWith(ChannelId value, $Res Function(ChannelId) then) =
-      _$ChannelIdCopyWithImpl<$Res, ChannelId>;
-  @useResult
-  $Res call({String value});
-}
-
-/// @nodoc
-class _$ChannelIdCopyWithImpl<$Res, $Val extends ChannelId>
-    implements $ChannelIdCopyWith<$Res> {
-  _$ChannelIdCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of ChannelId
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_value.copyWith(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ChannelId &&
+            (identical(other.value, value) || other.value == value));
   }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
 }
 
 /// @nodoc
-abstract class _$$ChannelIdImplCopyWith<$Res>
-    implements $ChannelIdCopyWith<$Res> {
-  factory _$$ChannelIdImplCopyWith(
-          _$ChannelIdImpl value, $Res Function(_$ChannelIdImpl) then) =
-      __$$ChannelIdImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ChannelIdCopyWith<$Res> {
+  factory $ChannelIdCopyWith(ChannelId value, $Res Function(ChannelId) _then) =
+      _$ChannelIdCopyWithImpl;
   @useResult
   $Res call({String value});
 }
 
 /// @nodoc
-class __$$ChannelIdImplCopyWithImpl<$Res>
-    extends _$ChannelIdCopyWithImpl<$Res, _$ChannelIdImpl>
-    implements _$$ChannelIdImplCopyWith<$Res> {
-  __$$ChannelIdImplCopyWithImpl(
-      _$ChannelIdImpl _value, $Res Function(_$ChannelIdImpl) _then)
-      : super(_value, _then);
+class _$ChannelIdCopyWithImpl<$Res> implements $ChannelIdCopyWith<$Res> {
+  _$ChannelIdCopyWithImpl(this._self, this._then);
+
+  final ChannelId _self;
+  final $Res Function(ChannelId) _then;
 
   /// Create a copy of ChannelId
   /// with the given fields replaced by the non-null parameter values.
@@ -86,9 +59,9 @@ class __$$ChannelIdImplCopyWithImpl<$Res>
   $Res call({
     Object? value = null,
   }) {
-    return _then(_$ChannelIdImpl(
-      null == value
-          ? _value.value
+    return _then(_self.copyWith(
+      value: null == value
+          ? _self.value
           : value // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -97,45 +70,65 @@ class __$$ChannelIdImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ChannelIdImpl extends _ChannelId {
-  const _$ChannelIdImpl(this.value) : super._();
+class _ChannelId extends ChannelId {
+  const _ChannelId(this.value) : super._();
 
   /// ID as a string.
   @override
   final String value;
 
+  /// Create a copy of ChannelId
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ChannelIdCopyWith<_ChannelId> get copyWith =>
+      __$ChannelIdCopyWithImpl<_ChannelId>(this, _$identity);
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChannelIdImpl &&
+            other is _ChannelId &&
             (identical(other.value, value) || other.value == value));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, value);
+}
+
+/// @nodoc
+abstract mixin class _$ChannelIdCopyWith<$Res>
+    implements $ChannelIdCopyWith<$Res> {
+  factory _$ChannelIdCopyWith(
+          _ChannelId value, $Res Function(_ChannelId) _then) =
+      __$ChannelIdCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String value});
+}
+
+/// @nodoc
+class __$ChannelIdCopyWithImpl<$Res> implements _$ChannelIdCopyWith<$Res> {
+  __$ChannelIdCopyWithImpl(this._self, this._then);
+
+  final _ChannelId _self;
+  final $Res Function(_ChannelId) _then;
 
   /// Create a copy of ChannelId
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChannelIdImplCopyWith<_$ChannelIdImpl> get copyWith =>
-      __$$ChannelIdImplCopyWithImpl<_$ChannelIdImpl>(this, _$identity);
+  $Res call({
+    Object? value = null,
+  }) {
+    return _then(_ChannelId(
+      null == value
+          ? _self.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
-abstract class _ChannelId extends ChannelId {
-  const factory _ChannelId(final String value) = _$ChannelIdImpl;
-  const _ChannelId._() : super._();
-
-  /// ID as a string.
-  @override
-  String get value;
-
-  /// Create a copy of ChannelId
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ChannelIdImplCopyWith<_$ChannelIdImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

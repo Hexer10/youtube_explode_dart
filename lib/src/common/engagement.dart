@@ -4,7 +4,7 @@ part 'engagement.freezed.dart';
 
 /// User activity statistics.
 @freezed
-class Engagement with _$Engagement {
+sealed class Engagement with _$Engagement {
   const factory Engagement(
     /// View count.
     int viewCount,

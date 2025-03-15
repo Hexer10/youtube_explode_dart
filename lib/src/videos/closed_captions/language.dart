@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'language.g.dart';
 part 'language.freezed.dart';
+part 'language.g.dart';
 
 /// Language information.
 @freezed
-class Language with _$Language {
+sealed class Language with _$Language {
   /// Initializes an instance of [Language]
   const factory Language(
     /// ISO 639-1 code of this language.
@@ -18,6 +18,5 @@ class Language with _$Language {
   const Language._();
 
   ///
-  factory Language.fromJson(Map<String, dynamic> json) =>
-      _$LanguageFromJson(json);
+  factory Language.fromJson(Map<String, dynamic> json) => _$LanguageFromJson(json);
 }
