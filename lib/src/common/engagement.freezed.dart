@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,92 +10,65 @@ part of 'engagement.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Engagement {
   /// View count.
-  int get viewCount => throw _privateConstructorUsedError;
+  int get viewCount;
 
   /// Like count.
-  int? get likeCount => throw _privateConstructorUsedError;
+  int? get likeCount;
 
   /// Dislike count.
-  int? get dislikeCount => throw _privateConstructorUsedError;
+  int? get dislikeCount;
 
   /// Create a copy of Engagement
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $EngagementCopyWith<Engagement> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $EngagementCopyWith<$Res> {
-  factory $EngagementCopyWith(
-          Engagement value, $Res Function(Engagement) then) =
-      _$EngagementCopyWithImpl<$Res, Engagement>;
-  @useResult
-  $Res call({int viewCount, int? likeCount, int? dislikeCount});
-}
-
-/// @nodoc
-class _$EngagementCopyWithImpl<$Res, $Val extends Engagement>
-    implements $EngagementCopyWith<$Res> {
-  _$EngagementCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Engagement
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $EngagementCopyWith<Engagement> get copyWith =>
+      _$EngagementCopyWithImpl<Engagement>(this as Engagement, _$identity);
+
   @override
-  $Res call({
-    Object? viewCount = null,
-    Object? likeCount = freezed,
-    Object? dislikeCount = freezed,
-  }) {
-    return _then(_value.copyWith(
-      viewCount: null == viewCount
-          ? _value.viewCount
-          : viewCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      likeCount: freezed == likeCount
-          ? _value.likeCount
-          : likeCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      dislikeCount: freezed == dislikeCount
-          ? _value.dislikeCount
-          : dislikeCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Engagement &&
+            (identical(other.viewCount, viewCount) ||
+                other.viewCount == viewCount) &&
+            (identical(other.likeCount, likeCount) ||
+                other.likeCount == likeCount) &&
+            (identical(other.dislikeCount, dislikeCount) ||
+                other.dislikeCount == dislikeCount));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, viewCount, likeCount, dislikeCount);
+
+  @override
+  String toString() {
+    return 'Engagement(viewCount: $viewCount, likeCount: $likeCount, dislikeCount: $dislikeCount)';
   }
 }
 
 /// @nodoc
-abstract class _$$EngagementImplCopyWith<$Res>
-    implements $EngagementCopyWith<$Res> {
-  factory _$$EngagementImplCopyWith(
-          _$EngagementImpl value, $Res Function(_$EngagementImpl) then) =
-      __$$EngagementImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $EngagementCopyWith<$Res> {
+  factory $EngagementCopyWith(
+          Engagement value, $Res Function(Engagement) _then) =
+      _$EngagementCopyWithImpl;
   @useResult
   $Res call({int viewCount, int? likeCount, int? dislikeCount});
 }
 
 /// @nodoc
-class __$$EngagementImplCopyWithImpl<$Res>
-    extends _$EngagementCopyWithImpl<$Res, _$EngagementImpl>
-    implements _$$EngagementImplCopyWith<$Res> {
-  __$$EngagementImplCopyWithImpl(
-      _$EngagementImpl _value, $Res Function(_$EngagementImpl) _then)
-      : super(_value, _then);
+class _$EngagementCopyWithImpl<$Res> implements $EngagementCopyWith<$Res> {
+  _$EngagementCopyWithImpl(this._self, this._then);
+
+  final Engagement _self;
+  final $Res Function(Engagement) _then;
 
   /// Create a copy of Engagement
   /// with the given fields replaced by the non-null parameter values.
@@ -105,17 +79,17 @@ class __$$EngagementImplCopyWithImpl<$Res>
     Object? likeCount = freezed,
     Object? dislikeCount = freezed,
   }) {
-    return _then(_$EngagementImpl(
-      null == viewCount
-          ? _value.viewCount
+    return _then(_self.copyWith(
+      viewCount: null == viewCount
+          ? _self.viewCount
           : viewCount // ignore: cast_nullable_to_non_nullable
               as int,
-      freezed == likeCount
-          ? _value.likeCount
+      likeCount: freezed == likeCount
+          ? _self.likeCount
           : likeCount // ignore: cast_nullable_to_non_nullable
               as int?,
-      freezed == dislikeCount
-          ? _value.dislikeCount
+      dislikeCount: freezed == dislikeCount
+          ? _self.dislikeCount
           : dislikeCount // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
@@ -124,8 +98,8 @@ class __$$EngagementImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$EngagementImpl extends _Engagement {
-  const _$EngagementImpl(this.viewCount, this.likeCount, this.dislikeCount)
+class _Engagement extends Engagement {
+  const _Engagement(this.viewCount, this.likeCount, this.dislikeCount)
       : super._();
 
   /// View count.
@@ -140,16 +114,19 @@ class _$EngagementImpl extends _Engagement {
   @override
   final int? dislikeCount;
 
+  /// Create a copy of Engagement
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Engagement(viewCount: $viewCount, likeCount: $likeCount, dislikeCount: $dislikeCount)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$EngagementCopyWith<_Engagement> get copyWith =>
+      __$EngagementCopyWithImpl<_Engagement>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$EngagementImpl &&
+            other is _Engagement &&
             (identical(other.viewCount, viewCount) ||
                 other.viewCount == viewCount) &&
             (identical(other.likeCount, likeCount) ||
@@ -162,37 +139,54 @@ class _$EngagementImpl extends _Engagement {
   int get hashCode =>
       Object.hash(runtimeType, viewCount, likeCount, dislikeCount);
 
+  @override
+  String toString() {
+    return 'Engagement(viewCount: $viewCount, likeCount: $likeCount, dislikeCount: $dislikeCount)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$EngagementCopyWith<$Res>
+    implements $EngagementCopyWith<$Res> {
+  factory _$EngagementCopyWith(
+          _Engagement value, $Res Function(_Engagement) _then) =
+      __$EngagementCopyWithImpl;
+  @override
+  @useResult
+  $Res call({int viewCount, int? likeCount, int? dislikeCount});
+}
+
+/// @nodoc
+class __$EngagementCopyWithImpl<$Res> implements _$EngagementCopyWith<$Res> {
+  __$EngagementCopyWithImpl(this._self, this._then);
+
+  final _Engagement _self;
+  final $Res Function(_Engagement) _then;
+
   /// Create a copy of Engagement
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$EngagementImplCopyWith<_$EngagementImpl> get copyWith =>
-      __$$EngagementImplCopyWithImpl<_$EngagementImpl>(this, _$identity);
+  $Res call({
+    Object? viewCount = null,
+    Object? likeCount = freezed,
+    Object? dislikeCount = freezed,
+  }) {
+    return _then(_Engagement(
+      null == viewCount
+          ? _self.viewCount
+          : viewCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      freezed == likeCount
+          ? _self.likeCount
+          : likeCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      freezed == dislikeCount
+          ? _self.dislikeCount
+          : dislikeCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
 }
 
-abstract class _Engagement extends Engagement {
-  const factory _Engagement(
-          final int viewCount, final int? likeCount, final int? dislikeCount) =
-      _$EngagementImpl;
-  const _Engagement._() : super._();
-
-  /// View count.
-  @override
-  int get viewCount;
-
-  /// Like count.
-  @override
-  int? get likeCount;
-
-  /// Dislike count.
-  @override
-  int? get dislikeCount;
-
-  /// Create a copy of Engagement
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$EngagementImplCopyWith<_$EngagementImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

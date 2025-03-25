@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,90 +10,60 @@ part of 'language.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-Language _$LanguageFromJson(Map<String, dynamic> json) {
-  return _Language.fromJson(json);
-}
 
 /// @nodoc
 mixin _$Language {
   /// ISO 639-1 code of this language.
-  String get code => throw _privateConstructorUsedError;
+  String get code;
 
   /// Full English name of this language. This could be an empty string.
-  String get name => throw _privateConstructorUsedError;
-
-  /// Serializes this Language to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get name;
 
   /// Create a copy of Language
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $LanguageCopyWith<Language> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $LanguageCopyWith<$Res> {
-  factory $LanguageCopyWith(Language value, $Res Function(Language) then) =
-      _$LanguageCopyWithImpl<$Res, Language>;
-  @useResult
-  $Res call({String code, String name});
-}
-
-/// @nodoc
-class _$LanguageCopyWithImpl<$Res, $Val extends Language>
-    implements $LanguageCopyWith<$Res> {
-  _$LanguageCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Language
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $LanguageCopyWith<Language> get copyWith =>
+      _$LanguageCopyWithImpl<Language>(this as Language, _$identity);
+
+  /// Serializes this Language to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? code = null,
-    Object? name = null,
-  }) {
-    return _then(_value.copyWith(
-      code: null == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Language &&
+            (identical(other.code, code) || other.code == code) &&
+            (identical(other.name, name) || other.name == name));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, code, name);
+
+  @override
+  String toString() {
+    return 'Language(code: $code, name: $name)';
   }
 }
 
 /// @nodoc
-abstract class _$$LanguageImplCopyWith<$Res>
-    implements $LanguageCopyWith<$Res> {
-  factory _$$LanguageImplCopyWith(
-          _$LanguageImpl value, $Res Function(_$LanguageImpl) then) =
-      __$$LanguageImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $LanguageCopyWith<$Res> {
+  factory $LanguageCopyWith(Language value, $Res Function(Language) _then) =
+      _$LanguageCopyWithImpl;
   @useResult
   $Res call({String code, String name});
 }
 
 /// @nodoc
-class __$$LanguageImplCopyWithImpl<$Res>
-    extends _$LanguageCopyWithImpl<$Res, _$LanguageImpl>
-    implements _$$LanguageImplCopyWith<$Res> {
-  __$$LanguageImplCopyWithImpl(
-      _$LanguageImpl _value, $Res Function(_$LanguageImpl) _then)
-      : super(_value, _then);
+class _$LanguageCopyWithImpl<$Res> implements $LanguageCopyWith<$Res> {
+  _$LanguageCopyWithImpl(this._self, this._then);
+
+  final Language _self;
+  final $Res Function(Language) _then;
 
   /// Create a copy of Language
   /// with the given fields replaced by the non-null parameter values.
@@ -102,13 +73,13 @@ class __$$LanguageImplCopyWithImpl<$Res>
     Object? code = null,
     Object? name = null,
   }) {
-    return _then(_$LanguageImpl(
-      null == code
-          ? _value.code
+    return _then(_self.copyWith(
+      code: null == code
+          ? _self.code
           : code // ignore: cast_nullable_to_non_nullable
               as String,
-      null == name
-          ? _value.name
+      name: null == name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -117,11 +88,10 @@ class __$$LanguageImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$LanguageImpl extends _Language {
-  const _$LanguageImpl(this.code, this.name) : super._();
-
-  factory _$LanguageImpl.fromJson(Map<String, dynamic> json) =>
-      _$$LanguageImplFromJson(json);
+class _Language extends Language {
+  const _Language(this.code, this.name) : super._();
+  factory _Language.fromJson(Map<String, dynamic> json) =>
+      _$LanguageFromJson(json);
 
   /// ISO 639-1 code of this language.
   @override
@@ -131,16 +101,26 @@ class _$LanguageImpl extends _Language {
   @override
   final String name;
 
+  /// Create a copy of Language
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Language(code: $code, name: $name)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LanguageCopyWith<_Language> get copyWith =>
+      __$LanguageCopyWithImpl<_Language>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$LanguageToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LanguageImpl &&
+            other is _Language &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.name, name) || other.name == name));
   }
@@ -149,42 +129,48 @@ class _$LanguageImpl extends _Language {
   @override
   int get hashCode => Object.hash(runtimeType, code, name);
 
-  /// Create a copy of Language
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$LanguageImplCopyWith<_$LanguageImpl> get copyWith =>
-      __$$LanguageImplCopyWithImpl<_$LanguageImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$LanguageImplToJson(
-      this,
-    );
+  String toString() {
+    return 'Language(code: $code, name: $name)';
   }
 }
 
-abstract class _Language extends Language {
-  const factory _Language(final String code, final String name) =
-      _$LanguageImpl;
-  const _Language._() : super._();
-
-  factory _Language.fromJson(Map<String, dynamic> json) =
-      _$LanguageImpl.fromJson;
-
-  /// ISO 639-1 code of this language.
+/// @nodoc
+abstract mixin class _$LanguageCopyWith<$Res>
+    implements $LanguageCopyWith<$Res> {
+  factory _$LanguageCopyWith(_Language value, $Res Function(_Language) _then) =
+      __$LanguageCopyWithImpl;
   @override
-  String get code;
+  @useResult
+  $Res call({String code, String name});
+}
 
-  /// Full English name of this language. This could be an empty string.
-  @override
-  String get name;
+/// @nodoc
+class __$LanguageCopyWithImpl<$Res> implements _$LanguageCopyWith<$Res> {
+  __$LanguageCopyWithImpl(this._self, this._then);
+
+  final _Language _self;
+  final $Res Function(_Language) _then;
 
   /// Create a copy of Language
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LanguageImplCopyWith<_$LanguageImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? code = null,
+    Object? name = null,
+  }) {
+    return _then(_Language(
+      null == code
+          ? _self.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

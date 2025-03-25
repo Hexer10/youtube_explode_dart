@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,76 +10,48 @@ part of 'playlist_id.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$PlaylistId {
   /// The playlist id as string.
-  String get value => throw _privateConstructorUsedError;
+  String get value;
 
   /// Create a copy of PlaylistId
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PlaylistIdCopyWith<PlaylistId> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$PlaylistIdCopyWithImpl<PlaylistId>(this as PlaylistId, _$identity);
 
-/// @nodoc
-abstract class $PlaylistIdCopyWith<$Res> {
-  factory $PlaylistIdCopyWith(
-          PlaylistId value, $Res Function(PlaylistId) then) =
-      _$PlaylistIdCopyWithImpl<$Res, PlaylistId>;
-  @useResult
-  $Res call({String value});
-}
-
-/// @nodoc
-class _$PlaylistIdCopyWithImpl<$Res, $Val extends PlaylistId>
-    implements $PlaylistIdCopyWith<$Res> {
-  _$PlaylistIdCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of PlaylistId
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_value.copyWith(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PlaylistId &&
+            (identical(other.value, value) || other.value == value));
   }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
 }
 
 /// @nodoc
-abstract class _$$PlaylistIdImplCopyWith<$Res>
-    implements $PlaylistIdCopyWith<$Res> {
-  factory _$$PlaylistIdImplCopyWith(
-          _$PlaylistIdImpl value, $Res Function(_$PlaylistIdImpl) then) =
-      __$$PlaylistIdImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PlaylistIdCopyWith<$Res> {
+  factory $PlaylistIdCopyWith(
+          PlaylistId value, $Res Function(PlaylistId) _then) =
+      _$PlaylistIdCopyWithImpl;
   @useResult
   $Res call({String value});
 }
 
 /// @nodoc
-class __$$PlaylistIdImplCopyWithImpl<$Res>
-    extends _$PlaylistIdCopyWithImpl<$Res, _$PlaylistIdImpl>
-    implements _$$PlaylistIdImplCopyWith<$Res> {
-  __$$PlaylistIdImplCopyWithImpl(
-      _$PlaylistIdImpl _value, $Res Function(_$PlaylistIdImpl) _then)
-      : super(_value, _then);
+class _$PlaylistIdCopyWithImpl<$Res> implements $PlaylistIdCopyWith<$Res> {
+  _$PlaylistIdCopyWithImpl(this._self, this._then);
+
+  final PlaylistId _self;
+  final $Res Function(PlaylistId) _then;
 
   /// Create a copy of PlaylistId
   /// with the given fields replaced by the non-null parameter values.
@@ -87,9 +60,9 @@ class __$$PlaylistIdImplCopyWithImpl<$Res>
   $Res call({
     Object? value = null,
   }) {
-    return _then(_$PlaylistIdImpl(
-      null == value
-          ? _value.value
+    return _then(_self.copyWith(
+      value: null == value
+          ? _self.value
           : value // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -98,45 +71,65 @@ class __$$PlaylistIdImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PlaylistIdImpl extends _PlaylistId {
-  const _$PlaylistIdImpl(this.value) : super._();
+class _PlaylistId extends PlaylistId {
+  const _PlaylistId(this.value) : super._();
 
   /// The playlist id as string.
   @override
   final String value;
 
+  /// Create a copy of PlaylistId
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PlaylistIdCopyWith<_PlaylistId> get copyWith =>
+      __$PlaylistIdCopyWithImpl<_PlaylistId>(this, _$identity);
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PlaylistIdImpl &&
+            other is _PlaylistId &&
             (identical(other.value, value) || other.value == value));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, value);
+}
+
+/// @nodoc
+abstract mixin class _$PlaylistIdCopyWith<$Res>
+    implements $PlaylistIdCopyWith<$Res> {
+  factory _$PlaylistIdCopyWith(
+          _PlaylistId value, $Res Function(_PlaylistId) _then) =
+      __$PlaylistIdCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String value});
+}
+
+/// @nodoc
+class __$PlaylistIdCopyWithImpl<$Res> implements _$PlaylistIdCopyWith<$Res> {
+  __$PlaylistIdCopyWithImpl(this._self, this._then);
+
+  final _PlaylistId _self;
+  final $Res Function(_PlaylistId) _then;
 
   /// Create a copy of PlaylistId
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PlaylistIdImplCopyWith<_$PlaylistIdImpl> get copyWith =>
-      __$$PlaylistIdImplCopyWithImpl<_$PlaylistIdImpl>(this, _$identity);
+  $Res call({
+    Object? value = null,
+  }) {
+    return _then(_PlaylistId(
+      null == value
+          ? _self.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
-abstract class _PlaylistId extends PlaylistId {
-  const factory _PlaylistId(final String value) = _$PlaylistIdImpl;
-  const _PlaylistId._() : super._();
-
-  /// The playlist id as string.
-  @override
-  String get value;
-
-  /// Create a copy of PlaylistId
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PlaylistIdImplCopyWith<_$PlaylistIdImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on
