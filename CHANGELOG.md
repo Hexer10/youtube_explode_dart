@@ -1,6 +1,7 @@
 ## 2.4.0
 - Update IOS client.
 - Implement visitor data extraction. Port from: https://github.com/Tyrrrz/YoutubeExplode/commit/84e29bb
+- Support freezed 3.0.0.
 
 ## 2.3.10
 - Update dev_dependencies
