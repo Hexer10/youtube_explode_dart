@@ -11,7 +11,7 @@ part 'video.freezed.dart';
 
 /// YouTube video metadata.
 @freezed
-class Video with _$Video {
+abstract class Video with _$Video {
   /// Video URL.
   String get url => 'https://www.youtube.com/watch?v=$id';
 

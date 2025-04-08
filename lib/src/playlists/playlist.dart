@@ -7,7 +7,7 @@ part 'playlist.freezed.dart';
 
 /// YouTube playlist metadata.
 @freezed
-class Playlist with _$Playlist {
+abstract class Playlist with _$Playlist {
   /// Initializes an instance of [Playlist].
   const factory Playlist(
     /// Playlist ID.

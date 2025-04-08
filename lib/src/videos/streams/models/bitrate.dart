@@ -5,7 +5,7 @@ part 'bitrate.g.dart';
 
 /// Encapsulates bitrate.
 @freezed
-class Bitrate with _$Bitrate implements Comparable<Bitrate> {
+abstract class Bitrate with _$Bitrate implements Comparable<Bitrate> {
   /// Kilobits per second.
   double get kiloBitsPerSecond => bitsPerSecond / 1024;
 

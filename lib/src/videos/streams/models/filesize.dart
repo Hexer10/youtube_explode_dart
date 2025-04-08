@@ -5,7 +5,7 @@ part 'filesize.g.dart';
 
 /// Encapsulates file size.
 @freezed
-class FileSize with _$FileSize implements Comparable<FileSize> {
+abstract class FileSize with _$FileSize implements Comparable<FileSize> {
   /// Total kilobytes.
   double get totalKiloBytes => totalBytes / 1024;
 

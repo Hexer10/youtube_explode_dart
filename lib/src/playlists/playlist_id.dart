@@ -6,7 +6,7 @@ part 'playlist_id.freezed.dart';
 
 /// Encapsulates a valid YouTube playlist ID.
 @freezed
-class PlaylistId with _$PlaylistId {
+abstract class PlaylistId with _$PlaylistId {
   static final _regMatchExp =
       RegExp(r'youtube\..+?/playlist.*?list=(.*?)(?:&|/|$)');
   static final _compositeMatchExp =

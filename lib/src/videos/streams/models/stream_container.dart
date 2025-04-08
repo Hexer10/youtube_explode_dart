@@ -5,7 +5,7 @@ part 'stream_container.g.dart';
 
 /// Stream container.
 @freezed
-class StreamContainer with _$StreamContainer {
+abstract class StreamContainer with _$StreamContainer {
   /// Initializes an instance of [StreamContainer]
   const factory StreamContainer._internal(
     /// Container name.

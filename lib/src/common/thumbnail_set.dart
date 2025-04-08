@@ -4,7 +4,7 @@ part 'thumbnail_set.freezed.dart';
 
 /// Set of thumbnails for a video.
 @freezed
-class ThumbnailSet with _$ThumbnailSet {
+abstract class ThumbnailSet with _$ThumbnailSet {
   /// Initializes an instance of [ThumbnailSet]
   const factory ThumbnailSet(
     /// Video id.

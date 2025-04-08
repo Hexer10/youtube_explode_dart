@@ -5,7 +5,7 @@ part 'language.freezed.dart';
 
 /// Language information.
 @freezed
-class Language with _$Language {
+abstract class Language with _$Language {
   /// Initializes an instance of [Language]
   const factory Language(
     /// ISO 639-1 code of this language.

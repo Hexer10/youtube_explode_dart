@@ -5,7 +5,7 @@ part 'audio_track.g.dart';
 
 /// Audio track which describes the language of the audio.
 @freezed
-class AudioTrack with _$AudioTrack {
+abstract class AudioTrack with _$AudioTrack {
   const factory AudioTrack(
       {required String displayName,
       required String id,

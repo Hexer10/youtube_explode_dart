@@ -10,7 +10,7 @@ part 'closed_caption_track_info.g.dart';
 
 /// Metadata associated with a certain [ClosedCaptionTrack]
 @freezed
-class ClosedCaptionTrackInfo with _$ClosedCaptionTrackInfo {
+abstract class ClosedCaptionTrackInfo with _$ClosedCaptionTrackInfo {
   /// Initializes an instance of [ClosedCaptionTrackInfo]
   const factory ClosedCaptionTrackInfo(
     /// Manifest URL of the associated track.

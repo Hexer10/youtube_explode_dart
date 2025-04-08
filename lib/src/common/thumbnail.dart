@@ -4,7 +4,7 @@ part 'thumbnail.freezed.dart';
 
 /// Represent a channel thumbnail
 @freezed
-class Thumbnail with _$Thumbnail {
+abstract class Thumbnail with _$Thumbnail {
   const factory Thumbnail(
     /// Image url.
     Uri url,
