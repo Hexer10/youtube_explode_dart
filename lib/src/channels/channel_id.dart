@@ -6,7 +6,7 @@ part 'channel_id.freezed.dart';
 
 /// Encapsulates a valid YouTube channel ID.
 @freezed
-class ChannelId with _$ChannelId {
+abstract class ChannelId with _$ChannelId {
   /// Initializes an instance of [ChannelId]
   factory ChannelId(String value) {
     final id = parseChannelId(value);

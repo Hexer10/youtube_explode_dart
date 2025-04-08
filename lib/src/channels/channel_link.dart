@@ -4,7 +4,7 @@ part 'channel_link.freezed.dart';
 
 /// Represents a channel link.
 @freezed
-class ChannelLink with _$ChannelLink {
+abstract class ChannelLink with _$ChannelLink {
   /// Initialize an instance of [ChannelLink]
   const factory ChannelLink(
     /// Link title.

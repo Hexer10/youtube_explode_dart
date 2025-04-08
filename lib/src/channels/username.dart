@@ -6,7 +6,7 @@ part 'username.freezed.dart';
 
 /// Encapsulates a valid YouTube user name.
 @freezed
-class Username with _$Username {
+abstract class Username with _$Username {
   /// Initializes an instance of [Username].
   factory Username(String urlOrUsername) {
     final username = parseUsername(urlOrUsername);

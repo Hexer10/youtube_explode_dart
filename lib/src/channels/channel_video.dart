@@ -6,7 +6,7 @@ part 'channel_video.freezed.dart';
 
 /// Metadata related to content from a channel's page (video)
 @freezed
-class ChannelVideo with _$ChannelVideo {
+abstract class ChannelVideo with _$ChannelVideo {
   const factory ChannelVideo(
     /// Video ID.
     VideoId videoId,

@@ -7,7 +7,7 @@ part 'channel_about.freezed.dart';
 
 /// YouTube channel's about page metadata.
 @freezed
-class ChannelAbout with _$ChannelAbout {
+abstract class ChannelAbout with _$ChannelAbout {
   const factory ChannelAbout(
     /// Full channel description.
     String? description,
