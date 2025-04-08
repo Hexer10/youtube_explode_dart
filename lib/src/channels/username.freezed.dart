@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,75 +10,52 @@ part of 'username.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Username {
   /// User name as string.
-  String get value => throw _privateConstructorUsedError;
+  String get value;
 
   /// Create a copy of Username
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $UsernameCopyWith<Username> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $UsernameCopyWith<$Res> {
-  factory $UsernameCopyWith(Username value, $Res Function(Username) then) =
-      _$UsernameCopyWithImpl<$Res, Username>;
-  @useResult
-  $Res call({String value});
-}
-
-/// @nodoc
-class _$UsernameCopyWithImpl<$Res, $Val extends Username>
-    implements $UsernameCopyWith<$Res> {
-  _$UsernameCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Username
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $UsernameCopyWith<Username> get copyWith =>
+      _$UsernameCopyWithImpl<Username>(this as Username, _$identity);
+
   @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_value.copyWith(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Username &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+
+  @override
+  String toString() {
+    return 'Username(value: $value)';
   }
 }
 
 /// @nodoc
-abstract class _$$UsernameImplCopyWith<$Res>
-    implements $UsernameCopyWith<$Res> {
-  factory _$$UsernameImplCopyWith(
-          _$UsernameImpl value, $Res Function(_$UsernameImpl) then) =
-      __$$UsernameImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $UsernameCopyWith<$Res> {
+  factory $UsernameCopyWith(Username value, $Res Function(Username) _then) =
+      _$UsernameCopyWithImpl;
   @useResult
   $Res call({String value});
 }
 
 /// @nodoc
-class __$$UsernameImplCopyWithImpl<$Res>
-    extends _$UsernameCopyWithImpl<$Res, _$UsernameImpl>
-    implements _$$UsernameImplCopyWith<$Res> {
-  __$$UsernameImplCopyWithImpl(
-      _$UsernameImpl _value, $Res Function(_$UsernameImpl) _then)
-      : super(_value, _then);
+class _$UsernameCopyWithImpl<$Res> implements $UsernameCopyWith<$Res> {
+  _$UsernameCopyWithImpl(this._self, this._then);
+
+  final Username _self;
+  final $Res Function(Username) _then;
 
   /// Create a copy of Username
   /// with the given fields replaced by the non-null parameter values.
@@ -86,9 +64,9 @@ class __$$UsernameImplCopyWithImpl<$Res>
   $Res call({
     Object? value = null,
   }) {
-    return _then(_$UsernameImpl(
-      null == value
-          ? _value.value
+    return _then(_self.copyWith(
+      value: null == value
+          ? _self.value
           : value // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -97,49 +75,69 @@ class __$$UsernameImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UsernameImpl implements _Username {
-  const _$UsernameImpl(this.value);
+class _Username implements Username {
+  const _Username(this.value);
 
   /// User name as string.
   @override
   final String value;
 
+  /// Create a copy of Username
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Username._(value: $value)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$UsernameCopyWith<_Username> get copyWith =>
+      __$UsernameCopyWithImpl<_Username>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UsernameImpl &&
+            other is _Username &&
             (identical(other.value, value) || other.value == value));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
+  @override
+  String toString() {
+    return 'Username._(value: $value)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$UsernameCopyWith<$Res>
+    implements $UsernameCopyWith<$Res> {
+  factory _$UsernameCopyWith(_Username value, $Res Function(_Username) _then) =
+      __$UsernameCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String value});
+}
+
+/// @nodoc
+class __$UsernameCopyWithImpl<$Res> implements _$UsernameCopyWith<$Res> {
+  __$UsernameCopyWithImpl(this._self, this._then);
+
+  final _Username _self;
+  final $Res Function(_Username) _then;
+
   /// Create a copy of Username
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$UsernameImplCopyWith<_$UsernameImpl> get copyWith =>
-      __$$UsernameImplCopyWithImpl<_$UsernameImpl>(this, _$identity);
+  $Res call({
+    Object? value = null,
+  }) {
+    return _then(_Username(
+      null == value
+          ? _self.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
-abstract class _Username implements Username {
-  const factory _Username(final String value) = _$UsernameImpl;
-
-  /// User name as string.
-  @override
-  String get value;
-
-  /// Create a copy of Username
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UsernameImplCopyWith<_$UsernameImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,76 +10,55 @@ part of 'channel_handle.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ChannelHandle {
   /// Handle as string.
-  String get value => throw _privateConstructorUsedError;
+  String get value;
 
   /// Create a copy of ChannelHandle
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ChannelHandleCopyWith<ChannelHandle> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ChannelHandleCopyWith<$Res> {
-  factory $ChannelHandleCopyWith(
-          ChannelHandle value, $Res Function(ChannelHandle) then) =
-      _$ChannelHandleCopyWithImpl<$Res, ChannelHandle>;
-  @useResult
-  $Res call({String value});
-}
-
-/// @nodoc
-class _$ChannelHandleCopyWithImpl<$Res, $Val extends ChannelHandle>
-    implements $ChannelHandleCopyWith<$Res> {
-  _$ChannelHandleCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of ChannelHandle
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $ChannelHandleCopyWith<ChannelHandle> get copyWith =>
+      _$ChannelHandleCopyWithImpl<ChannelHandle>(
+          this as ChannelHandle, _$identity);
+
   @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_value.copyWith(
-      value: null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ChannelHandle &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+
+  @override
+  String toString() {
+    return 'ChannelHandle(value: $value)';
   }
 }
 
 /// @nodoc
-abstract class _$$ChannelHandleImplCopyWith<$Res>
-    implements $ChannelHandleCopyWith<$Res> {
-  factory _$$ChannelHandleImplCopyWith(
-          _$ChannelHandleImpl value, $Res Function(_$ChannelHandleImpl) then) =
-      __$$ChannelHandleImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ChannelHandleCopyWith<$Res> {
+  factory $ChannelHandleCopyWith(
+          ChannelHandle value, $Res Function(ChannelHandle) _then) =
+      _$ChannelHandleCopyWithImpl;
   @useResult
   $Res call({String value});
 }
 
 /// @nodoc
-class __$$ChannelHandleImplCopyWithImpl<$Res>
-    extends _$ChannelHandleCopyWithImpl<$Res, _$ChannelHandleImpl>
-    implements _$$ChannelHandleImplCopyWith<$Res> {
-  __$$ChannelHandleImplCopyWithImpl(
-      _$ChannelHandleImpl _value, $Res Function(_$ChannelHandleImpl) _then)
-      : super(_value, _then);
+class _$ChannelHandleCopyWithImpl<$Res>
+    implements $ChannelHandleCopyWith<$Res> {
+  _$ChannelHandleCopyWithImpl(this._self, this._then);
+
+  final ChannelHandle _self;
+  final $Res Function(ChannelHandle) _then;
 
   /// Create a copy of ChannelHandle
   /// with the given fields replaced by the non-null parameter values.
@@ -87,9 +67,9 @@ class __$$ChannelHandleImplCopyWithImpl<$Res>
   $Res call({
     Object? value = null,
   }) {
-    return _then(_$ChannelHandleImpl(
-      null == value
-          ? _value.value
+    return _then(_self.copyWith(
+      value: null == value
+          ? _self.value
           : value // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -98,49 +78,71 @@ class __$$ChannelHandleImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ChannelHandleImpl implements _ChannelHandle {
-  const _$ChannelHandleImpl(this.value);
+class _ChannelHandle implements ChannelHandle {
+  const _ChannelHandle(this.value);
 
   /// Handle as string.
   @override
   final String value;
 
+  /// Create a copy of ChannelHandle
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ChannelHandle._(value: $value)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ChannelHandleCopyWith<_ChannelHandle> get copyWith =>
+      __$ChannelHandleCopyWithImpl<_ChannelHandle>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChannelHandleImpl &&
+            other is _ChannelHandle &&
             (identical(other.value, value) || other.value == value));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
+  @override
+  String toString() {
+    return 'ChannelHandle._(value: $value)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ChannelHandleCopyWith<$Res>
+    implements $ChannelHandleCopyWith<$Res> {
+  factory _$ChannelHandleCopyWith(
+          _ChannelHandle value, $Res Function(_ChannelHandle) _then) =
+      __$ChannelHandleCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String value});
+}
+
+/// @nodoc
+class __$ChannelHandleCopyWithImpl<$Res>
+    implements _$ChannelHandleCopyWith<$Res> {
+  __$ChannelHandleCopyWithImpl(this._self, this._then);
+
+  final _ChannelHandle _self;
+  final $Res Function(_ChannelHandle) _then;
+
   /// Create a copy of ChannelHandle
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChannelHandleImplCopyWith<_$ChannelHandleImpl> get copyWith =>
-      __$$ChannelHandleImplCopyWithImpl<_$ChannelHandleImpl>(this, _$identity);
+  $Res call({
+    Object? value = null,
+  }) {
+    return _then(_ChannelHandle(
+      null == value
+          ? _self.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
-abstract class _ChannelHandle implements ChannelHandle {
-  const factory _ChannelHandle(final String value) = _$ChannelHandleImpl;
-
-  /// Handle as string.
-  @override
-  String get value;
-
-  /// Create a copy of ChannelHandle
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ChannelHandleImplCopyWith<_$ChannelHandleImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,80 +10,52 @@ part of 'bitrate.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-Bitrate _$BitrateFromJson(Map<String, dynamic> json) {
-  return _Bitrate.fromJson(json);
-}
 
 /// @nodoc
 mixin _$Bitrate {
   /// Bits per second.
-  int get bitsPerSecond => throw _privateConstructorUsedError;
-
-  /// Serializes this Bitrate to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int get bitsPerSecond;
 
   /// Create a copy of Bitrate
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $BitrateCopyWith<Bitrate> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $BitrateCopyWith<$Res> {
-  factory $BitrateCopyWith(Bitrate value, $Res Function(Bitrate) then) =
-      _$BitrateCopyWithImpl<$Res, Bitrate>;
-  @useResult
-  $Res call({int bitsPerSecond});
-}
-
-/// @nodoc
-class _$BitrateCopyWithImpl<$Res, $Val extends Bitrate>
-    implements $BitrateCopyWith<$Res> {
-  _$BitrateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Bitrate
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $BitrateCopyWith<Bitrate> get copyWith =>
+      _$BitrateCopyWithImpl<Bitrate>(this as Bitrate, _$identity);
+
+  /// Serializes this Bitrate to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? bitsPerSecond = null,
-  }) {
-    return _then(_value.copyWith(
-      bitsPerSecond: null == bitsPerSecond
-          ? _value.bitsPerSecond
-          : bitsPerSecond // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Bitrate &&
+            (identical(other.bitsPerSecond, bitsPerSecond) ||
+                other.bitsPerSecond == bitsPerSecond));
   }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, bitsPerSecond);
 }
 
 /// @nodoc
-abstract class _$$BitrateImplCopyWith<$Res> implements $BitrateCopyWith<$Res> {
-  factory _$$BitrateImplCopyWith(
-          _$BitrateImpl value, $Res Function(_$BitrateImpl) then) =
-      __$$BitrateImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $BitrateCopyWith<$Res> {
+  factory $BitrateCopyWith(Bitrate value, $Res Function(Bitrate) _then) =
+      _$BitrateCopyWithImpl;
   @useResult
   $Res call({int bitsPerSecond});
 }
 
 /// @nodoc
-class __$$BitrateImplCopyWithImpl<$Res>
-    extends _$BitrateCopyWithImpl<$Res, _$BitrateImpl>
-    implements _$$BitrateImplCopyWith<$Res> {
-  __$$BitrateImplCopyWithImpl(
-      _$BitrateImpl _value, $Res Function(_$BitrateImpl) _then)
-      : super(_value, _then);
+class _$BitrateCopyWithImpl<$Res> implements $BitrateCopyWith<$Res> {
+  _$BitrateCopyWithImpl(this._self, this._then);
+
+  final Bitrate _self;
+  final $Res Function(Bitrate) _then;
 
   /// Create a copy of Bitrate
   /// with the given fields replaced by the non-null parameter values.
@@ -91,9 +64,9 @@ class __$$BitrateImplCopyWithImpl<$Res>
   $Res call({
     Object? bitsPerSecond = null,
   }) {
-    return _then(_$BitrateImpl(
-      null == bitsPerSecond
-          ? _value.bitsPerSecond
+    return _then(_self.copyWith(
+      bitsPerSecond: null == bitsPerSecond
+          ? _self.bitsPerSecond
           : bitsPerSecond // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -102,21 +75,35 @@ class __$$BitrateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$BitrateImpl extends _Bitrate {
-  const _$BitrateImpl(this.bitsPerSecond) : super._();
-
-  factory _$BitrateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$BitrateImplFromJson(json);
+class _Bitrate extends Bitrate {
+  const _Bitrate(this.bitsPerSecond) : super._();
+  factory _Bitrate.fromJson(Map<String, dynamic> json) =>
+      _$BitrateFromJson(json);
 
   /// Bits per second.
   @override
   final int bitsPerSecond;
 
+  /// Create a copy of Bitrate
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$BitrateCopyWith<_Bitrate> get copyWith =>
+      __$BitrateCopyWithImpl<_Bitrate>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$BitrateToJson(
+      this,
+    );
+  }
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BitrateImpl &&
+            other is _Bitrate &&
             (identical(other.bitsPerSecond, bitsPerSecond) ||
                 other.bitsPerSecond == bitsPerSecond));
   }
@@ -124,37 +111,38 @@ class _$BitrateImpl extends _Bitrate {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, bitsPerSecond);
+}
+
+/// @nodoc
+abstract mixin class _$BitrateCopyWith<$Res> implements $BitrateCopyWith<$Res> {
+  factory _$BitrateCopyWith(_Bitrate value, $Res Function(_Bitrate) _then) =
+      __$BitrateCopyWithImpl;
+  @override
+  @useResult
+  $Res call({int bitsPerSecond});
+}
+
+/// @nodoc
+class __$BitrateCopyWithImpl<$Res> implements _$BitrateCopyWith<$Res> {
+  __$BitrateCopyWithImpl(this._self, this._then);
+
+  final _Bitrate _self;
+  final $Res Function(_Bitrate) _then;
 
   /// Create a copy of Bitrate
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$BitrateImplCopyWith<_$BitrateImpl> get copyWith =>
-      __$$BitrateImplCopyWithImpl<_$BitrateImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$BitrateImplToJson(
-      this,
-    );
+  $Res call({
+    Object? bitsPerSecond = null,
+  }) {
+    return _then(_Bitrate(
+      null == bitsPerSecond
+          ? _self.bitsPerSecond
+          : bitsPerSecond // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 
-abstract class _Bitrate extends Bitrate {
-  const factory _Bitrate(final int bitsPerSecond) = _$BitrateImpl;
-  const _Bitrate._() : super._();
-
-  factory _Bitrate.fromJson(Map<String, dynamic> json) = _$BitrateImpl.fromJson;
-
-  /// Bits per second.
-  @override
-  int get bitsPerSecond;
-
-  /// Create a copy of Bitrate
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$BitrateImplCopyWith<_$BitrateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

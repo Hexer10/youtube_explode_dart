@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,38 +10,61 @@ part of 'channel.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Channel {
   /// Channel ID.
-  ChannelId get id => throw _privateConstructorUsedError;
+  ChannelId get id;
 
   /// Channel title.
-  String get title => throw _privateConstructorUsedError;
+  String get title;
 
   /// URL of the channel's logo image.
-  String get logoUrl => throw _privateConstructorUsedError;
+  String get logoUrl;
 
   /// URL of the channel's banner image.
-  String get bannerUrl => throw _privateConstructorUsedError;
+  String get bannerUrl;
 
   /// The (approximate) channel subscriber's count.
-  int? get subscribersCount => throw _privateConstructorUsedError;
+  int? get subscribersCount;
 
   /// Create a copy of Channel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ChannelCopyWith<Channel> get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $ChannelCopyWith<Channel> get copyWith =>
+      _$ChannelCopyWithImpl<Channel>(this as Channel, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Channel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl) &&
+            (identical(other.bannerUrl, bannerUrl) ||
+                other.bannerUrl == bannerUrl) &&
+            (identical(other.subscribersCount, subscribersCount) ||
+                other.subscribersCount == subscribersCount));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, logoUrl, bannerUrl, subscribersCount);
+
+  @override
+  String toString() {
+    return 'Channel(id: $id, title: $title, logoUrl: $logoUrl, bannerUrl: $bannerUrl, subscribersCount: $subscribersCount)';
+  }
 }
 
 /// @nodoc
-abstract class $ChannelCopyWith<$Res> {
-  factory $ChannelCopyWith(Channel value, $Res Function(Channel) then) =
-      _$ChannelCopyWithImpl<$Res, Channel>;
+abstract mixin class $ChannelCopyWith<$Res> {
+  factory $ChannelCopyWith(Channel value, $Res Function(Channel) _then) =
+      _$ChannelCopyWithImpl;
   @useResult
   $Res call(
       {ChannelId id,
@@ -53,14 +77,11 @@ abstract class $ChannelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ChannelCopyWithImpl<$Res, $Val extends Channel>
-    implements $ChannelCopyWith<$Res> {
-  _$ChannelCopyWithImpl(this._value, this._then);
+class _$ChannelCopyWithImpl<$Res> implements $ChannelCopyWith<$Res> {
+  _$ChannelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final Channel _self;
+  final $Res Function(Channel) _then;
 
   /// Create a copy of Channel
   /// with the given fields replaced by the non-null parameter values.
@@ -73,28 +94,28 @@ class _$ChannelCopyWithImpl<$Res, $Val extends Channel>
     Object? bannerUrl = null,
     Object? subscribersCount = freezed,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as ChannelId,
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       logoUrl: null == logoUrl
-          ? _value.logoUrl
+          ? _self.logoUrl
           : logoUrl // ignore: cast_nullable_to_non_nullable
               as String,
       bannerUrl: null == bannerUrl
-          ? _value.bannerUrl
+          ? _self.bannerUrl
           : bannerUrl // ignore: cast_nullable_to_non_nullable
               as String,
       subscribersCount: freezed == subscribersCount
-          ? _value.subscribersCount
+          ? _self.subscribersCount
           : subscribersCount // ignore: cast_nullable_to_non_nullable
               as int?,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of Channel
@@ -102,78 +123,16 @@ class _$ChannelCopyWithImpl<$Res, $Val extends Channel>
   @override
   @pragma('vm:prefer-inline')
   $ChannelIdCopyWith<$Res> get id {
-    return $ChannelIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value) as $Val);
+    return $ChannelIdCopyWith<$Res>(_self.id, (value) {
+      return _then(_self.copyWith(id: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$ChannelImplCopyWith<$Res> implements $ChannelCopyWith<$Res> {
-  factory _$$ChannelImplCopyWith(
-          _$ChannelImpl value, $Res Function(_$ChannelImpl) then) =
-      __$$ChannelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {ChannelId id,
-      String title,
-      String logoUrl,
-      String bannerUrl,
-      int? subscribersCount});
 
-  @override
-  $ChannelIdCopyWith<$Res> get id;
-}
-
-/// @nodoc
-class __$$ChannelImplCopyWithImpl<$Res>
-    extends _$ChannelCopyWithImpl<$Res, _$ChannelImpl>
-    implements _$$ChannelImplCopyWith<$Res> {
-  __$$ChannelImplCopyWithImpl(
-      _$ChannelImpl _value, $Res Function(_$ChannelImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Channel
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? title = null,
-    Object? logoUrl = null,
-    Object? bannerUrl = null,
-    Object? subscribersCount = freezed,
-  }) {
-    return _then(_$ChannelImpl(
-      null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as ChannelId,
-      null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      null == logoUrl
-          ? _value.logoUrl
-          : logoUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      null == bannerUrl
-          ? _value.bannerUrl
-          : bannerUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      freezed == subscribersCount
-          ? _value.subscribersCount
-          : subscribersCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$ChannelImpl extends _Channel {
-  const _$ChannelImpl(
+class _Channel extends Channel {
+  const _Channel(
       this.id, this.title, this.logoUrl, this.bannerUrl, this.subscribersCount)
       : super._();
 
@@ -197,16 +156,19 @@ class _$ChannelImpl extends _Channel {
   @override
   final int? subscribersCount;
 
+  /// Create a copy of Channel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Channel(id: $id, title: $title, logoUrl: $logoUrl, bannerUrl: $bannerUrl, subscribersCount: $subscribersCount)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ChannelCopyWith<_Channel> get copyWith =>
+      __$ChannelCopyWithImpl<_Channel>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChannelImpl &&
+            other is _Channel &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl) &&
@@ -220,48 +182,80 @@ class _$ChannelImpl extends _Channel {
   int get hashCode =>
       Object.hash(runtimeType, id, title, logoUrl, bannerUrl, subscribersCount);
 
+  @override
+  String toString() {
+    return 'Channel(id: $id, title: $title, logoUrl: $logoUrl, bannerUrl: $bannerUrl, subscribersCount: $subscribersCount)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ChannelCopyWith<$Res> implements $ChannelCopyWith<$Res> {
+  factory _$ChannelCopyWith(_Channel value, $Res Function(_Channel) _then) =
+      __$ChannelCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {ChannelId id,
+      String title,
+      String logoUrl,
+      String bannerUrl,
+      int? subscribersCount});
+
+  @override
+  $ChannelIdCopyWith<$Res> get id;
+}
+
+/// @nodoc
+class __$ChannelCopyWithImpl<$Res> implements _$ChannelCopyWith<$Res> {
+  __$ChannelCopyWithImpl(this._self, this._then);
+
+  final _Channel _self;
+  final $Res Function(_Channel) _then;
+
   /// Create a copy of Channel
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChannelImplCopyWith<_$ChannelImpl> get copyWith =>
-      __$$ChannelImplCopyWithImpl<_$ChannelImpl>(this, _$identity);
-}
-
-abstract class _Channel extends Channel {
-  const factory _Channel(
-      final ChannelId id,
-      final String title,
-      final String logoUrl,
-      final String bannerUrl,
-      final int? subscribersCount) = _$ChannelImpl;
-  const _Channel._() : super._();
-
-  /// Channel ID.
-  @override
-  ChannelId get id;
-
-  /// Channel title.
-  @override
-  String get title;
-
-  /// URL of the channel's logo image.
-  @override
-  String get logoUrl;
-
-  /// URL of the channel's banner image.
-  @override
-  String get bannerUrl;
-
-  /// The (approximate) channel subscriber's count.
-  @override
-  int? get subscribersCount;
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? logoUrl = null,
+    Object? bannerUrl = null,
+    Object? subscribersCount = freezed,
+  }) {
+    return _then(_Channel(
+      null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as ChannelId,
+      null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == logoUrl
+          ? _self.logoUrl
+          : logoUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == bannerUrl
+          ? _self.bannerUrl
+          : bannerUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      freezed == subscribersCount
+          ? _self.subscribersCount
+          : subscribersCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
 
   /// Create a copy of Channel
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ChannelImplCopyWith<_$ChannelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $ChannelIdCopyWith<$Res> get id {
+    return $ChannelIdCopyWith<$Res>(_self.id, (value) {
+      return _then(_self.copyWith(id: value));
+    });
+  }
 }
+
+// dart format on
