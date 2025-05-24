@@ -25,7 +25,8 @@ class YoutubeApiClient {
         'clientVersion': '20.10.4',
         'deviceMake': 'Apple',
         'deviceModel': 'iPhone16,2',
-        'userAgent': 'com.google.ios.youtube/20.10.4 (iPhone16,2; U; CPU iOS 18_3_2 like Mac OS X;)',
+        'userAgent':
+            'com.google.ios.youtube/20.10.4 (iPhone16,2; U; CPU iOS 18_3_2 like Mac OS X;)',
         'hl': 'en',
         "platform": "MOBILE",
         'osName': 'IOS',
@@ -94,7 +95,7 @@ class YoutubeApiClient {
     'context': {
       'client': {
         'clientName': 'WEB',
-        'clientVersion': '2.20240726.00.00',
+        'clientVersion': '2.20250312.04.00',
         'userAgent':
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15,gzip(gfe)',
         'hl': 'en',
