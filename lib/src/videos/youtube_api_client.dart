@@ -16,21 +16,21 @@ class YoutubeApiClient {
         'headers': headers,
       };
 
+  // from https://github.com/yt-dlp/yt-dlp/blob/7794374de8afb20499b023107e2abfd4e6b93ee4/yt_dlp/extractor/youtube/_base.py#L136
   /// Has limited streams but doesn't require signature deciphering.
   static final ios = YoutubeApiClient({
     'context': {
       'client': {
         'clientName': 'IOS',
-        'clientVersion': '19.45.4',
+        'clientVersion': '20.10.4',
         'deviceMake': 'Apple',
         'deviceModel': 'iPhone16,2',
+        'userAgent': 'com.google.ios.youtube/20.10.4 (iPhone16,2; U; CPU iOS 18_3_2 like Mac OS X;)',
         'hl': 'en',
         "platform": "MOBILE",
         'osName': 'IOS',
         'osVersion': '18.1.0.22B83',
         'timeZone': 'UTC',
-        'userAgent':
-            'com.google.ios.youtube/19.45.4 (iPhone16,2; U; CPU iOS 18_1_0 like Mac OS X; US)',
         'gl': 'US',
         'utcOffsetMinutes': 0
       }
