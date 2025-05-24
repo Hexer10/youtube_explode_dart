@@ -114,6 +114,10 @@ class StreamClient {
       return getManifest(videoId, ytClients: [YoutubeApiClient.tv]);
     }
     if (uniqueStreams.isEmpty) {
+      if (lastException is Error && lastException.stackTrace != null) {
+        throw Error.throwWithStackTrace(
+            lastException, lastException.stackTrace!);
+      }
       throw lastException ??
           VideoUnavailableException(
               'Video "$videoId" has no available streams');

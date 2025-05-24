@@ -149,6 +149,9 @@ class _Column {
     }).toList();
 
     for (final (i, e) in header.indexed) {
+      if (i >= longest.length) {
+        longest.add(e.length);
+      }
       final pad = longest[i] > (e.length + 2) ? longest[i] - e.length + 2 : 2;
       headerLen.add(e.length + pad);
       buffer.write(e.padRight(e.length + pad));
