@@ -233,8 +233,12 @@ class StreamClient {
 
     for (final stream in streams) {
       final itag = stream.tag;
-      var url = Uri.parse(stream.url);
-
+      late Uri url;
+      try {
+        url = Uri.parse(stream.url);
+      } catch (e) {
+        continue;
+      }
       if (url.queryParameters.containsKey('n')) {
         final nParam = url.queryParameters['n']!;
         late final String deciphered;
