@@ -1,3 +1,7 @@
+## 2.4.2
+- Update safari client.
+- Fix signature deciphering.
+
 ## 2.4.1
 - Update IOS client.
 
