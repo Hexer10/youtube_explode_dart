@@ -45,15 +45,16 @@ class JSEngine {
     return context['return'];
   }
 
-  void resolveNode(Node node) {
+  dynamic resolveNode(Node node) {
     return switch (node) {
       Statement() => resolveStatement(node),
       Expression() => resolveExpression(node),
+      Name() => node.value,
       Node() => throw UnimplementedError('Unknown node type: $node'),
     };
   }
 
-  void resolveStatement(Statement statement) {
+  dynamic resolveStatement(Statement statement) {
     return switch (statement) {
       VariableDeclaration() => resolveVariableDeclaration(statement),
       ExpressionStatement() => resolveExpression(statement.expression),
@@ -521,9 +522,20 @@ class JSEngine {
       IndexExpression() => resolveIndexExpression(expr),
       ConditionalExpression() => resolveConditionalExpression(expr),
       ThisExpression() => resolveThisExpression(),
+      ObjectExpression() => resolveObjectExpression(expr),
       Expression() =>
         throw UnimplementedError('Unknown expression type: $expr'),
     };
+  }
+
+  dynamic resolveObjectExpression(ObjectExpression expr) {
+    final obj = <String, dynamic>{};
+    for (final prop in expr.properties) {
+      final key = resolveNode(prop.key);
+      final value = resolveNode(prop.value);
+      obj[key] = value;
+    }
+    return obj;
   }
 }
 
