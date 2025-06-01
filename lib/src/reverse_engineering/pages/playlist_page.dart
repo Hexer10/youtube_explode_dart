@@ -66,7 +66,9 @@ class PlaylistPage extends YoutubePage<_InitialData> {
 
       if (newInitialData.playlistVideos.isEmpty) {
         return null;
-      }      
+      }
+
+      
       return PlaylistPage.id(playlistId, newInitialData, _visitorData);
       
     } catch (e) {
@@ -87,6 +89,7 @@ class PlaylistPage extends YoutubePage<_InitialData> {
         return page;
       }
 
+      // Try to fetch using the browse API
       final data = await httpClient.sendPost('browse', {
         'browseId': page.initialData.browseId!,
       }, headers: {
