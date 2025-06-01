@@ -34,23 +34,57 @@ class PlaylistPage extends YoutubePage<_InitialData> {
 
   ///
   Future<PlaylistPage?> nextPage(YoutubeHttpClient httpClient) async {
-    if (initialData.continuationToken?.isEmpty ?? true) {
+    final continuationToken = initialData.continuationToken;
+    
+    // 개선된 continuation token 체크
+    if (continuationToken?.isEmpty ?? true) {
+      print('⚠️ No continuation token found');
       return null;
     }
 
-    final data = await httpClient.sendContinuation(
-        'browse', initialData.continuationToken!, headers: {
-      'x-youtube-client-name': '1',
-      'x-goog-visitor-id': _visitorData ?? ''
-    });
-    final newInitialData = _InitialData(data);
-    if (newInitialData.continuationToken != null &&
-        newInitialData.continuationToken == initialData.continuationToken) {
-      // Avoid sending always the same request.
+    print('🔄 Fetching next page with token: ${continuationToken!.substring(0, 50)}...');
+
+    try {
+      // Python 코드와 동일한 헤더 구성
+      final headers = <String, String>{
+        'Content-Type': 'application/json',
+        'x-youtube-client-name': '1',
+      };
+      
+      // visitor data가 있으면 추가
+      if (_visitorData?.isNotEmpty == true) {
+        headers['x-goog-visitor-id'] = _visitorData!;
+      }
+
+      final data = await httpClient.sendContinuation(
+        'browse', 
+        continuationToken,
+        headers: headers,
+      );
+      
+      final newInitialData = _InitialData(data);
+      
+      // 같은 continuation token이 반환되면 중단 (무한 루프 방지)
+      if (newInitialData.continuationToken != null &&
+          newInitialData.continuationToken == continuationToken) {
+        print('⚠️ Same continuation token returned. Stopping.');
+        return null;
+      }
+
+      // 새로운 비디오가 없으면 중단
+      if (newInitialData.playlistVideos.isEmpty) {
+        print('⚠️ No videos in continuation response');
+        return null;
+      }
+
+      print('✅ Continuation successful: ${newInitialData.playlistVideos.length} videos');
+      
+      return PlaylistPage.id(playlistId, newInitialData, _visitorData);
+      
+    } catch (e) {
+      print('❌ Continuation failed: $e');
       return null;
     }
-
-    return PlaylistPage.id(playlistId, _InitialData(data), _visitorData);
   }
 
   ///
@@ -63,9 +97,11 @@ class PlaylistPage extends YoutubePage<_InitialData> {
       final raw = await httpClient.getString(url);
       final page = PlaylistPage.parse(raw, id);
       if (page.initialData.exists) {
+        print('✅ Playlist exists in initial HTML data');
         return page;
       }
 
+      print('🔄 Using fallback browse API');
       // Try to fetch using the browse API
       final data = await httpClient.sendPost('browse', {
         'browseId': page.initialData.browseId!,
@@ -143,7 +179,6 @@ class _InitialData extends InitialData {
       ?.getT<String>('simpleText')
       .parseInt();
 
-  // sidebar.playlistSidebarRenderer.items[0].playlistSidebarPrimaryInfoRenderer.stats
   late final int? videoCount = root
       .get('sidebar')
       ?.get('playlistSidebarRenderer')
@@ -157,13 +192,60 @@ class _InitialData extends InitialData {
       ?.getT<String>('text')
       .parseInt();
 
-  late final String? continuationToken =
-      (videosContent ?? playlistVideosContent)
-          ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
-          ?.get('continuationItemRenderer')
-          ?.get('continuationEndpoint')
-          ?.get('continuationCommand')
-          ?.getT<String>('token');
+  // 개선된 continuation token 추출 로직 (Python 코드 참고)
+  late final String? continuationToken = _findContinuationToken();
+
+  String? _findContinuationToken() {
+    final contents = videosContent ?? playlistVideosContent;
+    if (contents == null) return null;
+
+    // continuation item 찾기
+    final continuationItem = contents
+        .firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+        ?['continuationItemRenderer'];
+    
+    if (continuationItem == null) return null;
+
+    final continuationEndpoint = continuationItem['continuationEndpoint'];
+    if (continuationEndpoint == null) return null;
+
+    // Python 코드의 경로 1: commandExecutorCommand.commands[1].continuationCommand.token
+    try {
+      final commandExecutor = continuationEndpoint['commandExecutorCommand'];
+      if (commandExecutor != null) {
+        final commands = commandExecutor['commands'] as List?;
+        if (commands != null && commands.length > 1) {
+          final continuationCommand = commands[1]['continuationCommand'];
+          if (continuationCommand != null) {
+            final token = continuationCommand['token'] as String?;
+            if (token != null) {
+              print('✅ Continuation token found (path 1): ${token.substring(0, 50)}...');
+              return token;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      print('⚠️ Path 1 continuation token extraction failed: $e');
+    }
+
+    // Python 코드의 경로 2: continuationEndpoint.continuationCommand.token
+    try {
+      final continuationCommand = continuationEndpoint['continuationCommand'];
+      if (continuationCommand != null) {
+        final token = continuationCommand['token'] as String?;
+        if (token != null) {
+          print('✅ Continuation token found (path 2): ${token.substring(0, 50)}...');
+          return token;
+        }
+      }
+    } catch (e) {
+      print('⚠️ Path 2 continuation token extraction failed: $e');
+    }
+
+    print('❌ No continuation token found in any path');
+    return null;
+  }
 
   List<JsonMap>? get playlistVideosContent =>
       root
@@ -205,15 +287,6 @@ class _InitialData extends InitialData {
           .map((e) => _Video(e['playlistVideoRenderer']))
           .toList() ??
       const [];
-
-/*  List<_Video> get videos =>
-      videosContent?.firstOrNull
-          ?.get('itemSectionRenderer')
-          ?.getList('contents')
-          ?.where((e) => e['videoRenderer'] != null)
-          .map((e) => _Video(e))
-          .toList() ??
-      const [];*/
 }
 
 class _Video {
