@@ -37,12 +37,8 @@ class PlaylistPage extends YoutubePage<_InitialData> {
     final continuationToken = initialData.continuationToken;
 
     if (continuationToken?.isEmpty ?? true) {
-      print('⚠️ No continuation token found');
       return null;
     }
-
-    print(
-        '🔄 Fetching next page with token: ${continuationToken!.substring(0, 50)}...');
 
     try {
       final headers = <String, String>{
@@ -56,7 +52,7 @@ class PlaylistPage extends YoutubePage<_InitialData> {
 
       final data = await httpClient.sendContinuation(
         'browse',
-        continuationToken,
+        continuationToken!,
         headers: headers,
       );
 
@@ -64,21 +60,15 @@ class PlaylistPage extends YoutubePage<_InitialData> {
 
       if (newInitialData.continuationToken != null &&
           newInitialData.continuationToken == continuationToken) {
-        print('⚠️ Same continuation token returned. Stopping.');
         return null;
       }
 
       if (newInitialData.playlistVideos.isEmpty) {
-        print('⚠️ No videos in continuation response');
         return null;
       }
 
-      print(
-          '✅ Continuation successful: ${newInitialData.playlistVideos.length} videos');
-
       return PlaylistPage.id(playlistId, newInitialData, _visitorData);
     } catch (e) {
-      print('❌ Continuation failed: $e');
       return null;
     }
   }
@@ -93,11 +83,9 @@ class PlaylistPage extends YoutubePage<_InitialData> {
       final raw = await httpClient.getString(url);
       final page = PlaylistPage.parse(raw, id);
       if (page.initialData.exists) {
-        print('✅ Playlist exists in initial HTML data');
         return page;
       }
 
-      print('🔄 Using fallback browse API');
       // Try to fetch using the browse API
       final data = await httpClient.sendPost('browse', {
         'browseId': page.initialData.browseId!,
@@ -211,32 +199,23 @@ class _InitialData extends InitialData {
           if (continuationCommand != null) {
             final token = continuationCommand['token'] as String?;
             if (token != null) {
-              print(
-                  '✅ Continuation token found (path 1): ${token.substring(0, 50)}...');
               return token;
             }
           }
         }
       }
-    } catch (e) {
-      print('⚠️ Path 1 continuation token extraction failed: $e');
-    }
+    } catch (e) {}
 
     try {
       final continuationCommand = continuationEndpoint['continuationCommand'];
       if (continuationCommand != null) {
         final token = continuationCommand['token'] as String?;
         if (token != null) {
-          print(
-              '✅ Continuation token found (path 2): ${token.substring(0, 50)}...');
           return token;
         }
       }
-    } catch (e) {
-      print('⚠️ Path 2 continuation token extraction failed: $e');
-    }
+    } catch (e) {}
 
-    print('❌ No continuation token found in any path');
     return null;
   }
 
