@@ -42,11 +42,9 @@ class PlaylistClient {
     PlaylistPage? page = await PlaylistPage.get(_httpClient, id.value);
     
     if (page == null) {
-      print('❌ Failed to fetch initial playlist page');
       return;
     }
     
-    print('🎵 Starting to fetch playlist ${id.value}...');
     
     while (page != null && requestCount < maxRequests) {
       var videosAddedThisPage = 0;
@@ -84,13 +82,11 @@ class PlaylistClient {
         );
       }
       
-      print('📥 Request #${requestCount + 1}: +${videosAddedThisPage} videos (total: ${encounteredVideoIds.length})');
       
       // Check if we're getting empty pages
       if (videosAddedThisPage == 0) {
         consecutiveEmptyPages++;
         if (consecutiveEmptyPages >= maxConsecutiveEmptyPages) {
-          print('⚠️ Too many consecutive empty pages. Stopping.');
           break;
         }
       } else {
@@ -107,7 +103,6 @@ class PlaylistClient {
         final nextPage = await page.nextPage(_httpClient);
         
         if (nextPage == null) {
-          print('✅ All videos fetched (no more pages available)');
           break;
         }
         
@@ -115,23 +110,19 @@ class PlaylistClient {
         if (nextPage.videos.isNotEmpty && 
             page.videos.isNotEmpty && 
             nextPage.videos.first.id == page.videos.first.id) {
-          print('⚠️ Detected duplicate page. Stopping to prevent infinite loop.');
           break;
         }
         
         page = nextPage;
         
       } catch (e) {
-        print('❌ Failed to fetch next page: $e');
         break;
       }
     }
     
     if (requestCount >= maxRequests) {
-      print('⚠️ Reached maximum request limit ($maxRequests). There might be more videos.');
     }
     
-    print('🎉 Playlist fetch completed. Total videos: ${encounteredVideoIds.length}');
   }
   
   /// Get all videos as a List (for easier debugging and testing)
