@@ -36,22 +36,17 @@ class PlaylistPage extends YoutubePage<_InitialData> {
   Future<PlaylistPage?> nextPage(YoutubeHttpClient httpClient) async {
     final continuationToken = initialData.continuationToken;
     
-    // 개선된 continuation token 체크
     if (continuationToken?.isEmpty ?? true) {
-      print('⚠️ No continuation token found');
       return null;
     }
 
-    print('🔄 Fetching next page with token: ${continuationToken!.substring(0, 50)}...');
 
     try {
-      // Python 코드와 동일한 헤더 구성
       final headers = <String, String>{
         'Content-Type': 'application/json',
         'x-youtube-client-name': '1',
       };
       
-      // visitor data가 있으면 추가
       if (_visitorData?.isNotEmpty == true) {
         headers['x-goog-visitor-id'] = _visitorData!;
       }
@@ -64,25 +59,17 @@ class PlaylistPage extends YoutubePage<_InitialData> {
       
       final newInitialData = _InitialData(data);
       
-      // 같은 continuation token이 반환되면 중단 (무한 루프 방지)
       if (newInitialData.continuationToken != null &&
           newInitialData.continuationToken == continuationToken) {
-        print('⚠️ Same continuation token returned. Stopping.');
         return null;
       }
 
-      // 새로운 비디오가 없으면 중단
       if (newInitialData.playlistVideos.isEmpty) {
-        print('⚠️ No videos in continuation response');
         return null;
-      }
-
-      print('✅ Continuation successful: ${newInitialData.playlistVideos.length} videos');
-      
+      }      
       return PlaylistPage.id(playlistId, newInitialData, _visitorData);
       
     } catch (e) {
-      print('❌ Continuation failed: $e');
       return null;
     }
   }
@@ -97,12 +84,9 @@ class PlaylistPage extends YoutubePage<_InitialData> {
       final raw = await httpClient.getString(url);
       final page = PlaylistPage.parse(raw, id);
       if (page.initialData.exists) {
-        print('✅ Playlist exists in initial HTML data');
         return page;
       }
 
-      print('🔄 Using fallback browse API');
-      // Try to fetch using the browse API
       final data = await httpClient.sendPost('browse', {
         'browseId': page.initialData.browseId!,
       }, headers: {
@@ -192,14 +176,12 @@ class _InitialData extends InitialData {
       ?.getT<String>('text')
       .parseInt();
 
-  // 개선된 continuation token 추출 로직 (Python 코드 참고)
   late final String? continuationToken = _findContinuationToken();
 
   String? _findContinuationToken() {
     final contents = videosContent ?? playlistVideosContent;
     if (contents == null) return null;
 
-    // continuation item 찾기
     final continuationItem = contents
         .firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
         ?['continuationItemRenderer'];
@@ -209,7 +191,6 @@ class _InitialData extends InitialData {
     final continuationEndpoint = continuationItem['continuationEndpoint'];
     if (continuationEndpoint == null) return null;
 
-    // Python 코드의 경로 1: commandExecutorCommand.commands[1].continuationCommand.token
     try {
       final commandExecutor = continuationEndpoint['commandExecutorCommand'];
       if (commandExecutor != null) {
@@ -219,31 +200,25 @@ class _InitialData extends InitialData {
           if (continuationCommand != null) {
             final token = continuationCommand['token'] as String?;
             if (token != null) {
-              print('✅ Continuation token found (path 1): ${token.substring(0, 50)}...');
               return token;
             }
           }
         }
       }
     } catch (e) {
-      print('⚠️ Path 1 continuation token extraction failed: $e');
     }
 
-    // Python 코드의 경로 2: continuationEndpoint.continuationCommand.token
     try {
       final continuationCommand = continuationEndpoint['continuationCommand'];
       if (continuationCommand != null) {
         final token = continuationCommand['token'] as String?;
         if (token != null) {
-          print('✅ Continuation token found (path 2): ${token.substring(0, 50)}...');
           return token;
         }
       }
     } catch (e) {
-      print('⚠️ Path 2 continuation token extraction failed: $e');
     }
 
-    print('❌ No continuation token found in any path');
     return null;
   }
 
