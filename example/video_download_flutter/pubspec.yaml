@@ -30,7 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.4
   youtube_explode_dart:
     path: ../../
-  downloads_path_provider: ^0.1.0
+  path_provider:
   permission_handler: ^9.2.0
   path: ^1.8.1
 
