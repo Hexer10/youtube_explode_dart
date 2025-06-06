@@ -56,6 +56,17 @@ void main() {
     expect(videos.length, greaterThan(100));
   });
 
+  test('Get a shit ton of items from a playlist', () async {
+    final videos = await yt!.playlists
+        .getVideos(
+          PlaylistId(
+            'https://www.youtube.com/playlist?list=PLI_eFW8NAFzYAXZ5DrU6E6mQ_XfhaLBUX',
+          ),
+        )
+        .toList();
+    expect(videos.length, greaterThan(3500));
+  }, timeout: Timeout(Duration(minutes: 3)));
+
   group('Get videos in any playlist', () {
     for (final val in {
       PlaylistId('PLI5YfMzCfRtZ8eV576YoY3vIYrHjyVm_e'),
