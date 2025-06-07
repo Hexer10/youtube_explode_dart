@@ -157,13 +157,22 @@ class _InitialData extends InitialData {
       ?.getT<String>('text')
       .parseInt();
 
-  late final String? continuationToken =
-      (videosContent ?? playlistVideosContent)
-          ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
-          ?.get('continuationItemRenderer')
-          ?.get('continuationEndpoint')
-          ?.get('continuationCommand')
-          ?.getT<String>('token');
+  String? get continuationToken {
+    final continuationEndpoint = (videosContent ?? playlistVideosContent)
+        ?.firstWhereOrNull((e) => e['continuationItemRenderer'] != null)
+        ?.get('continuationItemRenderer')
+        ?.get('continuationEndpoint');
+
+    return continuationEndpoint
+            ?.get('continuationCommand')
+            ?.getT<String>('token') ??
+        continuationEndpoint
+            ?.get('commandExecutorCommand')
+            ?.getList('commands')
+            ?.firstWhereOrNull((e) => e['continuationCommand'] != null)
+            ?.get('continuationCommand')
+            ?.getT<String>('token');
+  }
 
   List<JsonMap>? get playlistVideosContent =>
       root
