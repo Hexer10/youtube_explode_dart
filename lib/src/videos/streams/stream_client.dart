@@ -6,6 +6,7 @@ import '../../exceptions/exceptions.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../js/js_engine.dart';
 import '../../retry.dart';
+import '../../reverse_engineering/cipher/chiper_new.dart';
 import '../../reverse_engineering/cipher/cipher_manifest.dart';
 import '../../reverse_engineering/heuristics.dart';
 import '../../reverse_engineering/models/stream_info_provider.dart';
@@ -212,6 +213,19 @@ class StreamClient {
   }
 
   String? _playerScript;
+  String? _globalVar;
+
+  String? _getGlobalVar(String playerScript) {
+    // Adapted from https://github.com/yt-dlp/yt-dlp/blob/7794374de8afb20499b023107e2abfd4e6b93ee4/yt_dlp/extractor/youtube/_video.py#L2295
+    return _globalVar ??= _matchPatterns(playerScript, [
+      (
+        r'''
+(["\'])use\s+strict\1;\s*(var\s+[a-zA-Z0-9_$]+\s*=\s*((["\'])(?:(?!(\4)).|\\.)+\4\.split\((["\'])(?:(?!(\6)).)+\6\)|\[\s*(?:(["\'])(?:(?!(\8)).|\\.)*\8\s*,?\s*)+\]))[;,]
+''',
+        2
+      ),
+    ]);
+  }
 
   Future<String> _getPlayerScript([WatchPage? page]) async {
     page ??= await WatchPage.get(_httpClient, '');
@@ -248,15 +262,7 @@ class StreamClient {
           'Could not find the decipher function in the player script.');
     }
 
-    // Adapted from https://github.com/yt-dlp/yt-dlp/blob/7794374de8afb20499b023107e2abfd4e6b93ee4/yt_dlp/extractor/youtube/_video.py#L2295
-    final globalVar = _matchPatterns(playerScript, [
-      (
-        r'''
-(["\'])use\s+strict\1;\s*(var\s+[a-zA-Z0-9_$]+\s*=\s*((["\'])(?:(?!(\4)).|\\.)+\4\.split\((["\'])(?:(?!(\6)).)+\6\)|\[\s*(?:(["\'])(?:(?!(\8)).|\\.)*\8\s*,?\s*)+\]))[;,]
-''',
-        2
-      ),
-    ]);
+    final globalVar = _getGlobalVar(playerScript);
 
     final func = funcMatch.replaceFirst('function', 'function main');
 
@@ -299,8 +305,8 @@ class StreamClient {
         url = url.setQueryParam('n', deciphered);
       }
       if (stream.signatureParameter != null) {
-        cipherManifest ??=
-            CipherManifest.decode(await _getPlayerScript(watchPage));
+        final playerScript = await _getPlayerScript(watchPage);
+        cipherManifest ??= CipherManifest.decode(playerScript);
         final sig = stream.signature!;
         final sigParam = stream.signatureParameter!;
         if (cipherManifest != null) {
@@ -308,7 +314,19 @@ class StreamClient {
           url = url.setQueryParam(sigParam, sigDeciphered);
           _logger.fine('Deciphered signature: $sig -> $sigDeciphered');
         } else {
-          _logger.warning('Could not decipher signature: $sig');
+          final globalVar = _getGlobalVar(playerScript);
+
+          final deciphererFunc =
+              getDecipherSignatureFunc(globalVar, playerScript);
+          final deciphered = deciphererFunc?.call(sig);
+          if (deciphered != null) {
+            url = url.setQueryParam(sigParam, deciphered);
+            _logger.fine('[2] Deciphered signature: $sig -> $deciphered');
+          } else {
+            // If we cannot decipher the signature, we log a warning
+            // and continue with the original URL.
+            _logger.warning('Could not decipher signature: $sig');
+          }
         }
       }
 
