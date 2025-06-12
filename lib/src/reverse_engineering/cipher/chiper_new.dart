@@ -2,11 +2,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../js/js_engine.dart';
 
-final decFuncExp = RegExp(
+final _decFuncExp = RegExp(
     r'\b([a-zA-Z0-9_$]+)&&\(\1=([a-zA-Z0-9_$]{2,})\(decodeURIComponent\(\1\)\)',
     dotAll: true);
 
-RegExp funcExp(String funcName) => RegExp(
+RegExp _funcExp(String funcName) => RegExp(
       '$funcName=(function.+?return.+?;)',
       dotAll: true,
     );
@@ -23,13 +23,13 @@ DeciphererFunc? getDecipherSignatureFunc(String? globalVar, String jscode) {
   final globalVarName =
       globalVar?.split('=')[0].trim().replaceFirst('var ', '');
 
-  final match = decFuncExp.firstMatch(jscode);
+  final match = _decFuncExp.firstMatch(jscode);
   final funcName = match?.group(2);
   if (funcName == null) {
     return null;
   }
 
-  final decFunc = funcExp(funcName)
+  final decFunc = _funcExp(funcName)
       .firstMatch(jscode)
       ?.group(1)
       ?.replaceFirst('function', 'function $funcName');
@@ -46,7 +46,7 @@ DeciphererFunc? getDecipherSignatureFunc(String? globalVar, String jscode) {
           (e) => !keywords.contains(e) && e != funcName && e != globalVarName)
       .skip(1)
       .toList(); // Skip the first one, which is the function parameter
-  print(varsList);
+
   final varDecls = [];
   for (final varName in varsList) {
     final exp =
