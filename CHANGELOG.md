@@ -1,3 +1,9 @@
+## 2.5.0
+- Implement new function decipherer.
+- Fix bug preventing fetching more than 100 videos in a playlist.
+- Expose header getter to `YoutubeHttpClient`
+
+
 ## 2.4.2
 - Update safari client.
 - Fix signature deciphering.
