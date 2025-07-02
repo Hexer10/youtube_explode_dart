@@ -1,3 +1,6 @@
+## 2.5.1
+- Fix related videos api.
+
 ## 2.5.0
 - Implement new function decipherer.
 - Fix bug preventing fetching more than 100 videos in a playlist. Thanks to @khaled-0
