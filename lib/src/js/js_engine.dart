@@ -174,7 +174,6 @@ class JSEngine {
     return callee(resolvedArgs);
   }
 
-
   dynamic _resolveMember(dynamic obj, String prop) {
     if (obj is Map) {
       return obj[prop];
