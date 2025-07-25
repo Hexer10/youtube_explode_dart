@@ -16,6 +16,7 @@ void main() {
       ['youtube.com/watch?v=yIVRs6YSbOM', 'yIVRs6YSbOM'],
       ['youtu.be/yIVRs6YSbOM', 'yIVRs6YSbOM'],
       ['youtube.com/embed/yIVRs6YSbOM', 'yIVRs6YSbOM'],
+      ['youtube.com/live/yIVRs6YSbOM', 'yIVRs6YSbOM'],
     }) {
       test('Video - $val', () {
         expect(VideoId(val[0]).value, val[1]);
@@ -34,6 +35,7 @@ void main() {
       'youtube.com/xxx?v=pI2I2zqzeKg',
       'youtu.be/watch?v=xxx',
       'youtube.com/embed',
+      'youtube.com/live'
     }) {
       test('VideoURL - $val', () {
         expect(() => VideoId(val), throwsArgumentError);
