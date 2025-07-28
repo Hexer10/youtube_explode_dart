@@ -202,6 +202,17 @@ extension StringUtility2 on String? {
     return DateTime.now().subtract(time);
   }
 
+  Uri? toUri() {
+    if (this == null) {
+      return null;
+    }
+    try {
+      return Uri.parse(this!);
+    } on FormatException {
+      return null;
+    }
+  }
+
   DateTime? tryParseDateTime() {
     if (this == null) {
       return null;

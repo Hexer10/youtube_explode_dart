@@ -99,4 +99,16 @@ void main() {
     expect(relatedVideos, isNotNull);
     expect(relatedVideos, isNotEmpty);
   }, skip: skipGH);
+
+
+  test('Get music data of music video', () async {
+    final video = await yt!.videos.get(VideoIdData.music.id);
+
+    expect(video.musicData.length, 2);
+    final musicData = video.musicData.first;
+    expect(musicData.song, 'Hello (Single Edit) (Single Edit)');
+    expect(musicData.artist, 'Martin Solveig, Dragonette');
+    expect(musicData.album, 'Smash');
+    expect(musicData.image, isNotNull);
+  });
 }

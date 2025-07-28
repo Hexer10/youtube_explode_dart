@@ -64,6 +64,7 @@ class VideoClient {
         watchPage.videoDislikeCount,
       ),
       playerResponse.isLive,
+      watchPage.initialData.getMusicData() ?? [],
       watchPage,
     );
   }

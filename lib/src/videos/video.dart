@@ -9,6 +9,8 @@ import 'video_id.dart';
 
 part 'video.freezed.dart';
 
+typedef MusicData = ({String? song, String? artist, String? album, Uri? image});
+
 /// YouTube video metadata.
 @freezed
 abstract class Video with _$Video {
@@ -58,6 +60,9 @@ abstract class Video with _$Video {
     /// Returns true if this is a live stream.
     //ignore: avoid_positional_boolean_parameters
     bool isLive, [
+    /// Music data such as song, artist, album, and image.
+    List<MusicData> musicData = const [],
+
     /// Used internally.
     /// Shouldn't be used in the code.
     @internal WatchPage? watchPage,
@@ -89,6 +94,7 @@ abstract class Video with _$Video {
       UnmodifiableListView(keywords ?? const Iterable.empty()),
       engagement,
       isLive,
+      musicData,
       watchPage,
     );
   }
@@ -133,7 +139,10 @@ abstract class Video with _$Video {
 
     /// Returns true if this is a live stream.
     //ignore: avoid_positional_boolean_parameters
-    bool isLive, [
+    bool isLive,
+
+    /// Music data such as song, artist, album, and image.
+    List<MusicData> musicData, [
     /// Used internally.
     /// Shouldn't be used in the code.
     @internal WatchPage? watchPage,

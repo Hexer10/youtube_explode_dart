@@ -262,4 +262,29 @@ class WatchPageInitialData extends InitialData {
     }
     return null;
   }
+
+  List<MusicData>? getMusicData() {
+    return root
+        .getList('engagementPanels')
+        ?.firstWhereOrNull((e) =>
+            e['engagementPanelSectionListRenderer'] != null &&
+            e['engagementPanelSectionListRenderer']['panelIdentifier'] ==
+                'engagement-panel-structured-description')
+        ?.get('engagementPanelSectionListRenderer')
+        ?.get('content')
+        ?.get('structuredDescriptionContentRenderer')
+        ?.getList('items')
+        ?.firstWhereOrNull((e) => e['horizontalCardListRenderer'] != null)
+        ?.get('horizontalCardListRenderer')
+        ?.getList('cards')
+        ?.map((e) => e.get('videoAttributeViewModel'))
+        .nonNulls
+        .map((e) => (
+              song: e.getT<String>('title'),
+              artist: e.getT<String>('subtitle'),
+              album: e.getJson<String>('secondarySubtitle/content'),
+              image: e.getJson<String>('image/sources/0/url')?.toUri()
+            ))
+        .toList();
+  }
 }
