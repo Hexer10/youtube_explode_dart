@@ -61,6 +61,7 @@ abstract class Video with _$Video {
     //ignore: avoid_positional_boolean_parameters
     bool isLive, [
     /// Music data such as song, artist, album, and image.
+    /// Empty if no data is available.
     List<MusicData> musicData = const [],
 
     /// Used internally.
@@ -142,6 +143,7 @@ abstract class Video with _$Video {
     bool isLive,
 
     /// Music data such as song, artist, album, and image.
+    /// Empty if no data is available.
     List<MusicData> musicData, [
     /// Used internally.
     /// Shouldn't be used in the code.

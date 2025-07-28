@@ -1,3 +1,6 @@
+## 2.5.2
+- Add `Video.musicData` getter.
+
 ## 2.5.1
 - Fix related videos api.
 
