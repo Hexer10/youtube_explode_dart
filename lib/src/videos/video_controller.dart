@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 
 import '../../youtube_explode_dart.dart';
+import '../reverse_engineering/fixed_versions.dart';
 import '../reverse_engineering/pages/watch_page.dart';
 import '../reverse_engineering/player/player_response.dart';
 
@@ -23,6 +24,8 @@ class VideoController {
 
     final userAgent = payload['context']!['client']!['userAgent'] as String?;
     final ytCfg = watchPage?.ytCfg;
+    // Hotfix for https://github.com/Hexer10/youtube_explode_dart/issues/363
+    if (ytCfg?.containsKey('STS') ?? false) ytCfg!['STS'] = fixedSignatureTimestamp;
 
     final body = {
       ...payload,

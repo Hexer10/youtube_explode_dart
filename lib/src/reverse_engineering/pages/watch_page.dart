@@ -7,6 +7,7 @@ import 'package:html/parser.dart' as parser;
 import '../../../youtube_explode_dart.dart';
 import '../../extensions/helpers_extension.dart';
 import '../../retry.dart';
+import '../fixed_versions.dart';
 import '../models/initial_data.dart';
 import '../models/youtube_page.dart';
 import '../player/player_response.dart';
@@ -38,7 +39,9 @@ class WatchPage extends YoutubePage<WatchPageInitialData> {
         .querySelectorAll('script')
         .map((e) => e.attributes['src'])
         .nonNulls
-        .firstWhereOrNull((e) => e.contains('player_ias') && e.endsWith('.js'));
+        .firstWhereOrNull((e) => e.contains('player_ias') && e.endsWith('.js'))
+        // Hotfix for https://github.com/Hexer10/youtube_explode_dart/issues/363
+        ?.replaceFirst(RegExp(r'\/player\/([a-z0-9]+)\/'), "/player/$fixedPlayerVersion/");
     if (url == null) {
       return null;
     }

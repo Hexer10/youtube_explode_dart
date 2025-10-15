@@ -11,7 +11,7 @@ RegExp _funcExp(String funcName) => RegExp(
       dotAll: true,
     );
 
-final _varsExp = RegExp(r'(?<!\()\b([a-zA-Z][a-zA-Z0-9_$]*)\b');
+final _varsExp = RegExp(r'(?<!\()\b([a-zA-Z][a-zA-Z0-9_$]*)(?![A-Za-z0-9_$])');
 
 typedef DeciphererFunc = String Function(
   String sig,
@@ -50,7 +50,7 @@ DeciphererFunc? getDecipherSignatureFunc(String? globalVar, String jscode) {
   final varDecls = [];
   for (final varName in varsList) {
     final exp =
-        RegExp(r'(var ' + varName! + r'=\{(?:.|\n)+?)(;var)', dotAll: true);
+        RegExp(r'(var ' + RegExp.escape(varName!) + r'=\{(?:.|\n)+?)(;var)', dotAll: true);
     final varMatch = exp.firstMatch(jscode);
     if (varMatch == null) {
       continue;
