@@ -1,3 +1,8 @@
+## 2.5.3
+- Update `android` client.
+- Stop throwing when signature can't be found, instead just skip that stream.
+- Fix parsing error when a collaboration video appeared in a search result.
+
 ## 2.5.2
 - Add `Video.musicData` getter.
 
