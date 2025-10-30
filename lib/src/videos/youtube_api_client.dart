@@ -44,13 +44,15 @@ class YoutubeApiClient {
     'context': {
       'client': {
         'clientName': 'ANDROID',
-        'clientVersion': '19.09.37',
+        'clientVersion': '20.10.38',
         'androidSdkVersion': 30,
         'userAgent':
-            'com.google.android.youtube/19.09.37 (Linux; U; Android 11) gzip',
+            'com.google.android.youtube/20.10.38 (Linux; U; Android 11) gzip',
         'hl': 'en',
         'timeZone': 'UTC',
         'utcOffsetMinutes': 0,
+        'osName': 'Android',
+        'osVersion': '11',
       },
     },
   }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
