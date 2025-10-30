@@ -59,7 +59,8 @@ class StreamClient {
       List<YoutubeApiClient>? ytClients,
       bool requireWatchPage = true}) async {
     videoId = VideoId.fromString(videoId);
-    final clients = ytClients ?? [YoutubeApiClient.ios];
+    final clients =
+        ytClients ?? [YoutubeApiClient.android, YoutubeApiClient.ios];
 
     final uniqueStreams = LinkedHashSet<StreamInfo>(
       equals: (a, b) {
@@ -243,7 +244,7 @@ class StreamClient {
     return null;
   }
 
-  Future<String> _getDecipherFunction(WatchPage watchPage) async {
+  Future<String?> _getDecipherFunction(WatchPage watchPage) async {
     final playerScript = await _getPlayerScript(watchPage);
 
     final funcMatch = _matchPatterns(playerScript, [
@@ -258,8 +259,9 @@ class StreamClient {
     ]);
 
     if (funcMatch == null) {
-      throw YoutubeExplodeException(
+      _logger.warning(
           'Could not find the decipher function in the player script.');
+      return null;
     }
 
     final globalVar = _getGlobalVar(playerScript);
@@ -292,15 +294,21 @@ class StreamClient {
       }
       if (url.queryParameters.containsKey('n')) {
         final nParam = url.queryParameters['n']!;
-        late final String deciphered;
+        String? deciphered;
         if (_nSigCache.containsKey(nParam)) {
           deciphered = _nSigCache[nParam]!;
         } else {
           funcCode ??= await _getDecipherFunction(
               watchPage ??= await WatchPage.get(_httpClient, videoId!.value));
-          deciphered = _nSigCache[nParam] = JSEngine.run(funcCode, [nParam]);
-          _logger.fine(
-              'Deciphered n-sig: ${url.queryParameters['n']} -> $deciphered');
+          if (funcCode != null) {
+            deciphered = _nSigCache[nParam] = JSEngine.run(funcCode, [nParam]);
+            _logger.fine(
+                'Deciphered n-sig: ${url.queryParameters['n']} -> $deciphered');
+          }
+        }
+        if (deciphered == null) {
+          _logger.warning('Could not decipher n-sig: $nParam');
+          continue;
         }
         url = url.setQueryParam('n', deciphered);
       }
