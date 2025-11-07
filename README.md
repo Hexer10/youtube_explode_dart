@@ -239,8 +239,7 @@ You can find how most APIs can be used in the files inside the test/ folder.
 
 - [Tyrrrz] for creating [YoutubeExplode] in C#
 - [Hexer10] (me) who ported the library over to Dart.
-- [EnsembleUI] for the jsparser project.
-- [yt-dlp] for documentation and reverse engineering about the YouTube apis.
+- [yt-dlp] for documentation and reverse engineering about the YouTube apis, and implementation of the EJS modules.
 - All the [Contributors] of this repository.
 
 [YoutubeExplode]: https://github.com/Tyrrrz/YoutubeExplode/
