@@ -1,3 +1,7 @@
+## 3.0.0
+- Implement `deno` js signature solver.
+- Implement new interfaces for custom JS challenges solver.
+
 ## 2.5.3
 - Update `android` client.
 - Stop throwing when signature can't be found, instead just skip that stream.

@@ -115,6 +115,20 @@ While it may be tempting to just always use muxed streams, it's important to not
 
 If you want to download the video in maximum quality, you need to download the audio-only and video-only streams separately and then mux them together on your own. There are tools like FFmpeg that let you do that.
 
+### Using a signature solver
+Some youtube clients require you to complete a js challenge in order to download a video. This requires having a full js runtime like deno, nodejs or quickjs.
+Currently the only implemented runtime is deno, see the following snippet for how to use it:
+
+```dart
+import 'package:youtube_explode_dart/solvers.dart';
+
+final solver = await DenoEJSSolver.init();
+var yt = YoutubeExplode(jsSolver: solver);
+
+```
+
+
+
 ### Working with playlists
 Among other things, YoutubeExplode also supports playlists:
 ```dart
