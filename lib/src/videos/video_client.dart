@@ -1,6 +1,8 @@
+//ignore_for_file: deprecated_member_use_from_same_package
 import '../channels/channel_id.dart';
 import '../common/common.dart';
 import '../extensions/helpers_extension.dart';
+import '../reverse_engineering/challenges/js_challenge.dart';
 import '../reverse_engineering/clients/related_videos_client.dart';
 import '../reverse_engineering/pages/watch_page.dart';
 import '../reverse_engineering/youtube_http_client.dart';
@@ -21,15 +23,17 @@ class VideoClient {
   final ClosedCaptionClient closedCaptions;
 
   /// Queries related to a YouTube video comments.
+  @Deprecated('This interface will not be supported anymore.')
   final CommentsClient commentsClient;
 
   /// Queries related to a YouTube video comments.
   /// Alias of [commentsClient].
+  @Deprecated('This interface will not be supported anymore.')
   CommentsClient get comments => commentsClient;
 
   /// Initializes an instance of [VideoClient].
-  VideoClient(this._httpClient)
-      : streamsClient = StreamClient(_httpClient),
+  VideoClient(this._httpClient, {BaseJSChallengeSolver? jsSolver})
+      : streamsClient = StreamClient(_httpClient, jsSolver: jsSolver),
         closedCaptions = ClosedCaptionClient(_httpClient),
         commentsClient = CommentsClient(_httpClient);
 
