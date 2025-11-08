@@ -1,3 +1,6 @@
+## 3.0.2
+- Implement bulk challenges solver.
+
 ## 3.0.1
 - Fix issue with the `deno` signature solver where the command line arguments on some systems where too long.
 - Small optimizations by reusing the already preprocessed player in the `js` solver.
