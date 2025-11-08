@@ -217,6 +217,49 @@ class StreamClient {
 
   Stream<StreamInfo> _parseStreamInfo(Iterable<StreamInfoProvider> streams,
       {required WatchPage watchPage, VideoId? videoId}) async* {
+    // First pass: collect all unique challenges
+    final nChallenges = <String>{};
+    final sigChallenges = <String>{};
+
+    final solver = _jsChallengeSolver;
+    if (solver != null) {
+      for (final stream in streams) {
+        try {
+          final url = Uri.parse(stream.url);
+          if (url.queryParameters.containsKey('n')) {
+            nChallenges.add(url.queryParameters['n']!);
+          }
+          if (stream.signatureParameter != null) {
+            sigChallenges.add(stream.signature!);
+          }
+        } catch (e) {
+          // Skip invalid URLs, will be handled in second pass
+        }
+      }
+    }
+
+    // Bulk solve all challenges
+    final solvedChallenges = <String, String?>{};
+    if (solver != null &&
+        (nChallenges.isNotEmpty || sigChallenges.isNotEmpty)) {
+      final requests = <JSChallengeType, List<String>>{};
+      if (nChallenges.isNotEmpty) {
+        requests[JSChallengeType.n] = nChallenges.toList();
+      }
+      if (sigChallenges.isNotEmpty) {
+        requests[JSChallengeType.sig] = sigChallenges.toList();
+      }
+
+      try {
+        solvedChallenges
+            .addAll(await solver.solveBulk(watchPage.sourceUrl!, requests));
+      } catch (e) {
+        _logger.warning('Could not bulk solve challenges: $e');
+        // Fall back to individual solving if bulk fails
+      }
+    }
+
+    // Second pass: process streams with solved challenges
     for (final stream in streams) {
       final itag = stream.tag;
       late Uri url;
@@ -225,31 +268,48 @@ class StreamClient {
       } catch (e) {
         continue;
       }
-      final solver = _jsChallengeSolver;
+
       if (solver != null) {
         if (url.queryParameters.containsKey('n')) {
-          try {
-            final nParam = url.queryParameters['n']!;
-            final decoded = await solver.solve(
-                watchPage.sourceUrl!, JSChallengeType.n, nParam);
+          final nParam = url.queryParameters['n']!;
+          final decoded = solvedChallenges[nParam];
+          if (decoded != null) {
             url = url.setQueryParam('n', decoded);
             _logger.fine(
                 'Decoded n-sig for stream itag $itag. $nParam -> $decoded}');
-          } catch (e) {
-            _logger.warning('Could not decipher n-sig using JS solver: $e');
+          } else {
+            // Fallback to individual solving if bulk solving didn't provide result
+            try {
+              final individualDecoded = await solver.solve(
+                  watchPage.sourceUrl!, JSChallengeType.n, nParam);
+              url = url.setQueryParam('n', individualDecoded);
+              _logger.fine(
+                  'Decoded n-sig for stream itag $itag (individual). $nParam -> $individualDecoded}');
+            } catch (e) {
+              _logger.warning('Could not decipher n-sig using JS solver: $e');
+            }
           }
         }
         if (stream.signatureParameter != null) {
-          try {
-            final sigParam = stream.signatureParameter!;
-            final sig = stream.signature!;
-            final decoded = await solver.solve(
-                watchPage.sourceUrl!, JSChallengeType.sig, sig);
+          final sigParam = stream.signatureParameter!;
+          final sig = stream.signature!;
+          final decoded = solvedChallenges[sig];
+          if (decoded != null) {
             url = url.setQueryParam(sigParam, decoded);
             _logger.fine(
                 'Decoded signature for stream itag $itag. $sigParam -> $decoded}');
-          } catch (e) {
-            _logger.warning('Could not decipher signature using JS solver: $e');
+          } else {
+            // Fallback to individual solving if bulk solving didn't provide result
+            try {
+              final individualDecoded = await solver.solve(
+                  watchPage.sourceUrl!, JSChallengeType.sig, sig);
+              url = url.setQueryParam(sigParam, individualDecoded);
+              _logger.fine(
+                  'Decoded signature for stream itag $itag (individual). $sigParam -> $individualDecoded}');
+            } catch (e) {
+              _logger
+                  .warning('Could not decipher signature using JS solver: $e');
+            }
           }
         }
       }

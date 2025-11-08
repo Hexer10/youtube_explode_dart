@@ -26,11 +26,34 @@ class DenoEJSSolver extends BaseJSChallengeSolver {
   }
 
   @override
-  Future<String> solve(
-      String playerUrl, JSChallengeType type, String challenge) async {
-    final key = (playerUrl, challenge, type);
-    if (_sigCache.containsKey(key)) {
-      return _sigCache[key]!;
+  Future<Map<String, String?>> solveBulk(
+      String playerUrl, Map<JSChallengeType, List<String>> requests) async {
+    // Filter out already cached challenges
+    final uncachedRequests = <JSChallengeType, List<String>>{};
+    final cachedResults = <String, String?>{};
+
+    for (final entry in requests.entries) {
+      final type = entry.key;
+      final challenges = entry.value;
+      final uncached = <String>[];
+
+      for (final challenge in challenges) {
+        final key = (playerUrl, challenge, type);
+        if (_sigCache.containsKey(key)) {
+          cachedResults[challenge] = _sigCache[key]!;
+        } else {
+          uncached.add(challenge);
+        }
+      }
+
+      if (uncached.isNotEmpty) {
+        uncachedRequests[type] = uncached;
+      }
+    }
+
+    // If all challenges are cached, return early
+    if (uncachedRequests.isEmpty) {
+      return cachedResults;
     }
 
     late String playerScript;
@@ -45,11 +68,7 @@ class DenoEJSSolver extends BaseJSChallengeSolver {
       playerScript = _playerCache[playerUrl] = resp.body;
     }
 
-    var jsCall = EJSBuilder.buildJSCall(
-        playerScript,
-        {
-          type: [challenge],
-        },
+    var jsCall = EJSBuilder.buildJSCall(playerScript, uncachedRequests,
         isPreprocessed: isPreprocessed);
 
     final filePath = path.join((_deno.tmpDir.path),
@@ -76,17 +95,57 @@ class DenoEJSSolver extends BaseJSChallengeSolver {
       _preprocPlayer[playerUrl] = data['preprocessed_player'];
     }
 
-    final response = data['responses'][0];
-    if (response['type'] != 'result') {
-      throw Exception('Unexpected item response type: ${response['type']}');
+    // Process all responses
+    final responses = data['responses'] as List;
+    for (final response in responses) {
+      if (response['type'] != 'result') {
+        throw Exception('Unexpected item response type: ${response['type']}');
+      }
+
+      final responseData = response['data'] as Map<String, dynamic>;
+      for (final entry in responseData.entries) {
+        final challenge = entry.key;
+        final decoded = entry.value as String?;
+
+        // Find the type for this challenge
+        JSChallengeType? challengeType;
+        for (final typeEntry in uncachedRequests.entries) {
+          if (typeEntry.value.contains(challenge)) {
+            challengeType = typeEntry.key;
+            break;
+          }
+        }
+
+        if (challengeType != null) {
+          final key = (playerUrl, challenge, challengeType);
+          if (decoded != null) {
+            _sigCache[key] = decoded;
+            cachedResults[challenge] = decoded;
+          } else {
+            cachedResults[challenge] = null;
+          }
+        }
+      }
     }
-    final decoded = response['data'][challenge];
+
+    return cachedResults;
+  }
+
+  @override
+  Future<String> solve(
+      String playerUrl, JSChallengeType type, String challenge) async {
+    final key = (playerUrl, challenge, type);
+    if (_sigCache.containsKey(key)) {
+      return _sigCache[key]!;
+    }
+
+    final results = await solveBulk(playerUrl, {
+      type: [challenge]
+    });
+    final decoded = results[challenge];
     if (decoded == null) {
       throw Exception('No data for challenge: $challenge');
     }
-
-    _sigCache[key] = decoded;
-
     return decoded;
   }
 
