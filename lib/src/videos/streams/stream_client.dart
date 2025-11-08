@@ -242,7 +242,7 @@ class StreamClient {
         if (stream.signatureParameter != null) {
           try {
             final sigParam = stream.signatureParameter!;
-            final sig = url.queryParameters[sigParam]!;
+            final sig = stream.signature!;
             final decoded = await solver.solve(
                 watchPage.sourceUrl!, JSChallengeType.sig, sig);
             url = url.setQueryParam(sigParam, decoded);

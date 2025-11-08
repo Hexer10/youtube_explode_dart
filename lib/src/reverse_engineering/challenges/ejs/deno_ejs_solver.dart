@@ -4,11 +4,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 
 import '../js_challenge.dart';
 import 'ejs.dart';
 
 class DenoEJSSolver extends BaseJSChallengeSolver {
+  static final _logger = Logger('YoutubeExplode.Deno');
   final _playerCache = <String, String>{};
   final _sigCache = <(String, String, JSChallengeType), String>{};
   final _DenoProcess _deno;
@@ -67,6 +69,9 @@ class DenoEJSSolver extends BaseJSChallengeSolver {
 }
 
 class _DenoProcess {
+  static final _logger = Logger('YoutubeExplode.Deno.Process');
+
+  File? _tmpFile;
   final Process _process;
   final StreamController<String> _stdoutController =
       StreamController.broadcast();
@@ -77,17 +82,20 @@ class _DenoProcess {
 
   _DenoProcess(this._process) {
     // Listen to Deno's stdout and add data to the stream controller
-    _process.stdout.transform(SystemEncoding().decoder).listen(
-      _stdoutController.add,
-      onDone: () {
-        _stdoutController.close();
-      },
-    );
+    _process.stdout
+        .transform(SystemEncoding().decoder)
+        .listen(_stdoutController.add, onDone: () {
+      _logger.info('Deno process stdout closed.');
+      _stdoutController.close();
+    }, onError: (e) {
+      _logger.info('Deno process stdout error occurred: $e');
+    });
   }
 
   /// Disposes the Deno process.
   void dispose() {
     _process.kill();
+    _tmpFile?.delete();
   }
 
   /// Sends JavaScript code to Deno for evaluation.
@@ -152,17 +160,24 @@ class _DenoProcess {
   }
 
   static Future<_DenoProcess> init(String initCode) async {
+    final tmpFile = File(
+        '${Directory.systemTemp.path}/deno_init_${DateTime.now().millisecondsSinceEpoch}.js');
+    await tmpFile.writeAsString(initCode);
+    print(tmpFile);
     final proc = await Process.start('deno', [
       'repl',
       '--quiet',
       '--no-lock',
       '--no-npm',
       '--no-remote',
-      '--eval',
-      initCode,
+      '--eval-file=${tmpFile.path}',
     ], environment: {
       'NO_COLOR': '1',
     });
+
+    // tmp file is not delete right away since the deno process might not evaluated it yet
+    proc.exitCode.then((e) => tmpFile.delete());
+
     return _DenoProcess(proc);
   }
 }
