@@ -1,3 +1,7 @@
+## 3.0.1
+- Fix issue with the `deno` signature solver where the command line arguments on some systems where too long.
+- Small optimizations by reusing the already preprocessed player in the `js` solver.
+
 ## 3.0.0
 - Implement `deno` js signature solver.
 - Implement new interfaces for custom JS challenges solver.
