@@ -11,7 +11,7 @@ import '../js_challenge.dart';
 import 'ejs.dart';
 
 class DenoEJSSolver extends BaseJSChallengeSolver {
-  static final _logger = Logger('YoutubeExplode.Deno');
+  // static final _logger = Logger('YoutubeExplode.Deno');
   final _playerCache = <String, String>{};
   final _sigCache = <(String, String, JSChallengeType), String>{};
   final _preprocPlayer = <String, String>{};
@@ -40,10 +40,6 @@ class DenoEJSSolver extends BaseJSChallengeSolver {
       isPreprocessed = true;
     } else if (_playerCache.containsKey(playerUrl)) {
       playerScript = _playerCache[playerUrl]!;
-      if (playerScript == null) {
-        final resp = await http.get(Uri.parse(playerUrl));
-        playerScript = _playerCache[playerUrl] = resp.body;
-      }
     } else {
       final resp = await http.get(Uri.parse(playerUrl));
       playerScript = _playerCache[playerUrl] = resp.body;
@@ -103,7 +99,6 @@ class DenoEJSSolver extends BaseJSChallengeSolver {
 class _DenoProcess {
   static final _logger = Logger('YoutubeExplode.Deno.Process');
 
-  File? _tmpFile;
   final Process _process;
   final StreamController<String> _stdoutController =
       StreamController.broadcast();
