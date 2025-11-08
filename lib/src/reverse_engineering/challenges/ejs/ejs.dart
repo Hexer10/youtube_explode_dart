@@ -20,19 +20,30 @@ abstract class EJSBuilder {
   }
 
   static String buildJSCall(
-      String playerScript, Map<JSChallengeType, List<String>> requests) {
-    final input = {
-      'type': 'player',
-      'player': playerScript,
-      'requests': [
-        for (final entry in requests.entries)
-          {
-            'type': entry.key.name,
-            'challenges': entry.value,
-          }
-      ],
-      'output_preprocessed': false,
-    };
+      String playerScript, Map<JSChallengeType, List<String>> requests,
+      {bool isPreprocessed = false}) {
+    final encodedRequests = [
+      for (final entry in requests.entries)
+        {
+          'type': entry.key.name,
+          'challenges': entry.value,
+        }
+    ];
+    late Map<String, dynamic> input;
+    if (isPreprocessed) {
+      input = {
+        'type': 'preprocessed',
+        'preprocessed_player': playerScript,
+        'requests': encodedRequests,
+      };
+    } else {
+      input = {
+        'type': 'player',
+        'player': playerScript,
+        'requests': encodedRequests,
+        'output_preprocessed': true,
+      };
+    }
 
     return 'JSON.stringify(jsc(${json.encode(input)}))';
   }

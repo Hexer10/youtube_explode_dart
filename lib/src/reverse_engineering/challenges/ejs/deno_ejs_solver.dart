@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 import 'package:logging/logging.dart';
 
 import '../js_challenge.dart';
@@ -13,6 +14,7 @@ class DenoEJSSolver extends BaseJSChallengeSolver {
   static final _logger = Logger('YoutubeExplode.Deno');
   final _playerCache = <String, String>{};
   final _sigCache = <(String, String, JSChallengeType), String>{};
+  final _preprocPlayer = <String, String>{};
   final _DenoProcess _deno;
 
   DenoEJSSolver._(this._deno);
@@ -31,23 +33,53 @@ class DenoEJSSolver extends BaseJSChallengeSolver {
       return _sigCache[key]!;
     }
 
-    var playerScript = _playerCache[playerUrl];
-    if (playerScript == null) {
+    late String playerScript;
+    var isPreprocessed = false;
+    if (_preprocPlayer.containsKey(playerUrl)) {
+      playerScript = _preprocPlayer[playerUrl]!;
+      isPreprocessed = true;
+    } else if (_playerCache.containsKey(playerUrl)) {
+      playerScript = _playerCache[playerUrl]!;
+      if (playerScript == null) {
+        final resp = await http.get(Uri.parse(playerUrl));
+        playerScript = _playerCache[playerUrl] = resp.body;
+      }
+    } else {
       final resp = await http.get(Uri.parse(playerUrl));
       playerScript = _playerCache[playerUrl] = resp.body;
     }
-    final jsCall = EJSBuilder.buildJSCall(playerScript, {
-      type: [challenge],
-    });
+
+    var jsCall = EJSBuilder.buildJSCall(
+        playerScript,
+        {
+          type: [challenge],
+        },
+        isPreprocessed: isPreprocessed);
+
+    final filePath = path.join((_deno.tmpDir.path),
+        'ejs_output_${DateTime.now().microsecondsSinceEpoch}.txt');
+
+    // Wrap the call into a write to file
+    jsCall = 'await Deno.writeTextFile("$filePath", $jsCall);';
 
     final result = await _deno.eval(jsCall);
-    // Trim the first and last characters (' delimiters of the JS string)
-    final data = json.decode(result.substring(1, result.length - 1))
-        as Map<String, dynamic>;
+
+    if (result != "undefined") {
+      throw Exception('Expected undefined result from Deno eval, got: $result');
+    }
+
+    final file = File(filePath);
+    final resultContent = await file.readAsString();
+    final data = json.decode(resultContent) as Map<String, dynamic>;
 
     if (data['type'] != 'result') {
       throw Exception('Unexpected response type: ${data['type']}');
     }
+
+    if (data['preprocessed_player'] != null) {
+      _preprocPlayer[playerUrl] = data['preprocessed_player'];
+    }
+
     final response = data['responses'][0];
     if (response['type'] != 'result') {
       throw Exception('Unexpected item response type: ${response['type']}');
@@ -75,12 +107,13 @@ class _DenoProcess {
   final Process _process;
   final StreamController<String> _stdoutController =
       StreamController.broadcast();
+  final Directory tmpDir;
 
   // Queue for incoming eval requests
   final Queue<_EvalRequest> _evalQueue = Queue<_EvalRequest>();
   bool _isProcessing = false; // Flag to indicate if an eval is currently active
 
-  _DenoProcess(this._process) {
+  _DenoProcess(this._process, this.tmpDir) {
     // Listen to Deno's stdout and add data to the stream controller
     _process.stdout
         .transform(SystemEncoding().decoder)
@@ -95,7 +128,7 @@ class _DenoProcess {
   /// Disposes the Deno process.
   void dispose() {
     _process.kill();
-    _tmpFile?.delete();
+    tmpDir.delete(recursive: true);
   }
 
   /// Sends JavaScript code to Deno for evaluation.
@@ -160,25 +193,23 @@ class _DenoProcess {
   }
 
   static Future<_DenoProcess> init(String initCode) async {
-    final tmpFile = File(
-        '${Directory.systemTemp.path}/deno_init_${DateTime.now().millisecondsSinceEpoch}.js');
+    final tmpDir = await Directory.systemTemp.createTemp('yt_deno_');
+    final tmpFile = File(path.join(tmpDir.path, 'deno_init.js'));
     await tmpFile.writeAsString(initCode);
-    print(tmpFile);
     final proc = await Process.start('deno', [
       'repl',
       '--quiet',
       '--no-lock',
       '--no-npm',
       '--no-remote',
+      '--allow-write=${tmpDir.path}',
       '--eval-file=${tmpFile.path}',
     ], environment: {
       'NO_COLOR': '1',
     });
-
-    // tmp file is not delete right away since the deno process might not evaluated it yet
-    proc.exitCode.then((e) => tmpFile.delete());
-
-    return _DenoProcess(proc);
+    _logger.info(
+        'Deno process started with PID: ${proc.pid}, using tmpdir: ${tmpDir.path}');
+    return _DenoProcess(proc, tmpDir);
   }
 }
 
