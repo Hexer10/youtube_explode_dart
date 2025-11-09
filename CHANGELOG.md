@@ -1,3 +1,7 @@
+## 3.0.3
+- Add comment `ejs` solvers class.
+- Update `tv` client.
+
 ## 3.0.2
 - Implement bulk challenges solver.
 
