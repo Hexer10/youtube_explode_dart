@@ -1,3 +1,6 @@
+## 3.0.4
+- Fix EJS exports.
+
 ## 3.0.3
 - Add comment `ejs` solvers class.
 - Update `tv` client.
