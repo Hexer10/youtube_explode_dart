@@ -1,3 +1,8 @@
+## 3.0.5
+- Re-add requireWatchPage functionality to `getManifest`.
+- Allow specifying deno path. Thanks to @obemu.
+- Support for live urls. Thanks to @Rerurate514.
+
 ## 3.0.4
 - Fix EJS exports.
 
