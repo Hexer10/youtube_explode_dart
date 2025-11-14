@@ -13,9 +13,9 @@ class DenoEJSSolver extends BaseEJSSolver {
 
   DenoEJSSolver._(this._deno);
 
-  static Future<DenoEJSSolver> init() async {
+  static Future<DenoEJSSolver> init({String? denoExe}) async {
     final modules = await EJSBuilder.getJSModules();
-    final deno = await _DenoProcess.init(modules);
+    final deno = await _DenoProcess.init(initCode: modules, denoExe: denoExe);
     return DenoEJSSolver._(deno);
   }
 
@@ -134,11 +134,14 @@ class _DenoProcess {
     _process.stdin.writeln(request.code); // Send the code to Deno
   }
 
-  static Future<_DenoProcess> init(String initCode) async {
+  static Future<_DenoProcess> init({
+      required String initCode,
+      String? denoExe
+    }) async {
     final tmpDir = await Directory.systemTemp.createTemp('yt_deno_');
     final tmpFile = File(path.join(tmpDir.path, 'deno_init.js'));
     await tmpFile.writeAsString(initCode);
-    final proc = await Process.start('deno', [
+    final proc = await Process.start(denoExe ?? 'deno', [
       'repl',
       '--quiet',
       '--no-lock',
