@@ -94,7 +94,11 @@ class StreamClient {
           'Getting stream manifest for video $videoId with client: ${client.payload['context']['client']['clientName']}');
       try {
         await retry(_httpClient, () async {
-          final streams = await _getStreams(videoId, ytClient: client).toList();
+          final streams = await _getStreams(
+            videoId,
+            ytClient: client,
+            requireWatchPage: requireWatchPage,
+          ).toList();
           if (streams.isEmpty) {
             throw VideoUnavailableException(
               'Video "$videoId" does not contain any playable streams.',
@@ -168,16 +172,21 @@ class StreamClient {
       _httpClient.getStream(streamInfo, streamClient: this);
 
   Stream<StreamInfo> _getStreams(VideoId videoId,
-      {required YoutubeApiClient ytClient}) async* {
+      {required YoutubeApiClient ytClient,
+      bool requireWatchPage = true}) async* {
     // Use await for instead of yield* to catch exceptions
-    await for (final stream in _getStream(videoId, ytClient)) {
+    await for (final stream
+        in _getStream(videoId, ytClient, requireWatchPage: requireWatchPage)) {
       yield stream;
     }
   }
 
-  Stream<StreamInfo> _getStream(
-      VideoId videoId, YoutubeApiClient ytClient) async* {
-    final watchPage = await WatchPage.get(_httpClient, videoId.value);
+  Stream<StreamInfo> _getStream(VideoId videoId, YoutubeApiClient ytClient,
+      {bool requireWatchPage = true}) async* {
+    WatchPage? watchPage;
+    if (requireWatchPage) {
+      watchPage = await WatchPage.get(_httpClient, videoId.value);
+    }
     final playerResponse = await _controller
         .getPlayerResponse(videoId, ytClient, watchPage: watchPage);
 
@@ -216,7 +225,7 @@ class StreamClient {
   }
 
   Stream<StreamInfo> _parseStreamInfo(Iterable<StreamInfoProvider> streams,
-      {required WatchPage watchPage, VideoId? videoId}) async* {
+      {WatchPage? watchPage, VideoId? videoId}) async* {
     // First pass: collect all unique challenges
     final nChallenges = <String>{};
     final sigChallenges = <String>{};
@@ -240,7 +249,8 @@ class StreamClient {
 
     // Bulk solve all challenges
     final solvedChallenges = <String, String?>{};
-    if (solver != null &&
+    if (watchPage != null &&
+        solver != null &&
         (nChallenges.isNotEmpty || sigChallenges.isNotEmpty)) {
       final requests = <JSChallengeType, List<String>>{};
       if (nChallenges.isNotEmpty) {
@@ -269,7 +279,7 @@ class StreamClient {
         continue;
       }
 
-      if (solver != null) {
+      if (solver != null && watchPage != null) {
         if (url.queryParameters.containsKey('n')) {
           final nParam = url.queryParameters['n']!;
           final decoded = solvedChallenges[nParam];
@@ -333,7 +343,7 @@ class StreamClient {
       if (stream.source == StreamSource.hls) {
         if (stream.audioOnly) {
           yield HlsAudioStreamInfo(
-            videoId ?? watchPage.videoId,
+            videoId ?? watchPage!.videoId,
             itag,
             url,
             container,
@@ -357,7 +367,7 @@ class StreamClient {
 
         if (stream.videoOnly) {
           yield HlsVideoStreamInfo(
-            videoId ?? watchPage.videoId,
+            videoId ?? watchPage!.videoId,
             itag,
             url,
             container,
@@ -373,7 +383,7 @@ class StreamClient {
           );
         } else {
           yield HlsMuxedStreamInfo(
-            videoId ?? watchPage.videoId,
+            videoId ?? watchPage!.videoId,
             itag,
             url,
             container,
@@ -408,7 +418,7 @@ class StreamClient {
             stream.source != StreamSource.adaptive) {
           assert(stream.audioTrack == null);
           yield MuxedStreamInfo(
-            videoId ?? watchPage.videoId,
+            videoId ?? watchPage!.videoId,
             itag,
             url,
             container,
@@ -427,7 +437,7 @@ class StreamClient {
 
         // Video only
         yield VideoOnlyStreamInfo(
-          videoId ?? watchPage.videoId,
+          videoId ?? watchPage!.videoId,
           itag,
           url,
           container,
@@ -445,7 +455,7 @@ class StreamClient {
         // Audio-only
       } else if (!audioCodec.isNullOrWhiteSpace) {
         yield AudioOnlyStreamInfo(
-            videoId ?? watchPage.videoId,
+            videoId ?? watchPage!.videoId,
             itag,
             url,
             container,
