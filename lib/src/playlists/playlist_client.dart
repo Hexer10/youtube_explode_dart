@@ -26,7 +26,7 @@ class PlaylistClient {
       response.title ?? '',
       response.author ?? '',
       response.description ?? '',
-      ThumbnailSet(id.value),
+      ThumbnailSet(response.videos.firstOrNull?.id ?? id.value),
       Engagement(response.viewCount ?? 0, null, null),
       response.videoCount,
     );
