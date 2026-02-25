@@ -40,12 +40,34 @@ class YoutubeApiClient {
 
   /// This provides also muxed streams but seems less reliable than [ios].
   /// If you require an android client use [androidVr] instead.
+  /// Note: This client includes androidSdkVersion which may require PO Token.
+  /// Consider using [androidSdkless] instead for better compatibility.
   static const android = YoutubeApiClient({
     'context': {
       'client': {
         'clientName': 'ANDROID',
         'clientVersion': '20.10.38',
         'androidSdkVersion': 30,
+        'userAgent':
+            'com.google.android.youtube/20.10.38 (Linux; U; Android 11) gzip',
+        'hl': 'en',
+        'timeZone': 'UTC',
+        'utcOffsetMinutes': 0,
+        'osName': 'Android',
+        'osVersion': '11',
+      },
+    },
+  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
+
+  /// Android client without androidSdkVersion field.
+  /// This client doesn't require a PO Token and provides better compatibility
+  /// for streaming audio/video without 403 errors.
+  /// Based on yt-dlp's android_sdkless client.
+  static const androidSdkless = YoutubeApiClient({
+    'context': {
+      'client': {
+        'clientName': 'ANDROID',
+        'clientVersion': '20.10.38',
         'userAgent':
             'com.google.android.youtube/20.10.38 (Linux; U; Android 11) gzip',
         'hl': 'en',
