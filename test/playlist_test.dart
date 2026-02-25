@@ -78,4 +78,11 @@ void main() {
         .toList();
     expect(videos.length, greaterThan(100));
   });
+
+  test('Get videos of playlist with collaborative video', () async {
+    final videos = await yt!.playlists
+        .getVideos('PLjp0AEEJ0-fGKG_3skl0e1FQlJfnx-TJz')
+        .toList();
+    expect(videos.any((v) => v.id.value == '32sPcsb9ClQ'), true);
+  });
 }
