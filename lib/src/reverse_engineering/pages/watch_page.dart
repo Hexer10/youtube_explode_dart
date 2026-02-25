@@ -38,7 +38,9 @@ class WatchPage extends YoutubePage<WatchPageInitialData> {
         .querySelectorAll('script')
         .map((e) => e.attributes['src'])
         .nonNulls
-        .firstWhereOrNull((e) => e.contains('player_ias') && e.endsWith('.js'));
+        .firstWhereOrNull((e) =>
+            (e.contains('player_ias') || e.contains('player_es6')) &&
+            e.endsWith('.js'));
     if (url == null) {
       return null;
     }
