@@ -82,7 +82,7 @@ class SearchClient {
   Future<List<String>> getQuerySuggestions(String query) async {
     final request = await _httpClient.get(
       Uri.parse(
-        'https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=en&gl=en&q=${Uri.encodeComponent(query)}&callback=func',
+        'https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&ds=yt&hl=en&gl=en&q=${Uri.encodeComponent(query)}&callback=func',
       ),
     );
     final body = request.body;
