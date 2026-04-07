@@ -34,7 +34,7 @@ class RelatedVideosClient {
     }
 
     final duration = data.getJson<String>(
-        'contentImage/thumbnailViewModel/overlays/0/thumbnailOverlayBadgeViewModel/thumbnailBadges/0/thumbnailBadgeViewModel/text');
+        'contentImage/thumbnailViewModel/overlays/0/thumbnailBottomOverlayViewModel/badges/0/thumbnailBadgeViewModel/text');
     final uploadDate = data.getJson<String>(
         'metadata/lockupMetadataViewModel/metadata/contentMetadataViewModel/metadataRows/1/metadataParts/1/text/content');
     final views = data.getJson<String>(
@@ -175,7 +175,16 @@ extension _RelatedVideosExtInitialData on WatchPageInitialData {
                         'itemSectionRenderer': {
                           'contents': final List<dynamic> results,
                         }
-                      }
+                      },
+                      ...
+                    ] ||
+                    [
+                      {
+                        'itemSectionRenderer': {
+                          'contents': final List<dynamic> results,
+                        }
+                      },
+                      ...
                     ] ||
                     final List<dynamic> results
               }

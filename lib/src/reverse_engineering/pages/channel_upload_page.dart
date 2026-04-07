@@ -191,11 +191,12 @@ class _InitialData extends InitialData {
                 'onTap/innertubeCommand/reelWatchEndpoint/videoId')!),
             video.getJson<String>('overlayMetadata/primaryText/content')!,
             Duration.zero,
-            video.getJson<String>('thumbnail/sources/0/url')!,
+            video.getJson<String>(
+                'thumbnailViewModel/thumbnailViewModel/image/sources/0/url')!,
             '',
             video
                 .getJson<String>('overlayMetadata/secondaryText/content')!
-                .parseInt()!);
+                .parseIntWithUnits()!);
       }
     }
 
