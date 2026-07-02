@@ -178,6 +178,15 @@ extension StringUtility2 on String? {
       parts = parts.skip(1).toList();
     }
 
+    // Compact format: "16h ago", "1mo ago", "3y ago".
+    if (parts.length == 2 && parts[1] == 'ago') {
+      final match = RegExp(r'^(\d+)([a-z]+)$').firstMatch(parts.first);
+      if (match == null) {
+        return null;
+      }
+      parts = [match.group(1)!, match.group(2)!, 'ago'];
+    }
+
     if (parts.length != 3) {
       return null;
     }
@@ -188,13 +197,15 @@ extension StringUtility2 on String? {
     final unit = parts[1];
 
     final time = switch (unit) {
-      _ when unit.startsWith('second') => Duration(seconds: qty),
-      _ when unit.startsWith('minute') => Duration(minutes: qty),
-      _ when unit.startsWith('hour') => Duration(hours: qty),
-      _ when unit.startsWith('day') => Duration(days: qty),
-      _ when unit.startsWith('week') => Duration(days: qty * 7),
-      _ when unit.startsWith('month') => Duration(days: qty * 30),
-      _ when unit.startsWith('year') => Duration(days: qty * 365),
+      _ when unit.startsWith('second') || unit == 's' => Duration(seconds: qty),
+      _ when unit.startsWith('month') || unit == 'mo' =>
+        Duration(days: qty * 30),
+      _ when unit.startsWith('minute') || unit == 'min' || unit == 'm' =>
+        Duration(minutes: qty),
+      _ when unit.startsWith('hour') || unit == 'h' => Duration(hours: qty),
+      _ when unit.startsWith('day') || unit == 'd' => Duration(days: qty),
+      _ when unit.startsWith('week') || unit == 'w' => Duration(days: qty * 7),
+      _ when unit.startsWith('year') || unit == 'y' => Duration(days: qty * 365),
       _ => throw StateError("Couldn't parse $unit unit of time. "
           'Please report this to the project page!')
     };
