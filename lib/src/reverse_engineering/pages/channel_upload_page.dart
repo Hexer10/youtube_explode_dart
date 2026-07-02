@@ -132,8 +132,9 @@ class _InitialData extends InitialData {
 
   JsonMap? getContinuationContext() {
     final contentContext = getContentContext();
-    final continuationItem = contentContext
-        .firstWhereOrNull((e) => e['continuationItemRenderer'] != null);
+    final continuationItem = contentContext.firstWhereOrNull((e) =>
+        e['continuationItemRenderer'] != null ||
+        e['continuationItemViewModel'] != null);
     final continuationItemRenderer =
         continuationItem?.getJson<JsonMap>('continuationItemRenderer');
     if (continuationItemRenderer != null) {
@@ -143,6 +144,14 @@ class _InitialData extends InitialData {
       if (command != null) {
         return command;
       }
+    }
+    // Newer pages wrap the continuation in continuationItemViewModel.
+    final viewModelCommand = continuationItem?.getJson<JsonMap>(
+            'continuationItemViewModel/continuationCommand/innertubeCommand/continuationCommand') ??
+        continuationItem
+            ?.getJson<JsonMap>('continuationItemViewModel/continuationCommand');
+    if (viewModelCommand != null) {
+      return viewModelCommand;
     }
     if (root.containsKey('contents')) {
       final tabs = root.getJson<List<dynamic>>(
@@ -232,20 +241,40 @@ class _InitialData extends InitialData {
     }
 
     if (isLockup) {
+      // Newer lockup pages nest metadata under lockupMetadataViewModel and the
+      // thumbnail under contentImage; the previous lockup paths stay as fallback.
       return ChannelVideo(
-        VideoId(video.getJson<String>(
-            'rendererContext/commandContext/onTap/innertubeCommand/watchEndpoint/videoId')!),
-        video.getJson<String>('metadata/primaryText/content') ?? '',
+        VideoId(video.getT<String>('contentId') ??
+            video.getJson<String>(
+                'rendererContext/commandContext/onTap/innertubeCommand/watchEndpoint/videoId')!),
+        video.getJson<String>(
+                'metadata/lockupMetadataViewModel/title/content') ??
+            video.getJson<String>('metadata/primaryText/content') ??
+            '',
         video
+                .getJson<String>(
+                    'contentImage/thumbnailViewModel/overlays/0/thumbnailBottomOverlayViewModel/badges/0/thumbnailBadgeViewModel/text')
+                ?.toDuration() ??
+            video
                 .getJson<String>(
                     'imageOverlays/0/thumbnailOverlayTimeStatusRenderer/text/simpleText')
                 ?.toDuration() ??
             Duration.zero,
         video.getJson<String>(
+                'contentImage/thumbnailViewModel/image/sources/0/url') ??
+            video.getJson<String>(
                 'thumbnailViewModel/thumbnailViewModel/image/sources/0/url') ??
             '',
-        video.getJson<String>('metadata/metadataParts/1/text/content') ?? '',
-        video.getJson<String>('metadata/metadataText/content').parseInt() ?? 0,
+        video.getJson<String>(
+                'metadata/lockupMetadataViewModel/metadata/contentMetadataViewModel/metadataRows/0/metadataParts/1/text/content') ??
+            video.getJson<String>('metadata/metadataParts/1/text/content') ??
+            '',
+        video
+                .getJson<String>(
+                    'metadata/lockupMetadataViewModel/metadata/contentMetadataViewModel/metadataRows/0/metadataParts/0/text/content')
+                .parseIntWithUnits() ??
+            video.getJson<String>('metadata/metadataText/content').parseInt() ??
+            0,
       );
     }
 
