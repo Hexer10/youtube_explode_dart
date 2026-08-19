@@ -60,9 +60,9 @@ class YoutubeApiClient {
   }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
 
   /// Android client without androidSdkVersion field.
-  /// This client doesn't require a PO Token and provides better compatibility
-  /// for streaming audio/video without 403 errors.
   /// Based on yt-dlp's android_sdkless client.
+  /// Note: This client has stopped working for audio/video streams as of 2026-08.
+  @Deprecated('No longer works for non-muxed streams')
   static const androidSdkless = YoutubeApiClient({
     'context': {
       'client': {
@@ -185,6 +185,26 @@ class YoutubeApiClient {
       'client': {
         'clientName': 'MWEB',
         'clientVersion': '2.20240726.01.00',
+        'hl': 'en',
+        'timeZone': 'UTC',
+        'utcOffsetMinutes': 0,
+      },
+    },
+  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
+
+  /// Currently the most reliable client for logged-out streaming.
+  /// Does not require PO Tokens or JavaScript challenge solving.
+  static const visionos = YoutubeApiClient({
+    'context': {
+      'client': {
+        'clientName': 'VISIONOS',
+        'clientVersion': '1.02',
+        'deviceMake': 'Apple',
+        'deviceModel': 'RealityDevice17,1',
+        'userAgent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 15_7_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15',
+        'osName': 'visionOS',
+        'osVersion': '26.5.23O471',
         'hl': 'en',
         'timeZone': 'UTC',
         'utcOffsetMinutes': 0,
