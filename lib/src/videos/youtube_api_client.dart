@@ -113,6 +113,29 @@ class YoutubeApiClient {
     },
   }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
 
+  /// Apple Vision Pro. Currently the most reliable client for obtaining stream
+  /// URLs: YouTube serves its media without a PO token, where [androidVr] and
+  /// [ios] now return 403 on the stream itself even though the manifest
+  /// resolves. It also requires no signature deciphering.
+  static const visionOs = YoutubeApiClient({
+    'context': {
+      'client': {
+        'clientName': 'VISIONOS',
+        'clientVersion': '1.02',
+        'deviceMake': 'Apple',
+        'deviceModel': 'RealityDevice17,1',
+        'osName': 'visionOS',
+        'osVersion': '26.5.23O471',
+        'userAgent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 15_7_3) AppleWebKit/605.1.15 '
+            '(KHTML, like Gecko) Version/26.0 Safari/605.1.15',
+        'hl': 'en',
+        'timeZone': 'UTC',
+        'utcOffsetMinutes': 0,
+      },
+    },
+  }, 'https://www.youtube.com/youtubei/v1/player?prettyPrint=false');
+
   /// This client also provide high quality muxed stream in the HLS manifest.
   /// The streams are in m3u8 format.
   static const safari = YoutubeApiClient({

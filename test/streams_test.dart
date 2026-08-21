@@ -33,6 +33,18 @@ void main() {
         await yt!.videos.streams.getManifest(VideoIdData.normal.id);
     expect(manifest.streams.length, greaterThan(50));
   }, skip: skipGH);
+  // getManifest HEADs a stream URL and rejects the client on 403, so this
+  // passing means visionOs streams are actually fetchable — not merely that a
+  // manifest could be parsed. On this same video ios returns 403 and androidVr
+  // reports the video unplayable, both since YouTube began requiring a PO
+  // token for their media URLs.
+  test('Get a manifest with the visionOs client', () async {
+    final manifest = await yt!.videos.streams.getManifest(
+      VideoIdData.normal.id,
+      ytClients: [YoutubeApiClient.visionOs],
+    );
+    expect(manifest.audioOnly, isNotEmpty);
+  }, skip: skipGH);
 
   test('Stream of paid videos throw VideoRequiresPurchaseException', () {
     expect(
