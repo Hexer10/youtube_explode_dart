@@ -298,15 +298,22 @@ class YoutubeHttpClient extends http.BaseClient {
       'https://www.youtube.com/youtubei/v1/$action?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8',
     );
 
+    final clientData = <String, dynamic>{
+      'browserName': 'Chrome',
+      'browserVersion': '120.0.0.0',
+      'clientFormFactor': 'UNKNOWN_FORM_FACTOR',
+      'clientName': 'WEB',
+      'clientVersion': '2.20250331.00.00',
+    };
+
+    final visitorData = headers?['x-goog-visitor-id'];
+    if (visitorData != null && visitorData.isNotEmpty) {
+      clientData['visitorData'] = visitorData;
+    }
+
     final body = {
-      'context': const {
-        'client': {
-          'browserName': 'Chrome',
-          'browserVersion': '105.0.0.0',
-          'clientFormFactor': 'UNKNOWN_FORM_FACTOR',
-          'clientName': "WEB",
-          'clientVersion': "2.20220921.00.00",
-        },
+      'context': {
+        'client': clientData,
       },
       ...data,
     };
