@@ -32,12 +32,15 @@ class StreamClient {
   ///
   /// See [YoutubeApiClient] for all the possible clients that can be set using the [ytClients] parameter.
   /// If [ytClients] is null the library automatically manages the clients, otherwise only the clients provided are used.
-  /// Currently by default the  [YoutubeApiClient.androidSdkless] client is used,
-  /// and if a js solver is provided the [YoutubeApiClient.safari] is used additionally.
+  /// Currently by default the [YoutubeApiClient.visionos] client is used,
+  /// with [YoutubeApiClient.androidVr] as fallback when [ytClients] is null.
+  /// If a js solver is provided, [YoutubeApiClient.safari] is used additionally.
   ///
   ///
   /// Note: if using any android client youtube often prevents downloading the same stream multiple times or downloading more than one stream from the same manifest.
   /// Note: that age restricted videos are no longer support due to the changes in the YouTube API.
+  /// Note: [YoutubeApiClient.androidSdkless] / [YoutubeApiClient.android] often return adaptive
+  /// (audio/video-only) URLs that the CDN rejects with HTTP 403; prefer [YoutubeApiClient.androidVr].
   ///
   /// If [requireWatchPage] (default: true) is set to false the watch page is not used to extract the streams (so the process can be faster) but
   /// it probably will be less reliable.
@@ -65,7 +68,8 @@ class StreamClient {
         'ytClients cannot be an empty list');
 
     videoId = VideoId.fromString(videoId);
-    final clients = ytClients ?? [YoutubeApiClient.androidSdkless];
+    final clients = ytClients ??
+        [YoutubeApiClient.visionos, YoutubeApiClient.androidVr];
 
     if (_jsChallengeSolver != null && ytClients == null) {
       clients.add(YoutubeApiClient.safari);
@@ -88,30 +92,52 @@ class StreamClient {
     );
 
     Object? lastException;
+    String? hlsManifestUrl;
 
     for (final client in clients) {
       _logger.fine(
           'Getting stream manifest for video $videoId with client: ${client.payload['context']['client']['clientName']}');
       try {
         await retry(_httpClient, () async {
-          final streams = await _getStreams(
+          String? hlsUrlCandidate;
+          final streams = (await _getStreams(
             videoId,
             ytClient: client,
             requireWatchPage: requireWatchPage,
-          ).toList();
+            onHlsManifest: (url) => hlsUrlCandidate = url,
+          ).toList())
+              .where(_hasPlayableUrl)
+              .toList();
           if (streams.isEmpty) {
             throw VideoUnavailableException(
               'Video "$videoId" does not contain any playable streams.',
             );
           }
 
-          final response = await _httpClient.head(streams.first.url);
+          final probe = streams.first;
+          final response = await _httpClient.head(probe.url);
           if (response.statusCode == 403) {
             throw YoutubeExplodeException(
-              'Video $videoId returned 403 (stream: ${streams.first.tag})',
+              'Video $videoId returned 403 (stream: ${probe.tag})',
             );
           }
+
+          // Muxed-only HEAD can hide CDN 403s on adaptive URLs (e.g. androidSdkless).
+          final adaptive = streams.cast<StreamInfo?>().firstWhere(
+                (s) =>
+                    s is AudioOnlyStreamInfo || s is VideoOnlyStreamInfo,
+                orElse: () => null,
+              );
+          if (adaptive != null) {
+            final adaptiveHead = await _httpClient.head(adaptive.url);
+            if (adaptiveHead.statusCode == 403) {
+              throw YoutubeExplodeException(
+                'Video $videoId returned 403 (stream: ${adaptive.tag})',
+              );
+            }
+          }
           uniqueStreams.addAll(streams);
+          hlsManifestUrl ??= hlsUrlCandidate;
         });
       } catch (e, s) {
         _logger.severe(
@@ -135,7 +161,8 @@ class StreamClient {
           VideoUnavailableException(
               'Video "$videoId" has no available streams');
     }
-    return StreamManifest(uniqueStreams.toList());
+    return StreamManifest(uniqueStreams.toList(),
+        hlsManifestUrl: hlsManifestUrl);
   }
 
   /// Gets the HTTP Live Stream (HLS) manifest URL
@@ -173,16 +200,18 @@ class StreamClient {
 
   Stream<StreamInfo> _getStreams(VideoId videoId,
       {required YoutubeApiClient ytClient,
-      bool requireWatchPage = true}) async* {
+      bool requireWatchPage = true,
+      void Function(String? hlsManifestUrl)? onHlsManifest}) async* {
     // Use await for instead of yield* to catch exceptions
-    await for (final stream
-        in _getStream(videoId, ytClient, requireWatchPage: requireWatchPage)) {
+    await for (final stream in _getStream(videoId, ytClient,
+        requireWatchPage: requireWatchPage, onHlsManifest: onHlsManifest)) {
       yield stream;
     }
   }
 
   Stream<StreamInfo> _getStream(VideoId videoId, YoutubeApiClient ytClient,
-      {bool requireWatchPage = true}) async* {
+      {bool requireWatchPage = true,
+      void Function(String? hlsManifestUrl)? onHlsManifest}) async* {
     WatchPage? watchPage;
     if (requireWatchPage) {
       watchPage = await WatchPage.get(_httpClient, videoId.value);
@@ -207,6 +236,7 @@ class StreamClient {
         reason: playerResponse.videoPlayabilityError ?? '',
       );
     }
+    onHlsManifest?.call(playerResponse.hlsManifestUrl);
     yield* _parseStreamInfo(playerResponse.streams,
         watchPage: watchPage, videoId: videoId);
 
@@ -276,6 +306,13 @@ class StreamClient {
       try {
         url = Uri.parse(stream.url);
       } catch (e) {
+        continue;
+      }
+      // YouTube occasionally returns blank / relative URLs; HEAD-ing those
+      // throws ArgumentError("No host specified in URI") and aborts the client.
+      if (!_isAbsoluteHttpUrl(url)) {
+        _logger.warning(
+            'Skipping stream itag $itag with non-absolute URL: "${stream.url}"');
         continue;
       }
 
@@ -471,4 +508,11 @@ class StreamClient {
       }
     }
   }
+
+  /// Absolute http(s) URL with a non-empty host — safe for [HttpClient] HEAD/GET.
+  static bool _isAbsoluteHttpUrl(Uri url) =>
+      (url.scheme == 'http' || url.scheme == 'https') && url.host.isNotEmpty;
+
+  static bool _hasPlayableUrl(StreamInfo stream) =>
+      _isAbsoluteHttpUrl(stream.url);
 }

@@ -32,5 +32,9 @@
 # Web related
 lib/generated_plugin_registrant.dart
 
+# Flutter wrote an incomplete Linux embedding here (engine blobs under
+# flutter/ephemeral and generated registrants). This example has no Linux runner.
+/linux/
+
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages

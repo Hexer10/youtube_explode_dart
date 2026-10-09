@@ -9,8 +9,13 @@ class StreamManifest {
   /// Available streams.
   final UnmodifiableListView<StreamInfo> streams;
 
+  /// HLS master playlist URL (m3u8) from the client that produced this
+  /// manifest, when present (e.g. visionos). Useful as a single-URL
+  /// audio+video fallback when no muxed streams are available.
+  final String? hlsManifestUrl;
+
   /// Initializes an instance of [StreamManifest]
-  StreamManifest(Iterable<StreamInfo> streams)
+  StreamManifest(Iterable<StreamInfo> streams, {this.hlsManifestUrl})
       : streams = UnmodifiableListView(streams);
 
   /// Gets streams that contain audio

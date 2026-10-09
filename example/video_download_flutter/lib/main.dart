@@ -1,16 +1,18 @@
 import 'dart:io';
 
-import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,18 +21,18 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -76,13 +78,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 await Permission.storage.request();
 
                 // Get the streams manifest and the audio track.
+                // Default client is androidVr (avoids adaptive 403s from androidSdkless).
                 final manifest = await yt.videos.streamsClient.getManifest(id);
-                final audio = manifest.audioOnly.last;
+                final audio = manifest.audioOnly.withHighestBitrate();
 
                 // Build the directory.
-                final dir = await DownloadsPathProvider.downloadsDirectory;
+                final dir = await getDownloadsDirectory() ??
+                    await getApplicationDocumentsDirectory();
                 final filePath = path.join(
-                  dir.uri.toFilePath(),
+                  dir.path,
                   '${video.id}.${audio.container.name}',
                 );
 
@@ -102,6 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Close the file.
                 await fileStream.flush();
                 await fileStream.close();
+                yt.close();
 
                 // Show that the file was downloaded.
                 await showDialog(

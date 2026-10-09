@@ -16,6 +16,7 @@ xcuserdata
 **/.generated/
 Flutter/App.framework
 Flutter/Flutter.framework
+Flutter/ephemeral/
 Flutter/Generated.xcconfig
 Flutter/app.flx
 Flutter/app.zip

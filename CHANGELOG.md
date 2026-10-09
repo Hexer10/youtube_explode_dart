@@ -1,3 +1,7 @@
+## 3.1.1
+- Default `getManifest` client to `androidVr` so adaptive (audio/video-only) URLs are not rejected with CDN 403.
+- Skip streams with empty or non-absolute URLs before HEAD probes (avoids `No host specified in URI`).
+
 ## 3.1.0
 - Code refactoring
 - Update EJS module to 0.8.0

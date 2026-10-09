@@ -34,7 +34,7 @@ class RelatedVideosClient {
     }
 
     final duration = data.getJson<String>(
-        'contentImage/thumbnailViewModel/overlays/0/thumbnailOverlayBadgeViewModel/thumbnailBadges/0/thumbnailBadgeViewModel/text');
+        'contentImage/thumbnailViewModel/overlays/0/thumbnailBottomOverlayViewModel/badges/0/thumbnailBadgeViewModel/text');
     final uploadDate = data.getJson<String>(
         'metadata/lockupMetadataViewModel/metadata/contentMetadataViewModel/metadataRows/1/metadataParts/1/text/content');
     final viewsText = data.getJson<String>(
@@ -155,19 +155,37 @@ class RelatedVideosClient {
 
 extension _RelatedVideosExtInitialData on WatchPageInitialData {
   List<Map<String, dynamic>>? getRelatedVideosContent() {
-    final results = (root['contents'] as Map?)?['twoColumnWatchNextResults']
-        ?['secondaryResults']?['secondaryResults']?['results'] as List?;
-    if (results == null) return null;
-
-    // YouTube wraps the videos in an itemSectionRenderer — search for it
-    // regardless of its position in the results list.
-    for (final item in results) {
-      final contents =
-          (item as Map)['itemSectionRenderer']?['contents'] as List?;
-      if (contents != null) return contents.cast<Map<String, dynamic>>();
-    }
-
-    // Fallback: results list contains videos directly (older structure).
-    return results.cast<Map<String, dynamic>>();
+    return switch (root) {
+      {
+        'contents': {
+          'twoColumnWatchNextResults': {
+            'secondaryResults': {
+              'secondaryResults': {
+                'results': [
+                      _,
+                      {
+                        'itemSectionRenderer': {
+                          'contents': final List<dynamic> results,
+                        }
+                      },
+                      ...
+                    ] ||
+                    [
+                      {
+                        'itemSectionRenderer': {
+                          'contents': final List<dynamic> results,
+                        }
+                      },
+                      ...
+                    ] ||
+                    final List<dynamic> results
+              }
+            }
+          },
+        }
+      } =>
+        results.cast<Map<String, dynamic>>(),
+      _ => null,
+    };
   }
 }
